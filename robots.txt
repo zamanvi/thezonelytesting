@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+user-agent: *
+disallow: /downloads/
+
+user-agent: magicsearchbot
+disallow: /uploads/
+
+Sitemap: https://towtrucknearmenow.com/sitemap.xml
