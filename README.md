@@ -31,6 +31,9 @@ Welcome to **The Zonely** – a dynamic web platform built to deliver exceptiona
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is **proprietary and not open-source**.  
+All rights are reserved by MD Nayeem Sarker and Redrose Corporation.  
+Unauthorized use, copying, or distribution is strictly prohibited.  
+See the [LICENSE](LICENSE) file for full details.
 
 ---
