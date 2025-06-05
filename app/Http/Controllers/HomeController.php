@@ -205,7 +205,7 @@ class HomeController extends Controller
     {
         $blog = Blog::where('slug', $slug)->firstOrFail();
         $blog->increment('pageview');
-        return view('frontend.blog_details', compact('blog'));
+        return view('frontend.blog_details2', compact('blog'));
     }
     function sitemap()
     {
