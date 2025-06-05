@@ -541,7 +541,7 @@
             </div><!-- /.content -->
         </div><!-- /.crux-container -->
     </div>
-    
+    @include('frontend.layouts._footer2')
     <script type="text/javascript" src="https://cdn.cr.org/etc/designs/electronics/clientlibs/twentytwenty.js"></script>
     <script type="text/javascript"
         src="https://cdn.cr.org/etc/designs/cr/clientlibs/lazyload-responsive/js/lazysizes.min.js"></script>
