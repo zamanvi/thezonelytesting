@@ -21,14 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::name('frontend.')->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home');
     // Route::get('/fast-tow-trucks-near-me-reliable-towing-in-the-USA', [HomeController::class, 'service1'])->name('service1');
-    // Route::get('/affordable-tow-truck-company-near-me-in-usa-24-7-help', [HomeController::class, 'service2'])->name('service2');
-    // Route::get('/cheap-tow-truck-near-me-in-new-york-call-now', [HomeController::class, 'service3'])->name('service3');
-    // Route::get('/tow-truck-service-near-me-24-7-help-across-the-usa', [HomeController::class, 'service4'])->name('service4');
-    // Route::get('/best-tow-truck-companies-near-me-trusted-service-usa', [HomeController::class, 'service5'])->name('service5');
-    // Route::get('/tow-truck-near-me-floridas-fastest-tow-now', [HomeController::class, 'service6'])->name('service6');
-    // Route::get('/truck-towing-near-me-fast-&-affordable-usa-service', [HomeController::class, 'service7'])->name('service7');
-    // Route::get('/50-tow-truck-near-me-budget-friendly-usa-towing', [HomeController::class, 'service8'])->name('service8');
-    // Route::get('/tow-now-tow-truck-near-me-cheap-across-usa', [HomeController::class, 'service9'])->name('service9');
     Route::get('/help', [HomeController::class, 'help'])->name('help');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::get('/privacy-policy', [HomeController::class, 'privacy_policy'])->name('privacy-policy');

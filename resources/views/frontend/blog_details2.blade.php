@@ -2,14 +2,15 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US" xmlns="https://www.w3.org/1999/xhtml" xmlns:fb="https://ogp.me/ns/fb#"
     xmlns:og="https://opengraphprotocol.org/schema/">
+
 <head>
     <link rel="stylesheet" href="{{ asset('css/default.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-    
+
     <link href="https://cdn.cr.org/cda-global/css/deferred.css?id=d0238940ea701111d1526d27affb1a99" rel="preload"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link href="https://cdn.cr.org/cda-global/css/header/desktop.css?id=267a1d63385a71322faff3a4954fce48" rel="stylesheet"
-        media="screen and (min-width: 1200px)">
+    <link href="https://cdn.cr.org/cda-global/css/header/desktop.css?id=267a1d63385a71322faff3a4954fce48"
+        rel="stylesheet" media="screen and (min-width: 1200px)">
     <noscript>
         <link href="https://cdn.cr.org/cda-global/css/deferred.css?id=d0238940ea701111d1526d27affb1a99" rel="stylesheet"
             as="style">
@@ -19,9 +20,11 @@
             #global-footer .cr-footer--outer-wrapper {
                 display: block;
             }
+
             #global-footer .footer--buttons .crux-btn.footer--donate {
                 display: none;
             }
+
             @media only screen and (max-width: 767px) {
                 #global-footer .cr-footer--col ul {
                     display: block;
@@ -34,9 +37,11 @@
             #global-footer .cr-footer--outer-wrapper {
                 display: block;
             }
+
             #global-footer .footer--buttons .crux-btn.footer--donate {
                 display: none;
             }
+
             @media only screen and (max-width: 767px) {
                 #global-footer .cr-footer--col ul {
                     display: block;
@@ -46,16 +51,6 @@
     </noscript>
     <link rel="preload" href="https://cdn.cr.org/cda-global/js/index.js?id=d139792916106dc95b55f430f050734f"
         as="script" fetchpriority="high">
-    <script>
-        window.CR = window.CR || {};
-        CR.global = CR.global || {};
-        CR.global.siteCat = {
-            trackPageResolver: Promise.withResolvers(),
-            onPostTrackPage: function(callback) {
-                this.trackPageResolver.promise.then(callback);
-            },
-        };
-    </script>
     <script defer src="https://cdn.cr.org/cda-global/js/index.js?id=d139792916106dc95b55f430f050734f"></script>
 
     <script type="text/javascript" src="https://cdn.cr.org/etc/designs/cr/shared-resources/monetate/monetate.js"></script>
@@ -81,35 +76,11 @@
     <script type="text/javascript"
         src="https://cdn.cr.org/etc/designs/cr/clientlibs/component/globalDependenciesEmbedHead.js"></script>
 
-    <title>Preparation and Driving Tips for Safe Towing - Consumer Reports</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
-    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0" />
-    <meta name="description"
-        content="Consumer Reports shares advice for safe towing with expert advice to help make your towing adventure a smooth experience.">
-    <meta name="keywords" content="safe towing, tips, driving, trailering, towing">
-    
+
 </head>
+
 <body>
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53K77J" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-53K77J');
-    </script>
+
     @include('frontend.layouts._header2')
     <script type="text/javascript" src="https://cdn.cr.org/etc/designs/electronics/clientlibs/tracking.js"></script>
     <script type="text/javascript" src="https://cdn.cr.org/etc/designs/webpack/TireFinder/bundle.js"></script>
@@ -148,8 +119,7 @@
                             </div>
                         </div>
                         <div class="date parbase date-par"><time
-                                class="published-date crux-body-copy--extra-small crux-body-copy"
-                                datetime="2019-08-29">
+                                class="published-date crux-body-copy--extra-small crux-body-copy" datetime="2019-08-29">
                                 August 29, 2019
                             </time>
                         </div>
@@ -179,8 +149,8 @@
                                         aria-label="email">
                                         <div class="crux-icons crux-icons-mail"></div>
                                     </a>
-                                    <a href="javascript:window.print();" role="button"
-                                        class="button social-print" aria-label="print">
+                                    <a href="javascript:window.print();" role="button" class="button social-print"
+                                        aria-label="print">
                                         <div class="crux-icons crux-icons-print"></div>
                                     </a>
                                 </div>
@@ -200,8 +170,8 @@
                                             <input type="hidden"
                                                 value="/content/cro/en/cars/news-archive/z2019/August/preparation-and-driving-tips-for-safe-towing"
                                                 class="send-to-friend-path" />
-                                            <input type="hidden"
-                                                value="Preparation and Driving Tips for Safe Towing" name="title">
+                                            <input type="hidden" value="Preparation and Driving Tips for Safe Towing"
+                                                name="title">
                                             <input type="hidden"
                                                 value="/car-safety/preparation-and-driving-tips-for-safe-towing"
                                                 name="url">
@@ -216,13 +186,11 @@
                                                 data-parsley-type-message="This is not a valid email address"
                                                 required />
                                             <label for="toSelf" class="chkbox-wrapper">
-                                                <input type="checkbox" name="toSelf" id="toSelf"
-                                                    value="yes">
+                                                <input type="checkbox" name="toSelf" id="toSelf" value="yes">
                                                 <span class="chkbox"></span>
                                                 Yes, send me a copy of this email.
                                             </label>
-                                            <button type="submit"
-                                                class="crux-btn crux-btn-primary--lg">Send</button>
+                                            <button type="submit" class="crux-btn crux-btn-primary--lg">Send</button>
                                             <p class="disclaimer crux-body-copy">
                                                 We respect your <a
                                                     href="https://www.consumerreports.org/cro/customerservice/privacy-policy/highlights/index.htm"
@@ -423,8 +391,8 @@
                                         aria-label="email">
                                         <div class="crux-icons crux-icons-mail"></div>
                                     </a>
-                                    <a href="javascript:window.print();" role="button"
-                                        class="button social-print" aria-label="print">
+                                    <a href="javascript:window.print();" role="button" class="button social-print"
+                                        aria-label="print">
                                         <div class="crux-icons crux-icons-print"></div>
                                     </a>
                                 </div>
@@ -444,8 +412,8 @@
                                             <input type="hidden"
                                                 value="/content/cro/en/cars/news-archive/z2019/August/preparation-and-driving-tips-for-safe-towing"
                                                 class="send-to-friend-path" />
-                                            <input type="hidden"
-                                                value="Preparation and Driving Tips for Safe Towing" name="title">
+                                            <input type="hidden" value="Preparation and Driving Tips for Safe Towing"
+                                                name="title">
                                             <input type="hidden"
                                                 value="/car-safety/preparation-and-driving-tips-for-safe-towing"
                                                 name="url">
@@ -460,13 +428,11 @@
                                                 data-parsley-type-message="This is not a valid email address"
                                                 required />
                                             <label for="toSelf" class="chkbox-wrapper">
-                                                <input type="checkbox" name="toSelf" id="toSelf"
-                                                    value="yes">
+                                                <input type="checkbox" name="toSelf" id="toSelf" value="yes">
                                                 <span class="chkbox"></span>
                                                 Yes, send me a copy of this email.
                                             </label>
-                                            <button type="submit"
-                                                class="crux-btn crux-btn-primary--lg">Send</button>
+                                            <button type="submit" class="crux-btn crux-btn-primary--lg">Send</button>
                                             <p class="disclaimer crux-body-copy">
                                                 We respect your <a
                                                     href="https://www.consumerreports.org/cro/customerservice/privacy-policy/highlights/index.htm"
@@ -512,7 +478,7 @@
                             <div class="clear"></div>
                         </div>
                     </div><!-- /.rightRail -->
-                    <div class="col-sm-12 col-lg-8 clearfix crux-offset--left">
+                    {{-- <div class="col-sm-12 col-lg-8 clearfix crux-offset--left">
                         <div class="aboutauthor-par aboutauthor parbase">
                             <div class="about-author-wrapper clearfix">
                                 <div class="author-image">
@@ -536,7 +502,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div><!-- /.row -->
             </div><!-- /.content -->
         </div><!-- /.crux-container -->
@@ -558,36 +524,6 @@
         src="https://cdn.cr.org/etc/designs/versioned-clientlibs/electronics/clientlibs/page/article/js/9-0-189/article.js"
         defer="defer"></script>
     <script src="https://cdn.cr.org/core/shopping/shoppingComponent.js"></script>
-    <!-- Begin Monetate Tag track -->
-    <script>
-        (function() {
-            var initMonetate = function() {
-                window.mtPayload = window.mtPayload || {};
-                if (window.mtService) {
-                    mtService
-                        .push(mtPayload)
-                        .push({
-                            setCustomVariables: [{
-                                name: 'membershipTier',
-                                value: typeof CRUserInfo !== 'undefined' && CRUserInfo
-                                    .getMonetateTier && CRUserInfo.getMonetateTier()
-                            }],
-                        })
-                        .track();
-                }
-            };
-            try {
-                var monetateLoaded = setInterval(function() {
-                    if (window.monetateQ && window.CRUserInfo) {
-                        initMonetate();
-                        clearInterval(monetateLoaded);
-                    }
-                }, 100);
-            } catch (e) {
-                console.error('Monetate init:', e.message);
-            }
-        }());
-    </script>
-    <!-- End Monetate Tag track -->
 </body>
+
 </html>
