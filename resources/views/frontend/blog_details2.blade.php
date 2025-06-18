@@ -2031,8 +2031,7 @@
     {{-- @include('frontend.layouts._header') --}}
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: #000">
         <div class="container" style="padding-top: 20px; padding-bottom: 20px">
-            <a style="color: #00ae3d; font-size: 30px"
-                href="{{ route('frontend.home') }}">Zonely</a>
+            <a style="color: #00ae3d; font-size: 30px" href="{{ route('frontend.home') }}">Zonely</a>
         </div>
     </nav>
 
@@ -2054,7 +2053,7 @@
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.main-headline-section -->
-            <div class="additional-headline-section">
+            {{-- <div class="additional-headline-section">
                 <div class="row">
                     <div class="col-xs-12 crux-offset--left crux-offset--right">
                         <div class="new-social social parbase"><!-- start of social HTML -->
@@ -2093,7 +2092,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="content">
                 <div class="row">
                     <div class="col-lg-8 col-md-12 col-sm-12 nopass crux-offset--left">
@@ -2144,22 +2143,21 @@
                             <!-- End of social HTML -->
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12 crux-offset--right">
-                        <div class="rightRail" id="rightrail">
-                            <div class="ratings-wrapper">
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-4 col-xs-12 ratings-image">
-                                        <a
-                                            href="https://www.consumerreports.org/cro/cars/new-cars/pickup-trucks/ratings-reliability/ratings-overview.htm">
+                    @if ($blog->image_path != null)
+                        <div class="col-lg-4 col-md-12 col-sm-12 crux-offset--right">
+                            <div class="rightRail" id="rightrail">
+                                <div class="ratings-wrapper">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-4 col-xs-12 ratings-image">
                                             <img alt="Ratings image" class="ratings-header-img"
-                                                src="https://crdms.images.consumerreports.org/f_auto,c_lfill,w_240,h_175/prod/cars/cr/car-groups/111" />
-                                        </a>
+                                                src="{{ get_file_url($blog->image_path) }}" />
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="clear"></div>
                             </div>
-                            <div class="clear"></div>
-                        </div>
-                    </div><!-- /.rightRail -->
+                        </div><!-- /.rightRail -->
+                    @endif
                 </div><!-- /.row -->
             </div><!-- /.content -->
         </div><!-- /.crux-container -->
