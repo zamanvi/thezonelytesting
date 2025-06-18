@@ -2,9 +2,9 @@
     <div id="global-footer">
         <footer id="cr-footer" class="cr-footer--outer-wrapper">
             <div class="cr-footer--wrapper crux-container">
+
                 <div class="footer--linc-logo">
-                    <a href="https://www.consumerreports.org/" class="footer--logo"
-                        aria-label="Consumer Reports">
+                    <a href="https://www.consumerreports.org/" class="footer--logo" aria-label="Consumer Reports">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             aria-label="Consumer Reports" width="155" height="39" viewBox="0 0 155 39"
                             role="img">
@@ -28,19 +28,23 @@
                         </svg>
                     </a>
                 </div>
+
                 <div class="footer--columns cr-footer__row">
                     <div class="cr-footer--col">
                         <h3
                             class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
                             Support
                         </h3>
-                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden"
-                            id="footer-col1" name="footer-menu" checked>
+
+                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col1"
+                            name="footer-menu" checked>
+
                         <label
                             class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
                             for="footer-col1">
                             Support
                         </label>
+
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="https://www.consumerreports.org/member-support/"
@@ -73,13 +77,16 @@
                             class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
                             Company
                         </h3>
-                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden"
-                            id="footer-col2" name="footer-menu">
+
+                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col2"
+                            name="footer-menu">
+
                         <label
                             class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
                             for="footer-col2">
                             Company
                         </label>
+
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="https://www.consumerreports.org/about-us/what-we-do/"
@@ -100,8 +107,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="https://advocacy.consumerreports.org/"
-                                    class="crux-body-copy cr-footer__link">
+                                <a href="https://advocacy.consumerreports.org/" class="crux-body-copy cr-footer__link">
                                     Advocacy
                                 </a>
                             </li>
@@ -124,13 +130,16 @@
                             class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
                             Product Reviews
                         </h3>
-                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden"
-                            id="footer-col3" name="footer-menu">
+
+                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col3"
+                            name="footer-menu">
+
                         <label
                             class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
                             for="footer-col3">
                             Product Reviews
                         </label>
+
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="https://www.consumerreports.org/appliances/"
@@ -145,8 +154,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.consumerreports.org/cars/"
-                                    class="crux-body-copy cr-footer__link">
+                                <a href="https://www.consumerreports.org/cars/" class="crux-body-copy cr-footer__link">
                                     Cars
                                 </a>
                             </li>
@@ -169,8 +177,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.consumerreports.org/money/"
-                                    class="crux-body-copy cr-footer__link">
+                                <a href="https://www.consumerreports.org/money/" class="crux-body-copy cr-footer__link">
                                     Money
                                 </a>
                             </li>
@@ -187,13 +194,16 @@
                             class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
                             For Businesses
                         </h3>
-                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden"
-                            id="footer-col4" name="footer-menu">
+
+                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col4"
+                            name="footer-menu">
+
                         <label
                             class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
                             for="footer-col4">
                             For Businesses
                         </label>
+
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="https://www.consumerreports.org/brand-licensing/"
@@ -202,8 +212,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="https://data.consumerreports.org/"
-                                    class="crux-body-copy cr-footer__link">
+                                <a href="https://data.consumerreports.org/" class="crux-body-copy cr-footer__link">
                                     Data Intelligence
                                 </a>
                             </li>
@@ -226,16 +235,19 @@
                             class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
                             Resources
                         </h3>
-                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden"
-                            id="footer-col5" name="footer-menu">
+
+                        <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col5"
+                            name="footer-menu">
+
                         <label
                             class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
                             for="footer-col5">
                             Resources
                         </label>
+
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
-                                <a href="https://www.consumerreports.org/magazine/2025/05/"
+                                <a href="https://www.consumerreports.org/magazine/2025/07/"
                                     class="crux-body-copy cr-footer__link">
                                     CR Magazine
                                 </a>
@@ -265,13 +277,15 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.facebook.com/SomosCR"
-                                    class="crux-body-copy cr-footer__link" target="_blank">
+                                <a href="https://www.facebook.com/SomosCR" class="crux-body-copy cr-footer__link"
+                                    target="_blank">
                                     fb.com/SomosCR
                                 </a>
                             </li>
                         </ul>
                     </div>
+
+
                     <div class="cr-footer__column cr-footer--buttons">
                         <a class="cda-btn cda-btn--nav-medium cda-btn--nav-rounded cda-btn--nav-light-green footer--join"
                             href="https://www.consumerreports.org/join/?INTKEY=I78SGBS">Join</a>
@@ -284,8 +298,8 @@
                                 class="footer__button-gift-icon">
                                 <rect width="74" height="83" fill="url(#pattern0)" />
                                 <defs>
-                                    <pattern id="pattern0" patternContentUnits="objectBoundingBox"
-                                        width="1" height="1">
+                                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1"
+                                        height="1">
                                         <use xlink:href="#image0_1745_5170"
                                             transform="translate(0 -0.000860585) scale(0.001287 0.00114745)" />
                                     </pattern>
@@ -295,11 +309,10 @@
                             </svg>
                         </a>
                         <div class="cr-footer--social-wrapper">
-                            <a href="https://www.facebook.com/ConsumerReports/" title="Facebook"
-                                target="_blank" class="facebook" aria-label="Facebook" rel="noopener">
+                            <a href="https://www.facebook.com/ConsumerReports/" title="Facebook" target="_blank"
+                                class="facebook" aria-label="Facebook" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21"
-                                    viewBox="0 0 21 21" fill="none"
-                                    class="cr-footer__social-icon facebook-icon">
+                                    viewBox="0 0 21 21" fill="none" class="cr-footer__social-icon facebook-icon">
                                     <title>Facebook</title>
                                     <g clip-path="url(#clip0_201_556)">
                                         <path
@@ -316,8 +329,7 @@
                             <a href="https://twitter.com/consumerreports" title="Twitter" target="_blank"
                                 class="twitter" aria-label="Twitter" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                    viewBox="0 0 22 22" fill="none"
-                                    class="cr-footer__social-icon twitter-icon">
+                                    viewBox="0 0 22 22" fill="none" class="cr-footer__social-icon twitter-icon">
                                     <title>X</title>
                                     <g clip-path="url(#clip0_201_559)">
                                         <path
@@ -331,14 +343,13 @@
                                     </defs>
                                 </svg>
                             </a>
-                            <a href="https://www.instagram.com/consumerreports/" target="_blank"
-                                title="Instagram" class="instagram" aria-label="Instagram" rel="noopener">
+                            <a href="https://www.instagram.com/consumerreports/" target="_blank" title="Instagram"
+                                class="instagram" aria-label="Instagram" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                    viewBox="0 0 20 20" fill="none"
-                                    class="cr-footer__social-icon instagram-icon">
+                                    viewBox="0 0 20 20" fill="none" class="cr-footer__social-icon instagram-icon">
                                     <title>Instagram</title>
-                                    <mask id="mask0_201_565" style="mask-type:alpha"
-                                        maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                                    <mask id="mask0_201_565" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="20" height="20">
                                         <path d="M0 0H19.9998V19.9999H0V0Z" fill="white" />
                                     </mask>
                                     <g mask="url(#mask0_201_565)">
@@ -348,11 +359,10 @@
                                     </g>
                                 </svg>
                             </a>
-                            <a href="https://www.youtube.com/user/consumerreports" title="YouTube"
-                                target="_blank" class="youtube" aria-label="Youtube" rel="noopener">
+                            <a href="https://www.youtube.com/user/consumerreports" title="YouTube" target="_blank"
+                                class="youtube" aria-label="Youtube" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                                    viewBox="0 0 22 22" fill="none"
-                                    class="cr-footer__social-icon youtube-icon">
+                                    viewBox="0 0 22 22" fill="none" class="cr-footer__social-icon youtube-icon">
                                     <title>YouTube</title>
                                     <g clip-path="url(#clip0_201_569)">
                                         <path
@@ -366,12 +376,11 @@
                                     </defs>
                                 </svg>
                             </a>
-                            <a class="threads" href="https://www.threads.net/@consumerreports?hl=en"
-                                target="_blank" title="Threads" aria-label="Threads"
+                            <a class="threads" href="https://www.threads.net/@consumerreports?hl=en" target="_blank"
+                                title="Threads" aria-label="Threads"
                                 pagelink="['pinterest cr page', 'footer', null, 'social']" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none"
-                                    class="cr-footer__social-icon threads-icon">
+                                    viewBox="0 0 24 24" fill="none" class="cr-footer__social-icon threads-icon">
                                     <title>Threads</title>
                                     <g clip-path="url(#clip0_201_573)">
                                         <path
@@ -389,20 +398,18 @@
                                 target="_blank" title="LinkedIn" aria-label="LinkedIn"
                                 pagelink="['linkedin cr page', 'footer', null, 'social']" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none"
-                                    class="cr-footer__social-icon linkedin-icon">
+                                    viewBox="0 0 24 24" fill="none" class="cr-footer__social-icon linkedin-icon">
                                     <title>LinkedIn</title>
                                     <path
                                         d="M11.9673 0.00749563C15.3649 0.00749563 18.7624 0.0168451 22.16 1.60855e-05C23.0651 -0.00372369 23.7981 0.645127 23.9196 1.43983C23.9327 1.52771 23.942 1.61747 23.942 1.70535C23.942 8.54353 23.942 15.3817 23.942 22.2218C23.942 23.1286 23.2203 23.8803 22.3171 23.9177C22.2573 23.9196 22.1974 23.9196 22.1376 23.9196C15.3574 23.9196 8.5753 23.9196 1.79509 23.9196C0.944293 23.9196 0.301052 23.4634 0.0766654 22.6911C0.0280483 22.5228 0.00373978 22.3396 0.00373978 22.1638C2.09548e-09 15.363 0 8.56036 0 1.75958C0 0.749841 0.732996 0.00936552 1.75021 0.00562575C3.51352 1.60858e-05 5.27495 0.00562575 7.03825 0.00562575C8.68188 0.00562575 10.3236 0.00562575 11.9673 0.00562575V0.00749563ZM12.7695 10.5088C12.7695 10.032 12.762 9.62432 12.7732 9.21482C12.7788 9.01848 12.7283 8.93995 12.5133 8.94182C11.5279 8.95303 10.5424 8.95303 9.55699 8.94182C9.34756 8.93995 9.29147 9.00726 9.29147 9.20921C9.29708 12.8592 9.29708 16.5111 9.29147 20.1611C9.29147 20.3837 9.37 20.4397 9.57756 20.4379C10.5929 20.4304 11.6083 20.4285 12.6236 20.4379C12.8461 20.4397 12.9153 20.378 12.9153 20.148C12.906 18.3268 12.9041 16.5055 12.9153 14.6842C12.9172 14.299 12.9415 13.9082 13.0069 13.5286C13.1434 12.7545 13.495 12.1262 14.3233 11.9205C14.5795 11.857 14.8544 11.8439 15.1199 11.8476C15.9539 11.857 16.4924 12.2609 16.6775 13.078C16.7822 13.538 16.8234 14.0204 16.8271 14.4935C16.8439 16.3746 16.8365 18.2557 16.8309 20.1368C16.8309 20.3537 16.8832 20.4416 17.1188 20.4397C18.1342 20.4285 19.1495 20.4304 20.1649 20.4397C20.378 20.4416 20.4435 20.3762 20.4435 20.1593C20.436 18.1286 20.436 16.0979 20.4435 14.0672C20.4453 13.2444 20.4005 12.4273 20.2135 11.6251C19.9536 10.5181 19.445 9.57571 18.3567 9.08767C17.2778 8.60337 16.1427 8.508 14.9965 8.80531C14.0541 9.05027 13.3379 9.62806 12.7769 10.5069L12.7695 10.5088ZM3.50978 14.6749C3.50978 16.5036 3.51352 18.3324 3.50604 20.1611C3.50604 20.378 3.57148 20.4416 3.78465 20.4397C4.80748 20.4304 5.83031 20.4323 6.85314 20.4397C7.0476 20.4397 7.12801 20.393 7.12801 20.1761C7.1224 16.5186 7.1224 12.863 7.12801 9.20547C7.12801 8.9923 7.05321 8.94369 6.85501 8.94556C5.83218 8.95304 4.80935 8.95677 3.78652 8.94369C3.55092 8.93995 3.50417 9.01661 3.50417 9.23539C3.51165 11.0492 3.50791 12.863 3.50791 14.6768L3.50978 14.6749ZM5.30113 7.41412C6.46233 7.41412 7.39353 6.50348 7.3954 5.36472C7.39727 4.19978 6.47729 3.2611 5.32918 3.25923C4.16237 3.25923 3.23864 4.1736 3.23864 5.3348C3.23864 6.49226 4.15115 7.41225 5.30113 7.41412Z"
                                         fill="white" />
                                 </svg>
                             </a>
-                            <a class="tiktok" href="https://www.tiktok.com/@consumerreports?lang=en"
-                                target="_blank" title="TikTok" aria-label="TikTok"
+                            <a class="tiktok" href="https://www.tiktok.com/@consumerreports?lang=en" target="_blank"
+                                title="TikTok" aria-label="TikTok"
                                 pagelink="['tiktok cr page', 'footer', null, 'social']" rel="noopener">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none"
-                                    class="cr-footer__social-icon tiktok-icon">
+                                    viewBox="0 0 24 24" fill="none" class="cr-footer__social-icon tiktok-icon">
                                     <title>TikTok</title>
                                     <g clip-path="url(#clip0_201_579)">
                                         <path
@@ -417,8 +424,10 @@
                                 </svg>
                             </a>
                         </div>
+
                     </div>
                 </div>
+
                 <div class="cr-footer--bottom">
                     <div class="footer-links crux-white">
                         <a href="https://www.consumerreports.org/customerservice/privacy-policy/highlights/"
@@ -429,8 +438,7 @@
                             class="crux-body-copy crux-body-copy--small" target="_blank">
                             User Agreement
                         </a>
-                        <a href="javascript:{}"
-                            class="crux-body-copy crux-body-copy--small TRUSTeWidget_Tab_link">
+                        <a href="javascript:{}" class="crux-body-copy crux-body-copy--small TRUSTeWidget_Tab_link">
                             Ad Choices
                         </a>
                         <br class="d-md-none" />

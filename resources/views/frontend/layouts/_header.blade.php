@@ -1,17 +1,17 @@
 <!-- Navigation Menu -->
 <nav class="navbar navbar-expand-lg navbar-dark py-3">
-    <img src="{{ asset('frontend/img/new-logo.png') }}" class="mr-2" alt="{{ env('APP_NAME') }}" width="60px" style="object-fit: cover">
-    <a class="navbar-brand" style="color: #17212b; font-size: 30px" href="{{ route('frontend.home') }}">{{ env('APP_NAME') }}</a>
+    {{-- <img src="{{ asset('frontend/img/new-logo.png') }}" class="mr-2" alt="Zonely" width="60px" style="object-fit: cover"> --}}
+    <a class="navbar-brand" style="color: #00ae3d; font-size: 30px" href="{{ route('frontend.home') }}">Zonely</a>
     <button class="navbar-toggler" style="background-color: #000" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto mr-5">
             {{-- <li class="nav-item">
-                <a style="color: #17212b" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>
+                <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>
             </li>
             <li class="nav-item dropdown">
-                <a style="color: #17212b" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a style="color: #00ae3d" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Types of Services
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -27,7 +27,7 @@
                 </div>
             </li> --}}
             <li class="nav-item">
-                <a style="color: #17212b" class="nav-link" href="{{ route('frontend.help') }}">Help</a>
+                <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.help') }}">Help</a>
             </li>
         </ul>
     </div>

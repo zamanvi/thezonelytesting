@@ -2,8 +2,8 @@
 
 return [
     'bodybg' => 'ece5dd',
-    'navbar' => 'D3FADD',
-    'footer' => '83097E',
+    'navbar' => '000',
+    'footer' => '000',
     'dropdown_item' => '17212b',
     'dropdown_item_active' => '007bff',
     'dropdown_item_active_text' => 'FFFFFF',
