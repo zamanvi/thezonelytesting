@@ -1723,42 +1723,58 @@
             as="style">
     </noscript>
 
+    <style>
+        .simple-footer {
+            padding: 0px 0px 60px 0px;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
 
-    <noscript>
-        <style>
-            #global-footer .cr-footer--outer-wrapper {
-                display: block;
-            }
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2px;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-            #global-footer .footer--buttons .crux-btn.footer--donate {
-                display: none;
-            }
+        .footer-col {
+            flex: 1 1 1px;
+            min-width: 150px;
+        }
 
-            @media only screen and (max-width: 767px) {
-                #global-footer .cr-footer--col ul {
-                    display: block;
-                }
-            }
-        </style>
-    </noscript>
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    <noscript>
-        <style>
-            #global-footer .cr-footer--outer-wrapper {
-                display: block;
-            }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
 
-            #global-footer .footer--buttons .crux-btn.footer--donate {
-                display: none;
-            }
+        .footer-col ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
 
-            @media only screen and (max-width: 767px) {
-                #global-footer .cr-footer--col ul {
-                    display: block;
-                }
+        .footer-col ul li a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                align-items: flex-start;
             }
-        </style>
-    </noscript>
+            .simple-footer {
+                padding: 0 !important;
+            }
+        }
+    </style>
 
     <script>
         window.CR = window.CR || {};

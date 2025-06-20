@@ -9,21 +9,8 @@
                     </a>
                 </div>
 
-                <div class="footer--columns cr-footer__row">
+                {{-- <div class="footer--columns cr-footer__row">
                     <div class="cr-footer--col">
-                        {{-- <h3
-                            class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
-                            Support
-                        </h3> --}}
-
-                        {{-- <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col1"
-                            name="footer-menu" checked> --}}
-
-                        {{-- <label
-                            class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
-                            for="footer-col1">
-                            Support
-                        </label> --}}
 
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
@@ -34,20 +21,6 @@
                         </ul>
                     </div>
                     <div class="cr-footer--col">
-                        {{-- <h3
-                            class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
-                            Company
-                        </h3> --}}
-
-                        {{-- <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col2"
-                            name="footer-menu"> --}}
-
-                        {{-- <label
-                            class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
-                            for="footer-col2">
-                            Company
-                        </label> --}}
-
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="{{ route('frontend.about-us') }}" class="crux-body-copy cr-footer__link">
@@ -57,20 +30,6 @@
                         </ul>
                     </div>
                     <div class="cr-footer--col">
-                        {{-- <h3
-                            class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
-                            Product Reviews
-                        </h3> --}}
-
-                        {{-- <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col3"
-                            name="footer-menu">
-
-                        <label
-                            class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
-                            for="footer-col3">
-                            Product Reviews
-                        </label> --}}
-
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="{{ route('frontend.privacy-policy') }}" class="crux-body-copy cr-footer__link">
@@ -80,20 +39,6 @@
                         </ul>
                     </div>
                     <div class="cr-footer--col">
-                        {{-- <h3
-                            class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
-                            For Businesses
-                        </h3> --}}
-
-                        {{-- <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col4"
-                            name="footer-menu">
-
-                        <label
-                            class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
-                            for="footer-col4">
-                            For Businesses
-                        </label> --}}
-
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="{{ route('frontend.terms-and-condition') }}"
@@ -104,20 +49,6 @@
                         </ul>
                     </div>
                     <div class="cr-footer--col">
-                        {{-- <h3
-                            class="cr-footer--col-heading cr-footer--col-heading--md crux-body-copy--small--bold crux-body-copy crux-white">
-                            Resources
-                        </h3> --}}
-
-                        {{-- <input type="checkbox" class="cda-nav__checkbox cda-nav__checkbox--hidden" id="footer-col5"
-                            name="footer-menu">
-
-                        <label
-                            class="cr-footer--col-heading cr-footer--col-heading--sm crux-body-copy--small--bold crux-body-copy crux-white cda-nav__checkbox-label"
-                            for="footer-col5">
-                            Resources
-                        </label> --}}
-
                         <ul class="cr-footer--col-list cr-footer__checkbox-menu--sm">
                             <li>
                                 <a href="{{ route('frontend.about-site-author') }}"
@@ -127,8 +58,36 @@
                             </li>
                         </ul>
                     </div>
-
-                </div>
+                </div> --}}
+                <footer class="simple-footer">
+                    <div class="footer-columns">
+                        <div class="footer-col">
+                            <ul>
+                                <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <ul>
+                                <li><a href="{{ route('frontend.about-us') }}">About Zone</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <ul>
+                                <li><a href="{{ route('frontend.privacy-policy') }}">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <ul>
+                                <li><a href="{{ route('frontend.terms-and-condition') }}">Terms & Condition</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <ul>
+                                <li><a href="{{ route('frontend.about-site-author') }}">About Site Author</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
 
                 <div class="cr-footer--bottom">
                     <div class="footer-links crux-white">
