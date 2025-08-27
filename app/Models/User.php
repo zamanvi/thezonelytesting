@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'type',
         'email',
+        'phone',
+        'whatsapp',
+        'address',
+        'shop_name',
+        'status',
         'password',
     ];
 
@@ -43,4 +48,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

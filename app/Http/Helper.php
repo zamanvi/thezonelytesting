@@ -24,6 +24,32 @@ if (!function_exists('make_slug')) {
         return Str::slug($slug);
     }
 }
+if (!function_exists('generateUniqueSlug')) {
+    /**
+     * Get Random Number
+     *
+     * @param  string  $modelClass   The model class (e.g. Category::class).
+     * @param  string  $value        The base text (title or provided slug).
+     * @param  string  $column       Column name to check uniqueness (default: 'slug').
+     * @return string
+     */
+    function generateUniqueSlug(string $modelClass, string $value, ?int $ignoreId = null, string $column = 'slug'): string
+    {
+        $slug     = Str::slug($value);
+        $original = $slug;
+        $i = 1;
+
+        while ($modelClass::where($column, $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            
+            $suffix = '-' . $i++;
+            $slug   = Str::limit($original, 255 - strlen($suffix), '') . $suffix;
+        }
+
+        return $slug;
+    }
+}
 if (!function_exists('get_random_number')) {
     /**
      * Get Random Number

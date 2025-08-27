@@ -16,7 +16,14 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+             @php
+                $type = Auth::user()->type;
+            @endphp
+            @if ($type === 'vendor')
+                @include('layouts.vendor_navigation')
+            @else
+                @include('layouts.navigation')
+            @endif
 
             <!-- Page Heading -->
             @if (isset($header))

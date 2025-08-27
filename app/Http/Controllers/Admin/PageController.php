@@ -3,24 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
-    function dashboard()
+    function admin_dashboard()
     {
         return view('admin.index');
     }
-    public function clear_cash()
+    public function clear_cache()
     {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
-        Artisan::call('route:clear');
-        Artisan::call('view:clear');
         Artisan::call('optimize:clear');
-
-        return redirect()->back()->with('success', 'All cache cleared successfully.');
+        return back()->with('success', 'All cache cleared successfully.');
     }
 }

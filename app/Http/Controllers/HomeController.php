@@ -2,12 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
-use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
+use App\Models\Blog;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    function user_login()
+    {
+        return view('frontend.auth.login');
+    }
+    function user_register()
+    {
+        return view('frontend.auth.register');
+    }
+    function user_submit_login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $remember = $request->filled('remember');
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+            if ($user->type === 'vendor') {
+                return redirect()->route('vendor.dashboard')->with('success', 'Welcome back, Vendor!');
+            }
+            dd($user->type);
+            return redirect()->route('dashboard')->with('success', 'Welcome back, '.$user->name);
+        }
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+    function user_submit_register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'type' => ['required', 'in:user,vendor'],
+            'password' => ['required', 'confirmed', 'min:6'],
+        ]);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'type' => $validated['type'],
+            'password' => Hash::make($validated['password']),
+        ]);
+        Auth::login($user);
+        if ($user->type === 'vendor') {
+            return redirect()->route('vendor.profile.first')->with('success', 'Please complete your vendor profile.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
+    }
     function home()
     {
         // $data = [
@@ -23,7 +77,7 @@ class HomeController extends Controller
         // ];
 
         // return view('frontend.home', compact('data'));
-        $blogs = Blog::latest()->paginate(20);
+        $blogs = Blog::latest()->paginate(5);
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
@@ -92,12 +146,14 @@ class HomeController extends Controller
                     'lastmod' => Carbon::now()->toAtomString(),
                 ];
             });
-        $blogs = Blog::select('slug', 'updated_at')->get()->map(function ($blog) {
-            return [
-                'loc' => route('blog.show', $blog->slug),
-                'lastmod' => optional($blog->updated_at)->toAtomString() ?? Carbon::now()->toAtomString(),
-            ];
-        });
+        $blogs = Blog::select('slug', 'updated_at')
+            ->get()
+            ->map(function ($blog) {
+                return [
+                    'loc' => route('blog.show', $blog->slug),
+                    'lastmod' => optional($blog->updated_at)->toAtomString() ?? Carbon::now()->toAtomString(),
+                ];
+            });
         $sitemapEntries = $frontendRoutes->merge($blogs);
         return response()->view('frontend.sitemap', compact('sitemapEntries'))->header('Content-Type', 'application/xml');
     }

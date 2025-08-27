@@ -25,9 +25,9 @@
                     <p>No blog posts found.</p>
                 </div>
             @endforelse
-            <div class="mt-2">
-                {{ $blogs->links() }}
-            </div>
+        </div>
+        <div class="mt-2">
+            {{ $blogs->links() }}
         </div>
     </div>
 @endsection

@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Vendor\VendorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,27 +32,66 @@ Route::name('frontend.')->group(function () {
     Route::get('/about-site-author', [HomeController::class, 'about_site_author'])->name('about-site-author');
     Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 });
+
+Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');
+Route::get('user/register', [HomeController::class, 'user_register'])->name('user.register');
+Route::post('user/login', [HomeController::class, 'user_submit_login'])->name('user.submit.login');
+Route::post('user/register', [HomeController::class, 'user_submit_register'])->name('user.submit.register');
+
 Route::get('/blog/{slug}', [HomeController::class, 'blog_show'])->name('blog.show');
 Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
 
-Route::middleware(['auth', 'verified'])
-    ->get('/dashboard', function () {
-        if (Auth::user()->type === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-        return view('dashboard');
-    })
-    ->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+    if (Auth::user()->type === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    if (Auth::user()->type === 'vendor') {
+        return redirect()->route('vendor.dashboard');
+    }
+    return view('dashboard');
+})->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::prefix('admin')
-        ->name('admin.')
-        ->group(function () {
-            Route::get('dashboard', [PageController::class, 'dashboard'])->name('dashboard');
-            Route::get('clear-cash', [PageController::class, 'clear_cash'])->name('clear.cash');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
+    Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
 
-            Route::resource('blogs', BlogController::class);
-        });
+    // Blog management
+    Route::resource('blogs', BlogController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('services', ServiceController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Vendor Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+    Route::get('dashboard', [VendorController::class, 'dashboard'])->name('dashboard');
+    Route::resource('services', ServiceController::class);
+    Route::get('profile', [VendorController::class, 'profile'])->name('profile');
+});
+
+/*
+|--------------------------------------------------------------------------
+| User Profile
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
+    
+    Route::get('vendor/profile/first', [VendorController::class, 'profile_first'])->name('vendor.profile.first');
+    Route::put('vendor/profile-update', [VendorController::class, 'update'])->name('vendor.profile.update');
+    Route::get('/vendor/maintainance', [VendorController::class, 'blockedlist'])->name('vendor.blockedlist');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

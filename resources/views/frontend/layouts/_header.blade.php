@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto mr-5">
+        <ul class="navbar-nav ml-auto mr-2">
             {{-- <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>
             </li>
@@ -29,6 +29,15 @@
             <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.help') }}">Help</a>
             </li>
+            {{-- @auth
+                <li class="nav-item">
+                    <a style="color: #00ae3d" class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a style="color: #00ae3d" class="nav-link" href="{{ route('user.login') }}">Login</a>
+                </li>
+            @endauth --}}
         </ul>
     </div>
 </nav>

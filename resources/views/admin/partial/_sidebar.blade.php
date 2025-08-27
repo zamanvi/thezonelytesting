@@ -13,10 +13,28 @@
                         <span>Blog Management</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('admin.clear.cash') }}" class="iq-waves-effect collapsed"><i
+                <li class="@if (Route::is(['admin.categories.create', 'admin.categories.show', 'admin.categories.edit'])) active @endif">
+                    <a href="{{ route('admin.categories.create') }}" class="iq-waves-effect collapsed"><i
                             class="ri-record-circle-line iq-arrow-left"></i>
-                        <span>Clear Cash</span>
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li class="@if (Route::is(['admin.services.create', 'admin.services.show', 'admin.services.edit'])) active @endif">
+                    <a href="{{ route('admin.services.create') }}" class="iq-waves-effect collapsed"><i
+                            class="ri-record-circle-line iq-arrow-left"></i>
+                        <span>Services</span>
+                    </a>
+                </li>
+                <li class="@if (Route::is(['admin.services.create', 'admin.services.show', 'admin.services.edit'])) active @endif">
+                    <a href="{{ route('admin.services.create') }}" class="iq-waves-effect collapsed"><i
+                            class="ri-record-circle-line iq-arrow-left"></i>
+                        <span>Vendors</span>
+                    </a> 
+                </li>
+                <li>
+                    <a href="{{ route('admin.clear.cache') }}" class="iq-waves-effect collapsed"><i
+                            class="ri-record-circle-line iq-arrow-left"></i>
+                        <span>Clear Cache</span>
                     </a>
                 </li>
             </ul>
