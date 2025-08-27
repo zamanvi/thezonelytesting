@@ -77,7 +77,7 @@ class HomeController extends Controller
         // ];
 
         // return view('frontend.home', compact('data'));
-        $blogs = Blog::latest()->paginate(5);
+        $blogs = Blog::latest()->paginate(20);
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
