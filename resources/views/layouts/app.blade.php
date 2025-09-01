@@ -16,11 +16,13 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-             @php
+            @php
                 $type = Auth::user()->type;
             @endphp
-            @if ($type === 'vendor')
-                @include('layouts.vendor_navigation')
+            @if ($type === 'customer')
+                @include('layouts.customer_navigation')
+            @elseif ($type === 'profile')
+                @include('layouts.profile_navigation')
             @else
                 @include('layouts.navigation')
             @endif

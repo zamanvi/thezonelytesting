@@ -7,10 +7,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto mr-2">
-            {{-- <li class="nav-item">
+            <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>
             </li>
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a style="color: #00ae3d" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Types of Services
                 </a>
@@ -29,7 +29,7 @@
             <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.help') }}">Help</a>
             </li>
-            {{-- @auth
+            @auth
                 <li class="nav-item">
                     <a style="color: #00ae3d" class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                 </li>
@@ -37,7 +37,7 @@
                 <li class="nav-item">
                     <a style="color: #00ae3d" class="nav-link" href="{{ route('user.login') }}">Login</a>
                 </li>
-            @endauth --}}
+            @endauth
         </ul>
     </div>
 </nav>

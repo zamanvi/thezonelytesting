@@ -20,11 +20,12 @@
         <div class="mt-4">
             <x-input-label for="type" :value="__('Register As')" />
 
-            <select id="type" name="type"
+            <select required id="type" name="type"
                 class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                <option value="" disabled {{ old('type') ? '' : 'selected' }}>-- Select Type --</option>
-                <option value="user" {{ old('type') == 'user' ? 'selected' : '' }}>User</option>
-                <option value="vendor" {{ old('type') == 'vendor' ? 'selected' : '' }}>Vendor</option>
+                <option value="" disabled {{ old('type') ? '' : 'selected' }}>-- Select Account Type --</option>
+                <option value="profile" {{ old('type') == 'profile' ? 'selected' : '' }}>Profile Base</option>
+                <option value="service" {{ old('type') == 'service' ? 'selected' : '' }}>Service Base</option>
+                <option value="customer" {{ old('type') == 'customer' ? 'selected' : '' }}>Customer Base</option>
             </select>
 
             <x-input-error :messages="$errors->get('type')" class="mt-2" />

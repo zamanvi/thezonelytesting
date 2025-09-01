@@ -36,7 +36,10 @@ class VendorMiddleware
         if ($user->type === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-        if ($user->type === 'user') {
+        if ($user->type === 'profile') {
+            return redirect()->route('dashboard');
+        }
+        if ($user->type === 'customer') {
             return redirect()->route('dashboard');
         }
         return redirect()->route('user.login');

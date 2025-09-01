@@ -149,7 +149,7 @@ if (!function_exists('empty_image')) {
     {
         switch ($type) {
             case 'user':
-                $image = asset('images/user.jpg');
+                $image = asset('images/user.png');
                 break;
             case 'blog':
                 $image = asset('images/blog.jpg');

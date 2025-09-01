@@ -23,10 +23,13 @@ class User extends Authenticatable
         'email',
         'phone',
         'whatsapp',
-        'address',
+        'work_address',
         'shop_name',
         'status',
         'password',
+        'bio',
+        'remark',
+        'profile_photo',
     ];
 
     /**

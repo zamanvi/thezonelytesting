@@ -47,11 +47,15 @@ Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    if (Auth::user()->type === 'admin') {
+    $user = Auth::user();
+    if ($user->type === 'admin') {
         return redirect()->route('admin.dashboard');
     }
-    if (Auth::user()->type === 'vendor') {
-        return redirect()->route('vendor.dashboard');
+    if ($user->type === 'profile') {
+        if ($user->work_address === null || $user->phone === null) {
+            return redirect()->route('profile.edit')->with('warning', 'Please complete your profile before proceeding.');
+        }
+        return view('dashboard');
     }
     return view('dashboard');
 })->name('dashboard');

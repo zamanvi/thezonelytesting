@@ -5,64 +5,88 @@
 @extends('frontend.layouts._app')
 @section('title', $data['sub_title'])
 @section('content')
-    <div class="container-fluid" style="position: relative;">
-        <div class="content text-center">
-
-            <div class="row">
-                @if ($data['is_img'])
-                    <img class="video-background" src="{{ $data['link'] }}" alt="">
-                @else
-                    <video class="video-background" src="{{ $data['link'] }}" autoplay muted loop></video>
-                @endif
-            </div>
-            
-            <div class="row align-items-center justify-content-center position-relative">
-                <div class="col-lg-12 col-md-8 col-sm-10 text-center"
-                    style="margin: 10px 0; padding: 10px; background-color: #{{ get_color('page_title_bg')}}">
-                    <h1 style="color: #{{ get_color('page_title_text')}}; font-weight: bold">{{ $data['sub_title'] }}</h1>
-                    <a href="{{ route('frontend.contact') }}" style="background-color: #{{ get_color('page_title_button_bg')}}" class="btn btn-lg text-white">
-                        <span style="font-size: 30px; font-weight: bold;">Contact Us</span>
-                    </a>
+    <div class="container py-4">
+        <div class="row">
+            @foreach ($users as $user)
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="team-card text-center p-3 shadow-sm rounded-3">
+                        <h5 class="team-name">{{ $user->name }}</h5>
+                        <p class="team-title">{{ $user->designation }}</p>
+                        <div class="team-photo mb-3">
+                            <img src="{{ $user->profile_photo }}" onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';" class="img-fluid rounded-circle p-2">
+                        </div>
+                        {{-- <a href="{{ route('attorney.show', $attorney->slug) }}" class="btn btn-details">+ Details</a> --}}
+                        <a href="#" class="btn btn-details">Details</a>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div style="margin-top: 70px; background-color: #{{ get_color('marquee_bg')}}; color: #{{ get_color('marquee_text')}}" class="row mb-4">
-            <marquee behavior="" direction="rtl"><span
-                    style="font-size: 40px; padding: 20px; font-weight: bold">{{ $data['marque'] }}</span></marquee>
+            @endforeach
         </div>
 
-        <div class="row mb-4" style="margin-top: 70px;">
-            <div class="">
-                <h2 style="text-align:center; color: #{{ get_color('question_text')}};">{{ $data['que'] }}</h2>
-                <a href="{{ $data['img2_link'] }}">
-                    <img src="{{ $data['img2_link'] }}" class="center" alt="">
-                </a>
-            </div>
-            <div style="text-align: center; max-width: 80%; margin: 0 auto; display: block;">
-                <b style="font-size: 25px;"> <br>{{ $data['answer'] }}</b>
-            </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $users->links() }}
         </div>
-        @isset($data['description'])
-            @include('frontend.pages.' . $data['page'])
-        @endisset
     </div>
 @endsection
 
 @section('css')
     <style>
-        .center {
-            width: 50%;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
+        .team-card {
+            background: #fff;
             border-radius: 20px;
+            border: 1px solid #ddd;
+            height: 100%;
         }
-        li{
-            font-size: 25px;
+
+        .team-card:hover {
+            background: transparent;
         }
-        a{
-            font-size: 25px;
+
+        .team-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #002147;
+            margin-bottom: 0.3rem;
+        }
+
+        .team-card:hover .team-name {
+            color: #00ae3d;
+        }
+
+        .team-title {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .team-card:hover .team-title {
+            color: #00ae3d;
+        }
+
+        .team-photo img {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            background: white;
+        }
+        .team-photo img:hover {
+            cursor: pointer;
+        }
+
+        .btn-details {
+            background-color: #d62828;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 6px 16px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-details:hover {
+            background-color: #fff;
+            color: #00ae3d;
         }
     </style>
 @endsection

@@ -31,10 +31,6 @@ class HomeController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::user();
-            if ($user->type === 'vendor') {
-                return redirect()->route('vendor.dashboard')->with('success', 'Welcome back, Vendor!');
-            }
-            dd($user->type);
             return redirect()->route('dashboard')->with('success', 'Welcome back, '.$user->name);
         }
         return back()->withErrors([
@@ -46,7 +42,7 @@ class HomeController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'type' => ['required', 'in:user,vendor'],
+            'type' => ['required', 'in:profile,service,customer'],
             'password' => ['required', 'confirmed', 'min:6'],
         ]);
         $user = User::create([
@@ -56,7 +52,7 @@ class HomeController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
         Auth::login($user);
-        if ($user->type === 'vendor') {
+        if ($user->type === 'profile') {
             return redirect()->route('vendor.profile.first')->with('success', 'Please complete your vendor profile.');
         }
 
@@ -64,24 +60,18 @@ class HomeController extends Controller
     }
     function home()
     {
-        // $data = [
-        //     'sub_title' => 'Tow Truck Near Me | Fast & Affordable Towing USA',
-        //     'marque' => 'Tow Now offers reliable tow truck services near you. Affordable rates, 24/7 availability, and fast roadside assistance in the USA.',
-        //     'que' => 'Need a tow truck near you?',
-        //     'answer' => 'Tow Now is your trusted partner for 24/7 towing services across the USA. Whether you’re dealing with a breakdown, accident, or other roadside emergency, our professional team is here to help. With competitive pricing and fast response times, Tow Now ensures a stress-free towing experience.',
-        //     'is_img' => false,
-        //     'link' => asset('frontend/video/tow_truck_near_me.mp4'),
-        //     'img2_link' => asset('frontend/img/tow-truck-near-me.jpg'),
-        //     'description' => true,
-        //     'page' => '00',
-        // ];
-
-        // return view('frontend.home', compact('data'));
-        $blogs = Blog::latest()->paginate(20);
-        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
-        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
-        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
+        $data = [
+            'sub_title' => 'Tow Truck Near Me | Fast & Affordable Towing USA',
+            'que' => 'Need a tow truck near you?',
+            'answer' => 'Tow Now is your trusted partner for 24/7 towing services across the USA. Whether you’re dealing with a breakdown, accident, or other roadside emergency, our professional team is here to help. With competitive pricing and fast response times, Tow Now ensures a stress-free towing experience.',
+        ];
+        $users = User::where('type', 'profile')->where('status', true)->paginate(12);
+        return view('frontend.home', compact('data', 'users'));
+        // $blogs = Blog::latest()->paginate(20);
+        // $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        // $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        // $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+        // return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function service1()
     {
