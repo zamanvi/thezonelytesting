@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -45,15 +46,26 @@ class HomeController extends Controller
             'type' => ['required', 'in:profile,service,customer'],
             'password' => ['required', 'confirmed', 'min:6'],
         ]);
+       // Generate slug
+        $slug = Str::slug($validated['name']);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (User::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'type' => $validated['type'],
             'password' => Hash::make($validated['password']),
+            'slug' => $slug,
         ]);
         Auth::login($user);
         if ($user->type === 'profile') {
-            return redirect()->route('vendor.profile.first')->with('success', 'Please complete your vendor profile.');
+            return redirect()->route('profile.first')->with('success', 'Please complete your profile.');
         }
 
         return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
@@ -72,6 +84,11 @@ class HomeController extends Controller
         // $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         // $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
         // return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
+    }
+    function attorney_show($slug)
+    {
+        $user = User::where('slug', $slug)->where('type', 'profile')->where('status', true)->firstOrFail();
+        return view('frontend.attorney_details', compact('user'));
     }
     function service1()
     {
@@ -116,7 +133,10 @@ class HomeController extends Controller
     function blog()
     {
         $blogs = Blog::latest()->paginate(20);
-        return view('frontend.blog', compact('blogs'));
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+        return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function blog_show($slug)
     {

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class VendorMiddleware
+class ProfileMiddleware
 {
     /**
      * Handle an incoming request.
@@ -22,22 +22,19 @@ class VendorMiddleware
 
         $user = Auth::user();
 
-        if ($user->type === 'vendor') {
+        if ($user->type === 'profile') {
             if (!$user->status) {
-                return redirect()->route('vendor.blockedlist');
+                return redirect()->route('profile.blockedlist');
             }
-            if (empty($user->phone) || empty($user->address) || empty($user->shop_name)) {
-                if (!$request->routeIs('vendor.profile.first')) {
-                    return redirect()->route('vendor.profile.first')->with('warning', 'Please complete your profile before proceeding.');
+            if (empty($user->phone) || empty($user->work_address)) {
+                if (!$request->routeIs('profile.first')) {
+                    return redirect()->route('profile.first')->with('warning', 'Please complete your profile before proceeding.');
                 }
             }
             return $next($request);
         }
         if ($user->type === 'admin') {
             return redirect()->route('admin.dashboard');
-        }
-        if ($user->type === 'profile') {
-            return redirect()->route('dashboard');
         }
         if ($user->type === 'customer') {
             return redirect()->route('dashboard');

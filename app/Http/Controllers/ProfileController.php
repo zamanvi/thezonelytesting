@@ -11,6 +11,10 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function dashboard(Request $request): View
+    {
+        return view('dashboard');
+    }
     /**
      * Display the user's profile form.
      */
@@ -57,4 +61,11 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    function blockedlist()
+    {
+        $user = Auth::user();
+        return 'Dear Valuade Vendor, ' . $user->name . '. Your are Currently blocked, Please contact with your admin.';
+    }
+
 }

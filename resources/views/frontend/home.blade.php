@@ -5,18 +5,17 @@
 @extends('frontend.layouts._app')
 @section('title', $data['sub_title'])
 @section('content')
-    <div class="container py-4">
+    <div class="container py-2">
         <div class="row">
             @foreach ($users as $user)
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="team-card text-center p-3 shadow-sm rounded-3">
-                        <h5 class="team-name">{{ $user->name }}</h5>
-                        <p class="team-title">{{ $user->designation }}</p>
+                <div class="col-lg-2 col-md-3 col-sm-4 mb-2 p-1">
+                    <div class="team-card text-center shadow-sm rounded-3">
+                        <h3 class="team-name">{{ $user->name }}</h3>
+                        <h6 class="team-title">{{ $user->designation }}</h6>
                         <div class="team-photo mb-3">
                             <img src="{{ $user->profile_photo }}" onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';" class="img-fluid rounded-circle p-2">
                         </div>
-                        {{-- <a href="{{ route('attorney.show', $attorney->slug) }}" class="btn btn-details">+ Details</a> --}}
-                        <a href="#" class="btn btn-details">Details</a>
+                        <a href="{{ route('frontend.attorney.show', $user->slug) }}" class="btn btn-details">Details</a>
                     </div>
                 </div>
             @endforeach
@@ -33,9 +32,10 @@
     <style>
         .team-card {
             background: #fff;
-            border-radius: 20px;
+            border-top-left-radius: 50px;
+            border-bottom-right-radius: 50px;
             border: 1px solid #ddd;
-            height: 100%;
+            padding: 1.5rem 1rem;
         }
 
         .team-card:hover {
@@ -43,7 +43,6 @@
         }
 
         .team-name {
-            font-size: 1.1rem;
             font-weight: 600;
             color: #002147;
             margin-bottom: 0.3rem;
@@ -54,7 +53,6 @@
         }
 
         .team-title {
-            font-size: 0.9rem;
             color: #555;
             margin-bottom: 1rem;
         }
@@ -64,8 +62,7 @@
         }
 
         .team-photo img {
-            width: 160px;
-            height: 160px;
+            width: 100%;
             object-fit: cover;
             background: white;
         }
@@ -74,7 +71,7 @@
         }
 
         .btn-details {
-            background-color: #d62828;
+            background-color: #ff0000;
             color: #fff;
             font-weight: 500;
             border-radius: 8px;

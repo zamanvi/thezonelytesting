@@ -22,13 +22,14 @@ class User extends Authenticatable
         'type',
         'email',
         'phone',
+        'designation',
         'whatsapp',
         'work_address',
-        'shop_name',
         'status',
         'password',
-        'bio',
+        'about',
         'remark',
+        'slug',
         'profile_photo',
     ];
 
@@ -55,5 +56,21 @@ class User extends Authenticatable
     public function services()
     {
         return $this->hasMany(Service::class);
+    }
+    public function educations()
+    {
+        return $this->hasMany(Education::class);
+    }
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+    public function languages()
+    {
+        return $this->hasMany(Language::class);
+    }
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
     }
 }

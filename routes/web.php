@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('frontend.')->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home');
+    Route::get('attorney/{slug}', [HomeController::class, 'attorney_show'])->name('attorney.show');
     // Route::get('/fast-tow-trucks-near-me-reliable-towing-in-the-USA', [HomeController::class, 'service1'])->name('service1');
     Route::get('/help', [HomeController::class, 'help'])->name('help');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
@@ -55,9 +56,8 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
         if ($user->work_address === null || $user->phone === null) {
             return redirect()->route('profile.edit')->with('warning', 'Please complete your profile before proceeding.');
         }
-        return view('dashboard');
+        return redirect()->route('profile.dashboard');
     }
-    return view('dashboard');
 })->name('dashboard');
 
 /*
@@ -77,13 +77,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 /*
 |--------------------------------------------------------------------------
-| Vendor Routes
+| profile Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
-    Route::get('dashboard', [VendorController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['auth', 'profile'])->prefix('profile-base')->name('profile.')->group(function () {
+    Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
     Route::resource('services', ServiceController::class);
-    Route::get('profile', [VendorController::class, 'profile'])->name('profile');
+    Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
 });
 
 /*
@@ -91,11 +91,10 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
 | User Profile
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () { 
     
-    Route::get('vendor/profile/first', [VendorController::class, 'profile_first'])->name('vendor.profile.first');
-    Route::put('vendor/profile-update', [VendorController::class, 'update'])->name('vendor.profile.update');
-    Route::get('/vendor/maintainance', [VendorController::class, 'blockedlist'])->name('vendor.blockedlist');
+    Route::get('profile/first', [ProfileController::class, 'edit'])->name('profile.first');
+    Route::get('/profile/maintainance', [ProfileController::class, 'blockedlist'])->name('profile.blockedlist');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
