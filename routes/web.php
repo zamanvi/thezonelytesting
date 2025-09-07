@@ -3,8 +3,11 @@
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Auth;
@@ -85,6 +88,9 @@ Route::middleware(['auth', 'profile'])->prefix('profile-base')->name('profile.')
     Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
     Route::resource('services', ServiceController::class);
     Route::resource('educations', EducationController::class);
+    Route::resource('memberships', MembershipController::class);
+    Route::resource('languages', LanguageController::class);
+    Route::resource('contacts', ContactController::class);
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
 });
 

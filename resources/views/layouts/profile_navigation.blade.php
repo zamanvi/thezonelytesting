@@ -21,13 +21,13 @@
                     <x-nav-link :href="route('profile.educations.index')" :active="request()->routeIs('profile.educations.*')">
                         {{ __('Education') }}
                     </x-nav-link>
-                    <x-nav-link :href="'membership'">
+                    <x-nav-link :href="route('profile.memberships.index')" :active="request()->routeIs('profile.memberships.*')">
                         {{ __('Membership') }}
                     </x-nav-link>
-                    <x-nav-link :href="'languages'">
+                    <x-nav-link :href="route('profile.languages.index')" :active="request()->routeIs('profile.languages.*')">
                         {{ __('Languages') }}
                     </x-nav-link>
-                    <x-nav-link :href="'contact'">
+                    <x-nav-link :href="route('profile.contacts.index')" :active="request()->routeIs('profile.contacts.*')">
                         {{ __('Contact') }}
                     </x-nav-link>
                     {{-- <x-nav-link :href="route('vendor.services.index')" :active="request()->routeIs('vendor.services.*')">

@@ -47,14 +47,14 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ $education->institution }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ $education->passing_year }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center space-x-2">
-                                            <a href="{{ route('profile.educations.edit', $education->id) }}" class="px-3 py-1 bg-yellow-400 text-white rounded-lg shadow hover:bg-yellow-500 transition">
+                                            <a href="{{ route('profile.educations.edit', $education->id) }}" class="px-3 py-1 rounded-lg shadow hover:bg-yellow-500 transition">
                                                 Edit
                                             </a>
 
                                             <form action="{{ route('profile.educations.destroy', $education->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this education?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition">
+                                                <button type="submit" class="px-3 py-1 text-red-600 rounded-lg shadow hover:bg-red-700 transition">
                                                     Delete
                                                 </button>
                                             </form>

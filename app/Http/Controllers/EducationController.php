@@ -12,11 +12,11 @@ class EducationController extends Controller
 
     /**
      * Create a new controller instance.
-     */ 
+     */
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->type = getUserType(); 
+            $this->type = getUserType();
             return $next($request);
         });
         $this->model = new Education();
@@ -36,7 +36,7 @@ class EducationController extends Controller
      */
     public function create()
     {
-        //
+        return view('profile.educations.create');
     }
 
     /**
@@ -44,23 +44,36 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate input
+        $validated = $request->validate([
+            'degree' => 'required|string|max:255',
+            'institution' => 'required|string|max:255',
+            'passing_year' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+        ]);
+
+        // Create and save education
+        $education = new Education();
+        $education->user_id = auth()->id();
+        $education->degree = $validated['degree'];
+        $education->institution = $validated['institution'];
+        $education->passing_year = $validated['passing_year'];
+        $education->save();
+
+        return redirect()->route('profile.educations.index')->with('success', 'Education added successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        //
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
     {
-        //
+        $education = $this->model->where('user_id', auth()->id())->findOrFail($id);
+        return view('profile.educations.edit', compact('education'));
     }
 
     /**
@@ -68,7 +81,19 @@ class EducationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'degree' => 'required|string|max:255',
+            'institution' => 'required|string|max:255',
+            'passing_year' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+        ]);
+
+        // Find the education belonging to the logged-in user
+        $education = Education::where('user_id', auth()->id())->findOrFail($id);
+
+        // Update fields
+        $education->update($validated);
+
+        return redirect()->route('profile.educations.index')->with('success', 'Education updated successfully.');
     }
 
     /**
@@ -76,6 +101,9 @@ class EducationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Find the education belonging to the logged-in user
+        $education = Education::where('user_id', auth()->id())->findOrFail($id);
+        $education->delete();
+        return redirect()->route('profile.educations.index')->with('success', 'Education deleted successfully.');
     }
 }
