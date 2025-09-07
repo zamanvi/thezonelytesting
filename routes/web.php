@@ -32,6 +32,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/about-us', [HomeController::class, 'about_us'])->name('about-us');
     Route::get('/about-site-author', [HomeController::class, 'about_site_author'])->name('about-site-author');
     Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
 });
 
 Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');

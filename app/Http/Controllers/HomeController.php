@@ -32,11 +32,15 @@ class HomeController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::user();
-            return redirect()->route('dashboard')->with('success', 'Welcome back, '.$user->name);
+            return redirect()
+                ->route('dashboard')
+                ->with('success', 'Welcome back, ' . $user->name);
         }
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()
+            ->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])
+            ->onlyInput('email');
     }
     function user_submit_register(Request $request)
     {
@@ -46,7 +50,7 @@ class HomeController extends Controller
             'type' => ['required', 'in:profile,service,customer'],
             'password' => ['required', 'confirmed', 'min:6'],
         ]);
-       // Generate slug
+        // Generate slug
         $slug = Str::slug($validated['name']);
         $originalSlug = $slug;
         $counter = 1;
@@ -68,7 +72,9 @@ class HomeController extends Controller
             return redirect()->route('profile.first')->with('success', 'Please complete your profile.');
         }
 
-        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
+        return redirect()
+            ->route('dashboard')
+            ->with('success', 'Registration successful! Welcome, ' . $user->name);
     }
     function home()
     {
@@ -89,6 +95,42 @@ class HomeController extends Controller
     {
         $user = User::where('slug', $slug)->where('type', 'profile')->where('status', true)->firstOrFail();
         return view('frontend.attorney_details', compact('user'));
+    }
+    function search(Request $request)
+    {
+        $query = $request->input('q');
+        $users = User::where('type', 'profile')
+            ->where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%')
+                    ->orWhere('designation', 'like', '%' . $query . '%')
+                    ->orWhere('work_address', 'like', '%' . $query . '%')
+                    ->orWhere('about', 'like', '%' . $query . '%')
+                    ->orWhere('remark', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('educations', function ($q) use ($query) {
+                $q->where('degree', 'like', '%' . $query . '%')
+                    ->orWhere('institution', 'like', '%' . $query . '%')
+                    ->orWhere('passing_year', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('contacts', function ($q) use ($query) {
+                $q->where('type', 'like', '%' . $query . '%')->orWhere('value', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('languages', function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('memberships', function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%');
+            })
+            ->paginate(12)
+            ->appends(['q' => $query]);
+
+        $data = [
+            'sub_title' => 'Tow Truck Near Me | Fast & Affordable Towing USA',
+            'que' => 'Need a tow truck near you?',
+            'answer' => 'Tow Now is your trusted partner for 24/7 towing services across the USA. Whether you’re dealing with a breakdown, accident, or other roadside emergency, our professional team is here to help. With competitive pricing and fast response times, Tow Now ensures a stress-free towing experience.',
+        ];
+        return view('frontend.search', compact('users', 'query', 'data'));
     }
     function service1()
     {

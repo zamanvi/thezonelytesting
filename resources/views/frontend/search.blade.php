@@ -6,6 +6,17 @@
 @section('title', $data['sub_title'])
 @section('content')
     <div class="container py-2">
+        <div class="row mb-1">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold text-dark">
+                    Search Results 
+                    @if($query)
+                        for <span class="text-success">"{{ $query }}"</span>
+                    @endif
+                </h2>
+                <p class="text-muted">{{ $users->total() }} profiles found</p>
+            </div>
+        </div>
         <div class="row">
             @foreach ($users as $user)
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-2 p-1">
@@ -22,7 +33,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
+        <div class="d-flex justify-content-center mt-1">
             {{ $users->links() }}
         </div>
     </div>

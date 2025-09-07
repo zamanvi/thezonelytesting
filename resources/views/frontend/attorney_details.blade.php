@@ -46,6 +46,11 @@
     .sidebar h5 {
         font-weight: 600;
         margin-bottom: 1rem;
+        text-align: center
+    }
+    .sidebar ul li {
+        text-align: center;
+        list-style: none;
     }
     .connect-icon {
         width: 40px;
@@ -58,15 +63,15 @@
         justify-content: center;
     }
     li {
-        list-style: none;
+        font-size: 14px
     }
 </style>
 
 <!-- Top Banner -->
-<div class="profile-header">
+<div class="profile-header" style="padding-left: 75px; padding-right: 75px;">
     <div class="container d-flex flex-column flex-md-row align-items-center gap-4">
         <!-- Profile Image -->
-        <img src="{{ $user->profile_photo ? asset($user->profile_photo) : asset('assets/images/user/default.png') }}"
+        <img src="{{ $user->profile_photo }}" onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';"
              alt="{{ $user->name }}" 
              class="profile-img">
 
@@ -89,18 +94,16 @@
                 <div class="card-header card-header-custom">
                     About {{ $user->name }}
                 </div>
-                <div class="card-body text-secondary">
-                    {{ $user->about ?? 'No about information available.' }}
-                </div>
+                <span style="font-size: 14px; padding: 5px">{{ $user->about ?? 'No about information available.' }}</span>
             </div>
 
             <!-- Education -->
             <div class="card card-custom mb-4">
                 <div class="card-header card-header-custom">Education</div>
                 <div class="card-body">
-                    <ul class="mb-0 ps-3 text-secondary">
-                        @forelse($user->educations as $edu)
-                            <li>{{ $edu->name }}</li>
+                    <ul class="m-0 p-1">
+                        @forelse($user->educations as $education)
+                            <li>{{ $education->degree . ($education->institution ? ' from ' . $education->institution : '') }}</li>
                         @empty
                             <li>No education records available.</li>
                         @endforelse
@@ -109,10 +112,10 @@
             </div>
 
             <!-- Professional Membership -->
-            <div class="card card-custom mb-4">
+            <div class="card card-custom">
                 <div class="card-header card-header-custom">Professional Membership</div>
                 <div class="card-body">
-                    <ul class="mb-0 ps-3 text-secondary">
+                    <ul class="m-0 p-1">
                         @forelse($user->memberships as $membership)
                             <li>{{ $membership->name }}</li>
                         @empty
@@ -129,7 +132,7 @@
                 <!-- Languages -->
                 <div class="mb-4">
                     <h5>Languages</h5>
-                    <ul class="mb-0 ps-3">
+                    <ul class="m-0 p-1">
                         @forelse($user->languages as $language)
                             <li>{{ $language->name }}</li>
                         @empty
@@ -141,15 +144,13 @@
                 <!-- Connect Information -->
                 <div>
                     <h5>Contact Information</h5>
-                    <div class="d-flex gap-3 mt-2">
-                        <ul class="mb-0 ps-3">
-                            @forelse($user->contacts as $contact)
-                                <li>{{ $contact->value }}</li>
-                            @empty
-                                <li>No contact information available.</li>
-                            @endforelse
-                        </ul>
-                    </div>
+                    <ul class="m-0 p-1">
+                        @forelse($user->contacts as $contact)
+                            <li>{{ $contact->value }}</li>
+                        @empty
+                            <li>No contact information available.</li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
         </div>
