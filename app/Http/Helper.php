@@ -1,8 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+if (!function_exists('getUserType')) {
+    /**
+     * Check if it is admin or not
+     */
+    function getUserType()
+    {
+        return Auth::user()->type;
+    }
+}
 if (!function_exists('get_color')) {
     /**
      * Check if it is admin or not

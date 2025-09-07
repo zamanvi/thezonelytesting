@@ -3,10 +3,10 @@
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\Vendor\VendorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +84,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 Route::middleware(['auth', 'profile'])->prefix('profile-base')->name('profile.')->group(function () {
     Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
     Route::resource('services', ServiceController::class);
+    Route::resource('educations', EducationController::class);
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
 });
 
