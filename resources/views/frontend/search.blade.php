@@ -1,9 +1,10 @@
 @php
-    $meta_title = $data['sub_title'];
-    $meta_description = $data['que'] . ' ' . $data['answer'];
+    $meta_title = $meta_title;
+    $meta_description = $meta_description;
+    $meta_keywords = $meta_keywords;
 @endphp
 @extends('frontend.layouts._app')
-@section('title', $data['sub_title'])
+@section('title', $meta_title ?? 'Search Results')
 @section('content')
     <div class="container py-2">
         <div class="row mb-1">

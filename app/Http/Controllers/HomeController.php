@@ -78,18 +78,11 @@ class HomeController extends Controller
     }
     function home()
     {
-        $data = [
-            'sub_title' => 'Tow Truck Near Me | Fast & Affordable Towing USA',
-            'que' => 'Need a tow truck near you?',
-            'answer' => 'Tow Now is your trusted partner for 24/7 towing services across the USA. Whether you’re dealing with a breakdown, accident, or other roadside emergency, our professional team is here to help. With competitive pricing and fast response times, Tow Now ensures a stress-free towing experience.',
-        ];
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
         $users = User::where('type', 'profile')->where('status', true)->paginate(12);
-        return view('frontend.home', compact('data', 'users'));
-        // $blogs = Blog::latest()->paginate(20);
-        // $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
-        // $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
-        // $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        // return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
+        return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function attorney_show($slug)
     {
@@ -125,12 +118,10 @@ class HomeController extends Controller
             ->paginate(12)
             ->appends(['q' => $query]);
 
-        $data = [
-            'sub_title' => 'Tow Truck Near Me | Fast & Affordable Towing USA',
-            'que' => 'Need a tow truck near you?',
-            'answer' => 'Tow Now is your trusted partner for 24/7 towing services across the USA. Whether you’re dealing with a breakdown, accident, or other roadside emergency, our professional team is here to help. With competitive pricing and fast response times, Tow Now ensures a stress-free towing experience.',
-        ];
-        return view('frontend.search', compact('users', 'query', 'data'));
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+        return view('frontend.search', compact('users', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function service1()
     {
