@@ -1,7 +1,9 @@
 <!-- Navigation Menu -->
 <nav class="navbar navbar-expand-lg navbar-dark py-3">
     {{-- <img src="{{ asset('frontend/img/new-logo.png') }}" class="mr-2" alt="Zonely" width="60px" style="object-fit: cover"> --}}
-    <a class="navbar-brand" style="color: #00ae3d; font-size: 30px" href="{{ route('frontend.home') }}">Zonely</a>
+    <a class="navbar-brand" href="{{ route('frontend.home') }}">
+        <img src="{{ asset('frontend/img/zonely.jpeg') }}" class="mr-2" alt="Zonely" width="110px" style="object-fit: cover">
+    </a>
     <button class="navbar-toggler" style="background-color: #000" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

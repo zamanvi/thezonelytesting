@@ -17,10 +17,7 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
-
-        <!-- Name + Email -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Name -->
             <div>
                 <x-input-label for="name" :value="__('Name')" />
                 <x-text-input id="name" name="name" type="text"
@@ -29,8 +26,17 @@
                     required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
+            <div>
+                <x-input-label for="title" :value="__('Title')" />
+                <x-text-input id="title" name="title" type="text"
+                    class="mt-1 block w-full"
+                    :value="old('title', $user->title)"
+                    autocomplete="title" />
+                <x-input-error class="mt-2" :messages="$errors->get('title')" />
+            </div>
+        </div>
 
-            <!-- Designation -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
                 <x-input-label for="designation" :value="__('Designation')" />
                 <x-text-input id="designation" name="designation" type="text"
@@ -38,11 +44,6 @@
                     :value="old('designation', $user->designation)" required autocomplete="designation" />
                 <x-input-error class="mt-2" :messages="$errors->get('designation')" />
             </div>
-        </div>
-
-        <!-- Phone + WhatsApp -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <!-- Phone -->
             <div>
                 <x-input-label for="phone" :value="__('Phone')" />
                 <x-text-input id="phone" name="phone" type="number"
@@ -51,8 +52,8 @@
                     autocomplete="tel" />
                 <x-input-error class="mt-2" :messages="$errors->get('phone')" />
             </div>
-
-            <!-- WhatsApp -->
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
                 <x-input-label for="whatsapp" :value="__('WhatsApp')" />
                 <x-text-input id="whatsapp" name="whatsapp" type="text"
@@ -61,11 +62,6 @@
                     autocomplete="tel" />
                 <x-input-error class="mt-2" :messages="$errors->get('whatsapp')" />
             </div>
-        </div>
-
-        <!-- Address + Shop Name -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <!-- Work Address -->
             <div>
                 <x-input-label for="work_address" :value="__('Work Address')" />
                 <x-text-input id="work_address" name="work_address" type="text"
@@ -74,12 +70,15 @@
                     autocomplete="street-address" />
                 <x-input-error class="mt-2" :messages="$errors->get('work_address')" />
             </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mt-6">
             <div>
                 <x-input-label for="about" :value="__('About')" />
-                <x-text-input id="about" name="about" type="text"
-                    class="mt-1 block w-full"
-                    :value="old('about', $user->about)"
-                    autocomplete="about" />
+                <textarea id="about" 
+                        name="about" 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        rows="4"
+                        autocomplete="about">{{ old('about', $user->about) }}</textarea>
                 <x-input-error class="mt-2" :messages="$errors->get('about')" />
             </div>
         </div>

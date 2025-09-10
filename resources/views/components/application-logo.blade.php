@@ -1,1 +1,1 @@
-<a class="navbar-brand" target="_blank" style="color: #00ae3d; font-size: 30px" href="{{ route('frontend.home') }}">Zonely</a>
+<a class="navbar-brand" target="_blank" style="color: #00ae3d; font-size: 30px" href="{{ route('frontend.home') }}"><img src="{{ asset('frontend/img/zonely.jpeg') }}" class="mr-2" alt="Zonely" width="110px" style="object-fit: cover"></a>

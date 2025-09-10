@@ -184,16 +184,11 @@
             color: var(--muted);
         }
 
-        main h2 {
-            margin-top: 2.5rem;
-            font-size: 1.35rem;
-        }
-
         .card {
             background: var(--card);
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 1.25rem;
+            padding: 1rem;
             margin-bottom: 10px;
         }
 

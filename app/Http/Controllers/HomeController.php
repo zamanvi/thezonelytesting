@@ -96,6 +96,7 @@ class HomeController extends Controller
             ->where('status', true)
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', '%' . $query . '%')
+                    ->orWhere('title', 'like', '%' . $query . '%')
                     ->orWhere('designation', 'like', '%' . $query . '%')
                     ->orWhere('work_address', 'like', '%' . $query . '%')
                     ->orWhere('about', 'like', '%' . $query . '%')

@@ -33,7 +33,7 @@
 
                     <div class="flex justify-end">
                         <a href="{{ route('profile.contacts.index') }}" class="px-4 py-2 bg-gray-300 rounded-lg mr-2">Cancel</a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
+                        <button type="submit" class="px-4 py-2 text-blue-600 rounded-lg shadow hover:bg-blue-700">
                             Save
                         </button>
                     </div>

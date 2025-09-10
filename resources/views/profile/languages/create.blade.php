@@ -20,7 +20,7 @@
 
                     <div class="flex justify-end">
                         <a href="{{ route('profile.languages.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 mr-2">Cancel</a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">Save</button>
+                        <button type="submit" class="px-4 py-2 text-blue-600 rounded-lg shadow hover:bg-blue-700">Save</button>
                     </div>
                 </form>
             </div>

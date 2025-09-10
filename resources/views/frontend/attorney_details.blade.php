@@ -63,7 +63,8 @@
         justify-content: center;
     }
     li {
-        font-size: 14px
+        font-size: 16px;
+        margin-left: 15px
     }
 </style>
 
@@ -77,7 +78,8 @@
 
         <!-- Name & Designation -->
         <div class="text-center text-md-start name-designation">
-            <h1 class="fw-bold">{{ $user->name }}</h1>
+            <h1 class="fw-bold" style="margin-top: 10px">{{ $user->title }}</h1>
+            <h1 class="fw-bold" style="margin-top: 150px">{{ $user->name }}</h1>
             <p class="fs-5">{{ $user->designation }}</p>
         </div>
     </div>
@@ -94,7 +96,9 @@
                 <div class="card-header card-header-custom">
                     About {{ $user->name }}
                 </div>
-                <span style="font-size: 14px; padding: 5px">{{ $user->about ?? 'No about information available.' }}</span>
+                <span style="font-size: 16px; padding: 15px; text-align: justify; text-justify: inter-word;">
+                    {{ $user->about ?? 'No about information available.' }}
+                </span>
             </div>
 
             <!-- Education -->

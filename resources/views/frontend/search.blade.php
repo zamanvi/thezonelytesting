@@ -22,8 +22,8 @@
             @foreach ($users as $user)
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-2 p-1">
                     <div class="team-card text-center shadow-sm rounded-3"> 
-                        <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h4 class="team-name">{{ $user->name }}</h4></a>
-                        <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h6 class="team-title">{{ $user->designation }}</h6></a>
+                        <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h4 class="team-name">{{ $user->title }}</h4></a>
+                        {{-- <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h6 class="team-title">{{ $user->designation }}</h6></a> --}}
                         <div class="team-photo mb-3">
                             <img src="{{ $user->profile_photo }}" onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';" class="img-fluid rounded-circle p-2">
                         </div>
