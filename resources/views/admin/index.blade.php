@@ -42,10 +42,10 @@
                 <div class="iq-card iq-card-block iq-card-stretch iq-card-height overflow-hidden">
                     <div class="iq-card-body pb-0">
                         <div class="rounded-circle iq-card-icon iq-bg-warning"><i class="ri-bar-chart-grouped-line"></i></div>
-                        <span class="float-right line-height-6"><a href="{{ route('admin.categories.create') }}">Vendors</a></span>
+                        <span class="float-right line-height-6"><a href="{{ route('admin.categories.create') }}">Profile User</a></span>
                         <div class="clearfix"></div>
                         <div class="text-center">
-                            <h2 class="mb-0"><span></span><span class="counter">{{ $categoryCount }}</span></h2>
+                            <h2 class="mb-0"><span></span><span class="counter">{{ $userCount }}</span></h2>
                         </div>
                     </div>
                 </div>

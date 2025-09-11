@@ -8,14 +8,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="form-inline flex-grow-1 my-2 my-lg-0" action="{{ route('frontend.search') }}" method="GET">
-            <div class="input-group w-100">
-                <input class="form-control" type="search" name="q" placeholder="Search..." aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-success" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
         <ul class="navbar-nav ml-auto mr-2">
             <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>

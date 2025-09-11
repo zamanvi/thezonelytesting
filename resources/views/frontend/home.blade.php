@@ -8,14 +8,28 @@
 @section('content')
     <div class="container py-2">
         <div class="row">
+            <form class="col-md-12 p-0 m-0" action="{{ route('frontend.search') }}" method="GET">
+                <div class="input-group w-100">
+                    <input class="form-control" type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row mt-1">
             @foreach ($users as $user)
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-2 p-1">
-                    <div class="team-card text-center shadow-sm rounded-3"> 
-                        <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h4 class="team-name">{{ $user->title }}</h4></a>
+                    <div class="team-card text-center shadow-sm rounded-3">
+                        <a href="{{ route('frontend.attorney.show', $user->slug) }}">
+                            <h4 class="team-name">{{ $user->title }}</h4>
+                        </a>
                         {{-- <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h4 class="team-name">{{ $user->name }}</h4></a> --}}
                         {{-- <a href="{{ route('frontend.attorney.show', $user->slug) }}"><h6 class="team-title">{{ $user->designation }}</h6></a> --}}
                         <div class="team-photo mb-3">
-                            <img src="{{ $user->profile_photo }}" onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';" class="img-fluid rounded-circle p-2">
+                            <img src="{{ $user->profile_photo }}"
+                                onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';"
+                                class="img-fluid rounded-circle p-2">
                         </div>
                         <a href="{{ route('frontend.attorney.show', $user->slug) }}" class="btn btn-details">Details</a>
                     </div>
@@ -39,6 +53,7 @@
             border: 1px solid #ddd;
             padding: 1.5rem 1rem;
         }
+
         a {
             text-decoration: none !important;
         }
@@ -72,6 +87,7 @@
             object-fit: fill;
             background: white;
         }
+
         .team-photo img:hover {
             cursor: pointer;
         }
