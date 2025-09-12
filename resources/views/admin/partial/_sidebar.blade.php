@@ -13,6 +13,12 @@
                         <span>Blog Management</span>
                     </a>
                 </li>
+                <li class="@if (Route::is(['admin.profiles.index'])) active @endif">
+                    <a href="{{ route('admin.profiles.index') }}" class="iq-waves-effect collapsed"><i
+                            class="ri-record-circle-line iq-arrow-left"></i>
+                        <span>All Profile</span>
+                    </a>
+                </li>
                 <li class="d-none @if (Route::is(['admin.categories.create', 'admin.categories.show', 'admin.categories.edit'])) active @endif">
                     <a href="{{ route('admin.categories.create') }}" class="iq-waves-effect collapsed"><i
                             class="ri-record-circle-line iq-arrow-left"></i>

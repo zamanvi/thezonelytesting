@@ -1,4 +1,4 @@
-@extends('admin.index')
+@extends('layouts.admin')
 @section('title')
     Blog Panel
 @endsection

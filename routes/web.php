@@ -71,6 +71,12 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
 */
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
+    Route::prefix('profiles')->name('profiles.')->group(function () {
+        Route::get('index', [PageController::class, 'profiles_index'])->name('index');
+        Route::get('edit/{id}', [PageController::class, 'profiles_edit'])->name('edit');
+        Route::put('update/{id}', [PageController::class, 'profiles_update'])->name('update');
+        Route::delete('destroy/{id}', [PageController::class, 'profiles_destroy'])->name('destroy');
+    });
     Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
 
     // Blog management

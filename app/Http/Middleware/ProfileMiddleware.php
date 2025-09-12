@@ -24,7 +24,7 @@ class ProfileMiddleware
 
         if ($user->type === 'profile') {
             if (!$user->status) {
-                return redirect()->route('profile.blockedlist');
+                return redirect()->route('profile.edit');
             }
             if (empty($user->phone) || empty($user->work_address)) {
                 if (!$request->routeIs('profile.first')) {

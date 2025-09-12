@@ -28,7 +28,7 @@ class ViewServiceProvider extends ServiceProvider
             $currentRoute = Route::current();
 
             if ($currentRoute && str_starts_with($currentRoute->getName(), 'admin.')) {
-                $view->with(['blogCount' => Blog::count(), 'categoryCount' => Category::count(), 'userCount' => User::where('type', 'profile')->count]);
+                $view->with(['blogCount' => Blog::count(), 'categoryCount' => Category::count(), 'userCount' => User::where('type', 'profile')->count()]);
             }
         });
     }
