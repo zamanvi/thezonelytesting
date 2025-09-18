@@ -42,6 +42,7 @@
                                 <input type="text" class="form-control" value="{{ $user->phone ?? '-' }}" readonly>
                             </div>
 
+
                             <div class="form-group">
                                 <label>Designation</label>
                                 <input type="text" class="form-control" value="{{ $user->designation ?? '-' }}" readonly>
@@ -53,6 +54,10 @@
                             </div>
 
                             <!-- Editable fields -->
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" class="form-control" value="{{ $user->title ?? '-' }}">
+                            </div>
                             <div class="form-group">
                                 <label for="remark">Remark</label>
                                 <textarea name="remark" required id="remark" rows="3" class="form-control">{{ old('remark', $user->remark) }}</textarea>

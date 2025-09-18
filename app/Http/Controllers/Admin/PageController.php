@@ -52,6 +52,7 @@ class PageController extends Controller
 
         // Validate input
         $validated = $request->validate([
+            'title' => 'nullable|string',
             'remark' => 'required|string',
             'status' => 'required|boolean',
         ]);

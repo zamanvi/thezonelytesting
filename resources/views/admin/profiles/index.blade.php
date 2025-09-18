@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    Unverified Profiles
+    {{ ucfirst($type ?? $status ?? 'All') }} Profiles
 @endsection
 
 @section('breadcrumb')
@@ -24,7 +24,7 @@
                     </div> --}}
                     <div class="iq-card-header d-flex justify-content-between align-items-center">
                         <div class="iq-header-title">
-                            <h4 class="card-title">{{ ucfirst($type ?? 'All') }} User Profiles</h4>
+                            <h4 class="card-title">{{ ucfirst($type ?? $status ?? 'All') }} User Profiles</h4>
                         </div>
                         <div class="iq-header-title">
                             <!-- Type filters -->
