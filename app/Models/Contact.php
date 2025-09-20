@@ -13,4 +13,8 @@ class Contact extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function scopeAddress($query)
+    {
+        return $query->where('type', 'address');
+    }
 }

@@ -42,6 +42,18 @@
                                 <input type="text" class="form-control" value="{{ $user->phone ?? '-' }}" readonly>
                             </div>
 
+                            <div class="form-group">
+                                <label>Work Address</label>
+                                <input type="text" class="form-control" value="{{ $user->work_address ?? '-' }}" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Contact Address</label>
+                                @php
+                                    $address = $user->contacts()->address()->first();
+                                @endphp
+                                <input type="text" class="form-control" value="{{ $address ? $address->value : '-' }}" readonly>
+                            </div>
 
                             <div class="form-group">
                                 <label>Designation</label>
