@@ -68,7 +68,7 @@
                             <!-- Editable fields -->
                             <div class="form-group">
                                 <label>Title</label>
-                                <input type="text" class="form-control" value="{{ $user->title ?? '-' }}">
+                                <input type="text" name="title" class="form-control" value="{{ $user->title ?? '-' }}">
                             </div>
                             <div class="form-group">
                                 <label for="remark">Remark</label>
