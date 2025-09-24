@@ -29,7 +29,7 @@
                             <!-- Show-only fields -->
                             <div class="form-group">
                                 <label>Name</label>
-                                <input type="text" class="form-control" value="{{ $user->name }}" readonly>
+                                <input type="text" class="form-control" value="{{ $user->name }}">
                             </div>
 
                             <div class="form-group">
@@ -39,12 +39,12 @@
 
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="text" class="form-control" value="{{ $user->phone ?? '-' }}" readonly>
+                                <input type="text" class="form-control" value="{{ $user->phone ?? '-' }}">
                             </div>
 
                             <div class="form-group">
                                 <label>Work Address</label>
-                                <input type="text" class="form-control" value="{{ $user->work_address ?? '-' }}" readonly>
+                                <input type="text" class="form-control" value="{{ $user->work_address ?? '-' }}">
                             </div>
 
                             <div class="form-group">
@@ -52,17 +52,17 @@
                                 @php
                                     $address = $user->contacts()->address()->first();
                                 @endphp
-                                <input type="text" class="form-control" value="{{ $address ? $address->value : '-' }}" readonly>
+                                <input type="text" class="form-control" value="{{ $address ? $address->value : '-' }}">
                             </div>
 
                             <div class="form-group">
                                 <label>Designation</label>
-                                <input type="text" class="form-control" value="{{ $user->designation ?? '-' }}" readonly>
+                                <input type="text" class="form-control" value="{{ $user->designation ?? '-' }}">
                             </div>
 
                             <div class="form-group">
                                 <label>About</label>
-                                <textarea class="form-control" rows="3" readonly>{{ $user->about ?? '-' }}</textarea>
+                                <textarea class="form-control" rows="3">{{ $user->about ?? '-' }}</textarea>
                             </div>
 
                             <!-- Editable fields -->
