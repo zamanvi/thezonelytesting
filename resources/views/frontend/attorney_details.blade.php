@@ -6,85 +6,6 @@
 @section('title', $meta_title)
 
 @section('content')
-    <style>
-        .profile-header {
-            background-color: #0B1E3D;
-            color: #fff;
-            padding: 3rem 1rem;
-        }
-
-        .profile-img {
-            width: 350px;
-            height: 450px;
-            border: 4px solid #fff;
-            border-radius: 5%;
-            object-fit: cover;
-        }
-
-        .name-designation {
-            margin-left: 50px
-        }
-
-        .card-custom {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header-custom {
-            background-color: #B63A55;
-            color: #fff;
-            font-weight: 600;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-
-        .sidebar {
-            background-color: #0B1E3D;
-            color: #fff;
-            border-top-right-radius: 24px;
-            border-bottom-left-radius: 24px;
-            padding: 2rem;
-            height: 100%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .sidebar h5 {
-            font-size: 25px;
-            margin-bottom: 1rem;
-            text-align: center
-        }
-
-        .sidebar ul li {
-            text-align: center;
-            list-style: none;
-        }
-
-        .connect-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #fff;
-            color: #0B1E3D;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        li {
-            list-style: none;
-            font-size: 20px;
-            margin-left: 15px
-        }
-
-        span {
-            font-size: 20px;
-            padding: 15px;
-            text-align: justify;
-            text-justify: inter-word;
-        }
-    </style>
-
     <!-- Top Banner -->
     <div class="profile-header" style="padding-left: 75px; padding-right: 75px;">
         <div class="container d-flex flex-column flex-md-row align-items-center gap-4">
@@ -177,4 +98,85 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('css')
+     <style>
+        .profile-header {
+            background-color: #0B1E3D;
+            color: #fff;
+            padding: 3rem 1rem;
+        }
+
+        .profile-img {
+            width: 350px;
+            height: 450px;
+            border: 4px solid #fff;
+            border-radius: 5%;
+            object-fit: cover;
+        }
+
+        .name-designation {
+            margin-left: 50px
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header-custom {
+            background-color: #B63A55;
+            color: #fff;
+            font-weight: 600;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .sidebar {
+            background-color: #0B1E3D;
+            color: #fff;
+            border-top-right-radius: 24px;
+            border-bottom-left-radius: 24px;
+            padding: 2rem;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar h5 {
+            font-size: 25px;
+            margin-bottom: 1rem;
+            text-align: center
+        }
+
+        .sidebar ul li {
+            text-align: center;
+            list-style: none;
+        }
+
+        .connect-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0B1E3D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        li {
+            list-style: none;
+            font-size: 20px;
+            margin-left: 15px
+        }
+
+        span {
+            font-size: 20px;
+            padding: 15px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+    </style>
 @endsection
