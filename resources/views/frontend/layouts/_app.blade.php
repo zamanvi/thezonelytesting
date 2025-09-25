@@ -24,7 +24,7 @@
     <meta name="twitter:image" content="{{ $user->profile_photo ? $user->profile_photo : '' }}">
 
     {{-- Favicon --}}
-    {{-- <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
 
     <meta name="google-site-verification" content="dwwJ-8RPBJ7ZKJVORVBjX84ehyNkdpSXMj3JsAqlZZQ" />
 
