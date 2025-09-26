@@ -56,6 +56,18 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.educations.index')">
+                            {{ __('Education') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.memberships.index')">
+                            {{ __('Membership') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.languages.index')">
+                            {{ __('Languages') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.contacts.index')">
+                            {{ __('Contact') }}
+                        </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
