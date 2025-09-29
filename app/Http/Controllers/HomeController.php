@@ -17,9 +17,13 @@ class HomeController extends Controller
     {
         return view('frontend.auth.login');
     }
-    function user_register()
+    function user_register1()
     {
-        return view('frontend.auth.register');
+        return view('frontend.auth.register1');
+    }
+    function user_register2($type)
+    {
+        return view('frontend.auth.register', compact('type'));
     }
     function user_submit_login(Request $request)
     {
