@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileMiddleware
+class UserMiddleware
 {
     /**
      * Handle an incoming request.
@@ -22,22 +22,14 @@ class ProfileMiddleware
 
         $user = Auth::user();
 
-        if ($user->type === 'profile') {
-            if (!$user->status) {
-                return redirect()->route('profile.edit');
-            }
-            if (empty($user->phone) || empty($user->work_address)) {
-                if (!$request->routeIs('profile.first')) {
-                    return redirect()->route('profile.first')->with('warning', 'Please complete your profile before proceeding.');
-                }
-            }
+        if ($user->type === 'user') {
             return $next($request);
         }
         if ($user->type === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-        if ($user->type === 'user') {
-            return redirect()->route('dashboard');
+        if ($user->type === 'profile') {
+            return redirect()->route('profile.dashboard');
         }
         return redirect()->route('user.login');
     }

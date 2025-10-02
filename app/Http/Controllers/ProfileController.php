@@ -20,9 +20,16 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user();
+        if ($user->type === 'user') {
+            return view('user.profile.edit', [
+                'user' => $user,
+            ]);
+        } else {
+            return view('profile.edit', [
+                'user' => $user,
+            ]);
+        }
     }
 
     /**
@@ -67,5 +74,4 @@ class ProfileController extends Controller
         $user = Auth::user();
         return 'Dear Valuade Vendor, ' . $user->name . '. Your are Currently blocked, Please contact with your admin.';
     }
-
 }

@@ -51,7 +51,7 @@ class HomeController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'type' => ['required', 'in:profile,service,customer'],
+            // 'type' => ['required', 'in:profile,service,customer'],
             'password' => ['required', 'confirmed', 'min:6'],
         ]);
         // Generate slug
@@ -67,7 +67,7 @@ class HomeController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'type' => $validated['type'],
+            'type' => $request->type ?? 'user',
             'password' => Hash::make($validated['password']),
             'slug' => $slug,
         ]);
