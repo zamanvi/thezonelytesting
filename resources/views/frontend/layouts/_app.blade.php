@@ -13,7 +13,7 @@
     {{-- Open Graph (Facebook, LinkedIn, WhatsApp) --}}
     <meta property="og:title" content="{{ $meta_title ?? '' }}">
     <meta property="og:description" content="{{ $meta_description ?? '' }}">
-    <meta property="og:image" content="{{ $user->profile_photo ? $user->profile_photo : '' }}">
+    <meta property="og:image" content="{{ asset('frontend/img/favicon.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="profile">
 
@@ -21,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $meta_title ?? '' }}">
     <meta name="twitter:description" content="{{ $meta_description ?? '' }}">
-    <meta name="twitter:image" content="{{ $user->profile_photo ? $user->profile_photo : '' }}">
+    <meta name="twitter:image" content="{{ asset('frontend/img/favicon.png') }}">
 
     {{-- Favicon --}}
     <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
