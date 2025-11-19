@@ -8,7 +8,10 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -81,6 +84,24 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::put('update/{id}', [PageController::class, 'profiles_update'])->name('update');
         Route::delete('destroy/{id}', [PageController::class, 'profiles_destroy'])->name('destroy');
     });
+
+    Route::resource('vehicles', VehicleController::class);
+    Route::prefix('vehicles/{vehicle}')->group(function () {
+        Route::get('policies/create', [PolicyController::class, 'create'])->name('policies.create');
+        Route::post('policies', [PolicyController::class, 'store'])->name('policies.store');
+        Route::get('policies/{policy}', [PolicyController::class, 'show'])->name('policies.show');
+        Route::get('policies/{policy}/edit', [PolicyController::class, 'edit'])->name('policies.edit');
+        Route::put('policies/{policy}', [PolicyController::class, 'update'])->name('policies.update');
+        Route::delete('policies/{policy}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+    });
+    Route::prefix('vehicles/{vehicle}/policies/{policy}')->group(function () {
+        Route::get('payments/create', [PaymentController::class, 'create'])->name('payments.create');
+        Route::post('payments', [PaymentController::class, 'store'])->name('payments.store');
+        Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
+        Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
+        Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+    });
+
     Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
 
     // Blog management

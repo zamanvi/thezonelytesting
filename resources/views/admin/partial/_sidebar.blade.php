@@ -19,6 +19,12 @@
                         <span>All Profile</span>
                     </a>
                 </li>
+                <li class="@if (Route::is(['admin.vehicles.index', 'admin.vehicles.create', 'admin.vehicles.show', 'admin.vehicles.edit', 'admin.policies.create', 'admin.policies.show', 'admin.policies.edit', 'admin.payments.create', 'admin.payments.show', 'admin.payments.edit'])) active @endif">
+                    <a href="{{ route('admin.vehicles.index') }}" class="iq-waves-effect collapsed"><i
+                            class="ri-record-circle-line iq-arrow-left"></i>
+                        <span>All Vehicles</span>
+                    </a>
+                </li>
                 <li class="d-none @if (Route::is(['admin.categories.create', 'admin.categories.show', 'admin.categories.edit'])) active @endif">
                     <a href="{{ route('admin.categories.create') }}" class="iq-waves-effect collapsed"><i
                             class="ri-record-circle-line iq-arrow-left"></i>

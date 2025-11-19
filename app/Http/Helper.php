@@ -13,6 +13,15 @@ if (!function_exists('getUserType')) {
         return Auth::user()->type;
     }
 }
+if (!function_exists('getVehicleType')) {
+    /**
+     * Check if it is admin or not
+     */
+    function getVehicleType()
+    {
+        return 'vehicle_option';
+    }
+}
 if (!function_exists('get_color')) {
     /**
      * Check if it is admin or not
