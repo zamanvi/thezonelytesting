@@ -37,6 +37,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/terms-and-condition', [HomeController::class, 'terms_and_condition'])->name('terms-and-condition');
     Route::get('/about-us', [HomeController::class, 'about_us'])->name('about-us');
     Route::get('/about-site-author', [HomeController::class, 'about_site_author'])->name('about-site-author');
+    Route::get('/tools', [HomeController::class, 'tools'])->name('tools');
     Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
     Route::get('/search', [HomeController::class, 'search'])->name('search');
 });

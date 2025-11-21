@@ -168,6 +168,13 @@ class HomeController extends Controller
     {
         return view('frontend.about_site_author');
     }
+    function tools()
+    {
+        $meta_title = 'Free Car Insurance Calculator for NYC, USA';
+        $meta_description = 'Use our Free Car Insurance Calculator for NYC, USA to instantly estimate your monthly and yearly auto insurance costs. Compare rates, save money, and get accurate results fast.';
+        $meta_keywords = 'NYC Car Insurance Calculator; Free Auto Insurance Quote NYC; Compare Car Insurance Rates NYC; NYC Vehicle Insurance Estimator; Cheap Car Insurance NYC;';
+        return view('frontend.tools', compact('meta_title', 'meta_description', 'meta_keywords'));
+    }
     function blog()
     {
         $blogs = Blog::latest()->paginate(20);

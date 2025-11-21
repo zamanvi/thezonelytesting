@@ -10,6 +10,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto mr-2">
             <li class="nav-item">
+                <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.tools') }}">Tools</a>
+            </li>
+            <li class="nav-item">
                 <a style="color: #00ae3d" class="nav-link" href="{{ route('frontend.blog') }}">Blog</a>
             </li>
             {{-- <li class="nav-item dropdown">
