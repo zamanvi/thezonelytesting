@@ -23,6 +23,4 @@ jobs:
           git reset --hard
           git pull https://mdnayeemsarker:${{ secrets.VPS_GIT_PAT }}@github.com/mdnayeemsarker/thezonely.git main
           php artisan optimize:clear
-          php artisan migrate
-          php artisan optimize:clear
           echo "Deployment finished ✅"
