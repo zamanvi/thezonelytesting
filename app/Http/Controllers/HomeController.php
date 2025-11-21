@@ -189,11 +189,35 @@ class HomeController extends Controller
         $blog->increment('pageview');
         return view('frontend.blog_details2', compact('blog'));
     }
+    // function sitemap()
+    // {
+    //     $frontendRoutes = collect(Route::getRoutes())
+    //         ->filter(function ($route) {
+    //             return $route->getName() && str_starts_with($route->getName(), 'frontend.');
+    //         })
+    //         ->map(function ($route) {
+    //             return [
+    //                 'loc' => url($route->uri()),
+    //                 'lastmod' => Carbon::now()->toAtomString(),
+    //             ];
+    //         });
+    //     $blogs = Blog::select('slug', 'updated_at')
+    //         ->get()
+    //         ->map(function ($blog) {
+    //             return [
+    //                 'loc' => route('blog.show', $blog->slug),
+    //                 'lastmod' => optional($blog->updated_at)->toAtomString() ?? Carbon::now()->toAtomString(),
+    //             ];
+    //         });
+    //     $sitemapEntries = $frontendRoutes->merge($blogs);
+    //     return response()->view('frontend.sitemap', compact('sitemapEntries'))->header('Content-Type', 'application/xml');
+    // }
+
     function sitemap()
     {
         $frontendRoutes = collect(Route::getRoutes())
             ->filter(function ($route) {
-                return $route->getName() && str_starts_with($route->getName(), 'frontend.');
+                return $route->getName() && str_starts_with($route->getName(), 'frontend.') && !str_contains($route->uri(), '{'); // prevent dynamic routes
             })
             ->map(function ($route) {
                 return [
