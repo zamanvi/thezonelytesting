@@ -1,5 +1,5 @@
 @extends('frontend.layouts._app')
-@section('title', 'Zonely')
+@section('title', 'NYC Car Insurance Calculator')
 @php
     $meta_title = $meta_title;
     $meta_description = $meta_description;
@@ -12,9 +12,8 @@
                 <!-- developer-provided screenshot used as header image -->
                 <img class="logo" alt="screenshot" src="{{ asset('frontend/img/favicon.png') }}">
                 <div>
-                    <h1>NYC Car Insurance Calculator</h1>
-                    <p class="lead">Quick estimated premiums — responsive, animated, and ready to connect to your backend
-                        API.</p>
+                    <h1>Free Car Insurance Calculator for NYC, USA</h1>
+                    <p class="lead">Use our Free Car Insurance Calculator for NYC, USA to instantly estimate your monthly and yearly auto insurance costs. Compare rates, save money, and get accurate results fast. meta description.</p>
                 </div>
             </header>
 
@@ -42,13 +41,7 @@
                     <button class="btn btn-primary" type="submit">Calculate Insurance</button>
                     <button class="btn btn-ghost" type="button" onclick="resetForm()">Reset</button>
                 </div>
-
-                <p style="margin-top:10px;color:var(--muted);font-size:13px">Formula used: base_rate + age_factor +
-                    car_factor + record_factor + coverage_factor (editable).</p>
             </form>
-
-            <footer class="note">Note: This is an estimate only. For real quotes connect to licensed carriers via the API
-                integration button.</footer>
         </div>
 
         <div class="right">
@@ -71,19 +64,13 @@
                 <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
                     <div style="display:flex;gap:8px">
                         <button class="small btn-primary" onclick="savePDF()">Save as PDF</button>
-                        <button class="small btn-ghost" onclick="emailQuote()">Email Quote</button>
-                        <button class="small btn-ghost" onclick="getOffers()">Get Real Insurance Offers</button>
+                        <a class="small btn-ghost" href="{{ route('frontend.home') }}">Get Real Insurance Offers</a>
                     </div>
-                    <div style="display:flex;gap:8px">
-                        <button class="small" onclick="downloadJSON()">Download JSON</button>
-                        <button class="small" onclick="copyToClipboard()">Copy Quote</button>
-                    </div>
+                    <div style="font-size:13px;color:var(--muted);margin-top:10px">This is approximate value only, Not
+                        accurate for real quotes.</div>
                 </div>
             </div>
 
-            <div style="font-size:13px;color:var(--muted);margin-top:10px">Tips: Try changing age, car value, or coverage to
-                see how the premium updates. Use "Get Real Insurance Offers" to POST the values to your backend API and
-                return external quotes.</div>
         </div>
     </div>
 @endsection
