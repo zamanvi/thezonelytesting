@@ -13,7 +13,7 @@
                 <img class="logo" alt="screenshot" src="{{ asset('frontend/img/favicon.png') }}">
                 <div>
                     <h1>Free Car Insurance Calculator for NYC, USA</h1>
-                    <p class="lead">Use our Free Car Insurance Calculator for NYC, USA to instantly estimate your monthly and yearly auto insurance costs. Compare rates, save money, and get accurate results fast. meta description.</p>
+                    <p class="lead">Use our Free Car Insurance Calculator for NYC, USA to instantly estimate your monthly and yearly auto insurance costs. Compare rates, save money, and get accurate results fast.</p>
                 </div>
             </header>
 
