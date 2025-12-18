@@ -97,63 +97,45 @@ if (!function_exists('set_increment_slug')) {
 }
 
 if (!function_exists('upload_file')) {
-    /**
-     * Upload File
-     *
-     * @param $imagePath
-     */
-    function upload_file($image)
+    function upload_file($file, string $folder = 'uploads'): string
     {
-        if (env('APP_DEBUG') === true && env('APP_ENV') === 'local') {
-            $directory = 'uploads/local';
-        } else {
-            $directory = 'uploads';
-        }
-        $extension = $image->getClientOriginalExtension();
-        $fileName = time() . '-' . Str::random(64) . '.' . $extension;
-        $image->move(public_path($directory), $fileName);
-        return $fileName;
+        $extension = $file->getClientOriginalExtension();
+        $filename  = Str::random(64) . '.' . $extension;
+
+        Storage::disk('public')->putFileAs($folder, $file, $filename);
+
+        return $folder . '/' . $filename; // store in DB
     }
 }
 if (!function_exists('delete_file')) {
-    /**
-     * Delete File
-     *
-     * @param string|null $imagePath
-     * @return bool
-     */
-    function delete_file(?string $filename): bool
+    function delete_file(?string $path): bool
     {
-        if (!$filename) {
+        if (!$path) {
             return false;
         }
 
-        $folder = app()->environment('local') ? 'uploads/local/' : 'uploads/';
+        $path = ltrim($path, '/');
 
-        $path = $folder . ltrim($filename, '/');
-
-        return Storage::disk('public')->exists($path) ? Storage::disk('public')->delete($path) : false;
+        return Storage::disk('public')->exists($path)
+            ? Storage::disk('public')->delete($path)
+            : false;
     }
 }
 if (!function_exists('get_file')) {
-    /**
-     * Uploaded File
-     *
-     * @param $imagePath
-     */
-    function get_file(?string $filename, string $for = 'default'): string
+    function get_file(?string $path, string $for = 'default'): string
     {
-        if (!$filename) {
+        if (!$path) {
             return empty_image($for);
         }
 
-        $folder = app()->environment('local') ? 'uploads/local/' : 'uploads/';
+        $path = ltrim($path, '/');
 
-        $path = $folder . ltrim($filename, '/');
-
-        return Storage::disk('public')->exists($path) ? Storage::disk('public')->url($path) : empty_image($for);
+        return Storage::disk('public')->exists($path)
+            ? Storage::disk('public')->url($path)
+            : empty_image($for);
     }
 }
+
 if (!function_exists('empty_image')) {
     function empty_image($type = 'default')
     {
