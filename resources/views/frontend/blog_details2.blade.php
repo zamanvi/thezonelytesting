@@ -2166,7 +2166,7 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-4 col-xs-12 ratings-image">
                                             <img alt="Ratings image" class="ratings-header-img"
-                                                src="{{ get_file_url($blog->image_path) }}" />
+                                                src="{{ get_file($blog->image_path) }}" />
                                         </div>
                                     </div>
                                 </div>
