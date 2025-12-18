@@ -54,16 +54,13 @@ if (!function_exists('generateUniqueSlug')) {
      */
     function generateUniqueSlug(string $modelClass, string $value, ?int $ignoreId = null, string $column = 'slug'): string
     {
-        $slug     = Str::slug($value);
+        $slug = Str::slug($value);
         $original = $slug;
         $i = 1;
 
-        while ($modelClass::where($column, $slug)
-            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
-            ->exists()) {
-            
+        while ($modelClass::where($column, $slug)->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))->exists()) {
             $suffix = '-' . $i++;
-            $slug   = Str::limit($original, 255 - strlen($suffix), '') . $suffix;
+            $slug = Str::limit($original, 255 - strlen($suffix), '') . $suffix;
         }
 
         return $slug;
@@ -107,12 +104,15 @@ if (!function_exists('upload_file')) {
      */
     function upload_file($image)
     {
-        if (config('filesystems.default') === 'public') {
-            $image_name = time() . '-' . get_random_number(32) . '.' . $image->getClientOriginalExtension();
-            $folder = config('app.env') === 'local' && config('app.debug') ? 'uploads/local' : 'uploads';
-            $image->storeAs($folder, $image_name, 'public');
-            return $image_name;
+        if (env('APP_DEBUG') === true && env('APP_ENV') === 'local') {
+            $directory = 'uploads/local';
+        } else {
+            $directory = 'uploads';
         }
+        $extension = $image->getClientOriginalExtension();
+        $fileName = time() . '-' . Str::random(64) . '.' . $extension;
+        $image->move(public_path($directory), $fileName);
+        return $fileName;
     }
 }
 if (!function_exists('delete_file')) {
@@ -122,21 +122,17 @@ if (!function_exists('delete_file')) {
      * @param string|null $imagePath
      * @return bool
      */
-    function delete_file($imagePath): bool
+    function delete_file(?string $filename): bool
     {
-        if (empty($imagePath)) {
+        if (!$filename) {
             return false;
         }
-        if (config('filesystems.default') === 'public') {
-            $folder = config('app.env') === 'local' && config('app.debug') ? 'uploads/local/' : 'uploads/';
-            $fullPath = $folder . $imagePath;
 
-            if (Storage::disk('public')->exists($fullPath)) {
-                return Storage::disk('public')->delete($fullPath);
-            }
-        }
+        $folder = app()->environment('local') ? 'uploads/local/' : 'uploads/';
 
-        return false;
+        $path = $folder . ltrim($filename, '/');
+
+        return Storage::disk('public')->exists($path) ? Storage::disk('public')->delete($path) : false;
     }
 }
 if (!function_exists('get_file')) {
@@ -145,22 +141,17 @@ if (!function_exists('get_file')) {
      *
      * @param $imagePath
      */
-    function get_file($imagePath, $for = 'default')
+    function get_file(?string $filename, string $for = 'default'): string
     {
-        if (empty($imagePath)) {
+        if (!$filename) {
             return empty_image($for);
         }
 
-        if (config('filesystems.default') === 'public') {
-            $folder = config('app.env') === 'local' && config('app.debug') ? 'uploads/local/' : 'uploads/';
-            $fullPath = $folder . $imagePath;
+        $folder = app()->environment('local') ? 'uploads/local/' : 'uploads/';
 
-            if (Storage::disk('public')->exists($fullPath)) {
-                return Storage::disk('public')->url($fullPath);
-            }
-        }
+        $path = $folder . ltrim($filename, '/');
 
-        return empty_image($for);
+        return Storage::disk('public')->exists($path) ? Storage::disk('public')->url($path) : empty_image($for);
     }
 }
 if (!function_exists('empty_image')) {
