@@ -1774,6 +1774,22 @@
                 padding: 0 !important;
             }
         }
+        @media (max-width: 768px) {
+            .content .row {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Featured image column */
+            .crux-offset--right {
+                order: 1;
+            }
+
+            /* Main content column */
+            .crux-offset--left {
+                order: 2;
+            }
+        }
     </style>
 
     <script>
@@ -2175,7 +2191,7 @@
                         </div><!-- /.rightRail -->
                     @endif
                 </div><!-- /.row -->
-            </div><!-- /.content -->
+            </div>
         </div><!-- /.crux-container -->
     </div>
     @include('frontend.layouts._footer2')
