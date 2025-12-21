@@ -6,7 +6,7 @@
         <a href="{{ route('frontend.privacy-policy') }}" class="text-white">Privacy Policy</a> |
         <a href="{{ route('frontend.terms-and-condition') }}" class="text-white">Terms of Service</a> |
         <a href="{{ route('frontend.about-us') }}" class="text-white">About Us</a> |
-        <a href="{{ route('frontend.about-site-author') }}" class="text-white">About Site Author</a>
+        <a href="{{ route('frontend.about-site-author') }}" class="text-white">About Site Author</a> |
         <a href="https://migotrucking.com" target="_blank" class="text-white">Our sister website</a>
     </div>
     <ul class="social-icons">
