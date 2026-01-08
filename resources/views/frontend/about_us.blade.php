@@ -201,11 +201,6 @@
                                 <span class="font-semibold">three years of hands-on experience</span>
                                 in e-commerce, combining global insight with practical business leadership.
                             </p>
-
-                            <p class="text-gray-200 font-sans text-base lg:text-lg">
-                                My mission is to empower individuals and businesses to grow through strategic guidance,
-                                language expertise, and practical solutions built on trust, professionalism, and measurable results.
-                            </p>
                         </div>
 
                         <!-- SIGNATURE -->
