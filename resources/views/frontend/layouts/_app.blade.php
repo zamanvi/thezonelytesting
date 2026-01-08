@@ -39,6 +39,12 @@
         @include('frontend.layouts._footer')
     </div>
     @include('frontend.layouts._scripts')
+    <script>
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+    </script>
+
     @yield('scripts')
 </body>
 
