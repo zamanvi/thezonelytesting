@@ -216,7 +216,7 @@
                     <div class="mt-8 flex justify-center lg:justify-start gap-5">
 
                         <!-- LinkedIn -->
-                        <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn"
+                        <a href="https://www.linkedin.com/in/md-norozzaman-207418169" target="_blank" aria-label="LinkedIn"
                             class="group p-3 rounded-full bg-slate-800 hover:bg-blue-600 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -226,22 +226,12 @@
                         </a>
 
                         <!-- Facebook -->
-                        <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"
+                        <a href="https://www.facebook.com/md.norozzaman.334957" target="_blank" aria-label="Facebook"
                             class="group p-3 rounded-full bg-slate-800 hover:bg-blue-500 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
                                     d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24h11.495v-9.294H9.691V11.01h3.129V8.309c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.407 24 24 23.407 24 22.676V1.325C24 .593 23.407 0 22.675 0z" />
-                            </svg>
-                        </a>
-
-                        <!-- Twitter (X) -->
-                        <a href="https://twitter.com/" target="_blank" aria-label="Twitter"
-                            class="group p-3 rounded-full bg-slate-800 hover:bg-sky-500 transition">
-                            <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.723 0-4.928 2.204-4.928 4.93 0 .39.045.765.127 1.124-4.094-.205-7.725-2.165-10.157-5.144-.424.722-.666 1.561-.666 2.475 0 1.708.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14-7.496 14-13.986 0-.21 0-.42-.016-.63.961-.689 1.8-1.56 2.46-2.548z" />
                             </svg>
                         </a>
 
