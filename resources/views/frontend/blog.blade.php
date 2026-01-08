@@ -85,7 +85,7 @@
                     verified professionals in your zip code.</p>
             </div>
             <div class="shrink-0">
-                <a href="{{ route('frontend.home') }}" class="bg-white text-blue-600 px-10 py-5 rounded-2xl font-black hover:shadow-2xl transition-all transform hover:-translate-y-1">Search Experts Near Me</a>
+                <a href="{{ route('frontend.home') }}" class="bg-white text-blue-400 px-5 py-2 rounded-2xl font-black hover:shadow-2xl transition-all transform hover:-translate-y-1">Search Experts Near Me</a>
             </div>
         </section>
     </main> 
