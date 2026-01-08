@@ -168,7 +168,7 @@
                         “Building brands through strategy, creativity, and digital excellence.”
                     </h3>
 
-                    <div class="space-y-6 text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    {{-- <div class="space-y-6 text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
                         <p>
                             Hi, I'm <span class="text-white font-bold">Md. Norozzaman</span>,
                             Founder and CEO of
@@ -186,7 +186,46 @@
                         <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
                             Founder & CEO
                         </p>
+                    </div> --}}
+
+                    <div class="max-w-3xl mx-auto lg:mx-0 space-y-8">
+
+                        <!-- ABOUT TEXT -->
+                        <div class="space-y-6 text-gray-300 leading-relaxed text-lg lg:text-xl tracking-wide">
+                            <p class="text-white font-serif text-lg lg:text-2xl">
+                                Hello, I’m <span class="font-bold">Md. Norozzaman</span>,
+                                the Founder and CEO of
+                                <span class="font-semibold">Tansai Consultancy &amp; Language Center</span>.
+                                A graduate of <span class="font-semibold">Hezhou University, China</span>,
+                                I am a dedicated entrepreneur with over
+                                <span class="font-semibold">three years of hands-on experience</span>
+                                in e-commerce, combining global insight with practical business leadership.
+                            </p>
+
+                            <p class="text-gray-200 font-sans text-base lg:text-lg">
+                                My mission is to empower individuals and businesses to grow through strategic guidance,
+                                language expertise, and practical solutions built on trust, professionalism, and measurable results.
+                            </p>
+                        </div>
+
+                        <!-- SIGNATURE -->
+                        <div class="mt-12">
+                            <p class="font-serif text-3xl lg:text-4xl text-white tracking-wide">Md. Norozzaman</p>
+                            <p class="text-blue-400 text-sm lg:text-base font-bold uppercase tracking-widest mt-1">
+                                Founder &amp; CEO
+                            </p>
+                        </div>
                     </div>
+
+
+                    <!-- SIGNATURE -->
+                    <div class="mt-10">
+                        <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
+                        <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
+                            Founder &amp; CEO
+                        </p>
+                    </div>
+
 
                     <!-- SOCIAL LINKS -->
                     <div class="mt-8 flex justify-center lg:justify-start gap-5">
