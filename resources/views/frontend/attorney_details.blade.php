@@ -91,7 +91,7 @@
                         <div class="space-y-6">
                             @forelse($user->educations as $education)
                                 <div class="flex items-start gap-4">
-                                    <div class="w-20 h-10 rounded-xl bg-blue-50 flex itemscenter justify-center text-blue-600 font-bold shrink-0">
+                                    <div class="w-20 h-8 rounded-xl bg-blue-50 flex itemscenter justify-center text-blue-600 font-bold shrink-0">
                                         {{ $education->degree }}
                                     </div>
                                     <div>
