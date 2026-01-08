@@ -1,97 +1,90 @@
 @extends('frontend.layouts._app')
-@section('title', 'Help - Tow Now')
+@section('title', 'Help & Support')
 @section('content')
-<div class="container py-5" style="min-height: 80vh;">
-    <!-- Help Page Header -->
-    <div class="text-center mb-5">
-        <h1 class="fw-bold">How Can We Help You?</h1>
-        <p class="lead">Find answers to common questions or contact us for further assistance.</p>
+
+<main class="mt-20 max-w-5xl mx-auto px-6 pb-20 space-y-12">
+    <!-- Page Header -->
+    <div>
+        <h1 class="text-2xl font-bold mb-2">Help & Support</h1>
+        <p class="text-slate-600 leading-relaxed">
+            Find answers to common questions or get in touch with our support team.
+        </p>
     </div>
 
-    <!-- FAQ Section -->
-    <div class="row mb-5">
-        <div class="col-md-12">
-            <div class="accordion" id="faqAccordion">
-                <!-- FAQ 1 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        How do I book a towing service?
-                    </h2>
-                    <div>
-                        You can book a towing service through our website or app by providing your location and selecting the required service.
-                    </div>
-                </div>
-                <!-- FAQ 3 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        What should I do if I can't find a tow truck near me?
-                    </h2>
-                    <div>
-                        If you’re unable to find a nearby tow truck, contact us directly for assistance, and we’ll guide you through alternative options.
-                    </div>
-                </div>
-                <!-- FAQ 4 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        How long will it take for a tow truck to arrive?
-                    </h2>
-                    <div>
-                        Our tow trucks typically arrive within 30 minutes to an hour, depending on your location and traffic conditions. You can track your tow truck's arrival via our app.
-                    </div>
-                </div>
-                <!-- FAQ 5 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        Can I schedule a towing service in advance?
-                    </h2>
-                    <div >
-                        Yes, you can schedule a towing service in advance through our website or app. Choose the time and date that works best for you.
-                    </div>
-                </div>
-                <!-- FAQ 6 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        Do you provide roadside assistance in addition to towing?
-                    </h2>
-                    <div>
-                        Yes, we offer roadside assistance services such as flat tire changes, battery jump-starts, and fuel delivery. You can request these services when booking a tow.
-                    </div>
-                </div>
-                <!-- FAQ 7 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        Can I cancel my towing request?
-                    </h2>
-                    <div>
-                        Yes, you can cancel your towing request as long as the tow truck hasn’t been dispatched. Cancellations made after dispatch may incur a small fee.
-                    </div>
-                </div>
-                <!-- FAQ 8 -->
-                <div class="accordion-item mb-3">
-                    <h2>
-                        What areas do you serve?
-                    </h2>
-                    <div>
-                        We serve [Insert service area], including [city names or regions]. Check our service map on the website to see if we cover your location.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- FAQ 1 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">How do I book a towing service?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            You can book a towing service through our website or mobile app by providing your location
+            and selecting the required service.
+        </p>
+    </section>
 
-    <!-- Contact Options -->
-    <div class="text-center">
-        <h3>Still need help?</h3>
-        <a href="{{ route('frontend.contact') }}" class="btn btn-success btn-lg mt-3">
-            <i class="bi bi-whatsapp"></i> Contact Us
+    <!-- FAQ 2 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">What if I can’t find a tow truck near me?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            If no tow truck is available nearby, please contact our support team directly.
+            We’ll assist you with alternative solutions.
+        </p>
+    </section>
+
+    <!-- FAQ 3 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">How long does it take for a tow truck to arrive?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            Tow trucks typically arrive within 30 minutes to 1 hour depending on traffic
+            and your location. You can track the truck in real-time via our app.
+        </p>
+    </section>
+
+    <!-- FAQ 4 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">Can I schedule a towing service in advance?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            Yes, you can schedule a towing service in advance by selecting your preferred
+            date and time during booking.
+        </p>
+    </section>
+
+    <!-- FAQ 5 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">Do you offer roadside assistance?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            Yes, we provide roadside assistance services including tire changes,
+            battery jump-starts, and fuel delivery.
+        </p>
+    </section>
+
+    <!-- FAQ 6 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">Can I cancel my towing request?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            You can cancel your request before a tow truck is dispatched.
+            Late cancellations may incur a small service fee.
+        </p>
+    </section>
+
+    <!-- FAQ 7 -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+        <h2 class="text-xl font-bold mb-3">What areas do you serve?</h2>
+        <p class="text-slate-600 leading-relaxed">
+            We operate in selected cities and regions.
+            Please check our service map or contact support to confirm availability.
+        </p>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm text-center">
+        <h2 class="text-2xl font-bold mb-3">Still need help?</h2>
+        <p class="text-slate-600 mb-6">
+            Our support team is ready to assist you anytime.
+        </p>
+        <a href="{{ route('frontend.contact') }}"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
+            Contact Us
         </a>
-    </div>
-</div>
-@endsection
-@section('css')
-    <style>
-        a{
-            font-size: 25px;
-        }
-    </style>
+    </section>
+</main>
+
 @endsection

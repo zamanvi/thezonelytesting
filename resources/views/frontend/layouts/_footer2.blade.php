@@ -4,9 +4,7 @@
             <div class="cr-footer--wrapper crux-container">
 
                 <div class="footer--linc-logo">
-                    <a href="{{ route('frontend.home') }}" class="footer--logo" style="color: #00ae3d; font-size: 30px"
-                        href="{{ route('frontend.home') }}">Zonely</a>
-                    </a>
+                    <a href="{{ route('frontend.home') }}" class="footer--logo" style="color: #00ae3d; font-size: 30px">Zonely</a>
                 </div>
 
                 {{-- <div class="footer--columns cr-footer__row">

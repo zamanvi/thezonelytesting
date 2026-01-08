@@ -85,9 +85,54 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        $users = User::where('type', 'profile')->where('status', true)->paginate(12);
+        $users = User::where('type', 'profile')->where('status', true)->latest()->take(2)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
+    function attorney_all()
+    {
+        $users = User::where('type', 'profile')->where('status', true)->latest()->paginate(4);
+        $isSearch = false;
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+        return view('frontend.all', compact('users', 'isSearch', 'meta_title', 'meta_description', 'meta_keywords'));
+    }
+    function attorney_search(Request $request)
+    {
+        $query = $request->input('q');
+        $users = User::where('type', 'profile')
+            ->where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%')
+                    ->orWhere('title', 'like', '%' . $query . '%')
+                    ->orWhere('designation', 'like', '%' . $query . '%')
+                    ->orWhere('work_address', 'like', '%' . $query . '%')
+                    ->orWhere('about', 'like', '%' . $query . '%')
+                    ->orWhere('remark', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('educations', function ($q) use ($query) {
+                $q->where('degree', 'like', '%' . $query . '%')
+                    ->orWhere('institution', 'like', '%' . $query . '%')
+                    ->orWhere('passing_year', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('contacts', function ($q) use ($query) {
+                $q->where('type', 'like', '%' . $query . '%')->orWhere('value', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('languages', function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%');
+            })
+            ->orWhereHas('memberships', function ($q) use ($query) {
+                $q->where('name', 'like', '%' . $query . '%');
+            })
+            ->paginate(12)
+            ->appends(['q' => $query]);
+        $isSearch = true;
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+        return view('frontend.all', compact('users', 'isSearch', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
+    }
+
     function attorney_show($slug)
     {
         $user = User::where('slug', $slug)->where('type', 'profile')->where('status', true)->firstOrFail();
@@ -122,7 +167,7 @@ class HomeController extends Controller
             })
             ->paginate(12)
             ->appends(['q' => $query]);
-
+        $isSearch = true;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
@@ -177,17 +222,34 @@ class HomeController extends Controller
     }
     function blog()
     {
-        $blogs = Blog::latest()->paginate(20);
+        // Get latest blog as featured
+        $featuredBlog = Blog::latest()->first();
+
+        // Get next 10 blogs excluding featured one
+        $blogs = Blog::where('id', '!=', optional($featuredBlog)->id)
+            ->latest()
+            ->take(10)
+            ->get();
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.blog', compact('blogs', 'meta_title', 'meta_description', 'meta_keywords'));
+        return view('frontend.blog', compact('featuredBlog', 'blogs', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function blog_show($slug)
     {
-        $blog = Blog::where('slug', $slug)->firstOrFail();
-        $blog->increment('pageview');
-        return view('frontend.blog_details2', compact('blog'));
+        $featuredBlog = Blog::where('slug', $slug)->firstOrFail();
+        $featuredBlog->increment('pageview');
+
+        $blogs = Blog::where('id', '!=', optional($featuredBlog)->id)
+            ->latest()
+            ->take(10)
+            ->get(); 
+        
+        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
+        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
+        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
+
+        return view('frontend.blog', compact('featuredBlog', 'blogs', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function sitemap()
     {

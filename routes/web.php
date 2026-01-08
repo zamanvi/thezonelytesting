@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('frontend.')->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home');
+    Route::get('all-attorney', [HomeController::class, 'attorney_all'])->name('attorney.all');
+    Route::get('search', [HomeController::class, 'attorney_search'])->name('attorney.search');
     Route::get('attorney/{slug}', [HomeController::class, 'attorney_show'])->name('attorney.show');
     // Route::get('/fast-tow-trucks-near-me-reliable-towing-in-the-USA', [HomeController::class, 'service1'])->name('service1');
     Route::get('/help', [HomeController::class, 'help'])->name('help');
@@ -39,7 +41,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/about-site-author', [HomeController::class, 'about_site_author'])->name('about-site-author');
     Route::get('/tools', [HomeController::class, 'tools'])->name('tools');
     Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
-    Route::get('/search', [HomeController::class, 'search'])->name('search');
+    // Route::get('/search', [HomeController::class, 'search'])->name('search');
 });
 
 Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');

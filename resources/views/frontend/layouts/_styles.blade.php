@@ -1,68 +1,52 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-{{-- font-family: Perpetua, Cambria; --}}
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <style>
     body {
-        margin: 0;
-        padding: 0;
-        font-size: 25px;
-        background-color: #{{ get_color('bodybg')}};
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        scroll-behavior: smooth;
     }
 
-    .video-background {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 500px;
-        object-fit: fill;
+    .font-serif {
+        font-family: 'Playfair Display', serif;
     }
 
-    h1, h2, h3, h4, h5, h6, span, li, p, a, b{
-        font-family: Perpetua;
+    .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter:
+            blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    /* Content styles */
-    .content {
-        top: 0;
-        left: 0;
+    .bento-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32,
+                1.275);
     }
 
-    .navbar {
-        font-size: 20px;
-        background-color: #{{ get_color('navbar')}};
+    .bento-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
-    .navbar, li, a {
-        font-size: 20px;
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
     }
-    .footer {
-        background-color: #{{ get_color('footer')}};
-    }
-    .dropdown-item {
-        color: #{{ get_color('dropdown_item')}};
-    }
-    .dropdown-item.active {
-        background-color: #{{ get_color('dropdown_item_active')}};
-        color: #{{ get_color('dropdown_item_active_text')}}; 
-    }
-    .social-icons {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-    .social-icons .footer-icon {
-        margin-left: 5px !important;
-    }
-    .social-icons .footer-icon a {
-        color: #fff;
-        height: 40px;
-        width: 40px;
-        transition: color 0.3s;
-    }
-    .social-icons .footer-icon a i:hover {
-        color: #007bff;
+
+    .animate-gradient {
+        background: linear-gradient(-45deg, #2563eb,
+                #7c3aed, #db2777);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
     }
 </style>

@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <body class="bg-[#fcfdfe] text-slate-900">
         @include('frontend.layouts._header')
         @yield('content')
         @include('frontend.layouts._footer')

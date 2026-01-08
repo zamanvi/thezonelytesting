@@ -4,174 +4,83 @@
     $meta_keywords = $meta_keywords;
 @endphp
 @extends('frontend.layouts._app')
-@section('title', $meta_title ?? 'Zonely')
+@section('title', 'Home')
 @section('content')
-    <div class="container py-2">
-        <div class="row">
-            <form class="col-md-12 p-0 m-0" action="{{ route('frontend.search') }}" method="GET">
-                <div class="input-group w-100">
-                    <input class="form-control" type="search" name="q" placeholder="Search..." aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-success" type="submit">Search</button>
-                    </div>
-                </div>
+    <header class="mt-20 max-w-5xl mx-auto pt-14 pb-20 px-4 text-center">
+        <h1 class="font-['Playfair_Display'] text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
+            Discover & Hire <br class="hidden sm:block" />
+            <span class="text-blue-600 italic font-normal">Local Experts</span> Near Me
+        </h1>
+
+        <p class="text-slate-500 text-base sm:text-lg max-w-xl mx-auto mb-10">
+            Access the top 1% of verified professionals in your area. Fast, secure, and expert-led.
+        </p>
+
+        <div class="relative max-w-2xl mx-auto bg-white rounded-full shadow-xl p-2 flex flex-col sm:flex-row gap-2">
+            <form action="{{ route('frontend.attorney.search') }}" method="GET" class="flex flex-1">
+                <input type="text" name="q" placeholder="Who are you looking for?"
+                    class="flex-1 px-5 py-4 rounded-full border outline-none focus:border-blue-500 text-sm sm:text-lg" />
+                <button class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition">
+                        Search
+                </button>
             </form>
         </div>
-        <div class="row mt-1">
+    </header>
+    <main class="max-w-7xl mx-auto px-4 pb-20">
+
+        <div class="flex justify-between items-center mb-10 border-b pb-4">
+            <h2 class="text-xs sm:text-sm font-black tracking-widest text-slate-400 uppercase">
+                Featured Experts Nearby
+            </h2>
+
+            <div class="flex gap-2">
+                <a href="{{ route('frontend.attorney.all') }}" class="px-4 py-2 rounded-full border hover:bg-slate-100">See All</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
             @foreach ($users as $user)
-                <div class="col-lg-3 col-md-4 col-sm-6 p-1">
-                    <div class="team-card shadow-sm rounded-3">
-                        <a href="{{ route('frontend.attorney.show', $user->slug) }}">
-                            <h4 class="text-center team-name">{{ $user->title }}</h4>
-                        </a>
-                        <div class="team-photo">
+                <!-- Card 1 -->
+                <div class="group bg-white rounded-3xl p-6 border hover:shadow-2xl transition">
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="w-full sm:w-44 h-52 rounded-2xl overflow-hidden relative">
                             <img src="{{ $user->profile_photo }}"
-                                onerror="this.onerror=null;this.src='{{ asset('images/user.png') }}';"
-                                class="img-fluid rounded-circle">
+                                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" />
+                            <span
+                                class="absolute top-3 left-3 bg-white px-2 py-1 text-[10px] font-bold text-blue-600 rounded">
+                                {{ $user->status ? 'VERIFIED' : 'UNVERIFIED' }}
+                            </span>
                         </div>
-                        <div class="button-details">
-                            <a href="{{ route('frontend.attorney.show', $user->slug) }}">Details</a>
+
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-['Playfair_Display'] text-2xl mb-1">
+                                    {{ $user->name }}
+                                </h3>
+                                <!-- <p class="text-blue-600 text-xs font-bold uppercase mb-3">
+                                    Corporate Law • Atlanta, GA
+                                </p>
+                                <p class="text-slate-500 italic text-sm">
+                                    "Leading expert in corporate equity and high-scale business litigation."
+                                </p> -->
+                            </div>
+
+                            <div class="mt-5 flex gap-4">
+                                <button
+                                    class="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:scale-105 transition">
+                                    Hire Expert
+                                </button>
+                                <a href="{{ route('frontend.attorney.show', $user->slug) }}" class="text-xs font-bold text-slate-400 hover:text-slate-900">
+                                    View Portfolio
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             @endforeach
-        </div>
 
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
-            {{ $users->links() }}
         </div>
-    </div>
+    </main>
 @endsection
 
-@section('css')
-<style>
-    .col-lg-3,
-    .col-md-4,
-    .col-sm-6 {
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Team card container */
-    .team-card {
-        background: #fff;
-        border-top-left-radius: 50px;
-        border-bottom-right-radius: 50px;
-        border: 1px solid #ddd;
-        padding: 1rem 0rem 0rem 0rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        transition: all 0.3s ease;
-    }
-
-    .team-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        border-color: #00ae3d;
-    }
-
-    /* Title */
-    .team-name {
-        font-weight: 600;
-        color: #002147;
-        margin-bottom: 0.5rem;
-        text-align: center;
-        font-size: 1.1rem;
-        padding: 0rem .5rem;
-        transition: color 0.3s ease;
-        min-height: 4.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1.3;
-        overflow: hidden;
-    }
-
-    .team-card:hover .team-name {
-        color: #00ae3d;
-    }
-
-    /* Image */
-    .team-photo {
-        margin: 0 auto 0.8rem auto;
-        width: 180px;
-        height: 180px;
-        overflow: hidden;
-        border-radius: 50%;
-        border: 3px solid #f0f0f0;
-        background: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .team-photo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .team-photo img:hover {
-        transform: scale(1.08);
-        cursor: pointer;
-    }
-
-    /* Details button */
-    .button-details {
-        width: 50%;
-        transform: translateX(100%);
-        background-color: #ff0000;
-        text-align: center;
-        border-bottom-right-radius: 50px;
-        transition: all 0.3s ease;
-    }
-
-    .button-details a {
-        display: block;
-        color: #fff;
-        font-weight: 600;
-        padding: 0.6rem 0;
-        font-size: 0.95rem;
-        text-transform: uppercase;
-    }
-
-    .button-details:hover {
-        background-color: #00ae3d;
-    }
-
-    /* Search bar */
-    input[type="search"] {
-        border-radius: 50px 0 0 50px;
-        border: 1px solid #ccc;
-        padding: 0.6rem 1rem;
-        transition: all 0.3s ease;
-    }
-
-    input[type="search"]:focus {
-        border-color: #00ae3d;
-        box-shadow: 0 0 8px rgba(0, 174, 61, 0.2);
-        outline: none;
-    }
-
-    .input-group-append .btn {
-        border-radius: 0 50px 50px 0;
-        background-color: #00ae3d;
-        border: none;
-        color: #fff;
-        transition: all 0.3s ease;
-    }
-
-    .input-group-append .btn:hover {
-        background-color: #002147;
-    }
-
-    /* Remove underline globally */
-    a {
-        text-decoration: none !important;
-    }
-</style>
-@endsection
