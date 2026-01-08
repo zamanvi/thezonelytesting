@@ -6,7 +6,7 @@
         <a href="{{ route('frontend.privacy-policy') }}" class="hover:text-blue-700">Privacy Policy</a>
         <a href="{{ route('frontend.terms-and-condition') }}" class="hover:text-blue-700">Terms of Service</a>
         <a href="{{ route('frontend.about-us') }}" class="hover:text-blue-700">About Us</a>
-        <a href="{{ route('frontend.about-site-author') }}" class="hover:text-blue-700">About Site Author</a>
+        {{-- <a href="{{ route('frontend.about-site-author') }}" class="hover:text-blue-700">About Site Author</a> --}}
         <a href="https://migotrucking.com" target="_blank" class="hover:text-blue-700">Our sister website</a>
     </div>
     <div class="flex justify-center gap-6 mb-4">
