@@ -212,16 +212,6 @@
                         </div>
                     </div>
 
-
-                    <!-- SIGNATURE -->
-                    <div class="mt-10">
-                        <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
-                        <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
-                            Founder &amp; CEO
-                        </p>
-                    </div>
-
-
                     <!-- SOCIAL LINKS -->
                     <div class="mt-8 flex justify-center lg:justify-start gap-5">
 
