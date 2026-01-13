@@ -5,7 +5,7 @@
 @section('title', 'About Site Author')
 @section('content')
 
-    <section class="bg-slate-900 text-white py-20 md:py-32 overflow-hidden">
+    <section class="bg-slate-900 text-white py-20 md:py-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="flex flex-col lg:flex-row items-center gap-16">
 
@@ -47,7 +47,7 @@
                     </div>
 
                     <!-- SIGNATURE -->
-                    <div class="mt-10">
+                    <div class="mt-5">
                         <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
                         <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
                             Founder & CEO

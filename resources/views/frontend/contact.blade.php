@@ -2,7 +2,7 @@
 @section('title', 'Contact Us')
 @section('content')
 
-<main class="mt-20 max-w-5xl mx-auto px-6 pb-20 space-y-12">
+<main class="mt-20 max-w-5xl mx-auto px-6 pb-10 space-y-6">
 
     <!-- Page Header -->
     <div>

@@ -6,7 +6,7 @@
 @section('title', $meta_title)
 
 @section('content')
-    <main class="max-w-7xl mx-auto px-6 pt-32 pb-24">
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-10">
 
         <div class="relative mb-12">
             <div class="flex flex-col lg:flex-row gap-12 items-end">

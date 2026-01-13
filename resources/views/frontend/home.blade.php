@@ -6,7 +6,7 @@
 @extends('frontend.layouts._app')
 @section('title', 'Home')
 @section('content')
-    <header class="mt-20 max-w-5xl mx-auto pt-14 pb-20 px-4 text-center">
+    <header class="mt-20 max-w-5xl mx-auto pt-14 pb-14 px-4 text-center">
         <h1 class="font-['Playfair_Display'] text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
             Discover & Hire <br class="hidden sm:block" />
             <span class="text-blue-600 italic font-normal">Local Experts</span> Near Me
@@ -26,7 +26,7 @@
             </form>
         </div>
     </header>
-    <main class="max-w-7xl mx-auto px-4 pb-20">
+    <main class="max-w-7xl mx-auto px-4 pb-10">
 
         <div class="flex justify-between items-center mb-10 border-b pb-4">
             <h2 class="text-xs sm:text-sm font-black tracking-widest text-slate-400 uppercase">
@@ -58,12 +58,6 @@
                                 <h3 class="font-['Playfair_Display'] text-2xl mb-1">
                                     {{ $user->name }}
                                 </h3>
-                                <!-- <p class="text-blue-600 text-xs font-bold uppercase mb-3">
-                                    Corporate Law • Atlanta, GA
-                                </p>
-                                <p class="text-slate-500 italic text-sm">
-                                    "Leading expert in corporate equity and high-scale business litigation."
-                                </p> -->
                             </div>
 
                             <div class="mt-5 flex gap-4">

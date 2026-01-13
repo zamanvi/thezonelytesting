@@ -8,7 +8,7 @@
 @section('content')
 
     {{-- HERO SECTION (MATCHES HOME PAGE) --}}
-    <header class="mt-20 max-w-5xl mx-auto pt-14 pb-16 px-4 text-center">
+    <header class="mt-20 max-w-5xl mx-auto pt-14 pb-10 px-4 text-center">
         <h1 class="font-['Playfair_Display'] text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
             NYC Car Insurance <br class="hidden sm:block">
             <span class="text-blue-600 italic font-normal">Calculator</span>
@@ -21,7 +21,7 @@
     </header>
 
     {{-- MAIN CONTENT --}}
-    <main class="max-w-7xl mx-auto px-4 pb-24">
+    <main class="max-w-7xl mx-auto px-4 pb-10">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 

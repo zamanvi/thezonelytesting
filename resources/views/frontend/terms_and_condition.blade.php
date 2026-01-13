@@ -1,7 +1,7 @@
 @extends('frontend.layouts._app')
 @section('title', 'Terms and Conditions')
 @section('content')
-    <main class="mt-20 max-w-5xl mx-auto px-6 pb-20 space-y12">
+    <main class="mt-20 max-w-5xl mx-auto px-6 pb-10 space-y-6">
         <h1 class="text-2xl font-bold mb-4">Terms &amp; Conditions</h1>
         <p class="text-slate-600 leading-relaxed">Zonely — Build Your Brand. Grow Your Sales.</p>
         <p class="text-slate-600 leading-relaxed">Last updated: <time datetime="2025-09-05">September 5, 2025</time></p>

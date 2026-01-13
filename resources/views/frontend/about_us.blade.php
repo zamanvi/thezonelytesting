@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- HERO -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28 text-center">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16 text-center">
     <h1 class="font-serif text-4xl md:text-6xl mb-6 leading-tight">
         About <span class="italic text-blue-600">Zonely</span>
     </h1>
@@ -181,7 +181,7 @@
                     </div>
 
                     <!-- SIGNATURE -->
-                    <div class="mt-10">
+                    <div class="mt-5">
                         <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
                         <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
                             Founder & CEO

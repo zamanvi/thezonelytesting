@@ -6,9 +6,9 @@
     $meta_keywords = $meta_keywords;
 @endphp
 @section('content')
-    <main class="mt-20 max-w-7xl mx-auto px-6 pb-32">
+    <main class="mt-20 max-w-7xl mx-auto px-6 pb-10">
 
-        <header class="pt-16 pb-20">
+        <header class="pt-14 pb-24">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-slate-100 pb-12">
                 <div class="max-w-2xl">
                     <span
@@ -56,7 +56,7 @@
 
                 </div>
             </article>
-            <div class="lg:col-span-4 space-y-12">
+            <div class="lg:col-span-4 space-y-6">
                 <h4 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb4">
                     Nearby Resources</h4>
 
@@ -75,7 +75,7 @@
             </div>
         </div>
         <section
-            class="mt-32 bg-blue-600 rounded-[3rem] p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-10">
+            class="mt-16 bg-blue-600 rounded-[3rem] p-12 md:p-14 flex flex-col md:flex-row items-center justify-between gap-10">
             <div class="max-w-xl text-white">
                 <h2 class="font-serif text-4xl md:text-5xl mb-6 leading-tight text-white">Find a trusted <span
                         class="italic text-blue-200">Local Expert</span>

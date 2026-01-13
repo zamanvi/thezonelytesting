@@ -1,4 +1,4 @@
-<footer class="max-w-7xl mx-auto mt-20 px-4 text-center border-t pt-10">
+<footer class="max-w-7xl mx-auto mt-5 px-4 text-center border-t pt-10">
     <div class="text-xl font-extrabold mb-4">
         <a href="{{ route('frontend.home') }}">ZONELY<span class="text-blue-600">.</span></a>
     </div>
