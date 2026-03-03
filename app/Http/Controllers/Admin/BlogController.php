@@ -14,7 +14,7 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::latest()->paginate(20);
-        return view('admin.blog.index', compact('blogs'));
+        return view('admin.blog2.index', compact('blogs'));
     }
 
     /**
@@ -23,7 +23,7 @@ class BlogController extends Controller
     public function create()
     {
         $blogs = Blog::latest()->paginate(20);
-        return view('admin.blog.index', compact('blogs'));
+        return view('admin.blog2.index', compact('blogs'));
     }
 
     /**
@@ -50,7 +50,7 @@ class BlogController extends Controller
     {
         $blog = Blog::find($id);
         $blogs = Blog::paginate(20);
-        return view('admin.blog.show', compact('blogs', 'blog'));
+        return view('admin.blog2.show', compact('blogs', 'blog'));
     }
 
     /**
@@ -60,7 +60,7 @@ class BlogController extends Controller
     {
         $blog = Blog::find($id);
         $blogs = Blog::paginate(20);
-        return view('admin.blog.edit', compact('blogs', 'blog'));
+        return view('admin.blog2.edit', compact('blogs', 'blog'));
     }
 
     /**

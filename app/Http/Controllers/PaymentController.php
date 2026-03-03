@@ -22,7 +22,7 @@ class PaymentController extends Controller
      */
 public function create(Vehicle $vehicle, Policy $policy)
     {
-        return view('admin.payments.create', compact('vehicle', 'policy'));
+        return view('admin.payments2.create', compact('vehicle', 'policy'));
     }
 
     /**
@@ -57,7 +57,7 @@ public function store(Request $request, Vehicle $vehicle, Policy $policy)
      */
     public function edit(Vehicle $vehicle, Policy $policy, Payment $payment)
     {
-        return view('admin.payments.edit', compact('vehicle', 'policy', 'payment'));
+        return view('admin.payments2.edit', compact('vehicle', 'policy', 'payment'));
     }
 
     /**

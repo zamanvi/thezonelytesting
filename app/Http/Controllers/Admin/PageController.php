@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     function admin_dashboard()
     {
-        return view('admin.index');
+        return view('admin.index2');
     }
     // function profiles_index(Request $request)
     // {
@@ -38,12 +38,12 @@ class PageController extends Controller
 
         $users = $query->get();
 
-        return view('admin.profiles.index', compact('users', 'status', 'type'));
+        return view('admin.profiles2.index', compact('users', 'status', 'type'));
     }
     function profiles_edit($id)
     {
         $user = User::find($id);
-        return view('admin.profiles.edit', compact('user'));
+        return view('admin.profiles2.edit', compact('user'));
     }
     public function profiles_update(Request $request, $id)
     {

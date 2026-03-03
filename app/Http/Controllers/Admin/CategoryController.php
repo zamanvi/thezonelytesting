@@ -11,13 +11,13 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::latest()->paginate(20);
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories2.index', compact('categories'));
     }
 
     public function create()
     {
         $categories = Category::latest()->paginate(20);
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories2.index', compact('categories'));
     }
 
     public function store(Request $request)
@@ -40,13 +40,13 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $categories = Category::latest()->paginate(20);
-        return view('admin.categories.show', compact('category', 'categories'));
+        return view('admin.categories2.show', compact('category', 'categories'));
     }
     public function edit($id)
     {
         $category = Category::findOrFail($id);
         $categories = Category::latest()->paginate(20);
-        return view('admin.categories.edit', compact('category', 'categories'));
+        return view('admin.categories2.edit', compact('category', 'categories'));
     }
 
     public function update(Request $request, $id)

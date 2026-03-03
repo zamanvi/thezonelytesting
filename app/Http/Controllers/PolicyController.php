@@ -21,7 +21,7 @@ class PolicyController extends Controller
      */
 public function create(Vehicle $vehicle)
     {
-        return view('admin.policies.create', compact('vehicle'));
+        return view('admin.policies2.create', compact('vehicle'));
     }
     /**
      * Store a newly created resource in storage.
@@ -52,7 +52,7 @@ public function create(Vehicle $vehicle)
      */
  public function show(Vehicle $vehicle, Policy $policy)
     {
-        return view('admin.policies.show', compact('vehicle', 'policy'));
+        return view('admin.policies2.show', compact('vehicle', 'policy'));
     }
 
     /**
@@ -60,7 +60,7 @@ public function create(Vehicle $vehicle)
      */
     public function edit(Vehicle $vehicle, Policy $policy)
     {
-        return view('admin.policies.edit', compact('vehicle', 'policy'));
+        return view('admin.policies2.edit', compact('vehicle', 'policy'));
     }
 
     /**

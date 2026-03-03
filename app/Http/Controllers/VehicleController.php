@@ -20,7 +20,7 @@ class VehicleController extends Controller
     public function index()
     {
         $vehicles = Vehicle::latest()->paginate(20);
-        return view('admin.vehicles.index', compact('vehicles'));
+        return view('admin.vehicles2.index', compact('vehicles'));
     }
 
     /**
@@ -28,7 +28,7 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        return view('admin.vehicles.create');
+        return view('admin.vehicles2.create');
     }
 
     /**
@@ -37,7 +37,6 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'vin' => 'required|unique:vehicles,vin',
             'registration_number' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
@@ -52,6 +51,7 @@ class VehicleController extends Controller
             'aproximate_max' => 'required|string',
         ]);
 
+        // dd($request->all());
         Vehicle::create($request->all());
 
         return redirect()->route('admin.vehicles.index')->with('success', 'Vehicle Created Successfully!');
@@ -63,7 +63,7 @@ class VehicleController extends Controller
     public function show(string $id)
     {
         $vehicle = Vehicle::findOrFail($id);
-        return view('admin.vehicles.show', compact('vehicle'));
+        return view('admin.vehicles2.show', compact('vehicle'));
     }
 
     /**
@@ -72,7 +72,7 @@ class VehicleController extends Controller
     public function edit(string $id)
     {
         $vehicle = Vehicle::findOrFail($id);
-        return view('admin.vehicles.edit', compact('vehicle'));
+        return view('admin.vehicles2.edit', compact('vehicle'));
     }
 
     /**
