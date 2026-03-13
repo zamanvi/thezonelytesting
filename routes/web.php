@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StateController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -106,6 +109,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
+
+    Route::resource('countries', CountryController::class);
+    Route::resource('countries.states', StateController::class);
+    Route::resource('states.cities', CityController::class);
 
     // Blog management
     Route::resource('blogs', BlogController::class);
