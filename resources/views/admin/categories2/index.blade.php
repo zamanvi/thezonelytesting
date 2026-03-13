@@ -42,6 +42,25 @@
                             @enderror
                         </div>
 
+                       <div class="mb-3">
+                            <label class="form-label">Parent Category</label>
+                            <select name="parent_id" class="form-select">
+                                <option value="">-- No Parent (Top Level) --</option>
+                                @foreach ($categories as $parent)
+                                    {{-- Prevent selecting itself as parent in edit --}}
+                                    @if (!isset($category) || $parent->id != $category->id)
+                                        <option value="{{ $parent->id }}"
+                                            {{ old('parent_id', $category->parent_id ?? null) == $parent->id ? 'selected' : '' }}>
+                                            {{ str_repeat('— ', $parent->level) }} {{ $parent->title }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('parent_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
                         <div class="text-end mt-4">
                             <button type="reset" class="btn btn-secondary">
                                 Cancel

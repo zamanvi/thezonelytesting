@@ -1,16 +1,17 @@
-<div class="col-lg-6">
+<div class="col-lg-6"> 
     <div class="section-card">
 
+        {{-- Card Header --}}
         <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
                 <i class="fas fa-list me-2"></i>
                 Categories
             </h5>
-            <span class="badge bg-info px-3 py-2">{{ $categories->total() }} Total</span>
         </div>
 
+        {{-- Card Body --}}
         <div class="card-body p-0">
-            @if($categories && $categories->count())
+            @if($categories && count($categories))
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
@@ -22,64 +23,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- Loop through top-level categories --}}
                             @foreach ($categories as $category)
-                                <tr>
-                                    <td class="font-weight-bold">{{ $category->title }}</td>
-                                    <td class="text-primary">{{ $category->slug }}</td>
-                                    <td>
-                                        @if($category->is_active)
-                                            <span class="badge bg-success">Active</span>
-                                        @else
-                                            <span class="badge bg-secondary">Inactive</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-light" type="button" 
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                                <li>
-                                                    <a class="dropdown-item" 
-                                                       href="{{ route('admin.categories.show', $category->id) }}">
-                                                       <i class="fas fa-eye me-2 text-info"></i> View
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a class="dropdown-item" 
-                                                       href="{{ route('admin.categories.edit', $category->id) }}">
-                                                       <i class="fas fa-edit me-2 text-primary"></i> Edit
-                                                    </a>
-                                                </li>
-
-                                                <li><hr class="dropdown-divider"></li>
-
-                                                <li>
-                                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" 
-                                                          method="POST" onsubmit="return confirm('Delete this category?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger">
-                                                            <i class="fas fa-trash me-2"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @include('admin.categories2.category-row', ['category' => $category, 'level' => 0])
                             @endforeach
                         </tbody>
                     </table>
                 </div>
 
+                {{-- Pagination --}}
                 <div class="mt-3 px-3">
-                    {{ $categories->links() }}
+                    {{ $paginated->links() }}
                 </div>
             @else
+                {{-- No categories --}}
                 <div class="text-center py-5">
                     <i class="fas fa-folder fa-3x text-muted mb-3"></i>
                     <p class="text-muted">No categories found.</p>

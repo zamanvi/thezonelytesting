@@ -10,14 +10,16 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest()->paginate(20);
-        return view('admin.categories2.index', compact('categories'));
+        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
+        $categories = flattenCategories($paginated->items());
+        return view('admin.categories2.index', compact('categories', 'paginated'));
     }
 
     public function create()
     {
-        $categories = Category::latest()->paginate(20);
-        return view('admin.categories2.index', compact('categories'));
+        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
+        $categories = flattenCategories($paginated->items());
+        return view('admin.categories2.index', compact('categories', 'paginated'));
     }
 
     public function store(Request $request)
@@ -25,13 +27,17 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'title'     => 'required|string|max:255',
             'slug'      => 'nullable|string|max:255',
+            'parent_id' => 'nullable',
         ]);
+
+        // dd($validated);
 
         $slug = generateUniqueSlug(Category::class, $validated['slug'] ?? $validated['title']);
 
         Category::create([
             'title'     => $validated['title'],
             'slug'      => $slug,
+            'parent_id' => $validated['parent_id'],
         ]);
         return redirect()->route('admin.categories.index');
     }
@@ -39,14 +45,16 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
-        $categories = Category::latest()->paginate(20);
-        return view('admin.categories2.show', compact('category', 'categories'));
+        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
+        $categories = flattenCategories($paginated->items());
+        return view('admin.categories2.show', compact('category', 'categories', 'paginated'));
     }
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        $categories = Category::latest()->paginate(20);
-        return view('admin.categories2.edit', compact('category', 'categories'));
+        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
+        $categories = flattenCategories($paginated->items());
+        return view('admin.categories2.edit', compact('category', 'categories', 'paginated'));
     }
 
     public function update(Request $request, $id)
@@ -56,6 +64,7 @@ class CategoryController extends Controller
             'title' => 'required|string|max:255',
             'slug'  => 'nullable|string|max:255',
             'is_active'  => 'nullable|boolean',
+            'parent_id' => 'nullable',
         ]);
 
         // If slug is changed, regenerate unique slug
@@ -70,6 +79,7 @@ class CategoryController extends Controller
             'title' => $validated['title'],
             'slug'  => $slug,
             'is_active'  => $is_active,
+            'parent_id' => $validated['parent_id'],
         ]);
 
         return redirect()->route('admin.categories.index');

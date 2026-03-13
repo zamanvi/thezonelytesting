@@ -43,6 +43,24 @@ if (!function_exists('make_slug')) {
         return Str::slug($slug);
     }
 }
+if (!function_exists('flattenCategories')) {
+    /**
+     *
+     * @param $categories 
+     * @param $level 
+     */
+    function flattenCategories($categories, $level = 0) {
+        $flat = [];
+        foreach($categories as $category) {
+            $category->level = $level;
+            $flat[] = $category;
+            if ($category->children->count()) {
+                $flat = array_merge($flat, flattenCategories($category->children, $level+1));
+            }
+        }
+        return $flat; // ✅ THIS IS AN ARRAY NOW
+    }
+}
 if (!function_exists('generateUniqueSlug')) {
     /**
      * Get Random Number

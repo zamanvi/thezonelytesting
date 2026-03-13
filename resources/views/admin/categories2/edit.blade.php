@@ -45,6 +45,21 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-3">
+                                <label class="form-label">Parent Category</label>
+                                <select name="parent_id" class="form-select">
+                                    <option value="">-- No Parent (Top Level) --</option>
+                                    @foreach ($allCategories as $parent)
+                                        @if ($parent->id != $category->id)
+                                            <option value="{{ $parent->id }}"
+                                                {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
+                                                {{ str_repeat('— ', $parent->level) }} {{ $parent->title }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+
                             {{-- Status --}}
                             <div class="form-check mb-4">
                                 <input type="hidden" name="is_active" value="0">
