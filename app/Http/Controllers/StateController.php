@@ -76,6 +76,8 @@ class StateController extends Controller
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }
+        // Assign country from route
+        $data['country_id'] = $country->id;
 
         $state->update($data);
 

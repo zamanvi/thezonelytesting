@@ -26,6 +26,10 @@ return new class extends Migration
             $table->string('password');
             $table->longText('about')->nullable();
             $table->string('remark')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('slug')->unique();
             $table->string('profile_photo')->nullable();
             $table->rememberToken();

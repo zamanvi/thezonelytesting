@@ -76,6 +76,9 @@ class CityController extends Controller
             $data['slug'] = Str::slug($data['title']);
         }
 
+        // Assign parent state
+        $data['state_id'] = $state->id;
+
         $city->update($data);
 
         return redirect()->route('admin.states.cities.index', $state)

@@ -30,6 +30,9 @@ class User extends Authenticatable
         'password',
         'about',
         'remark',
+        'country',
+        'state',
+        'city',
         'slug',
         'profile_photo',
     ];

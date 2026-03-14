@@ -9,7 +9,7 @@
         </div>
 
         <div class="card-body p-0">
-            @if($cities && $cities->count())
+            @if($postalCodes && $postalCodes->count())
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
@@ -21,12 +21,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cities as $city)
+                            @foreach ($postalCodes as $postalCode)
                                 <tr>
-                                    <td class="font-weight-bold">{{ $city->title }}</td>
-                                    <td class="text-primary">{{ $city->slug }}</td>
+                                    <td class="font-weight-bold">{{ $postalCode->title }}</td>
+                                    <td class="text-primary">{{ $postalCode->slug }}</td>
                                     <td>
-                                        @if($city->status)
+                                        @if($postalCode->status)
                                             <span class="badge bg-success">Active</span>
                                         @else
                                             <span class="badge bg-secondary">Inactive</span>
@@ -42,21 +42,14 @@
                                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                 <li>
                                                     <a class="dropdown-item" 
-                                                       href="{{ route('admin.cities.postal-codes.create', $city) }}">
-                                                       <i class="fas fa-plus me-2 text-info"></i> Create Postal Code
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a class="dropdown-item" 
-                                                       href="{{ route('admin.states.cities.show', [$state, $city]) }}">
+                                                       href="{{ route('admin.states.cities.show', [$city, $postalCode]) }}">
                                                        <i class="fas fa-eye me-2 text-info"></i> View
                                                     </a>
                                                 </li>
 
                                                 <li>
                                                     <a class="dropdown-item" 
-                                                       href="{{ route('admin.states.cities.edit', [$state, $city]) }}">
+                                                       href="{{ route('admin.states.cities.edit', [$city, $postalCode]) }}">
                                                        <i class="fas fa-edit me-2 text-primary"></i> Edit
                                                     </a>
                                                 </li>
@@ -64,8 +57,8 @@
                                                 <li><hr class="dropdown-divider"></li>
 
                                                 <li>
-                                                    <form action="{{ route('admin.states.cities.destroy', [$state, $city]) }}" 
-                                                          method="POST" onsubmit="return confirm('Delete this city?');">
+                                                    <form action="{{ route('admin.states.cities.destroy', [$city, $postalCode]) }}" 
+                                                          method="POST" onsubmit="return confirm('Delete this Postal Code?');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger">

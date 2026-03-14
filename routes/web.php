@@ -12,6 +12,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\PostalCodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ServiceController;
@@ -113,6 +114,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('countries', CountryController::class);
     Route::resource('countries.states', StateController::class);
     Route::resource('states.cities', CityController::class);
+    Route::resource('cities.postal-codes', PostalCodeController::class);
 
     // Blog management
     Route::resource('blogs', BlogController::class);

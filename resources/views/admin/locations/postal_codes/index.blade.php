@@ -1,44 +1,44 @@
 @extends('layouts.admin2')
 
-@section('title', 'City Panel')
+@section('title', 'Postal Code Panel')
 
 @section('content')
 <div class="mt-5 pt-4">
     <div class="row g-4">
 
-        {{-- LEFT: City List --}}
-        @include('admin.locations.cities.component')
+        {{-- LEFT: Postal Code List --}}
+        @include('admin.locations.postal_codes.component')
 
-        {{-- RIGHT: Create City Form --}}
+        {{-- RIGHT: Create Postal Code Form --}}
         <div class="col-lg-6">
             <div class="section-card">
 
                 <div class="card-header bg-primary text-white p-4">
                     <h5 class="mb-0">
                         <i class="fas fa-plus me-2"></i>
-                        Create New City
+                        Create New Postal Codes
                     </h5>
                 </div>
 
                 <div class="card-body p-4">
-                    <form method="POST" action="{{ route('admin.states.cities.store', $state) }}">
+                    <form method="POST" action="{{ route('admin.cities.postal-codes.store', $city) }}">
                         @csrf
                             
-                        <h4>State: {{ $state->title }}</h4>
+                        <h4>City: {{ $city->title }}</h4>
 
                         <div class="mb-3">
-                            <label class="form-label">City Title</label>
+                            <label class="form-label">Postal Code</label>
                             <input required type="text" name="title" class="form-control"
-                                   placeholder="Enter City title" value="{{ old('title') }}">
+                                   placeholder="Enter Postal Code" value="{{ old('title') }}">
                             @error('title')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">City Slug</label>
+                            <label class="form-label">Postal Code Slug</label>
                             <input type="text" name="slug" class="form-control"
-                                   placeholder="city-slug" value="{{ old('slug') }}">
+                                   placeholder="postal-code-slug" value="{{ old('slug') }}">
                             @error('slug')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

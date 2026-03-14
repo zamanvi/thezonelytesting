@@ -14,4 +14,9 @@ class City extends Model
     {
         return $this->belongsTo(State::class);
     }
+
+    public function postalCodes()
+    {
+        return $this->hasMany(PostalCode::class);
+    }
 }
