@@ -41,7 +41,7 @@ class PostalCodeController extends Controller
         // Assign parent city
         $data['city_id'] = $city->id;
 
-        City::create($data);
+        PostalCode::create($data);
 
         return redirect()->route('admin.cities.postal-codes.index', $city)
                          ->with('success', 'City created successfully');
