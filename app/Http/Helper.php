@@ -58,7 +58,20 @@ if (!function_exists('flattenCategories')) {
                 $flat = array_merge($flat, flattenCategories($category->children, $level+1));
             }
         }
-        return $flat; // ✅ THIS IS AN ARRAY NOW
+        return $flat;
+    }
+}
+if (!function_exists('categoryPath')) {
+    function categoryPath($category)
+    {
+        $path = [];
+
+        while ($category) {
+            $path[] = $category->title;
+            $category = $category->parent;
+        }
+
+        return implode(' => ', array_reverse($path));
     }
 }
 if (!function_exists('generateUniqueSlug')) {
