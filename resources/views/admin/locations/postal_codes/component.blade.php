@@ -4,7 +4,7 @@
         <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
                 <i class="fas fa-list me-2"></i>
-                Cities
+                Postal Codes
             </h5>
         </div>
 
@@ -42,14 +42,14 @@
                                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                 <li>
                                                     <a class="dropdown-item" 
-                                                       href="{{ route('admin.states.cities.show', [$city, $postalCode]) }}">
+                                                       href="{{ route('admin.cities.postal-codes.show', [$city, $postalCode]) }}">
                                                        <i class="fas fa-eye me-2 text-info"></i> View
                                                     </a>
                                                 </li>
 
                                                 <li>
                                                     <a class="dropdown-item" 
-                                                       href="{{ route('admin.states.cities.edit', [$city, $postalCode]) }}">
+                                                       href="{{ route('admin.cities.postal-codes.edit', [$city, $postalCode]) }}">
                                                        <i class="fas fa-edit me-2 text-primary"></i> Edit
                                                     </a>
                                                 </li>
@@ -57,7 +57,7 @@
                                                 <li><hr class="dropdown-divider"></li>
 
                                                 <li>
-                                                    <form action="{{ route('admin.states.cities.destroy', [$city, $postalCode]) }}" 
+                                                    <form action="{{ route('admin.cities.postal-codes.destroy', [$city, $postalCode]) }}" 
                                                           method="POST" onsubmit="return confirm('Delete this Postal Code?');">
                                                         @csrf
                                                         @method('DELETE')
@@ -76,12 +76,12 @@
                 </div>
 
                 <div class="mt-3 px-3">
-                    {{ $cities->links() }}
+                    {{ $postalCodes->links() }}
                 </div>
             @else
                 <div class="text-center py-5">
                     <i class="fas fa-folder fa-3x text-muted mb-3"></i>
-                    <p class="text-muted">No cities found.</p>
+                    <p class="text-muted">No Postal Code found.</p>
                 </div>
             @endif
         </div>

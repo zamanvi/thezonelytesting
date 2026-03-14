@@ -6,7 +6,7 @@
     <div class="row g-4">
 
         {{-- LEFT: Country List --}}
-        @include('admin.locations.cities.component')
+        @include('admin.locations.postal_codes.component')
 
         {{-- RIGHT: Category Details --}}
         <div class="col-lg-6">

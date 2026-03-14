@@ -28,7 +28,7 @@ class PostalCodeController extends Controller
     }
 
     /**
-     * Store a newly created city in storage.
+     * Store a newly created postalCode in storage.
      */
     public function store(PostalCodeRequest $request, City $city)
     {
@@ -57,7 +57,7 @@ class PostalCodeController extends Controller
     }
 
     /**
-     * Show the form for editing a city.
+     * Show the form for editing a cpostalCodeity.
      */
     public function edit(City $city, PostalCode $postalCode)
     {
@@ -66,7 +66,7 @@ class PostalCodeController extends Controller
     }
 
     /**
-     * Update a city in storage.
+     * Update a postalCode in storage.
      */
     public function update(PostalCodeRequest $request, City $city, PostalCode $postalCode)
     {
@@ -86,7 +86,7 @@ class PostalCodeController extends Controller
     }
 
     /**
-     * Remove a city from storage.
+     * Remove a postalCode from storage.
      */
     public function destroy(City $city, PostalCode $postalCode)
     {
