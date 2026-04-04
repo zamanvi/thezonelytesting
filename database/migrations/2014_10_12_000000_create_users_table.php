@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type')->default('user');
+            $table->enum('type', ['admin', 'staf', 'seller', 'user'])->default('user');
             $table->string('email')->unique();
             $table->string('title')->nullable();
             $table->string('phone')->nullable();
             $table->string('designation')->nullable();
             $table->string('whatsapp')->nullable();
+            $table->string('bio')->nullable();
             $table->string('work_address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('status')->default(true);
@@ -29,8 +30,12 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
-            $table->string('postal_code')->nullable();
+            $table->string('zip_code')->nullable();
             $table->string('slug')->unique();
+            $table->string('business_name')->nullable();
+            $table->string('experience')->nullable();
+            $table->string('additional_details')->nullable();
+            $table->string('category_id')->nullable();
             $table->string('profile_photo')->nullable();
             $table->rememberToken();
             $table->timestamps();

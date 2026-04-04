@@ -10,13 +10,15 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MembershipController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\PostalCodeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StateController;
+use App\Models\Category;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\PostalCode;
+use App\Models\State;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +50,25 @@ Route::name('frontend.')->group(function () {
     // Route::get('/search', [HomeController::class, 'search'])->name('search');
 });
 
+Route::get('/get-subcategories/{id}', function ($id) {
+    return Category::where('parent_id', $id)->get();
+});
+
+Route::get('/countries', function () {
+    return Country::where('status', 1)->get();
+});
+
+Route::get('/states/{country_id}', function ($country_id) {
+    return State::where('country_id', $country_id)->where('status', 1)->get();
+});
+
+Route::get('/cities/{state_id}', function ($state_id) {
+    return City::where('state_id', $state_id)->where('status', 1)->get();
+});
+
+Route::get('/postal-codes/{city_id}', function ($city_id) {
+    return PostalCode::where('city_id', $city_id)->where('status', 1)->get();
+});
 Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'user_register1'])->name('user.register1');
 Route::get('user/register/{slug}', [HomeController::class, 'user_register2'])->name('user.register');
@@ -59,106 +80,84 @@ Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
 
 /*
 |--------------------------------------------------------------------------
-| Dashboard
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user->type === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-    if ($user->type === 'profile') {
-        if ($user->work_address === null || $user->phone === null) {
-            return redirect()->route('profile.edit')->with('warning', 'Please complete your profile before proceeding.');
-        }
-        return redirect()->route('profile.dashboard');
-    }
-    if ($user->type === 'user') {
-        return redirect()->route('user.dashboard');
-    }
-})->name('dashboard');
-
-/*
-|--------------------------------------------------------------------------
-| Admin Routes
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
-    Route::prefix('profiles')->name('profiles.')->group(function () {
-        Route::get('index', [PageController::class, 'profiles_index'])->name('index');
-        Route::get('edit/{id}', [PageController::class, 'profiles_edit'])->name('edit');
-        Route::put('update/{id}', [PageController::class, 'profiles_update'])->name('update');
-        Route::delete('destroy/{id}', [PageController::class, 'profiles_destroy'])->name('destroy');
-    });
-
-    Route::resource('vehicles', VehicleController::class);
-    Route::prefix('vehicles/{vehicle}')->group(function () {
-        Route::get('policies/create', [PolicyController::class, 'create'])->name('policies.create');
-        Route::post('policies', [PolicyController::class, 'store'])->name('policies.store');
-        Route::get('policies/{policy}', [PolicyController::class, 'show'])->name('policies.show');
-        Route::get('policies/{policy}/edit', [PolicyController::class, 'edit'])->name('policies.edit');
-        Route::put('policies/{policy}', [PolicyController::class, 'update'])->name('policies.update');
-        Route::delete('policies/{policy}', [PolicyController::class, 'destroy'])->name('policies.destroy');
-    });
-    Route::prefix('vehicles/{vehicle}/policies/{policy}')->group(function () {
-        Route::get('payments/create', [PaymentController::class, 'create'])->name('payments.create');
-        Route::post('payments', [PaymentController::class, 'store'])->name('payments.store');
-        Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
-        Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
-        Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
-    });
-
-    Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
-
-    Route::resource('countries', CountryController::class);
-    Route::resource('countries.states', StateController::class);
-    Route::resource('states.cities', CityController::class);
-    Route::resource('cities.postal-codes', PostalCodeController::class);
-
-    // Blog management
-    Route::resource('blogs', BlogController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('services', ServiceController::class);
-});
-
-/*
-|--------------------------------------------------------------------------
-| user Routes
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
-    Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
-});
-
-/*
-|--------------------------------------------------------------------------
-| profile Routes
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'profile'])->prefix('profile-base')->name('profile.')->group(function () {
-    Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
-    Route::resource('services', ServiceController::class);
-    Route::resource('educations', EducationController::class);
-    Route::resource('memberships', MembershipController::class);
-    Route::resource('languages', LanguageController::class);
-    Route::resource('contacts', ContactController::class);
-    Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
-});
-
-/*
-|--------------------------------------------------------------------------
 | User Profile
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () { 
-    
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/dashboard', function () {
+        $user = Auth::user();
+        if ($user->type === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        if ($user->type === 'seller') {
+            // if ($user->work_address === null || $user->phone === null) {
+            //     return redirect()->route('profile.edit')->with('warning', 'Please complete your profile before proceeding.');
+            // }
+            return redirect()->route('user.dashboard');
+        }
+        if ($user->type === 'user') {
+            return redirect()->route('profile.edit');
+        }
+        return redirect()->route('user.dashboard');
+    })->name('dashboard');
+
     Route::get('profile/first', [ProfileController::class, 'edit'])->name('profile.first');
+    Route::get('profile/{type}/{setup}', [ProfileController::class, 'typeProfile'])->name('type.profile');
+    Route::post('profile/{type}/{setup}', [ProfileController::class, 'typeSellerProfile'])->name('save.seller.profile');
     Route::get('/profile/maintainance', [ProfileController::class, 'blockedlist'])->name('profile.blockedlist');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | user Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
+        Route::resource('services', ServiceController::class);
+        Route::resource('educations', EducationController::class);
+        Route::resource('memberships', MembershipController::class);
+        Route::resource('languages', LanguageController::class);
+        Route::resource('contacts', ContactController::class);
+        Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
+        Route::prefix('profiles')->name('profiles.')->group(function () {
+            Route::get('index', [PageController::class, 'profiles_index'])->name('index');
+            Route::get('edit/{id}', [PageController::class, 'profiles_edit'])->name('edit');
+            Route::put('update/{id}', [PageController::class, 'profiles_update'])->name('update');
+            Route::delete('destroy/{id}', [PageController::class, 'profiles_destroy'])->name('destroy');
+        });
+
+        Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
+
+        Route::resource('countries', CountryController::class);
+        Route::resource('countries.states', StateController::class);
+        Route::resource('states.cities', CityController::class);
+        Route::resource('cities.postal-codes', PostalCodeController::class);
+
+        // Blog management
+        Route::resource('blogs', BlogController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('services', ServiceController::class);
+    });
+
 });
 
 require __DIR__ . '/auth.php';

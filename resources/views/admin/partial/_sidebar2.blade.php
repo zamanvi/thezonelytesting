@@ -11,20 +11,6 @@
         <li class="nav-item"><a href="{{ route('admin.profiles.index') }}"
                 class="@if (Route::is(['admin.profiles.index'])) active @endif"><i class="fas fa-users"></i><span
                     class="nav-text ms-1">All Profiles</span></a></li>
-        <li class="nav-item"><a href="{{ route('admin.vehicles.index') }}"
-                class="@if (Route::is([
-                        'admin.vehicles.index',
-                        'admin.vehicles.create',
-                        'admin.vehicles.show',
-                        'admin.vehicles.edit',
-                        'admin.policies.create',
-                        'admin.policies.show',
-                        'admin.policies.edit',
-                        'admin.payments.create',
-                        'admin.payments.show',
-                        'admin.payments.edit',
-                    ])) active @endif"><i class="fas fa-users"></i><span
-                    class="nav-text ms-1">All Vehicles</span></a></li>
         <li class="d-none nav-item"><a href="{{ route('admin.services.index') }}"
                 class="@if (Route::is(['admin.services.create', 'admin.services.show', 'admin.services.edit'])) active @endif"><i class="fas fa-users"></i><span
                     class="nav-text ms-1">Services</span></a></li>

@@ -15,7 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::where('user_id', Auth::id())->paginate(10);
-        return view('vendor.services.index', compact('services'));
+        return view('frontend.profile.services.index', compact('services'));
     }
 
     /**
@@ -24,7 +24,7 @@ class ServiceController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('vendor.services.create', compact('categories'));
+        return view('frontend.profile.services.create', compact('categories'));
     }
 
     /**

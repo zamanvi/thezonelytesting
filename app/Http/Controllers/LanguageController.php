@@ -25,7 +25,7 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = $this->model->where('user_id', auth()->id())->paginate(10);
-        return view('profile.languages.index', compact('languages'));
+        return view('frontend.profile.languages.index', compact('languages'));
     }
 
     /**
@@ -33,7 +33,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        return view('profile.languages.create');
+        return view('frontend.profile.languages.create');
     }
 
     /**
@@ -50,7 +50,7 @@ class LanguageController extends Controller
         $language->name = $validated['name'];
         $language->save();
 
-        return redirect()->route('profile.languages.index')->with('success', 'Language added successfully.');
+        return redirect()->route('user.languages.index')->with('success', 'Language added successfully.');
     }
 
     /**
@@ -59,7 +59,7 @@ class LanguageController extends Controller
     public function edit($id)
     {
         $language = $this->model->where('user_id', auth()->id())->findOrFail($id);
-        return view('profile.languages.edit', compact('language'));
+        return view('frontend.profile.languages.edit', compact('language'));
     }
 
     /**
@@ -74,7 +74,7 @@ class LanguageController extends Controller
         $language = Language::where('user_id', auth()->id())->findOrFail($id);
         $language->update($validated);
 
-        return redirect()->route('profile.languages.index')->with('success', 'Language updated successfully.');
+        return back()->with('success', 'Language updated successfully.');
     }
 
     /**
@@ -85,6 +85,6 @@ class LanguageController extends Controller
         $language = Language::where('user_id', auth()->id())->findOrFail($id);
         $language->delete();
 
-        return redirect()->route('profile.languages.index')->with('success', 'Language deleted successfully.');
+        return redirect()->route('user.languages.index')->with('success', 'Language deleted successfully.');
     }
 }

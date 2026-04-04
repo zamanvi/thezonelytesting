@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,9 @@ class HomeController extends Controller
     }
     function user_register2($type)
     {
-        return view('frontend.auth.register', compact('type'));
+        $categories = Category::where('is_active', true)->whereNull('parent_id')->get();
+        return view('frontend.auth.register', compact('type', 'categories'));
+        // return view('frontend.auth.register', compact('type'));
     }
     function user_submit_login(Request $request)
     {
@@ -36,23 +39,16 @@ class HomeController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::user();
-            return redirect()
-                ->route('dashboard')
-                ->with('success', 'Welcome back, ' . $user->name);
+            return redirect()->route('dashboard')->with('success', 'Welcome back, ' . $user->name);
         }
-        return back()
-            ->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ])
-            ->onlyInput('email');
+        return back()->withErrors(['email' => 'The provided credentials do not match our records.',])->onlyInput('email');
     }
     function user_submit_register(Request $request)
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            // 'type' => ['required', 'in:profile,service,customer'],
-            'password' => ['required', 'confirmed', 'min:6'],
+            'password' => ['required', 'min:6'],
         ]);
         // Generate slug
         $slug = Str::slug($validated['name']);
@@ -64,21 +60,38 @@ class HomeController extends Controller
             $counter++;
         }
 
+        $type = $request->type;
+
+        if ($type === 'buyer') {
+            $type = 'user';
+        }
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'type' => $request->type ?? 'user',
+            'phone' => $request->phone ?? null,
+            'whatsapp' => $request->whatsapp ?? null,
+            'type' => $type ,
+            'business_name' => $request->business_name ?? '',
             'password' => Hash::make($validated['password']),
             'slug' => $slug,
+            'category_id' => collect($request->category_id)->last() ?? null,
+            'country' => $request->country ?? '',
+            'state' => $request->state ?? '',
+            'city' => $request->city ?? '',
+            'zip_code' => $request->zip_code ?? '',
+            'additional_details' => $request->additional_details ?? 'null',
+            'bio' => $request->bio ?? '',
+            'experience' => $request->experience ?? '',
         ]);
         Auth::login($user);
-        if ($user->type === 'profile') {
+        if ($user->type === 'user') {
+            return redirect()->route('frontend.home')->with('success', 'Please complete your profile.');
+        }
+        if ($user->type === 'seller') {
             return redirect()->route('profile.first')->with('success', 'Please complete your profile.');
         }
-
-        return redirect()
-            ->route('dashboard')
-            ->with('success', 'Registration successful! Welcome, ' . $user->name);
+        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
     }
     function home()
     {

@@ -28,7 +28,7 @@ class EducationController extends Controller
     public function index()
     {
         $educations = $this->model->where('user_id', auth()->id())->paginate(10);
-        return view('profile.educations.index', compact('educations'));
+        return view('frontend.profile.educations.index', compact('educations'));
     }
 
     /**
@@ -36,7 +36,7 @@ class EducationController extends Controller
      */
     public function create()
     {
-        return view('profile.educations.create');
+        return view('frontend.profile.educations.create');
     }
 
     /**
@@ -59,7 +59,7 @@ class EducationController extends Controller
         $education->passing_year = $validated['passing_year'];
         $education->save();
 
-        return redirect()->route('profile.educations.index')->with('success', 'Education added successfully.');
+        return redirect()->route('user.educations.index')->with('success', 'Education added successfully.');
     }
 
     /**
@@ -73,7 +73,7 @@ class EducationController extends Controller
     public function edit($id)
     {
         $education = $this->model->where('user_id', auth()->id())->findOrFail($id);
-        return view('profile.educations.edit', compact('education'));
+        return view('frontend.profile.educations.edit', compact('education'));
     }
 
     /**
@@ -93,7 +93,7 @@ class EducationController extends Controller
         // Update fields
         $education->update($validated);
 
-        return redirect()->route('profile.educations.index')->with('success', 'Education updated successfully.');
+        return back()->with('success', 'Education updated successfully.');
     }
 
     /**
@@ -104,6 +104,6 @@ class EducationController extends Controller
         // Find the education belonging to the logged-in user
         $education = Education::where('user_id', auth()->id())->findOrFail($id);
         $education->delete();
-        return redirect()->route('profile.educations.index')->with('success', 'Education deleted successfully.');
+        return redirect()->route('user.educations.index')->with('success', 'Education deleted successfully.');
     }
 }

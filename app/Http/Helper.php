@@ -74,6 +74,20 @@ if (!function_exists('categoryPath')) {
         return implode(' => ', array_reverse($path));
     }
 }
+
+if (!function_exists('categoryPathSignup')) {
+    function categoryPathSignup($category)
+    {
+        $path = [];
+        while ($category) {
+            $path[] = $category->title;
+            $category = $category->parent;
+        }
+        $html = '<a href="$category->id">{{ $category->title }}</a>';
+        $var = implode(', ', array_reverse($path));
+        return $var + $html;
+    }
+}
 if (!function_exists('generateUniqueSlug')) {
     /**
      * Get Random Number

@@ -1,44 +1,21 @@
 @extends('frontend.layouts.__app')
 
 @section('content')
-
-    <div class="text-center mb-12">
-        @if (isset($type) && $type == 'seller')
-            <h1 class="font-serif text-4xl md:text-6xl text-slate-900 mb-4">
-                Join as a Local Expert
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Create your professional profile in minutes and start
-                receiving verified leads from customers near you.
-                No upfront costs – pay only for quality leads.
-            </p>
-        @else
-            <h1 class="font-serif text-4xl md:text-6xl text-slate-900 mb-4">
-                Join as a Customer
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Find trusted local experts near you and get your job done easily.
-            </p>
-        @endif
-
-    </div>
-
     <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-slate-100">
-        <form id="proSignupForm" action="{{ route('user.submit.register') }}" method="POST" class="space-y-10">
-            @csrf
-            <!-- Step 1: Account -->
-            <input type="hidden" name="type" value="{{ $type }}">
-            <div class="step active" data-step="1">
-                <h2 class="text-3xl font-bold mb-6">Create Your Account</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">@if (isset($type) && $type == 'seller') Owner Name @else Full Name @endif <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" required name="name"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="e.g. Kaitlin Moran">
-                    </div>
-                    @if (isset($type) && $type == 'seller')
+            <form id="proSignupForm" action="{{ route('user.submit.register') }}" method="POST" class="space-y-10">
+                @csrf
+                <!-- Step 1: Account -->
+                <input type="hidden" name="type" value="{{ $type }}">
+                <div class="step active" data-step="1">
+                    <h2 class="text-3xl font-bold mb-6">Create Your Account</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Full Name <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" required name="name"
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
+                                placeholder="e.g. Kaitlin Moran">
+                        </div>
                         <div>
                             <label class="block text-lg font-semibold text-slate-800 mb-2">Business Name
                                 (optional)</label>
@@ -46,141 +23,139 @@
                                 class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
                                 placeholder="e.g. Moran Legal Services">
                         </div>
-                    @endif
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Email <span
-                                class="text-red-500">*</span></label>
-                        <input type="email" name="email" required
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="you@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Phone Number <span
-                                class="text-red-500">*</span></label>
-                        <input type="tel" required name="phone"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="+1 (555) 123-4567">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Password <span
-                                class="text-red-500">*</span></label>
-                        <input type="password" id="password" name="password" required minlength="8"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
-                        <p class="text-sm text-slate-500 mt-2">Minimum 8 characters, include a number and symbol.
-                        </p>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Confirm Password <span
-                                class="text-red-500">*</span></label>
-                        <input type="password" id="confirmPassword" name="confirm_password" required minlength="8"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
-                    </div>
-                </div>
-                <div class="flex justify-between mt-12">
-                    <button type="button"
-                        class="prev-step text-slate-600 font-bold hover:text-slate-900 opacity-50 cursor-not-allowed"
-                        disabled>← Back</button>
-                    <button type="button"
-                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
-                        →</button>
-                </div>
-            </div>
-
-            <!-- Step 2: Services & Locations -->
-            @if (isset($type) && $type == 'seller')
-                <div class="step" data-step="2">
-                    <h2 class="text-3xl font-bold mb-6">Your Services & Service Locations</h2>
-                    <div class="space-y-12">
-                        <div class="space-y-8" id="category-wrapper">
-                            <div>
-                                <label class="block text-lg font-semibold text-slate-800 mb-3">Primary Service
-                                    Category
-                                    <span class="text-red-500">*</span></label>
-                                <select required id="primaryCategory"
-                                    class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
-                                    name="category_id[]">
-
-                                    <option value="">Select your main category</option>
-
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->title }}</option>
-                                    @endforeach
-                                </select>
-
-                                {{-- <div id="category-container"></div> --}}
-                            </div>
-                        </div>
-
-                        <div class="space-y-8">
-                            <label class="block text-lg font-semibold text-slate-800 mb-3">Service Locations <span
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Email <span
                                     class="text-red-500">*</span></label>
-                            <p class="text-sm text-slate-500 mb-6">Add precise areas you serve.</p>
-                            <div id="locationsContainer" class="space-y-8">
-                                <div
-                                    class="location-block p-8 bg-gradient-to-r from-slate-50 to-blue-50 rounded-3xl border border-slate-200 shadow-sm">
-                                    <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6">
-                                        <div>
-                                            <label class="block text-sm font-bold text-slate-600 mb-2">Country
-                                                <span class="text-red-500">*</span></label>
-                                            <select required name="country"
-                                                class="country-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
-                                                <option value="">Select Country</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-bold text-slate-600 mb-2">State /
-                                                Province
-                                                <span class="text-red-500">*</span></label>
-                                            <select required name="state"
-                                                class="state-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
-                                                disabled>
-                                                <option value="">Select State</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-bold text-slate-600 mb-2">City <span
-                                                    class="text-red-500">*</span></label>
-                                            <select required name="city"
-                                                class="city-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
-                                                disabled>
-                                                <option value="">Select City</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-bold text-slate-600 mb-2">ZIP / Postal
-                                                Code <span class="text-red-500">*</span></label>
-                                            <select required name="zip_code"
-                                                class="zip-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
-                                                disabled>
-                                                <option value="">Select ZIP Code</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mt-6">
-                                        <label class="block text-sm font-bold text-slate-600 mb-2">Additional
-                                            Details
-                                            (optional)</label>
-                                        <input type="text" placeholder="Neighborhood or notes"
-                                            name="additional_details"
-                                            class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="email" name="email" required
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
+                                placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Phone Number <span
+                                    class="text-red-500">*</span></label>
+                            <input type="tel" required name="phone"
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
+                                placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Password <span
+                                    class="text-red-500">*</span></label>
+                            <input type="password" id="password" name="password" required minlength="8"
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                            <p class="text-sm text-slate-500 mt-2">Minimum 8 characters, include a number and symbol.
+                            </p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Confirm Password <span
+                                    class="text-red-500">*</span></label>
+                            <input type="password" id="confirmPassword" name="confirm_password" required minlength="8"
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
                         </div>
                     </div>
-                    <div class="flex justify-between mt-16">
+                    <div class="flex justify-between mt-12">
                         <button type="button"
-                            class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
-                            Back</button>
+                            class="prev-step text-slate-600 font-bold hover:text-slate-900 opacity-50 cursor-not-allowed"
+                            disabled>← Back</button>
                         <button type="button"
                             class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
                             →</button>
                     </div>
                 </div>
-            @endif
 
-            <!-- Step 3: Contact Options -->
-            @if (isset($type) && $type == 'seller')
+                <!-- Step 2: Services & Locations -->
+                @if (isset($type) && $type == 'seller')
+                    <div class="step" data-step="2">
+                        <h2 class="text-3xl font-bold mb-6">Your Services & Service Locations</h2>
+                        <div class="space-y-12">
+                            <div class="space-y-8" id="category-wrapper">
+                                <div>
+                                    <label class="block text-lg font-semibold text-slate-800 mb-3">Primary Service
+                                        Category
+                                        <span class="text-red-500">*</span></label>
+                                    <select required id="primaryCategory"
+                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                        name="category_id[]">
+
+                                        <option value="">Select your main category</option>
+
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    {{-- <div id="category-container"></div> --}}
+                                </div>
+                            </div>
+
+                            <div class="space-y-8">
+                                <label class="block text-lg font-semibold text-slate-800 mb-3">Service Locations <span
+                                        class="text-red-500">*</span></label>
+                                <p class="text-sm text-slate-500 mb-6">Add precise areas you serve.</p>
+                                <div id="locationsContainer" class="space-y-8">
+                                    <div
+                                        class="location-block p-8 bg-gradient-to-r from-slate-50 to-blue-50 rounded-3xl border border-slate-200 shadow-sm">
+                                        <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6">
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-600 mb-2">Country
+                                                    <span class="text-red-500">*</span></label>
+                                                <select required name="country"
+                                                    class="country-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+                                                    <option value="">Select Country</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-600 mb-2">State /
+                                                    Province
+                                                    <span class="text-red-500">*</span></label>
+                                                <select required name="state"
+                                                    class="state-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                                    disabled>
+                                                    <option value="">Select State</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-600 mb-2">City <span
+                                                        class="text-red-500">*</span></label>
+                                                <select required name="city"
+                                                    class="city-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                                    disabled>
+                                                    <option value="">Select City</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-600 mb-2">ZIP / Postal
+                                                    Code <span class="text-red-500">*</span></label>
+                                                <select required name="zip_code"
+                                                    class="zip-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                                    disabled>
+                                                    <option value="">Select ZIP Code</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mt-6">
+                                            <label class="block text-sm font-bold text-slate-600 mb-2">Additional
+                                                Details
+                                                (optional)</label>
+                                            <input type="text" placeholder="Neighborhood or notes"
+                                                name="additional_details"
+                                                class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-16">
+                            <button type="button"
+                                class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
+                                Back</button>
+                            <button type="button"
+                                class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
+                                →</button>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Step 3: Contact Options -->
                 <div class="step" data-step="3">
                     <h2 class="text-3xl font-bold mb-6">How Customers Can Reach You</h2>
                     <p class="text-slate-600 mb-10">Choose the contact methods you want visible on your public profile.
@@ -220,7 +195,7 @@
                                             class="w-16 h-16 bg-blue-100 rounded-3xl flex items-center justify-center text-blue-600 text-3xl">
                                             📞</div>
                                         <div>
-                                            <h3 class="text-2xl font-bold">Customer Call Phone Number</h3>
+                                            <h3 class="text-2xl font-bold">Direct Phone Call</h3>
                                             <p class="text-base text-slate-500">Show your phone for instant calls</p>
                                         </div>
                                     </div>
@@ -251,8 +226,7 @@
                                             <p class="text-base text-slate-500">Fastest growing messaging channel</p>
                                         </div>
                                     </div>
-                                    <input type="tel" name="whatsapp"
-                                        placeholder="WhatsApp number (e.g. +1 555 123 4567)"
+                                    <input type="tel" placeholder="WhatsApp number (e.g. +1 555 123 4567)"
                                         class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
                                     <p class="text-sm text-emerald-600 font-medium mt-4">Converts 3x faster than forms
                                     </p>
@@ -268,168 +242,165 @@
 
                         <!-- Zonely Booking -->
                         {{-- <div
-                                class="bg-white border-2 border-slate-200 rounded-3xl p-10 hover:border-indigo-600 transition-all shadow-sm">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-6 mb-6">
-                                            <div
-                                                class="w-16 h-16 bg-indigo-100 rounded-3xl flex items-center justify-center text-indigo-600 text-3xl">
-                                                📅</div>
-                                            <div>
-                                                <h3 class="text-2xl font-bold">Zonely Built-in Booking</h3>
-                                                <p class="text-base text-slate-500">Fully integrated appointment scheduling
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <p class="text-slate-600 mb-8">Customers book directly on your profile.</p>
-
-                                        <div class="space-y-7">
-                                            <div>
-                                                <label class="block text-lg font-semibold text-slate-800 mb-2">Default
-                                                    Appointment Duration <span class="text-red-500">*</span></label>
-                                                <select id="appointmentDuration"
-                                                    class="w-full max-w-md px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none">
-                                                    <option value="15">15 minutes</option>
-                                                    <option value="30" selected>30 minutes</option>
-                                                    <option value="45">45 minutes</option>
-                                                    <option value="60">60 minutes</option>
-                                                    <option value="90">90 minutes</option>
-                                                    <option value="120">120 minutes</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="block text-lg font-semibold text-slate-800 mb-2">Buffer
-                                                    Time</label>
-                                                <select id="bufferTime"
-                                                    class="w-full max-w-md px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none">
-                                                    <option value="0">None</option>
-                                                    <option value="10">10 minutes</option>
-                                                    <option value="15" selected>15 minutes</option>
-                                                    <option value="30">30 minutes</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="block text-lg font-semibold text-slate-800 mb-2">Default
-                                                    Daily Hours</label>
-                                                <div class="grid grid-cols-2 gap-6 max-w-md">
-                                                    <input type="time" id="startTime" value="09:00"
-                                                        class="px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600">
-                                                    <input type="time" id="endTime" value="18:00"
-                                                        class="px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-lg font-semibold text-slate-800 mb-4">Default
-                                                    Working Days</label>
-                                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="monday" checked
-                                                            class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Monday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="tuesday" checked
-                                                            class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Tuesday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="wednesday"
-                                                            checked class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Wednesday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="thursday"
-                                                            checked class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Thursday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="friday" checked
-                                                            class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Friday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="saturday"
-                                                            class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Saturday</span>
-                                                    </label>
-                                                    <label
-                                                        class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
-                                                        <input type="checkbox" name="workingDays" value="sunday"
-                                                            class="sr-only peer">
-                                                        <span
-                                                            class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Sunday</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-sm text-indigo-600 font-medium mt-8">Best conversion method –
-                                            customers book instantly!</p>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer ml-8">
-                                        <input type="checkbox" checked class="sr-only peer enable-zonely-booking">
+                            class="bg-white border-2 border-slate-200 rounded-3xl p-10 hover:border-indigo-600 transition-all shadow-sm">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-6 mb-6">
                                         <div
-                                            class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-indigo-500">
+                                            class="w-16 h-16 bg-indigo-100 rounded-3xl flex items-center justify-center text-indigo-600 text-3xl">
+                                            📅</div>
+                                        <div>
+                                            <h3 class="text-2xl font-bold">Zonely Built-in Booking</h3>
+                                            <p class="text-base text-slate-500">Fully integrated appointment scheduling
+                                            </p>
                                         </div>
-                                    </label>
+                                    </div>
+                                    <p class="text-slate-600 mb-8">Customers book directly on your profile.</p>
+
+                                    <div class="space-y-7">
+                                        <div>
+                                            <label class="block text-lg font-semibold text-slate-800 mb-2">Default
+                                                Appointment Duration <span class="text-red-500">*</span></label>
+                                            <select id="appointmentDuration"
+                                                class="w-full max-w-md px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none">
+                                                <option value="15">15 minutes</option>
+                                                <option value="30" selected>30 minutes</option>
+                                                <option value="45">45 minutes</option>
+                                                <option value="60">60 minutes</option>
+                                                <option value="90">90 minutes</option>
+                                                <option value="120">120 minutes</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-lg font-semibold text-slate-800 mb-2">Buffer
+                                                Time</label>
+                                            <select id="bufferTime"
+                                                class="w-full max-w-md px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none">
+                                                <option value="0">None</option>
+                                                <option value="10">10 minutes</option>
+                                                <option value="15" selected>15 minutes</option>
+                                                <option value="30">30 minutes</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-lg font-semibold text-slate-800 mb-2">Default
+                                                Daily Hours</label>
+                                            <div class="grid grid-cols-2 gap-6 max-w-md">
+                                                <input type="time" id="startTime" value="09:00"
+                                                    class="px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600">
+                                                <input type="time" id="endTime" value="18:00"
+                                                    class="px-6 py-5 rounded-3xl border border-slate-300 focus:border-indigo-600">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-lg font-semibold text-slate-800 mb-4">Default
+                                                Working Days</label>
+                                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="monday" checked
+                                                        class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Monday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="tuesday" checked
+                                                        class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Tuesday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="wednesday"
+                                                        checked class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Wednesday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="thursday"
+                                                        checked class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Thursday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="friday" checked
+                                                        class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Friday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="saturday"
+                                                        class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Saturday</span>
+                                                </label>
+                                                <label
+                                                    class="day-label flex items-center justify-center p-5 bg-slate-50 rounded-3xl border-2 border-slate-200 hover:border-indigo-600 cursor-pointer transition-all">
+                                                    <input type="checkbox" name="workingDays" value="sunday"
+                                                        class="sr-only peer">
+                                                    <span
+                                                        class="font-semibold text-slate-700 peer-checked:text-indigo-600 peer-checked:font-bold">Sunday</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-indigo-600 font-medium mt-8">Best conversion method –
+                                        customers book instantly!</p>
                                 </div>
-                            </div> --}}
+                                <label class="relative inline-flex items-center cursor-pointer ml-8">
+                                    <input type="checkbox" checked class="sr-only peer enable-zonely-booking">
+                                    <div
+                                        class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-indigo-500">
+                                    </div>
+                                </label>
+                            </div>
+                        </div> --}}
                     </div>
 
                     <div class="flex justify-between mt-16">
                         <button type="button"
-                            class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
-                            Back</button>
+                            class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">← Back</button>
                         <button type="button"
                             class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
                             →</button>
                     </div>
                 </div>
-            @endif
 
-            <!-- Step 4: Profile (Improved) -->
-            <div class="step" data-step="4">
-                <h2 class="text-3xl font-bold mb-4">Build Your Professional Profile</h2>
-                <p class="text-slate-600 mb-10">Add details to build trust and stand out from others.</p>
+                <!-- Step 4: Profile (Improved) -->
+                <div class="step" data-step="4">
+                    <h2 class="text-3xl font-bold mb-4">Build Your Professional Profile</h2>
+                    <p class="text-slate-600 mb-10">Add details to build trust and stand out from others.</p>
 
-                <div class="space-y-12">
+                    <div class="space-y-12">
 
-                    <!-- Profile Photo -->
-                    <div class="space-y-4">
-                        <label class="text-lg font-semibold text-slate-800">Profile Photo <span
-                                class="text-red-500">*</span></label>
-                        <div
-                            class="border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer">
-                            <input type="file" accept="image/*" required class="hidden" id="photoUpload">
-                            <label for="photoUpload" class="cursor-pointer block">
-                                <div id="photoPreview"
-                                    class="mx-auto w-40 h-40 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden mb-6 border-4 border-white shadow-lg">
-                                    <svg class="w-20 h-20 text-slate-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <p class="text-lg font-semibold text-blue-600 mb-1">Click to upload photo</p>
-                                <p class="text-sm text-slate-500">JPG, PNG • Max 5MB • Recommended: square photo
-                                </p>
-                            </label>
+                        <!-- Profile Photo -->
+                        <div class="space-y-4">
+                            <label class="text-lg font-semibold text-slate-800">Profile Photo <span
+                                    class="text-red-500">*</span></label>
+                            <div
+                                class="border-2 border-dashed border-slate-300 rounded-3xl p-12 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer">
+                                <input type="file" accept="image/*" required class="hidden" id="photoUpload">
+                                <label for="photoUpload" class="cursor-pointer block">
+                                    <div id="photoPreview"
+                                        class="mx-auto w-40 h-40 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden mb-6 border-4 border-white shadow-lg">
+                                        <svg class="w-20 h-20 text-slate-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-lg font-semibold text-blue-600 mb-1">Click to upload photo</p>
+                                    <p class="text-sm text-slate-500">JPG, PNG • Max 5MB • Recommended: square photo
+                                    </p>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    @if (isset($type) && $type == 'seller')
                         <!-- Short Bio / Tagline -->
                         <div class="space-y-4">
                             <label class="text-lg font-semibold text-slate-800">Short Bio / Tagline <span
@@ -451,10 +422,9 @@
                             <p class="text-sm text-slate-500">How many years have you been practicing professionally?
                             </p>
                         </div>
-                    @endif
 
-                    <!-- Education -->
-                    {{-- <div class="space-y-6">
+                        <!-- Education -->
+                        {{-- <div class="space-y-6">
                             <div class="flex justify-between items-center">
                                 <label class="text-lg font-semibold text-slate-800">Education</label>
                                 <button type="button" id="addEducation"
@@ -491,8 +461,8 @@
                             </div>
                         </div> --}}
 
-                    <!-- Professional Experience -->
-                    {{-- <div class="space-y-6">
+                        <!-- Professional Experience -->
+                        {{-- <div class="space-y-6">
                             <div class="flex justify-between items-center">
                                 <label class="text-lg font-semibold text-slate-800">Professional Experience</label>
                                 <button type="button" id="addExperience"
@@ -529,8 +499,8 @@
                             </div>
                         </div> --}}
 
-                    <!-- Professional Memberships / Licenses -->
-                    {{-- <div class="space-y-6">
+                        <!-- Professional Memberships / Licenses -->
+                        {{-- <div class="space-y-6">
                             <div class="flex justify-between items-center">
                                 <label class="text-lg font-semibold text-slate-800">Professional Memberships /
                                     Licenses</label>
@@ -566,44 +536,45 @@
                             </div>
                         </div> --}}
 
+                    </div>
+
+                    <div class="flex justify-between mt-16">
+                        <button type="button"
+                            class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">← Back</button>
+                        <button type="button"
+                            class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
+                            →</button>
+                    </div>
                 </div>
 
-                <div class="flex justify-between mt-16">
-                    <button type="button" class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
-                        Back</button>
-                    <button type="button"
-                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
-                        →</button>
+                <!-- Step 5: Review -->
+                <div class="step" data-step="5">
+                    <h2 class="text-3xl font-bold mb-6">Final Review & Verification</h2>
+                    <p class="text-slate-600 mb-8">We’ll verify your credentials to show a “Verified” badge.</p>
+                    <div class="bg-blue-50 rounded-3xl p-8 mb-10 shadow-sm">
+                        <h3 class="text-xl font-bold text-blue-900 mb-4">Pay-Per-Lead Model</h3>
+                        <ul class="text-base text-blue-800 space-y-3">
+                            <li>✓ No monthly fees</li>
+                            <li>✓ Only pay for verified leads</li>
+                            <li>✓ Full control</li>
+                        </ul>
+                    </div>
+                    <label class="flex items-start gap-4 mb-10">
+                        <input type="checkbox" required
+                            class="mt-1 w-6 h-6 text-blue-600 rounded focus:ring-blue-500">
+                        <span class="text-base text-slate-700">I agree to Zonely's Terms and Privacy Policy.</span>
+                    </label>
+                    <div class="flex justify-between mt-12">
+                        <button type="button"
+                            class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">← Back</button>
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-12 py-6 rounded-3xl font-bold hover:bg-slate-900 transition shadow-xl text-lg">Create
+                            My Profile</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Step 5: Review -->
-            <div class="step" data-step="5">
-                <h2 class="text-3xl font-bold mb-6">Final Review & Verification</h2>
-                <p class="text-slate-600 mb-8">We’ll verify your credentials to show a “Verified” badge.</p>
-                <div class="bg-blue-50 rounded-3xl p-8 mb-10 shadow-sm">
-                    <h3 class="text-xl font-bold text-blue-900 mb-4">Pay-Per-Lead Model</h3>
-                    <ul class="text-base text-blue-800 space-y-3">
-                        <li>✓ No monthly fees</li>
-                        <li>✓ Only pay for verified leads</li>
-                        <li>✓ Full control</li>
-                    </ul>
-                </div>
-                <label class="flex items-start gap-4 mb-10">
-                    <input type="checkbox" required class="mt-1 w-6 h-6 text-blue-600 rounded focus:ring-blue-500">
-                    <span class="text-base text-slate-700">I agree to Zonely's Terms and Privacy Policy.</span>
-                </label>
-                <div class="flex justify-between mt-12">
-                    <button type="button" class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
-                        Back</button>
-                    <button type="submit"
-                        class="bg-blue-600 text-white px-12 py-6 rounded-3xl font-bold hover:bg-slate-900 transition shadow-xl text-lg">Create
-                        My Profile</button>
-                </div>
-            </div>
-
-        </form>
-    </div>
+            </form>
+        </div>
 @endsection
 
 @section('script')

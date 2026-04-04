@@ -25,6 +25,7 @@ class User extends Authenticatable
         'phone',
         'designation',
         'whatsapp',
+        'bio',
         'work_address',
         'status',
         'password',
@@ -33,7 +34,12 @@ class User extends Authenticatable
         'country',
         'state',
         'city',
+        'zip_code',
         'slug',
+        'business_name',
+        'experience',
+        'additional_details',
+        'category_id',
         'profile_photo',
     ];
 
@@ -76,5 +82,10 @@ class User extends Authenticatable
     public function memberships()
     {
         return $this->hasMany(Membership::class);
+    }
+
+    public function category()
+    {
+        return parent::belongsTo(Category::class, 'category_id');
     }
 }

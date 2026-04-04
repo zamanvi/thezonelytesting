@@ -21,6 +21,7 @@
                 </div>
 
                 <div class="card-body p-4">
+                    {{-- <pre>{{ categoryPathSignup(\App\Models\Category::latest()->first()); }}</pre> --}}
                     <form method="POST" action="{{ route('admin.categories.store') }}">
                         @csrf
 

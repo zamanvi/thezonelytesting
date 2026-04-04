@@ -28,7 +28,7 @@ class MembershipController extends Controller
     public function index()
     {
         $memberships = $this->model->where('user_id', auth()->id())->paginate(10);
-        return view('profile.memberships.index', compact('memberships'));
+        return view('frontend.profile.memberships.index', compact('memberships'));
     }
 
     /**
@@ -36,7 +36,7 @@ class MembershipController extends Controller
      */
     public function create()
     {
-        return view('profile.memberships.create');
+        return view('frontend.profile.memberships.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class MembershipController extends Controller
         $membership->name = $validated['name'];
         $membership->save();
 
-        return redirect()->route('profile.memberships.index')->with('success', 'Membership added successfully.');
+        return redirect()->route('user.memberships.index')->with('success', 'Membership added successfully.');
     }
 
     /**
@@ -62,7 +62,7 @@ class MembershipController extends Controller
     public function edit($id)
     {
         $membership = $this->model->where('user_id', auth()->id())->findOrFail($id);
-        return view('profile.memberships.edit', compact('membership'));
+        return view('frontend.profile.memberships.edit', compact('membership'));
     }
 
     /**
@@ -77,7 +77,7 @@ class MembershipController extends Controller
         $membership = Membership::where('user_id', auth()->id())->findOrFail($id);
         $membership->update($validated);
 
-        return redirect()->route('profile.memberships.index')->with('success', 'Membership updated successfully.');
+        return back()->with('success', 'Membership updated successfully.');
     }
 
     /**
@@ -88,6 +88,6 @@ class MembershipController extends Controller
         $membership = Membership::where('user_id', auth()->id())->findOrFail($id);
         $membership->delete();
 
-        return redirect()->route('profile.memberships.index')->with('success', 'Membership deleted successfully.');
+        return redirect()->route('user.memberships.index')->with('success', 'Membership deleted successfully.');
     }
 }

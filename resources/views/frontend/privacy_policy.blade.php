@@ -3,73 +3,74 @@
 @section('content')
     <main class="mt-20 max-w-5xl mx-auto pt-6 px-6 pb-10 space-y12">
         <h1 class="text-2xl font-bold mb-4">Privacy Policy</h1>
-        <p class="text-slate-600 leading-relaxed">Zonely - Build Your Brand. Grow Your Sales.</p>
-        <p class="text-slate-600 leading-relaxed">Last updated: <time datetime="2025-09-05">September 5, 2025</time></p>
+        <p class="text-slate-600 leading-relaxed">Zonely – Discover & Hire Local Experts Near Me.</p>
+        <p class="text-slate-600 leading-relaxed">Last updated: <time datetime="2025-09-05">March 30, 2026</time></p>
 
         <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">1. Introduction</h2>
             <p class="text-slate-600 leading-relaxed">
-                At <strong>Zonely</strong> ("we," "our," "us"), we value your privacy and are committed to protecting
-                your
-                personal information. This Privacy Policy explains how we collect, use, and safeguard your data when
-                you use
-                our website, services, and applications.
+                At Zonely ("we," "our," "us"), we are committed to protecting the privacy of both our Service Sellers (SMEs,
+                professionals, and businesses) and Service Buyers (customers looking for services). This Privacy Policy
+                explains how we collect, use, and safeguard your data across our SaaS platform, landing pages, and messaging
+                tools.
             </p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">2. Information We Collect</h2>
 
             <ul class="list-disc pl-5 text-slate-600 leading-relaxed space-y-2">
-                <li><strong>Personal Information:</strong> Name, email address, phone number, business details, and
-                    payment
-                    information (if applicable).</li>
-                <li><strong>Account Data:</strong> Login credentials, profile details, and service preferences.</li>
-                <li><strong>Usage Data:</strong> IP address, browser type, device information, and activity logs.
-                </li>
-                <li><strong>Customer Interaction Data:</strong> Messages, bookings, and calls made through Zonely’s
-                    platform.</li>
+                <li><strong>For Service Sellers:</strong> Business name, owner name, professional certifications, business
+                    address, phone number, and payment/billing details.</li>
+                <li><strong>For Service Buyers:</strong> Name, contact information, location data (to find "near me"
+                    services), and specific service requirements.</li>
+                <li><strong>Shared Data:</strong> Messaging history, booking timestamps, call logs, and IP addresses used to
+                    access the platform.</li>
             </ul>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">3. How We Use Your Information</h2>
 
             <ul class="list-disc pl-5 text-slate-600 leading-relaxed space-y-2">
-                <li>Provide, operate, and improve our SaaS platform.</li>
-                <li>Enable booking, messaging, and lead-tracking features.</li>
-                <li>Communicate with you regarding your account, updates, and support.</li>
-                <li>Process payments and subscriptions securely.</li>
-                <li>Analyze usage patterns to enhance performance and user experience.</li>
-                <li>Comply with legal requirements and prevent fraudulent activities.</li>
+                <li><strong>Connecting Users:</strong> We use data to facilitate the "Search → Discover → Hire" workflow
+                    between buyers and sellers.</li>
+                <li><strong>Lead Verification:</strong> To track and verify leads for our Pay-Per-Lead and Commission
+                    models.</li>
+                <li><strong>Platform Integrity:</strong> To monitor "Live 3-Way Calls" and messaging to ensure high-quality
+                    service and prevent fraud.</li>
+                <li><strong>Analytics:</strong> To help Sellers see their "Premium Dashboard" stats (visitor counts and
+                    inquiry rates).</li>
             </ul>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">4. Sharing of Information</h2>
-            <p class="text-slate-600 leading-relaxed">We do not sell or rent your personal information. However, we may
-                share data with:</p>
+            <p class="text-slate-600 leading-relaxed">We do not sell your data. We share information only to make the
+                service work:</p>
             <ul class="list-disc pl-5 text-slate-600 leading-relaxed space-y-2">
-                <li><strong>Service Providers:</strong> Payment processors, hosting providers, and analytics tools.
-                </li>
-                <li><strong>Legal Authorities:</strong> When required by law or to protect our rights.</li>
-                <li><strong>Business Transfers:</strong> In case of mergers, acquisitions, or company restructuring.
-                </li>
+                <li><strong>Between Users:</strong> We share Buyer contact info with the chosen Seller to complete a
+                    booking.</li>
+                <li><strong>Service Providers:</strong> Data is shared with secure hosting (Cloud), payment processors
+                    (Stripe/PayPal), and VoIP providers for call tracking.</li>
+                <li><strong>Legal Compliance:</strong> We share data if required by law or to protect the safety of our
+                    community.</li>
             </ul>
         </section>
 
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">5. Data Security</h2>
             <p class="text-slate-600 leading-relaxed">
-                We implement industry-standard security measures (encryption, secure servers, access controls) to
-                protect your data. While no method is 100% secure, we strive to safeguard all personal and business
-                information.</p>
+                Zonely employs industry-standard encryption (SSL/TLS) and secure server protocols. We use Lead Verification
+                technology to ensure that Sellers only receive legitimate inquiries and that Buyers’ private contact details
+                are handled according to strict access controls.</p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">6. Your Rights</h2>
             <p class="text-slate-600 leading-relaxed">Depending on your location, you may have the right to:</p>
             <ul class="list-disc pl-5 text-slate-600 leading-relaxed space-y-2">
-                <li>Access, update, or delete your personal information.</li>
-                <li>Request a copy of your data.</li>
-                <li>Withdraw consent for data processing.</li>
-                <li>Opt out of marketing communications.</li>
+                Regardless of whether you are a Seller or a Buyer, you have the right to:
+                <li><strong>Access & Rectify:</strong> Update your profile or business details anytime.</li>
+                <li><strong>Erasure:</strong> Request the deletion of your account and historical data.</li>
+                <li><strong>Portability:</strong> Request a copy of your data in a machine-readable format.</li>
+                <li><strong>Withdraw Consent:</strong> Opt-out of lead tracking or marketing at any time.</li>
             </ul>
             <p class="text-slate-600 leading-relaxed">To exercise your rights, contact us at <a
                     href="mailto:norozzaman996@gmail.com">norozzaman996@gmail.com</a>.
@@ -77,44 +78,45 @@
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">7. Cookies &amp; Tracking</h2>
-            <p class="text-slate-600 leading-relaxed">We use cookies and similar technologies to improve your browsing
-                experience, analyze traffic, and
-                personalize
-                content. You can control cookies through your browser settings.</p>
+            <p class="text-slate-600 leading-relaxed">We use cookies to remember your "Near Me" location preferences and to
+                track the performance of Seller landing pages. This helps us calculate ROI for Sellers and provides a faster
+                booking experience for Buyers. You can manage these via your browser settings.</p>
         </section>
         <section class="mb-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">8. Third-Party Links</h2>
-            <p class="text-slate-600 leading-relaxed">Our platform may contain links to third-party websites or services.
-                Zonely is not responsible for the
-                privacy practices or content of those external sites.</p>
+            <p class="text-slate-600 leading-relaxed">Zonely landing pages may link to a Seller’s social media or external
+                tools. We are not responsible for the privacy practices of these external sites. We recommend reviewing the
+                policies of any third-party service you interact with through our platform.</p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">9. Children’s Privacy</h2>
-            <p class="text-slate-600 leading-relaxed">Zonely is not directed to individuals under the age of 13. We do not
-                knowingly collect personal
-                information from children.</p>
+            <p class="text-slate-600 leading-relaxed">Zonely is a professional service marketplace intended for adults
+                (18+). We do not knowingly collect information from individuals under the age of 13. If we discover such
+                data has been collected, it will be deleted immediately.</p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">10. Updates to This Policy</h2>
-            <p class="text-slate-600 leading-relaxed">We may update this Privacy Policy from time to time. Any changes will
-                be posted on this page with the
-                updated date. Continued use of Zonely after updates means you accept the revised policy.</p>
+            <p class="text-slate-600 leading-relaxed">As Zonely evolves (such as our 2027 shift to a Commission Model), we
+                may update this policy. We will notify active users via email or a dashboard notification. Continued use of
+                the platform constitutes acceptance of the updated terms.</p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">11. Contact Us</h2>
+            For any privacy-related inquiries or to exercise your data rights, please contact our support team:
             <address class="text-slate-600 leading-relaxed">
                 <p><strong>Zonely</strong><br />Dhaka, Bangladesh</p>
-                <p>Email: <a href="mailto:norozzaman996@gmail.com">norozzaman996@gmail.com</a><br />
+                <p>Official Support Email: <a href="support@thezonely.com">support@thezonely.com</a><br />
                     WhatsApp: <a href="https://wa.me/8801826192179" rel="noopener">+8801826192179</a></p>
             </address>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
             <h2 class="text-2xl font-bold mb-4">12. Jurisdiction & Compliance Note</h2>
-            <p class="text-slate-600 leading-relaxed">This is a general-purpose policy. If you serve customers in the EU,
-                UK, or California, you may need
-                additional disclosures to comply with GDPR/UK GDPR and CCPA/CPRA (e.g., lawful bases, data retention
-                periods, data subject request workflows, and Do Not Sell or Share links). We can expand this section
-                on request.</p>
+            <p class="text-slate-600 leading-relaxed">Zonely operates globally. While our headquarters are in Dhaka, we comply with international standards for our users in the USA, Canada, and Singapore.</p>
+            <ul class="list-disc pl-5 text-slate-600 leading-relaxed space-y-2">
+                <li><strong>US/Canada:</strong> We follow "No-Call" list regulations for our call-tracking features.</li>
+                <li><strong>EU/UK:</strong> We treat all user data with GDPR-level care, utilizing "Standard Contractual Clauses" for data transfers.</li>
+                <li><strong>Transparency:</strong> We explicitly state that we only use publicly available info from Google Business Listings to create initial demo pages.</li>
+            </ul>
         </section>
     </main>
 @endsection
