@@ -16,7 +16,8 @@ class ProfileController extends Controller
 {
     public function dashboard(Request $request): View
     {
-        return view('frontend.dashboard');
+        $user = $request->user();
+        return view('frontend.dashboard', compact('user'));
     }
     /**
      * Display the user's profile form.

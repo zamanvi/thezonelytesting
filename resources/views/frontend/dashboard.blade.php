@@ -9,7 +9,9 @@
                         $user = Auth::user();
                     @endphp
                     @if (!$user->status)
-                        <span style="color: red">{{ $user->remark }}</span> <br>
+                        <span style="color: red">Unverified</span> <br>
+                    @else
+                        <span style="color: rgb(81, 255, 0)">Verified</span> <br>
                     @endif
                     {{ __("You're logged in!") }}
                 </div>
