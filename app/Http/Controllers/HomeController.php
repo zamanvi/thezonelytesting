@@ -98,12 +98,12 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        $users = User::where('type', 'profile')->where('status', true)->latest()->take(2)->get();
+        $users = User::where('type', 'seller')->where('status', true)->latest()->take(2)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function attorney_all()
     {
-        $users = User::where('type', 'profile')->where('status', true)->latest()->paginate(4);
+        $users = User::where('type', 'seller')->where('status', true)->latest()->paginate(4);
         $isSearch = false;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
@@ -113,7 +113,7 @@ class HomeController extends Controller
     function attorney_search(Request $request)
     {
         $query = $request->input('q');
-        $users = User::where('type', 'profile')
+        $users = User::where('type', 'seller')
             ->where('status', true)
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', '%' . $query . '%')
@@ -148,13 +148,13 @@ class HomeController extends Controller
 
     function attorney_show($slug)
     {
-        $user = User::where('slug', $slug)->where('type', 'profile')->where('status', true)->firstOrFail();
+        $user = User::where('slug', $slug)->where('type', 'seller')->where('status', true)->firstOrFail();
         return view('frontend.attorney_details', compact('user'));
     }
     function search(Request $request)
     {
         $query = $request->input('q');
-        $users = User::where('type', 'profile')
+        $users = User::where('type', 'seller')
             ->where('status', true)
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', '%' . $query . '%')
