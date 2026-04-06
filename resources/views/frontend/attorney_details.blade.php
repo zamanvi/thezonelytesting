@@ -53,7 +53,7 @@
                         <p class="text-[10px] font-bold text-slate-400 uppercase mb2">Cases Won</p>
                         <p class="text-2xl font-bold">450+</p>
                     </div>
-                    <div class="bento-card bg-slate-900 p-6 rounded-[2rem] textwhite">
+                    <div class="bento-card bg-slate-600 p-6 rounded-[2rem] textwhite">
                         <p class="text-[10px] font-bold opacity-70 uppercase mb2">Response</p>
                         <p class="text-2xl font-bold">&lt; 2h</p>
                     </div>
