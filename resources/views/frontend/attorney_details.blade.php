@@ -30,9 +30,13 @@
                         Verified Senior Associate
                     </div>
                     <h1 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">{{ $user->title }}</h1>
-                    <p class="max-w-xl text-lg text-slate-500 font-medium leadingrelaxed">
+                    {{-- <p class="max-w-xl text-lg text-slate-500 font-medium leadingrelaxed">
                         {{ $user->title }}
-                    </p>
+                    </p> --}}
+                    <blockquote
+                        class="border-l-4 border-blue-600 pl-6 italic textslate-900 font-medium bg-slate-50 py-4 rounded-r-2xl">
+                        "{{ $user->bio }}"
+                    </blockquote>
                 </div>
             </div>
         </div>
@@ -77,11 +81,6 @@
                             <strong>{{ $user->title }}</strong>,
                             {{ $user->about ?? 'No about information available.' }}
                         </p>
-                        <blockquote
-                            class="border-l-4 border-blue-600 pl-6 italic textslate-900 font-medium bg-slate-50 py-4 rounded-r-2xl">
-                            "I believe every immigrant deserves a sophisticated defense
-                            and a clear voice in the judicial system."
-                        </blockquote>
                     </div>
                 </section>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
