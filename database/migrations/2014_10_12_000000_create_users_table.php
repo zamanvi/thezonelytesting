@@ -34,7 +34,6 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('business_name')->nullable();
             $table->string('experience')->nullable();
-            $table->string('additional_details')->nullable();
             $table->string('category_id')->nullable();
             $table->string('profile_photo')->nullable();
             $table->rememberToken();

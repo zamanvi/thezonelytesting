@@ -161,7 +161,7 @@
                                             Details
                                             (optional)</label>
                                         <input type="text" placeholder="Neighborhood or notes"
-                                            name="additional_details"
+                                            name="about"
                                             class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
                                     </div>
                                 </div>

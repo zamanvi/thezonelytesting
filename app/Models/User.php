@@ -38,7 +38,6 @@ class User extends Authenticatable
         'slug',
         'business_name',
         'experience',
-        'additional_details',
         'category_id',
         'profile_photo',
     ];
