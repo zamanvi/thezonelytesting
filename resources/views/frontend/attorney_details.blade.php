@@ -35,7 +35,7 @@
                     </p> --}}
                     <blockquote
                         class="border-l-4 border-blue-600 pl-6 italic text-slate-900 font-medium bg-slate-50 py-4 rounded-r-2xl text-center">
-                        "{{ $user->bio }}"
+                        <strong>"{{ $user->bio }}"</strong>
                     </blockquote>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     </div>
                     <h2 class="text-2xl font-bold mb-8">Professional
                         Background</h2>
-                    <div class="prose prose-slate lg:prose-lg max-w-none text-slate600 leading-relaxed">
+                    <div class="prose prose-slate lg:prose-lg max-w-none text-slate600 leading-relaxed text-justify">
                         <p class="mb-6">{{ $user->name }}
                             <strong>{{ $user->title }}</strong>,
                             {{ $user->about ?? 'No about information available.' }}
