@@ -109,7 +109,7 @@
                         <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Working Zone</h3>
                         <div class="space-y-4">
                             @forelse($user->memberships as $membership)
-                                <div class="py-4 border-b border-slate-200">
+                                <div class="py-1 border-b border-slate-200">
 
                                     {{-- Title --}}
                                     <p class="text-base font-semibold text-slate-900">
