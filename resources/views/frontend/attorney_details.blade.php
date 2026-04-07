@@ -141,7 +141,7 @@
                             @endforelse
                         </div>
                     </div>
-                    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
+                    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white m-2">
                         <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Working Zone</h3>
                         <div class="space-y-4">
                             @forelse($user->memberships as $membership)
