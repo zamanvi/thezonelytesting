@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('zip_code')->nullable();
+            $table->string('tags')->nullable();
             $table->string('slug')->unique();
             $table->string('business_name')->nullable();
             $table->string('experience')->nullable();

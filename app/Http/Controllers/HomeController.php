@@ -75,6 +75,7 @@ class HomeController extends Controller
             'business_name' => $request->business_name ?? '',
             'password' => Hash::make($validated['password']),
             'slug' => $slug,
+            'tags' => $request->tags,
             'category_id' => collect($request->category_id)->last() ?? null,
             'country' => $request->country ?? '',
             'state' => $request->state ?? '',

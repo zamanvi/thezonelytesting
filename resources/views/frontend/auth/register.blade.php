@@ -32,8 +32,14 @@
                 <h2 class="text-3xl font-bold mb-6">Create Your Account</h2>
                 <div class="grid md:grid-cols-2 gap-8">
                     <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">@if (isset($type) && $type == 'seller') Owner Name @else Full Name @endif <span
-                                class="text-red-500">*</span></label>
+                        <label class="block text-lg font-semibold text-slate-800 mb-2">
+                            @if (isset($type) && $type == 'seller')
+                                Owner Name
+                            @else
+                                Full Name
+                            @endif
+                            <span class="text-red-500">*</span>
+                        </label>
                         <input type="text" required name="name"
                             class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
                             placeholder="e.g. Kaitlin Moran">
@@ -110,6 +116,15 @@
                                 {{-- <div id="category-container"></div> --}}
                             </div>
                         </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-lg font-semibold text-slate-800 mb-2">Service Tags <span
+                                    class="text-red-500">*</span></label>
+                            <input type="tags" id="tags" name="tags" required
+                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                            <p class="text-sm text-slate-500 mt-2">Put coma (,) for seperate tags. E.g. Divorce, Custody,
+                                Mediation
+                            </p>
+                        </div>
 
                         <div class="space-y-8">
                             <label class="block text-lg font-semibold text-slate-800 mb-3">Service Locations <span
@@ -160,8 +175,7 @@
                                         <label class="block text-sm font-bold text-slate-600 mb-2">Additional
                                             Details
                                             (optional)</label>
-                                        <input type="text" placeholder="Neighborhood or notes"
-                                            name="about"
+                                        <input type="text" placeholder="Neighborhood or notes" name="about"
                                             class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
                                     </div>
                                 </div>
@@ -651,6 +665,31 @@
                     valid = false;
                 }
             }
+            const tagsInput = document.getElementById('tags');
+
+            if (tagsInput) {
+                const rawTags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+
+                if (rawTags.length > 5) {
+                    alert('Maximum 5 tags allowed!');
+                    tagsInput.classList.add('border-red-500');
+                    valid = false;
+                } else {
+                    for (let tag of rawTags) {
+                        if (tag.length > 30) {
+                            alert('Each tag must be less than 30 characters!');
+                            tagsInput.classList.add('border-red-500');
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+
+                // ✅ valid হলে border ঠিক করো
+                if (valid) {
+                    tagsInput.classList.remove('border-red-500');
+                }
+            }
             return valid;
         }
 
@@ -683,6 +722,7 @@
             }
         });
 
+        /*
         document.addEventListener("change", function(e) {
 
             if (e.target.classList.contains("category-select")) {
@@ -713,17 +753,76 @@
                                 });
 
                                 newDiv.innerHTML = `<label class="block text-lg font-semibold text-slate-800 mb-3"> Sub Category </label>
-                                    <select name="category_id[]"
-                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
-                                        ${options}
-                                    </select>
-                                `;
+                                <select name="category_id[]"
+                                    class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+                                    ${options}
+                                </select>
+                            `;
                                 wrapper.appendChild(newDiv);
                             }
                         });
                 }
             }
-        });
+        });*/
+        function validateStep() {
+            const required = steps[currentStep].querySelectorAll('input[required], select[required], textarea[required]');
+            let valid = true;
+
+            required.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            // Password check
+            if (currentStep === 0) {
+                const pwd = document.getElementById('password').value;
+                const confirm = document.getElementById('confirmPassword').value;
+
+                if (pwd !== confirm || !pwd) {
+                    alert('Passwords do not match or are empty!');
+                    valid = false;
+                }
+            }
+
+            // ✅ Tags validation (fixed)
+            const tagsInput = document.getElementById('tags');
+
+            if (tagsInput) {
+                let tagsValid = true;
+
+                const rawTags = tagsInput.value
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag);
+
+                if (rawTags.length > 5) {
+                    alert('Maximum 5 tags allowed!');
+                    tagsValid = false;
+                }
+
+                for (let tag of rawTags) {
+                    if (tag.length > 30) {
+                        alert('Each tag must be less than 30 characters!');
+                        tagsValid = false;
+                        break;
+                    }
+                }
+
+                // Apply UI
+                if (!tagsValid) {
+                    tagsInput.classList.add('border-red-500');
+                    valid = false;
+                } else {
+                    tagsInput.classList.remove('border-red-500');
+                }
+            }
+
+            return valid;
+        }
 
         document.addEventListener("DOMContentLoaded", function() {
             fetch('/countries')

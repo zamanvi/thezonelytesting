@@ -38,6 +38,43 @@
                         class="border-l-4 border-blue-600 pl-6 italic text-slate-900 font-medium bg-slate-50 py-4 rounded-r-2xl text-center">
                         <strong>"{{ $user->bio }}"</strong>
                     </blockquote>
+                    <h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">Service Tag</h2>
+                    @if (!empty($user->tags))
+                        @php
+                            $tags = array_filter(array_map('trim', explode(',', $user->tags)));
+                        @endphp
+
+                        @if (count($tags))
+                            <div class="mt-10">
+
+                                {{-- Title --}}
+                                <h3 class="text-lg font-semibold text-slate-800 mb-4">
+                                    People also searched for
+                                </h3>
+
+                                {{-- Tags --}}
+                                <div class="flex flex-wrap gap-3">
+                                    @foreach ($tags as $tag)
+                                        <div
+                                            class="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-300 text-sm text-slate-700 bg-white hover:bg-slate-100 transition cursor-pointer">
+
+                                            {{-- Icon --}}
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 21l-4.35-4.35M16.65 10.65a6 6 0 11-12 0 6 6 0 0112 0z" />
+                                            </svg>
+
+                                            {{-- Tag Text --}}
+                                            <span>{{ ucfirst($tag) }}</span>
+
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                            </div>
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
@@ -68,15 +105,14 @@
                     <div class="absolute top-0 right-0 p-8 opacity-[0.03]">
                         <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16
-                                    16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
-                                    21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
-                                    18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
-                                    11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
-                                    14V21H3.01709Z"></path>
+                                        16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
+                                        21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
+                                        18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
+                                        11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
+                                        14V21H3.01709Z"></path>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold mb-8">Professional
-                        Background</h2>
+                    <h2 class="text-2xl font-bold mb-8">About</h2>
                     <div class="prose prose-slate lg:prose-lg max-w-none text-slate600 leading-relaxed text-justify">
                         <p class="mb-6">{{ $user->name }}
                             <strong>{{ $user->title }}</strong>,
@@ -84,7 +120,7 @@
                         </p>
                     </div>
                 </section>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                     <div class="bg-white p-8 rounded-[2.5rem] border border-slate100">
                         <h3 class="text-sm font-bold uppercase tracking-widest textblue-600 mb-6">Academic Excellence
                         </h3>
@@ -145,24 +181,11 @@
                 </div>
             </div>
             <div class="lg:col-span-4 lg:sticky lg:top-32 h-fit">
-                <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
-                    <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Languages</h3>
-                    <div class="space-y-4">
-                        @forelse($user->languages as $language)
-                            <div class="flex items-center gap-3 p-3 rounded-2xl bgwhite/5 border border-white/10">
-                                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                                <span class="text-sm font-semibold">{{ $language->name }}</span>
-                            </div>
-                        @empty
-                            <li>No languages listed.</li>
-                        @endforelse
-                    </div>
-                </div>
                 <div
                     class="mt-5 bg-white rounded-[3rem] border border-slate-200 p-8 shadow-2xl shadow-blue-500/5 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-2 animategradient"></div>
 
-                    <h3 class="text-2xl font-bold mb-2">Work with Kate</h3>
+                    <h3 class="text-2xl font-bold mb-2">Work with {{ $user->name }}</h3>
                     <p class="text-slate-500 text-sm mb-8">Submit your case for a
                         15-min priority review.</p>
 
@@ -210,6 +233,19 @@
                     <p class="mt-6 text-[10px] text-center text-slate-400 fontmedium uppercase tracking-widest">Secured
                         by Zonely Cloud
                         Encryption</p>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
+                    <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Languages</h3>
+                    <div class="space-y-4">
+                        @forelse($user->languages as $language)
+                            <div class="flex items-center gap-3 p-3 rounded-2xl bgwhite/5 border border-white/10">
+                                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                                <span class="text-sm font-semibold">{{ $language->name }}</span>
+                            </div>
+                        @empty
+                            <li>No languages listed.</li>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
