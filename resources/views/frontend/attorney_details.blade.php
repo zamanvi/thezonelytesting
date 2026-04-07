@@ -112,7 +112,7 @@
                                 <div class="py-1 border-b border-slate-200">
 
                                     {{-- Title --}}
-                                    <p class="text-base font-semibold text-slate-900">
+                                    <p class="text-base font-semibold text-slate-600">
                                         {{ $membership->name }}
                                     </p>
 
