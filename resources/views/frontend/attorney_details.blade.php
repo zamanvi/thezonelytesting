@@ -141,7 +141,7 @@
                             @endforelse
                         </div>
                     </div>
-                    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white m-2">
+                    <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
                         <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Working Zone</h3>
                         <div class="space-y-4">
                             @forelse($user->memberships as $membership)
@@ -180,7 +180,7 @@
                     </div>
                 </div>
             </div>
-            <div class="lg:col-span-4 lg:sticky lg:top-32 h-fit">
+            <div class="lg:col-span-4 lg:sticky lg:top-8 h-fit">
                 <div
                     class="mt-5 bg-white rounded-[3rem] border border-slate-200 p-8 shadow-2xl shadow-blue-500/5 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-2 animategradient"></div>
@@ -234,7 +234,7 @@
                         by Zonely Cloud
                         Encryption</p>
                 </div>
-                <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
+                <div class="bg-slate-900 lg:top-32 p-8 rounded-[2.5rem] text-white">
                     <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Languages</h3>
                     <div class="space-y-4">
                         @forelse($user->languages as $language)
