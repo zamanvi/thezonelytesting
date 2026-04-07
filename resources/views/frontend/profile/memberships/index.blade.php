@@ -12,16 +12,16 @@
     </div>
 
     <div class="space-y-4">
-        @foreach($memberships as $item)
+        @foreach($memberships as $membership)
             <div class="flex justify-between items-center p-5 bg-slate-50 rounded-2xl border">
 
-                <span class="font-semibold text-lg">{{ $item->name }}</span>
+                <span class="font-semibold text-lg">{{ $membership->name }}</span>
 
                 <div class="flex gap-3">
-                    <a href="{{ route('user.memberships.edit', $item->id) }}"
+                    <a href="{{ route('user.memberships.edit', $membership->id) }}"
                        class="px-4 py-2 bg-blue-500 text-white rounded-xl">Edit</a>
 
-                    <form action="{{ route('user.memberships.destroy', $item->id) }}" method="POST">
+                    <form action="{{ route('user.memberships.destroy', $membership->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="px-4 py-2 bg-red-500 text-white rounded-xl">

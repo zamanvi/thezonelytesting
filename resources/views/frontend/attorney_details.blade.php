@@ -11,7 +11,8 @@
         <div class="relative mb-12">
             <div class="flex flex-col lg:flex-row gap-12 items-end">
                 <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-violet-600 rounded-[3rem] blur opacity-25 group-hover:opacity-50 transition duration-1000">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-violet-600 rounded-[3rem] blur opacity-25 group-hover:opacity-50 transition duration-1000">
                     </div>
                     <div
                         class="relative w-64 h-80 md:w-80 md:h-[420px] bg-slate200 rounded-[2.8rem] overflow-hidden border-4 border-white shadow2xl">
@@ -67,11 +68,11 @@
                     <div class="absolute top-0 right-0 p-8 opacity-[0.03]">
                         <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16
-                            16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
-                            21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
-                            18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
-                            11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
-                            14V21H3.01709Z"></path>
+                                    16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
+                                    21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
+                                    18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
+                                    11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
+                                    14V21H3.01709Z"></path>
                         </svg>
                     </div>
                     <h2 class="text-2xl font-bold mb-8">Professional
@@ -90,11 +91,13 @@
                         <div class="space-y-6">
                             @forelse($user->educations as $education)
                                 <div class="flex items-start gap-4">
-                                    <div class="w-20 h-8 rounded-xl bg-blue-50 flex itemscenter justify-center text-blue-600 font-bold shrink-0">
+                                    <div
+                                        class="w-20 h-8 rounded-xl bg-blue-50 flex itemscenter justify-center text-blue-600 font-bold shrink-0">
                                         {{ $education->degree }}
                                     </div>
                                     <div>
-                                        <p class="font-bold text-slate-900">{{ ($education->institution ? ' from ' . $education->institution : '') }}</p>
+                                        <p class="font-bold text-slate-900">
+                                            {{ $education->institution ? ' from ' . $education->institution : '' }}</p>
                                     </div>
                                 </div>
                             @empty
@@ -103,15 +106,39 @@
                         </div>
                     </div>
                     <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white">
-                        <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Bar Admissions</h3>
+                        <h3 class="text-sm font-bold uppercase tracking-widest textblue-400 mb-6">Working Zone</h3>
                         <div class="space-y-4">
                             @forelse($user->memberships as $membership)
-                                <div class="flex items-center gap-3 p-3 rounded-2xl bgwhite/5 border border-white/10">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                                    <span class="text-sm font-semibold">{{ $membership->name }}</span>
+                                <div class="py-4 border-b border-slate-200">
+
+                                    {{-- Title --}}
+                                    <p class="text-base font-semibold text-slate-900">
+                                        {{ $membership->name }}
+                                    </p>
+
+                                    {{-- Date (only if exists) --}}
+                                    @if ($membership->start || $membership->end)
+                                        <p class="text-sm text-slate-500">
+                                            {{ $membership->start ?? '' }}
+                                            @if ($membership->start && $membership->end)
+                                                -
+                                            @endif
+                                            {{ $membership->end ?? 'Present' }}
+                                        </p>
+                                    @endif
+
+                                    {{-- Address (only if exists) --}}
+                                    @if (!empty($membership->address))
+                                        <p class="text-sm text-slate-500">
+                                            {{ $membership->address }}
+                                        </p>
+                                    @endif
+
                                 </div>
                             @empty
-                                <li>No membership records available.</li>
+                                <p class="text-sm text-slate-400 italic">
+                                    No membership records available.
+                                </p>
                             @endforelse
                         </div>
                     </div>
@@ -131,7 +158,8 @@
                         @endforelse
                     </div>
                 </div>
-                <div class="mt-5 bg-white rounded-[3rem] border border-slate-200 p-8 shadow-2xl shadow-blue-500/5 relative overflow-hidden">
+                <div
+                    class="mt-5 bg-white rounded-[3rem] border border-slate-200 p-8 shadow-2xl shadow-blue-500/5 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-2 animategradient"></div>
 
                     <h3 class="text-2xl font-bold mb-2">Work with Kate</h3>
