@@ -38,7 +38,6 @@
                         class="border-l-4 border-blue-600 pl-6 italic text-slate-900 font-medium bg-slate-50 py-4 rounded-r-2xl text-center">
                         <strong>"{{ $user->bio }}"</strong>
                     </blockquote>
-                    <h4 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">Service Offering</h4>
                     @if (!empty($user->tags))
                         @php
                             $tags = array_filter(array_map('trim', explode(',', $user->tags)));
@@ -48,8 +47,8 @@
                             <div class="mt-10">
 
                                 {{-- Title --}}
-                                <h3 class="text-lg font-semibold text-slate-800 mb-4">
-                                    People also searched for
+                                <h3 class="text-lg italic font-semibold text-slate-800 mb-4">
+                                    Service Offering
                                 </h3>
 
                                 {{-- Tags --}}
