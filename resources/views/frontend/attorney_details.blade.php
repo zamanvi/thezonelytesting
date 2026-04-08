@@ -30,7 +30,7 @@
                         </span>
                         Verified Senior Associate
                     </div>
-                    <h4 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">{{ $user->title }}</h4>
+                    <h4 class="font-serif md:text-7xl text-slate-900 mb-6 leading-[1.1]">{{ $user->title }}</h4>
                     {{-- <p class="max-w-xl text-lg text-slate-500 font-medium leadingrelaxed">
                         {{ $user->title }}
                     </p> --}}
