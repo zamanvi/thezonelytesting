@@ -38,7 +38,7 @@
                         class="border-l-4 border-blue-600 pl-6 italic text-slate-900 font-medium bg-slate-50 py-4 rounded-r-2xl text-center">
                         <strong>"{{ $user->bio }}"</strong>
                     </blockquote>
-                    <h2 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">Service Tag</h2>
+                    <h4 class="font-serif text-5xl md:text-7xl text-slate-900 mb-6 leading-[1.1]">Service Offering</h4>
                     @if (!empty($user->tags))
                         @php
                             $tags = array_filter(array_map('trim', explode(',', $user->tags)));
