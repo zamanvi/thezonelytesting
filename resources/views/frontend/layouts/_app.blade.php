@@ -18,7 +18,6 @@
         $ogDescription = trim($__env->yieldContent('meta_description')) ? $__env->yieldContent('og_description') : $meta_description ?? '';
         $ogImage = trim($__env->yieldContent('og_image')) ? $__env->yieldContent('og_image') : asset('frontend/img/favicon.png'); 
     @endphp
-
     <meta property="og:title" content="{{ $meta_title ?? '' }}">
     <meta property="og:description" content="{{ $ogDescription ?? '' }}">
     <meta property="og:image" content="{{ $ogImage }}?v=2">

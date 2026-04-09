@@ -134,7 +134,7 @@
         Get in <span class="italic text-blue-600">Touch</span>
     </h2>
     <p class="text-slate-500 text-lg">
-        📧 <a href="mailto:norozzaman996@gmail.com" class="text-blue-600 font-semibold">norozzaman996@gmail.com</a><br>
+        📧 <a href="mailto:support@thezonely.com" class="text-blue-600 font-semibold">support@thezonely.com</a><br>
         📱 <a href="https://wa.me/8801826192179" target="_blank" class="text-blue-600 font-semibold">+8801826192179</a><br>
         📍 Dhaka, Bangladesh
     </p>

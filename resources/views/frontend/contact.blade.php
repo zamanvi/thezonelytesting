@@ -23,6 +23,23 @@
                 </p>
             </div>
         </section>
+
+        <!-- WhatsApp CTA -->
+        <section class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm text-center">
+            <h2 class="text-2xl font-bold mb-3">Chat with Us on WhatsApp</h2>
+            <p class="text-slate-600 mb-6">
+                Get fast support directly through WhatsApp.
+            </p>
+
+            <a href="https://wa.me/8801826192179" target="_blank" rel="noopener"
+                class="inline-flex items-center gap-3 px-8 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 0C5.373 0 0 5.373 0 12c0 2.116.553 4.164 1.6 5.97L0 24l6.262-1.64A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+                </svg>
+                Contact on WhatsApp
+            </a>
+        </section>
     </main>
 
 @endsection
