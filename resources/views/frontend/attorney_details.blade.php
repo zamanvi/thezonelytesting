@@ -5,6 +5,10 @@
 @extends('frontend.layouts._app')
 @section('title', $meta_title)
 
+@section('og_title', $user->title)
+@section('og_description', Str::limit(strip_tags($user->bio), 200))
+@section('og_image', $user->profile_photo)
+
 @section('content')
     <main class="max-w-7xl mx-auto px-6 pt-32 pb-10">
 
