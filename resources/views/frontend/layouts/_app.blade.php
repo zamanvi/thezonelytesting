@@ -20,9 +20,9 @@
     @endphp
     <meta property="og:title" content="{{ $ogTitle }}">
     <meta property="og:description" content="{{ $ogDescription }}">
-    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image" content="{{ $ogImage }}?v=2">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="profile">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
