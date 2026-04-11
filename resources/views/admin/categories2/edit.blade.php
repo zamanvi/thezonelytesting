@@ -49,7 +49,7 @@
                                 <label class="form-label">Parent Category</label>
                                 <select name="parent_id" class="form-select">
                                     <option value="">-- No Parent (Top Level) --</option>
-                                    @foreach ($allCategories as $parent)
+                                    @foreach ($categories as $parent)
                                         @if ($parent->id != $category->id)
                                             <option value="{{ $parent->id }}"
                                                 {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
