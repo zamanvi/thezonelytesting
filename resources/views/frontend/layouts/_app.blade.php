@@ -18,17 +18,17 @@
         $ogDescription = trim($__env->yieldContent('meta_description')) ? $__env->yieldContent('og_description') : $meta_description ?? '';
         $ogImage = trim($__env->yieldContent('og_image')) ? $__env->yieldContent('og_image') : asset('frontend/img/favicon.png'); 
     @endphp
-    <meta property="og:title" content="{{ $meta_title ?? '' }}">
-    <meta property="og:description" content="{{ $ogDescription ?? '' }}">
-    <meta property="og:image" content="{{ $ogImage }}?v=2">
+    <meta property="og:title" content="{{ $ogTitle }}">
+    <meta property="og:description" content="{{ $ogDescription }}">
+    <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="profile">
+    <meta property="og:type" content="website">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $meta_title ?? '' }}">
-    <meta name="twitter:description" content="{{ $meta_description ?? '' }}">
-    <meta name="twitter:image" content="{{ asset('frontend/img/favicon.png') }}">
+    <meta name="twitter:title" content="{{ $ogTitle }}">
+    <meta name="twitter:description" content="{{ $ogDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
 
     {{-- Favicon --}}
     <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
