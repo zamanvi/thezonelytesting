@@ -52,7 +52,7 @@
                                 class="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:scale-105 transition">
                                 Hire Expert
                             </button>
-                            <a href="{{ route('frontend.attorney.show', $user->slug) }}" class="text-xs font-bold text-slate-400 hover:text-slate-900">
+                            <a href="{{ route('frontend.service.show', $user->slug) }}" class="text-xs font-bold text-slate-400 hover:text-slate-900">
                                 View Details →
                             </a>
                         </div>

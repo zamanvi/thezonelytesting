@@ -17,7 +17,7 @@
         </p>
 
         <div class="relative max-w-2xl mx-auto bg-white rounded-full shadow-xl p-2 flex flex-col sm:flex-row gap-2">
-            <form action="{{ route('frontend.attorney.search') }}" method="GET" class="flex flex-1">
+            <form action="{{ route('frontend.service.search') }}" method="GET" class="flex flex-1">
                 <input type="text" name="q" placeholder="Who are you looking for?"
                     class="flex-1 px-5 py-4 rounded-full border outline-none focus:border-blue-500 text-sm sm:text-lg" />
                 <button class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition">
@@ -34,7 +34,7 @@
             </h2>
 
             <div class="flex gap-2">
-                <a href="{{ route('frontend.attorney.all') }}" class="px-4 py-2 rounded-full border hover:bg-slate-100">See All</a>
+                <a href="{{ route('frontend.service.all') }}" class="px-4 py-2 rounded-full border hover:bg-slate-100">See All</a>
             </div>
         </div>
 
@@ -65,7 +65,7 @@
                                     class="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:scale-105 transition">
                                     Hire Expert
                                 </button>
-                                <a href="{{ route('frontend.attorney.show', $user->slug) }}" class="text-xs font-bold text-slate-400 hover:text-slate-900">
+                                <a href="{{ route('frontend.service.show', $user->slug) }}" class="text-xs font-bold text-slate-400 hover:text-slate-900">
                                     View Portfolio
                                 </a>
                             </div>

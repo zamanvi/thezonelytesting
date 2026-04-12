@@ -133,16 +133,16 @@ class HomeController extends Controller
         $users = User::where('type', 'seller')->where('status', true)->latest()->take(2)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
-    function attorney_all()
+    function service_all()
     {
         $users = User::where('type', 'seller')->where('status', true)->latest()->paginate(4);
         $isSearch = false;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.all', compact('users', 'isSearch', 'meta_title', 'meta_description', 'meta_keywords'));
+        return view('frontend.service_all', compact('users', 'isSearch', 'meta_title', 'meta_description', 'meta_keywords'));
     }
-    function attorney_search(Request $request)
+    function service_search(Request $request)
     {
         $query = $request->input('q');
         $users = User::where('type', 'seller')
@@ -175,13 +175,13 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.all', compact('users', 'isSearch', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
+        return view('frontend.service_all', compact('users', 'isSearch', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
     }
 
-    function attorney_show($slug)
+    function service_show($slug)
     {
         $user = User::where('slug', $slug)->where('type', 'seller')->where('status', true)->firstOrFail();
-        return view('frontend.attorney_details', compact('user'));
+        return view('frontend.service_details', compact('user'));
     }
     function search(Request $request)
     {
