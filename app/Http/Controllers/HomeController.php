@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\PostalCode;
+use App\Models\State;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -50,20 +54,47 @@ class HomeController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'min:6'],
         ]);
-        // Generate slug
-        $slug = Str::slug($validated['name']);
-        $originalSlug = $slug;
-        $counter = 1;
-
-        while (User::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
-            $counter++;
-        }
 
         $type = $request->type;
 
         if ($type === 'buyer') {
             $type = 'user';
+            $slug = Str::slug($validated['name']);
+        }
+        // Generate slug
+
+        if ($request->has('category_id') && is_array($request->category_id)) {
+            $category = Category::find(collect($request->category_id)->last());
+            if ($category) {
+                $slug = Str::slug($category->name);
+            }
+        }
+        $countryName = '';
+        $stateName = '';
+        $cityName = '';
+        $zipCodeName = '';
+        if ($request->has('country') && !empty($request->country)) {
+            $country = Country::find($request->country);
+            $countryName = $country ? $country->name : '';
+        }
+        if ($request->has('state') && !empty($request->state)) {
+            $state = State::find($request->state);
+            $stateName = $state ? $state->name : '';
+        }
+        if ($request->has('zip_code') && !empty($request->zip_code)) {
+            $zipCode = PostalCode::find($request->zip_code);
+            $zipCodeName = $zipCode ? $zipCode->name : '';
+        }
+        if ($request->has('city') && !empty($request->city)) {
+            $city = City::find($request->city);
+            $cityName = $city ? $city->name : '';
+            if ($city) {
+                $slug .= '-' . $city->slug;
+            }
+        } 
+        
+        if ($request->has('business_name') && !empty($request->business_name)) {
+            $slug .= '-' . Str::slug($request->business_name);
         }
 
         $user = User::create([
@@ -77,10 +108,10 @@ class HomeController extends Controller
             'slug' => $slug,
             'tags' => $request->tags,
             'category_id' => collect($request->category_id)->last() ?? null,
-            'country' => $request->country ?? '',
-            'state' => $request->state ?? '',
-            'city' => $request->city ?? '',
-            'zip_code' => $request->zip_code ?? '',
+            'country' => $countryName,
+            'state' => $stateName,
+            'city' => $cityName,
+            'zip_code' => $zipCodeName,
             'additional_details' => $request->additional_details ?? 'null',
             'bio' => $request->bio ?? '',
             'experience' => $request->experience ?? '',
