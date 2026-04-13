@@ -107,16 +107,20 @@
 
     @yield('script')
     <script>
-        function toggleDropdown() {
-            document.getElementById('dropdownMenu').classList.toggle('hidden');
-        }
+        // main mobile menu toggle
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
 
-        // click বাইরে করলে close
-        document.addEventListener('click', function(e) {
-            let dropdown = document.getElementById('dropdownMenu');
-            if (!e.target.closest('.relative')) {
-                dropdown.classList.add('hidden');
-            }
+        // submenu toggle
+        document.querySelectorAll('.mobile-toggle').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const submenu = this.nextElementSibling;
+
+                if (submenu) {
+                    submenu.classList.toggle('hidden');
+                }
+            });
         });
     </script>
 
