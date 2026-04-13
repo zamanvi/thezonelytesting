@@ -106,21 +106,37 @@
     </main>
 
     @yield('script')
+    <!-- ================= SCRIPT ================= -->
     <script>
-        // main mobile menu toggle
-        document.getElementById('menuBtn').addEventListener('click', function() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
+        document.addEventListener('DOMContentLoaded', function() {
 
-        // submenu toggle
-        document.querySelectorAll('.mobile-toggle').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const submenu = this.nextElementSibling;
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
 
-                if (submenu) {
-                    submenu.classList.toggle('hidden');
-                }
+            // toggle mobile menu
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
             });
+
+            // toggle submenu
+            document.querySelectorAll('.mobile-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+
+                    const submenu = this.nextElementSibling;
+
+                    if (submenu && submenu.classList.contains('mobile-submenu')) {
+
+                        // close others (optional but clean UX)
+                        document.querySelectorAll('.mobile-submenu').forEach(el => {
+                            if (el !== submenu) el.classList.add('hidden');
+                        });
+
+                        submenu.classList.toggle('hidden');
+                    }
+
+                });
+            });
+
         });
     </script>
 
