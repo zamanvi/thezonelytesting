@@ -38,6 +38,7 @@ Route::name('frontend.')->group(function () {
     Route::get('all-service', [HomeController::class, 'service_all'])->name('service.all');
     Route::get('search', [HomeController::class, 'service_search'])->name('service.search');
     Route::get('service/{slug}', [HomeController::class, 'service_show'])->name('service.show');
+    Route::get('category/{slug}', [HomeController::class, 'category_show'])->name('category');
     // Route::get('/fast-tow-trucks-near-me-reliable-towing-in-the-USA', [HomeController::class, 'service1'])->name('service1');
     Route::get('/help', [HomeController::class, 'help'])->name('help');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');

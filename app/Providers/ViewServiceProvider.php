@@ -25,10 +25,39 @@ class ViewServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $currentRoute = Route::current();
+            $route = Route::current();
 
-            if ($currentRoute && str_starts_with($currentRoute->getName(), 'admin.')) {
-                $view->with(['blogCount' => Blog::count(), 'categoryCount' => Category::count(), 'userCount' => User::where('type', 'profile')->count()]);
+            if (!$route) {
+                return;
+            }
+
+            $routeName = $route->getName();
+
+            // Ensure it's a string
+            if (!is_string($routeName)) {
+                return;
+            }
+
+            // ADMIN
+            if (str_starts_with($routeName, 'admin.')) {
+                $view->with([
+                    'blogCount' => Blog::count(),
+                    'categoryCount' => Category::count(),
+                    'userCount' => User::where('type', 'profile')->count(),
+                ]);
+            }
+
+            // FRONTEND
+            if (str_starts_with($routeName, 'frontend.')) {
+
+                $allMenuCategories = Category::whereNull('parent_id')
+                    ->where('is_active', 1)
+                    ->with(['children' => function ($q) {
+                        $q->where('is_active', 1);
+                    }])
+                    ->get();
+
+                $view->with('allMenuCategories', $allMenuCategories);
             }
         });
     }
