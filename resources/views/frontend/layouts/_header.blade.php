@@ -102,18 +102,11 @@
                     <!-- PARENT -->
                     <button class="w-full flex justify-between items-center text-sm font-semibold text-slate-700 mobile-toggle">
                         {{ $category->title }}
-
-                        @if ($category->children->count())
-                            <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
-                                stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        @endif
                     </button>
-
+                    
                     <!-- CHILDREN -->
                     @if ($category->children->count())
-                        <div class="pl-4 mt-2 space-y-1 mobile-submenu hidden">
+                        <div class="mobile-submenu hidden pl-4 mt-2 space-y-1">
 
                             @foreach ($category->children as $child)
                                 <a href="{{ route('frontend.category', $child->slug) }}"

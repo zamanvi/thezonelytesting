@@ -19,6 +19,7 @@
                             <option value="email">Email</option>
                             <option value="phone">Phone</option>
                             <option value="address">Address</option>
+                            <option value="whatsapp">whatsApp</option>
                         </select>
                         @error('type') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
                     </div>

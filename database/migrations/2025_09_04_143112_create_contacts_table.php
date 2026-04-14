@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['email', 'phone', 'address'])->default('email');
+            $table->enum('type', ['email', 'phone', 'address', 'whatsapp'])->default('email');
             $table->string('value');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

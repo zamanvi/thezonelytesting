@@ -108,11 +108,11 @@
                     <div class="absolute top-0 right-0 p-8 opacity-[0.03]">
                         <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16
-                                        16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
-                                        21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
-                                        18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
-                                        11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
-                                        14V21H3.01709Z"></path>
+                                            16.017 16H19.017V14C19.017 11.2386 16.7784 9 14.017 9V7C17.883 7
+                                            21.017 10.134 21.017 14V21H14.017ZM3.01709 21L3.01709
+                                            18C3.01709 16.8954 3.91252 16 5.01709 16H8.01709V14C8.01709
+                                            11.2386 5.77851 9 3.01709 9V7C6.88309 7 10.0171 10.134 10.0171
+                                            14V21H3.01709Z"></path>
                         </svg>
                     </div>
                     <h2 class="text-2xl font-bold mb-8">About</h2>
@@ -222,15 +222,45 @@
                             ✅
                             Received. We will reach out shortly.</p>
                     </form> --}}
-                    <div class="mt-8 space-y-3">
+                    {{-- <div class="mt-8 space-y-3">
                         @forelse($user->contacts as $contact)
-                            {{-- <a href="tel:+16465550198" onclick="trackDirectLead('PhoneCall')" --}}
                             <a href="#"
                                 class="flex items-center justify-center gap-3 w-full bg-blue-50 text-blue-700 font-bold py-4 rounded-2xl hover:bg-blue-100 transitionall text-sm">
                                 {{ $contact->value }}
                             </a>
                         @empty
                             <li>No contact information available.</li>
+                        @endforelse
+                    </div> --}}
+                    <div class="mt-8 space-y-3">
+                        @forelse($user->contacts as $contact)
+                            @php
+                                $icon = match ($contact->type) {
+                                    'email' => 'fas fa-envelope',
+                                    'phone' => 'fas fa-phone',
+                                    'address' => 'fas fa-map-marker-alt',
+                                    'whatsapp' => 'fab fa-whatsapp',
+                                    default => 'fas fa-info-circle',
+                                };
+
+                                $href = match ($contact->type) {
+                                    'email' => 'mailto:' . $contact->value,
+                                    'phone' => 'tel:' . $contact->value,
+                                    'whatsapp' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', $contact->value),
+                                    default => '#',
+                                };
+                            @endphp
+
+                            <a href="{{ $href }}"
+                                class="flex items-center justify-center gap-3 w-full bg-blue-50 text-blue-700 font-bold py-4 rounded-2xl hover:bg-blue-100 transition-all text-sm">
+
+                                <i class="{{ $icon }}"></i>
+                                {{ $contact->value }}
+
+                            </a>
+
+                        @empty
+                            <p>No contact information available.</p>
                         @endforelse
                     </div>
                     <p class="mt-6 text-[10px] text-center text-slate-400 fontmedium uppercase tracking-widest">Secured
