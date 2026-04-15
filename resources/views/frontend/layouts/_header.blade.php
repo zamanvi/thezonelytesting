@@ -30,7 +30,8 @@
                                 group-hover:opacity-100 group-hover:visible transition-all duration-200">
 
                                 @foreach ($category->children as $child)
-                                    <a href="{{ route('frontend.category', $child->slug) }}"
+                                    {{-- <a href="{{ route('frontend.category', $child->slug) }}" --}}
+                                    <a href="#"
                                         class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
                                         {{ $child->title }}
                                     </a>
@@ -109,7 +110,8 @@
                         <div class="mobile-submenu hidden pl-4 mt-2 space-y-1">
 
                             @foreach ($category->children as $child)
-                                <a href="{{ route('frontend.category', $child->slug) }}"
+                                {{-- <a href="{{ route('frontend.category', $child->slug) }}" --}}
+                                <a href="#"
                                     class="block text-sm text-slate-600 py-1">
                                     • {{ $child->title }}
                                 </a>
