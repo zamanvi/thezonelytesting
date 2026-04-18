@@ -97,9 +97,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return redirect()->route('admin.dashboard');
         }
         if ($user->type === 'seller') {
-            // if ($user->work_address === null || $user->phone === null) {
-            //     return redirect()->route('profile.edit')->with('warning', 'Please complete your profile before proceeding.');
-            // }
             return redirect()->route('user.dashboard');
         }
         if ($user->type === 'user') {
