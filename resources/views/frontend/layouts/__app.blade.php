@@ -89,11 +89,7 @@
         function toggleMenu() {
             document.getElementById('moreMenu').classList.toggle('hidden');
         }
-
-        function switchStep(step) {
-            alert(`✅ Moving to Step ${step} (Demo Preview)`);
-        }
-
+        
         function selectTitle(btn) {
             document.querySelectorAll('.title-btn').forEach(b => {
                 b.classList.remove('bg-blue-600', 'text-white');

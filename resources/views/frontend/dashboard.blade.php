@@ -27,16 +27,16 @@
     <div class="flex gap-2 mb-10 overflow-x-auto pb-3">
         <div class="step-active cursor-pointer px-7 py-3 rounded-2xl font-medium text-sm whitespace-nowrap">1.
             Business Basics</div>
-        <div onclick="switchStep(2)"
+        <div
             class="cursor-pointer px-7 py-3 rounded-2xl font-medium text-sm bg-gray-100 hover:bg-gray-200 whitespace-nowrap">
             2. Contact</div>
-        <div onclick="switchStep(3)"
+        <div
             class="cursor-pointer px-7 py-3 rounded-2xl font-medium text-sm bg-gray-100 hover:bg-gray-200 whitespace-nowrap">
             3. Professional Info</div>
-        <div onclick="switchStep(4)"
+        <div 
             class="cursor-pointer px-7 py-3 rounded-2xl font-medium text-sm bg-gray-100 hover:bg-gray-200 whitespace-nowrap">
             4. About & Bio</div>
-        <div onclick="switchStep(5)"
+        <div 
             class="cursor-pointer px-7 py-3 rounded-2xl font-medium text-sm bg-gray-100 hover:bg-gray-200 whitespace-nowrap">
             5. Preview</div>
     </div>
