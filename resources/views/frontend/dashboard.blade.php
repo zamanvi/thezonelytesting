@@ -97,11 +97,11 @@
                 </div>
             </div>
             <div class="mt-12 flex gap-4">
-                <button onclick="alert('Draft saved successfully!')"
+                <button 
                     class="flex-1 py-5 bg-gray-100 hover:bg-gray-200 font-semibold rounded-2xl transition-all">
                     Save Draft
                 </button>
-                <button onclick="alert('Moving to Contact Information...')"
+                <button 
                     class="flex-1 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all">
                     Next: Contact Information →
                 </button>
@@ -177,12 +177,12 @@
                     <div class="p-8">
                         <h3 class="font-semibold mb-5">Get In Touch</h3>
                         <div class="space-y-4">
-                            <button onclick="alert('Calling (917) 561-0271...')"
+                            <button
                                 class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-blue-500 py-5 rounded-2xl font-medium transition-all">
                                 <i class="fas fa-phone text-xl text-blue-600"></i>
                                 Call Now: (917) 561-0271
                             </button>
-                            <button onclick="alert('Case submission form opened!')"
+                            <button 
                                 class="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl font-semibold transition-all">
                                 Submit Your Case Now
                             </button>
@@ -192,11 +192,11 @@
 
                 <!-- Action Buttons -->
                 <div class="mt-6 flex gap-4">
-                    <button onclick="alert('Landing page design confirmed and saved!')"
+                    <button 
                         class="flex-1 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all">
                         ✅ Use This Design
                     </button>
-                    <button onclick="alert('Design options coming soon...')"
+                    <button 
                         class="flex-1 py-4 bg-gray-100 hover:bg-gray-200 font-semibold rounded-2xl transition-all">
                         Change Design
                     </button>
