@@ -1,118 +1,125 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zonely - Leads Dashboard</title>
+    <title>Join as Pro | Zonely – Discover & Hire Local Experts Near Me</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .step-indicator {
+            @apply flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold;
+        }
+
+        .step-complete {
+            @apply bg-blue-600 text-white;
         }
 
         .step-active {
-            background-color: #2563eb;
-            color: white;
+            @apply bg-slate-900 text-white;
         }
 
-        .menu-active {
-            background-color: #dbeafe;
-            color: #1e40af;
-            font-weight: 600;
+        .step-inactive {
+            @apply bg-slate-200 text-slate-500;
         }
 
-        .landing-preview {
-            height: 620px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #64748b #f1f5f9;
-            border-radius: 24px;
+        .progress-bar {
+            @apply h-1 bg-slate-200;
         }
 
-        .landing-preview::-webkit-scrollbar {
-            width: 6px;
+        .progress-fill {
+            @apply h-1 bg-blue-600 transition-all duration-500;
         }
 
-        .landing-preview::-webkit-scrollbar-thumb {
-            background-color: #64748b;
-            border-radius: 20px;
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
         }
     </style>
+    @yield('css')
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
 
-    <div class="max-w-7xl mx-auto p-6">
-
-        <!-- Top Navigation -->
-        <div class="flex items-center justify-between mb-8 bg-white shadow-sm rounded-3xl px-8 py-5">
+    <nav class="fixed top-0 w-full z-50 px-4 md:px-8 py-4">
+        <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center shadow-sm">
             <div class="flex items-center gap-3">
-                <div
-                    class="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl">
-                    Z</div>
-                <span class="text-2xl font-semibold text-gray-900">Zonely</span>
+                {{-- <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-violet-600 rounded-lg"></div>
+                <span class="text-2xl font-extrabold tracking-tighter">ZONELY</span> --}}
+                <a href="{{ route('frontend.home') }}">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-10 h-10" alt="Zonely">
+                </a>
             </div>
-            <h1 class="text-2xl font-semibold text-gray-800">Leads Dashboard</h1>
+            <div class="">
 
-            <!-- More Menu -->
-            <div class="relative group">
-                <button onclick="toggleMenu()"
-                    class="flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 rounded-2xl hover:border-blue-300 transition-all text-sm font-medium">
-                    More <i class="fas fa-chevron-down ml-1"></i>
-                </button>
-                <div id="moreMenu"
-                    class="hidden absolute right-0 mt-3 w-64 bg-white rounded-3xl shadow-xl py-4 border border-gray-100 z-50 text-base">
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 hover:bg-gray-50"><i
-                            class="fas fa-home w-5"></i> Back to Home</a>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 hover:bg-gray-50"><i
-                            class="fas fa-user w-5"></i> Profile</a>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 hover:bg-gray-50"><i
-                            class="fas fa-phone w-5"></i> Leads Dashboard</a>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 hover:bg-gray-50"><i
-                            class="fas fa-handshake w-5"></i> Affiliate Dashboard</a>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 hover:bg-gray-50"><i
-                            class="fas fa-cog w-5"></i> Settings</a>
-                    <div class="border-t border-gray-100 my-2 mx-4"></div>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3.5 text-red-600 hover:bg-gray-50"><i
-                            class="fas fa-sign-out-alt w-5"></i> Logout</a>
-                </div>
+                @auth
+                    <div class="relative inline-block">
+                        <button onclick="toggleDropdown()"
+                            class="text-sm font-bold text-slate-500 hover:text-blue-600 transition">
+                            More ▼
+                        </button>
+                        <div id="dropdownMenu"
+                            class="hidden absolute bg-white shadow-xl rounded-2xl mt-2 w-48 border border-slate-100 z-50">
+                            <a href="{{ route('profile.edit') }}" class="block px-5 py-3 hover:bg-blue-50">Edit Profile</a>
+                            @if (Auth::user()->type === 'seller')
+                                <a href="{{ route('user.memberships.index') }}"
+                                    class="block px-5 py-3 hover:bg-blue-50">Memberships</a>
+                                <a href="{{ route('user.languages.index') }}"
+                                    class="block px-5 py-3 hover:bg-blue-50">Language</a>
+                                <a href="{{ route('user.educations.index') }}"
+                                    class="block px-5 py-3 hover:bg-blue-50">Education</a>
+                            @endif
+
+                        </div>
+                    </div>
+                @endauth
+                <a href="/" class="text-sm font-bold text-slate-500 hover:text-blue-600 transition">Back to
+                    Home</a>
             </div>
         </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-32 pb-24">
 
         @yield('content')
-        
-    </div>
 
+    </main>
+
+    @yield('script')
     <script>
-        function toggleMenu() {
-            document.getElementById('moreMenu').classList.toggle('hidden');
-        }
-        
-        function selectTitle(btn) {
-            document.querySelectorAll('.title-btn').forEach(b => {
-                b.classList.remove('bg-blue-600', 'text-white');
-                b.classList.add('bg-gray-100');
-            });
-            btn.classList.add('bg-blue-600', 'text-white');
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
         }
 
-        function toggleLanguage(btn) {
-            if (btn.classList.contains('bg-blue-100')) {
-                btn.classList.remove('bg-blue-100', 'text-blue-700', 'border-blue-500');
-                btn.classList.add('bg-gray-100');
-            } else {
-                btn.classList.add('bg-blue-100', 'text-blue-700', 'border-blue-500');
-            }
-        }
-
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.group')) {
-                document.getElementById('moreMenu').classList.add('hidden');
+        // click বাইরে করলে close
+        document.addEventListener('click', function(e) {
+            let dropdown = document.getElementById('dropdownMenu');
+            if (!e.target.closest('.relative')) {
+                dropdown.classList.add('hidden');
             }
         });
     </script>
+
 </body>
 
 </html>

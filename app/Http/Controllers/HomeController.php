@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\Category;
-use App\Models\City;
-use App\Models\Country;
-use App\Models\PostalCode;
-use App\Models\State;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +26,6 @@ class HomeController extends Controller
     {
         $categories = Category::where('is_active', true)->whereNull('parent_id')->get();
         return view('frontend.auth.register', compact('type', 'categories'));
-        // return view('frontend.auth.register', compact('type'));
     }
     function user_submit_login(Request $request)
     {
@@ -55,73 +50,82 @@ class HomeController extends Controller
             'password' => ['required', 'min:6'],
         ]);
 
-        $type = $request->type;
+        // $type = $request->type;
 
-        if ($type === 'buyer') {
-            $type = 'user';
-            $slug = Str::slug($validated['name']);
-        }
-        // Generate slug
+        // if ($type === 'buyer') {
+        //     $type = 'user';
+        //     $slug = Str::slug($validated['name']);
+        // }
+        // // Generate slug
 
-        if ($request->has('category_id') && is_array($request->category_id)) {
-            $category = Category::find(collect($request->category_id)->last());
-            if ($category) {
-                $slug = Str::slug($category->name);
-            }
-        }
-        $countryName = '';
-        $stateName = '';
-        $cityName = '';
-        $zipCodeName = '';
-        if ($request->has('country') && !empty($request->country)) {
-            $country = Country::find($request->country);
-            $countryName = $country ? $country->name : '';
-        }
-        if ($request->has('state') && !empty($request->state)) {
-            $state = State::find($request->state);
-            $stateName = $state ? $state->name : '';
-        }
-        if ($request->has('zip_code') && !empty($request->zip_code)) {
-            $zipCode = PostalCode::find($request->zip_code);
-            $zipCodeName = $zipCode ? $zipCode->name : '';
-        }
-        if ($request->has('city') && !empty($request->city)) {
-            $city = City::find($request->city);
-            $cityName = $city ? $city->name : '';
-            if ($city) {
-                $slug .= '-' . $city->slug;
-            }
-        } 
+        // if ($request->has('category_id') && is_array($request->category_id)) {
+        //     $category = Category::find(collect($request->category_id)->last());
+        //     if ($category) {
+        //         $slug = Str::slug($category->name);
+        //     }
+        // }
+        // $countryName = '';
+        // $stateName = '';
+        // $cityName = '';
+        // $zipCodeName = '';
+        // if ($request->has('country') && !empty($request->country)) {
+        //     $country = Country::find($request->country);
+        //     $countryName = $country ? $country->name : '';
+        // }
+        // if ($request->has('state') && !empty($request->state)) {
+        //     $state = State::find($request->state);
+        //     $stateName = $state ? $state->name : '';
+        // }
+        // if ($request->has('zip_code') && !empty($request->zip_code)) {
+        //     $zipCode = PostalCode::find($request->zip_code);
+        //     $zipCodeName = $zipCode ? $zipCode->name : '';
+        // }
+        // if ($request->has('city') && !empty($request->city)) {
+        //     $city = City::find($request->city);
+        //     $cityName = $city ? $city->name : '';
+        //     if ($city) {
+        //         $slug .= '-' . $city->slug;
+        //     }
+        // } 
         
-        if ($request->has('business_name') && !empty($request->business_name)) {
-            $slug .= '-' . Str::slug($request->business_name);
-        }
+        // if ($request->has('business_name') && !empty($request->business_name)) {
+        //     $slug .= '-' . Str::slug($request->business_name);
+        // }
 
+        // $user = User::create([
+        //     'name' => $validated['name'],
+        //     'email' => $validated['email'],
+        //     'phone' => $request->phone ?? null,
+        //     'whatsapp' => $request->whatsapp ?? null,
+        //     'type' => $type ,
+        //     'business_name' => $request->business_name ?? '',
+        //     'password' => Hash::make($validated['password']),
+        //     'slug' => $slug,
+        //     'tags' => $request->tags,
+        //     'category_id' => collect($request->category_id)->last() ?? null,
+        //     'country' => $countryName,
+        //     'state' => $stateName,
+        //     'city' => $cityName,
+        //     'zip_code' => $zipCodeName,
+        //     'additional_details' => $request->additional_details ?? 'null',
+        //     'bio' => $request->bio ?? '',
+        //     'experience' => $request->experience ?? '',
+        // ]);
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $request->phone ?? null,
-            'whatsapp' => $request->whatsapp ?? null,
-            'type' => $type ,
+            'type' => $request->type ,
             'business_name' => $request->business_name ?? '',
             'password' => Hash::make($validated['password']),
-            'slug' => $slug,
-            'tags' => $request->tags,
-            'category_id' => collect($request->category_id)->last() ?? null,
-            'country' => $countryName,
-            'state' => $stateName,
-            'city' => $cityName,
-            'zip_code' => $zipCodeName,
-            'additional_details' => $request->additional_details ?? 'null',
-            'bio' => $request->bio ?? '',
-            'experience' => $request->experience ?? '',
+            'slug' => Str::slug($validated['name']),
         ]);
         Auth::login($user);
         if ($user->type === 'user') {
             return redirect()->route('frontend.home')->with('success', 'Please complete your profile.');
         }
         if ($user->type === 'seller') {
-            return redirect()->route('profile.first')->with('success', 'Please complete your profile.');
+            return redirect()->route('user.dashboard')->with('success', 'Please complete your profile.');
         }
         return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
     }

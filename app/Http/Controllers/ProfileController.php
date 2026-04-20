@@ -17,7 +17,21 @@ class ProfileController extends Controller
     public function dashboard(Request $request): View
     {
         $user = $request->user();
-        return view('frontend.dashboard', compact('user'));
+        $layout = '__app';
+        if ($user->seller_service_type === 'professional') {
+            $layout = '__prof_app';
+        }
+        if ($user->seller_service_type === 'health') {
+            $layout = '__health_app';
+        }
+        if ($user->seller_service_type === 'home') {
+            $layout = '__home_app';
+        }
+        if ($user->seller_service_type === 'beauty') {
+            $layout = '__beauty_app';
+        }
+        $_next = $request->_next ?? 'business';
+        return view('frontend.dashboard', compact('user', 'layout', '_next'));
     }
     /**
      * Display the user's profile form.
@@ -25,9 +39,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $user = $request->user();
-        return view('frontend.profile.edit.index', [
-            'user' => $user,
-        ]);
+        return view('frontend.profile.edit.index', ['user' => $user]);
     }
     public function typeProfile(Request $request, $type, $setup)
     {
@@ -94,7 +106,7 @@ class ProfileController extends Controller
             $next = 'review';
         } elseif ($setup === 'review') {
             // final step
-            return redirect()->route('dashboard')->with('success', 'Profile completed!');
+            return redirect()->route('user.dashboard')->with('success', 'Profile completed!');
         }
 
         // ======================
@@ -118,6 +130,14 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile information updated');
+    }
+    
+    public function profileUpdateDashboard(Request $request)
+    {
+        $user = User::find(auth()->id());
+        $user->update($request->except(['_token', '_next']));
+        $_next = $request->_next;
+        return redirect()->route('user.dashboard', compact('_next'));
     }
 
     /**

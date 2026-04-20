@@ -72,7 +72,7 @@ Route::get('/postal-codes/{city_id}', function ($city_id) {
 });
 Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'user_register1'])->name('user.register1');
-Route::get('user/register/{slug}', [HomeController::class, 'user_register2'])->name('user.register');
+Route::get('user/register/{type}', [HomeController::class, 'user_register2'])->name('user.register');
 Route::post('user/login', [HomeController::class, 'user_submit_login'])->name('user.submit.login');
 Route::post('user/register', [HomeController::class, 'user_submit_register'])->name('user.submit.register');
 
@@ -112,6 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile-update', [ProfileController::class, 'profileUpdateDashboard'])->name('profile.update.dashboard');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     /*

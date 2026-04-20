@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('tags')->nullable();
             $table->string('slug')->unique();
             $table->string('business_name')->nullable();
+            $table->enum('seller_service_type', ['professional', 'health', 'home', 'beauty'])->default('professional')->nullable();
             $table->string('experience')->nullable();
             $table->string('category_id')->nullable();
             $table->string('profile_photo')->nullable();
