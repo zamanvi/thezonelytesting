@@ -15,31 +15,17 @@
                     {{ ucfirst($type ?? ($status ?? 'All')) }} User Profiles
                 </h5>
 
-                <div class="btn-group">
-                    <a href="{{ route('admin.profiles.index', ['type' => 'all']) }}"
-                        class="btn btn-sm {{ (!$type && !$status) || $type == 'all' ? 'btn-light' : 'btn-outline-light' }}">
-                        All
-                    </a>
-
-                    <a href="{{ route('admin.profiles.index', ['type' => 'admin']) }}"
-                        class="btn btn-sm {{ $type == 'admin' ? 'btn-light' : 'btn-outline-light' }}">
-                        Admin
-                    </a>
-
-                    <a href="{{ route('admin.profiles.index', ['type' => 'profile']) }}"
-                        class="btn btn-sm {{ $type == 'profile' ? 'btn-light' : 'btn-outline-light' }}">
-                        Profile
-                    </a>
-
+                <div class="btn-group flex-wrap gap-1">
+                    <a href="{{ route('admin.profiles.index') }}"
+                        class="btn btn-sm {{ !$type && !$status ? 'btn-light' : 'btn-outline-light' }}">All</a>
+                    <a href="{{ route('admin.profiles.index', ['type' => 'seller']) }}"
+                        class="btn btn-sm {{ $type == 'seller' ? 'btn-light' : 'btn-outline-light' }}">Sellers</a>
+                    <a href="{{ route('admin.profiles.index', ['type' => 'user']) }}"
+                        class="btn btn-sm {{ $type == 'user' ? 'btn-light' : 'btn-outline-light' }}">Buyers</a>
                     <a href="{{ route('admin.profiles.index', ['status' => 'verified']) }}"
-                        class="btn btn-sm {{ ($status ?? '') == 'verified' ? 'btn-light' : 'btn-outline-light' }}">
-                        Verified
-                    </a>
-
+                        class="btn btn-sm {{ ($status ?? '') == 'verified' ? 'btn-light' : 'btn-outline-light' }}">Verified</a>
                     <a href="{{ route('admin.profiles.index', ['status' => 'unverified']) }}"
-                        class="btn btn-sm {{ ($status ?? '') == 'unverified' ? 'btn-light' : 'btn-outline-light' }}">
-                        Unverified
-                    </a>
+                        class="btn btn-sm {{ ($status ?? '') == 'unverified' ? 'btn-light' : 'btn-outline-light' }}">Pending</a>
                 </div>
             </div>
 
@@ -52,10 +38,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Type</th>
                                     <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Designation</th>
+                                    <th>City</th>
                                     <th>Status</th>
+                                    <th>Joined</th>
                                     <th width="10">Action</th>
                                 </tr>
                             </thead>
@@ -64,18 +51,38 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            <strong>{{ $user->name }}</strong>
+                                            <div class="d-flex align-items-center gap-2">
+                                                @if($user->profile_photo)
+                                                <img src="{{ asset($user->profile_photo) }}"
+                                                     onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=36&background=0ea5e9&color=fff'"
+                                                     class="rounded-circle" width="36" height="36" style="object-fit:cover">
+                                                @else
+                                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                                     style="width:36px;height:36px;font-size:13px;font-weight:700;flex-shrink:0">
+                                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                                </div>
+                                                @endif
+                                                <div>
+                                                    <strong>{{ $user->name }}</strong>
+                                                    @if($user->designation ?? $user->title ?? false)
+                                                    <div class="text-muted small">{{ $user->designation ?? $user->title }}</div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->phone ?? '-' }}</td>
-                                        <td>{{ $user->designation ?? '-' }}</td>
                                         <td>
-                                            <span
-                                                class="badge 
-                                            {{ $user->status ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $user->status ? 'Verified' : 'Unverified' }}
+                                            <span class="badge {{ $user->type === 'seller' ? 'bg-primary' : ($user->type === 'admin' ? 'bg-dark' : 'bg-secondary') }}">
+                                                {{ ucfirst($user->type === 'user' ? 'buyer' : $user->type) }}
                                             </span>
                                         </td>
+                                        <td class="small text-muted">{{ $user->email }}</td>
+                                        <td class="small">{{ $user->city ?? '—' }}</td>
+                                        <td>
+                                            <span class="badge {{ $user->status ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                {{ $user->status ? 'Verified' : 'Pending' }}
+                                            </span>
+                                        </td>
+                                        <td class="small text-muted">{{ $user->created_at?->format('M d, Y') }}</td>
                                         {{-- <td>
                                         @if ($user->type === 'admin')
                                             <span class="text-muted">N/A</span>

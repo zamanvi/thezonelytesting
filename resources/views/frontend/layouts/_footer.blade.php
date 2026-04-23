@@ -1,18 +1,33 @@
-<footer class="max-w-7xl mx-auto mt-5 px-4 text-center border-t pt-10">
-    <div class="text-xl font-extrabold mb-4">
-        <a href="{{ route('frontend.home') }}">ZONELY<span class="text-blue-600">.</span></a>
+<footer class="max-w-7xl mx-auto mt-8 px-4 sm:px-6 border-t pt-10 pb-6 text-center">
+
+    <a href="{{ route('frontend.home') }}" class="inline-block text-xl font-extrabold mb-5 hover:text-blue-600 transition" style="min-height:unset;min-width:unset;">
+        ZONELY<span class="text-blue-600">.</span>
+    </a>
+
+    {{-- Nav links: wrap on mobile, row on sm+ --}}
+    <div class="flex flex-wrap justify-center gap-x-5 gap-y-3 text-xs font-bold text-slate-500 mb-5 uppercase tracking-widest">
+        <a href="{{ route('frontend.privacy-policy') }}"       class="hover:text-blue-600 transition" style="min-height:unset;">Privacy Policy</a>
+        <a href="{{ route('frontend.terms-and-condition') }}"  class="hover:text-blue-600 transition" style="min-height:unset;">Terms of Service</a>
+        <a href="{{ route('frontend.about-us') }}"             class="hover:text-blue-600 transition" style="min-height:unset;">About Us</a>
+        <a href="{{ route('frontend.help') }}"                 class="hover:text-blue-600 transition" style="min-height:unset;">Help</a>
+        <a href="https://migotrucking.com" target="_blank" rel="noopener" class="hover:text-blue-600 transition" style="min-height:unset;">Sister Site</a>
     </div>
-    <div class="flex justify-center gap-6 text-xs font-bold text-slate-500 mb-4 uppercase tracking-widest">
-        <a href="{{ route('frontend.privacy-policy') }}" class="hover:text-blue-700">Privacy Policy</a>
-        <a href="{{ route('frontend.terms-and-condition') }}" class="hover:text-blue-700">Terms of Service</a>
-        <a href="{{ route('frontend.about-us') }}" class="hover:text-blue-700">About Us</a>
-        {{-- <a href="{{ route('frontend.about-site-author') }}" class="hover:text-blue-700">About Site Author</a> --}}
-        <a href="https://migotrucking.com" target="_blank" class="hover:text-blue-700">Our sister website</a>
+
+    {{-- Social --}}
+    <div class="flex justify-center gap-5 mb-5">
+        <a href="https://www.facebook.com/profile.php?id=61581047693543" target="_blank" rel="noopener"
+           class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-blue-100 hover:text-blue-600 text-slate-500 transition" style="min-height:unset;min-width:unset;">
+            <i class="fab fa-facebook text-sm"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/102732925/admin/dashboard" target="_blank" rel="noopener"
+           class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-blue-100 hover:text-blue-600 text-slate-500 transition" style="min-height:unset;min-width:unset;">
+            <i class="fab fa-linkedin text-sm"></i>
+        </a>
+        <a href="https://www.youtube.com/@thezonely" target="_blank" rel="noopener"
+           class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-500 transition" style="min-height:unset;min-width:unset;">
+            <i class="fab fa-youtube text-sm"></i>
+        </a>
     </div>
-    <div class="flex justify-center gap-6 mb-4">
-        <a href="https://www.facebook.com/profile.php?id=61581047693543" target="_blank" class="hover:text-blue-700"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.linkedin.com/company/102732925/admin/dashboard" target="_blank" class="hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
-        <a href="https://www.youtube.com/@thezonely" target="_blank" class="hover:text-blue-700"><i class="fab fa-youtube"></i></a>
-    </div>
-    <p class="text-sm text-slate-400 mb-6">© 2025 Zonely. Empowering Local Experts.</p>
+
+    <p class="text-xs text-slate-400">© {{ date('Y') }} Zonely. Empowering Local Experts.</p>
 </footer>

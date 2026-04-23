@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') || Admin Panel - Dashboard</title>
+    <title>@yield('title') — Admin Panel | Zonely</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -240,69 +240,32 @@
 
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
+
+        {{-- Flash messages --}}
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-5 pt-3" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        @endif
+        @if(session('warning'))
+        <div class="alert alert-warning alert-dismissible fade show mt-5 pt-3" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>{{ session('warning') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        @endif
+        @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mt-5 pt-3" role="alert">
+            <i class="fas fa-times-circle me-2"></i>
+            <ul class="mb-0 ps-3">
+                @foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        @endif
+
         @yield('content')
     </main>
-
-    <!-- Modal for Add Location -->
-    <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addLocationLabel">Add Location</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" id="locationInput"
-                        placeholder="Enter Location (Country/State/City/Area)">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveLocation()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Add Category -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCategoryLabel">Add Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" id="categoryInput"
-                        placeholder="Enter Category (Mother/Child)">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveCategory()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Add Role -->
-    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addRoleLabel">Add New Role</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control mb-3" id="roleName" placeholder="Role Name">
-                    <input type="text" class="form-control" id="roleLevel" placeholder="Level (e.g., Level 6)">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveRole()">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -343,204 +306,12 @@
             icon.classList.toggle('fa-sun');
         });
 
-        /* Active Link Highlight */
-        // document.querySelectorAll('.sidebar a').forEach(link => {
-        //     link.addEventListener('click', function() {
-        //         document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
-        //         this.classList.add('active');
-        //     });
-        // });
-
-        /* Dynamic Locations, Categories, Roles */
-        // let locations = [];
-        // let categories = [];
         // let roles = [{
         //         name: 'CEO Team – Full Control',
         //         level: 'Level 1',
         //         badge: 'bg-dark text-light',
         //         icon: 'crown'
         //     },
-        //     {
-        //         name: 'Country Manager',
-        //         level: 'Level 2',
-        //         badge: 'bg-primary',
-        //         icon: 'globe'
-        //     },
-        //     {
-        //         name: 'State Manager',
-        //         level: 'Level 3',
-        //         badge: 'bg-success',
-        //         icon: 'map'
-        //     },
-        //     {
-        //         name: 'District Manager',
-        //         level: 'Level 4',
-        //         badge: 'bg-info',
-        //         icon: 'vector-square'
-        //     },
-        //     {
-        //         name: 'City Manager',
-        //         level: 'Level 5',
-        //         badge: 'bg-warning',
-        //         icon: 'city'
-        //     },
-        //     {
-        //         name: 'Area Manager',
-        //         level: 'Level 6',
-        //         badge: 'bg-secondary',
-        //         icon: 'map-marked-alt'
-        //     }
-        // ];
-
-        // function addLocation() {
-        //     new bootstrap.Modal(document.getElementById('addLocationModal')).show();
-        // }
-
-        // function saveLocation() {
-        //     let name = document.getElementById('locationInput').value;
-        //     if (name) {
-        //         locations.push(name);
-        //         renderList('areaList', locations);
-        //         renderSidebarAreas();
-        //     }
-        //     bootstrap.Modal.getInstance(document.getElementById('addLocationModal')).hide();
-        //     document.getElementById('locationInput').value = '';
-        // }
-
-        // function addCategory() {
-        //     new bootstrap.Modal(document.getElementById('addCategoryModal')).show();
-        // }
-
-        // function saveCategory() {
-        //     let name = document.getElementById('categoryInput').value;
-        //     if (name) {
-        //         categories.push(name);
-        //         renderList('categoryList', categories);
-        //         renderSidebarCategories();
-        //     }
-        //     bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
-        //     document.getElementById('categoryInput').value = '';
-        // }
-
-        // function addRole() {
-        //     new bootstrap.Modal(document.getElementById('addRoleModal')).show();
-        // }
-
-        // function saveRole() {
-        //     let name = document.getElementById('roleName').value;
-        //     let level = document.getElementById('roleLevel').value;
-        //     if (name && level) {
-        //         roles.push({
-        //             name,
-        //             level,
-        //             badge: 'bg-secondary',
-        //             icon: 'user-shield'
-        //         });
-        //         renderAdminHierarchy();
-        //         renderSidebarAdmin();
-        //     }
-        //     bootstrap.Modal.getInstance(document.getElementById('addRoleModal')).hide();
-        //     document.getElementById('roleName').value = '';
-        //     document.getElementById('roleLevel').value = '';
-        // }
-
-        // function renderList(listId, items) {
-        //     let list = document.getElementById(listId);
-        //     list.innerHTML = '';
-        //     items.forEach((item, i) => {
-        //         let li = document.createElement('li');
-        //         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        //         li.innerHTML =
-        //             `${item} <button class="btn btn-sm btn-outline-danger" onclick="removeItem('${listId}', ${i})">Remove</button>`;
-        //         list.appendChild(li);
-        //     });
-        // }
-
-        // function removeItem(listId, index) {
-        //     if (confirm('Remove this item?')) {
-        //         if (listId === 'areaList') {
-        //             locations.splice(index, 1);
-        //             renderList('areaList', locations);
-        //             renderSidebarAreas();
-        //         }
-        //         if (listId === 'categoryList') {
-        //             categories.splice(index, 1);
-        //             renderList('categoryList', categories);
-        //             renderSidebarCategories();
-        //         }
-        //     }
-        // }
-
-        // function renderSidebarAreas() {
-        //     let areaUl = document.getElementById('collapseAreas');
-        //     areaUl.innerHTML = '';
-        //     locations.forEach((loc) => {
-        //         let li = document.createElement('li');
-        //         li.className = 'nav-item';
-        //         li.innerHTML = `<a href="#" class="nav-link ps-5">${loc}</a>`;
-        //         areaUl.appendChild(li);
-        //     });
-        // }
-
-        // function renderSidebarCategories() {
-        //     let catUl = document.getElementById('collapseCategories');
-        //     catUl.innerHTML = '';
-        //     categories.forEach((cat) => {
-        //         let li = document.createElement('li');
-        //         li.className = 'nav-item';
-        //         li.innerHTML = `<a href="#" class="nav-link ps-5">${cat}</a>`;
-        //         catUl.appendChild(li);
-        //     });
-        // }
-
-        // function renderAdminHierarchy() {
-        //     let list = document.getElementById('adminHierarchy');
-        //     list.innerHTML = '';
-        //     roles.forEach((role, i) => {
-        //         let li = document.createElement('li');
-        //         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        //         li.innerHTML =
-        //             `${role.name} <span class="role-badge ${role.badge}">${role.level}</span> <button class="btn btn-sm btn-outline-dark" onclick="manageRole('${role.name}')">Manage</button> <button class="btn btn-sm btn-outline-danger" onclick="removeRole(${i})">Remove</button>`;
-        //         list.appendChild(li);
-        //     });
-        // }
-
-        // function removeRole(index) {
-        //     if (confirm('Remove this role?')) {
-        //         roles.splice(index, 1);
-        //         renderAdminHierarchy();
-        //         renderSidebarAdmin();
-        //     }
-        // }
-
-        // function renderSidebarAdmin() {
-        //     let adminUl = document.getElementById('collapseAdminHierarchy');
-        //     adminUl.innerHTML = '';
-        //     roles.forEach((role) => {
-        //         let li = document.createElement('li');
-        //         li.className = 'nav-item';
-        //         li.innerHTML = `<a href="#" class="nav-link ps-4">
-        //         <h6><i class="fas fa-${role.icon} me-2"></i>${role.name} <small class="text-muted">${role.level}</small></h6>
-        //     </a>`;
-        //         adminUl.appendChild(li);
-        //     });
-        // }
-
-        /* Admin Role Management */
-        // function manageRole(role) {
-        //     alert(`Managing ${role} (simulate assignments, AI leads, etc.)`);
-        // }
-
-        /* AI Auto-Assign Simulation */
-        // document.getElementById('aiAssignBtn').addEventListener('click', () => {
-        //     alert("AI auto-assignment of leads to managers/sellers simulated!");
-        // });
-
-        /* Initial Renders */
-        // renderAdminHierarchy();
-        // renderSidebarAdmin();
-        // renderSidebarAreas();
-        // renderSidebarCategories();
     </script>
     @yield('scripts')
 </body>

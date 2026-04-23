@@ -28,17 +28,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        // Redirect vendors
-        if ($user->type === 'vendor') {
-            return redirect()->route('vendor.dashboard');
-        }
-
-        // Redirect normal users
-        if ($user->type === 'user') {
-            return redirect()->route('dashboard');
-        }
-
-        // Default (in case type is missing)
-        return redirect()->route('login');
+        // Non-admin users go back to their dashboard
+        return redirect()->route('dashboard');
     }
 }

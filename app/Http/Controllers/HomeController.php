@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -45,87 +44,35 @@ class HomeController extends Controller
     function user_submit_register(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'min:6'],
+            'type'     => ['required', 'in:seller,user'],
         ]);
 
-        // $type = $request->type;
+        $referrer = null;
+        if ($request->filled('ref')) {
+            $referrer = User::where('slug', $request->ref)
+                ->orWhere('id', $request->ref)
+                ->first();
+        }
 
-        // if ($type === 'buyer') {
-        //     $type = 'user';
-        //     $slug = Str::slug($validated['name']);
-        // }
-        // // Generate slug
-
-        // if ($request->has('category_id') && is_array($request->category_id)) {
-        //     $category = Category::find(collect($request->category_id)->last());
-        //     if ($category) {
-        //         $slug = Str::slug($category->name);
-        //     }
-        // }
-        // $countryName = '';
-        // $stateName = '';
-        // $cityName = '';
-        // $zipCodeName = '';
-        // if ($request->has('country') && !empty($request->country)) {
-        //     $country = Country::find($request->country);
-        //     $countryName = $country ? $country->name : '';
-        // }
-        // if ($request->has('state') && !empty($request->state)) {
-        //     $state = State::find($request->state);
-        //     $stateName = $state ? $state->name : '';
-        // }
-        // if ($request->has('zip_code') && !empty($request->zip_code)) {
-        //     $zipCode = PostalCode::find($request->zip_code);
-        //     $zipCodeName = $zipCode ? $zipCode->name : '';
-        // }
-        // if ($request->has('city') && !empty($request->city)) {
-        //     $city = City::find($request->city);
-        //     $cityName = $city ? $city->name : '';
-        //     if ($city) {
-        //         $slug .= '-' . $city->slug;
-        //     }
-        // } 
-        
-        // if ($request->has('business_name') && !empty($request->business_name)) {
-        //     $slug .= '-' . Str::slug($request->business_name);
-        // }
-
-        // $user = User::create([
-        //     'name' => $validated['name'],
-        //     'email' => $validated['email'],
-        //     'phone' => $request->phone ?? null,
-        //     'whatsapp' => $request->whatsapp ?? null,
-        //     'type' => $type ,
-        //     'business_name' => $request->business_name ?? '',
-        //     'password' => Hash::make($validated['password']),
-        //     'slug' => $slug,
-        //     'tags' => $request->tags,
-        //     'category_id' => collect($request->category_id)->last() ?? null,
-        //     'country' => $countryName,
-        //     'state' => $stateName,
-        //     'city' => $cityName,
-        //     'zip_code' => $zipCodeName,
-        //     'additional_details' => $request->additional_details ?? 'null',
-        //     'bio' => $request->bio ?? '',
-        //     'experience' => $request->experience ?? '',
-        // ]);
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $request->phone ?? null,
-            'type' => $request->type ,
+            'name'          => $validated['name'],
+            'email'         => $validated['email'],
+            'phone'         => $request->phone ?? null,
+            'type'          => $validated['type'],
             'business_name' => $request->business_name ?? '',
-            'password' => Hash::make($validated['password']),
-            'slug' => Str::slug($validated['name']),
+            'password'      => Hash::make($validated['password']),
+            'slug'          => generateUniqueSlug(User::class, $validated['name']),
+            'referred_by'   => $referrer?->id,
         ]);
         Auth::login($user);
         if ($user->type === 'user') {
             return redirect()->route('frontend.home')->with('success', 'Please complete your profile.');
         }
         if ($user->type === 'seller') {
-            return redirect()->route('user.dashboard')->with('success', 'Please complete your profile.');
+            return redirect()->route('seller.dashboard')->with('success', 'Please complete your profile.');
         }
         return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
     }
@@ -134,7 +81,7 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        $users = User::where('type', 'seller')->where('status', true)->latest()->take(2)->get();
+        $users = User::where('type', 'seller')->where('status', true)->latest()->take(8)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function service_all()
@@ -149,94 +96,50 @@ class HomeController extends Controller
     function service_search(Request $request)
     {
         $query = $request->input('q');
+        $city  = $request->input('city');
         $users = User::where('type', 'seller')
             ->where('status', true)
-            ->where(function ($q) use ($query) {
+            ->when($city, fn($q) => $q->where(function($q) use ($city) {
+                $q->where('city', 'like', '%' . $city . '%')
+                  ->orWhere('state', 'like', '%' . $city . '%')
+                  ->orWhere('zip_code', 'like', '%' . $city . '%');
+            }))
+            ->when($query, fn($q) => $q->where(function($q) use ($query) {
                 $q->where('name', 'like', '%' . $query . '%')
                     ->orWhere('title', 'like', '%' . $query . '%')
                     ->orWhere('designation', 'like', '%' . $query . '%')
                     ->orWhere('work_address', 'like', '%' . $query . '%')
                     ->orWhere('about', 'like', '%' . $query . '%')
+                    ->orWhere('tags', 'like', '%' . $query . '%')
                     ->orWhere('remark', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('educations', function ($q) use ($query) {
-                $q->where('degree', 'like', '%' . $query . '%')
-                    ->orWhere('institution', 'like', '%' . $query . '%')
-                    ->orWhere('passing_year', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('contacts', function ($q) use ($query) {
-                $q->where('type', 'like', '%' . $query . '%')->orWhere('value', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('languages', function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('memberships', function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%');
-            })
+            }))
             ->paginate(12)
-            ->appends(['q' => $query]);
+            ->appends(['q' => $query, 'city' => $city]);
         $isSearch = true;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.service_all', compact('users', 'isSearch', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
+        return view('frontend.service_all', compact('users', 'isSearch', 'query', 'city', 'meta_title', 'meta_description', 'meta_keywords'));
+    }
+
+    function category_show($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $users = User::where('type', 'seller')
+            ->where('status', true)
+            ->where('category_id', $category->id)
+            ->latest()
+            ->paginate(12);
+        $meta_title = $category->name . ' — Zonely';
+        $meta_description = 'Find trusted local ' . $category->name . ' experts near you with Zonely.';
+        $meta_keywords = $category->name . ' near me;';
+        return view('frontend.service_all', compact('users', 'category', 'meta_title', 'meta_description', 'meta_keywords'));
     }
 
     function service_show($slug)
     {
         $user = User::where('slug', $slug)->where('type', 'seller')->where('status', true)->firstOrFail();
         return view('frontend.service_details', compact('user'));
-    }
-    function search(Request $request)
-    {
-        $query = $request->input('q');
-        $users = User::where('type', 'seller')
-            ->where('status', true)
-            ->where(function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%')
-                    ->orWhere('title', 'like', '%' . $query . '%')
-                    ->orWhere('designation', 'like', '%' . $query . '%')
-                    ->orWhere('work_address', 'like', '%' . $query . '%')
-                    ->orWhere('about', 'like', '%' . $query . '%')
-                    ->orWhere('remark', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('educations', function ($q) use ($query) {
-                $q->where('degree', 'like', '%' . $query . '%')
-                    ->orWhere('institution', 'like', '%' . $query . '%')
-                    ->orWhere('passing_year', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('contacts', function ($q) use ($query) {
-                $q->where('type', 'like', '%' . $query . '%')->orWhere('value', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('languages', function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%');
-            })
-            ->orWhereHas('memberships', function ($q) use ($query) {
-                $q->where('name', 'like', '%' . $query . '%');
-            })
-            ->paginate(12)
-            ->appends(['q' => $query]);
-        $isSearch = true;
-        $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
-        $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
-        $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        return view('frontend.search', compact('users', 'query', 'meta_title', 'meta_description', 'meta_keywords'));
-    }
-    function service1()
-    {
-        $data = [
-            'sub_title' => 'Fast Tow Trucks Near Me | Reliable Towing in the USA',
-            'marque' => 'Looking for tow trucks near you? Tow Now provides fast, professional towing services across the USA at competitive prices. Call us now!',
-            'que' => 'Searching for tow trucks near you?',
-            'answer' => 'Tow Now delivers top-notch towing services 24/7 in every corner of the USA. From emergency roadside assistance to vehicle transport, we prioritize safety, reliability, and affordability. Call Tow Now today to get back on the road without hassle!',
-            'is_img' => false,
-            'link' => asset('frontend/video/tow_trucks_near_me.mp4'),
-            'img2_link' => asset('frontend/img/tow_trucks_near_me2.jpg'),
-            'description' => true,
-            'page' => '01',
-        ];
-
-        return view('frontend.home', compact('data'));
     }
     function help()
     {
@@ -298,7 +201,8 @@ class HomeController extends Controller
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
 
-        return view('frontend.blog', compact('featuredBlog', 'blogs', 'meta_title', 'meta_description', 'meta_keywords'));
+        $blog = $featuredBlog;
+        return view('frontend.blog_details', compact('blog', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function sitemap()
     {

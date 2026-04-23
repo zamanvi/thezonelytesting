@@ -1,0 +1,173 @@
+@extends('frontend.layouts._app')
+@section('title', 'Lead Details')
+@section('content')
+<div class="min-h-screen bg-slate-50 pt-20 pb-16 px-4">
+    <div class="max-w-2xl mx-auto py-6">
+
+        <div class="flex items-center gap-3 mb-6">
+            <a href="{{ route('seller.dashboard') ?? '#' }}" class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+            </a>
+            <div>
+                <h1 class="text-xl font-bold text-slate-900">Lead Details</h1>
+                <p class="text-xs text-slate-500">Review and take action on this lead</p>
+            </div>
+        </div>
+
+        {{-- Status Banner --}}
+        @php
+            $status = $lead->status ?? 'pending';
+            $bannerClass = match($status) {
+                'won'    => 'bg-emerald-50 border-emerald-200 text-emerald-800',
+                'lost'   => 'bg-red-50 border-red-200 text-red-700',
+                default  => 'bg-amber-50 border-amber-200 text-amber-800',
+            };
+            $statusIcon = match($status) {
+                'won'    => 'fa-trophy text-emerald-500',
+                'lost'   => 'fa-xmark text-red-500',
+                default  => 'fa-clock text-amber-500',
+            };
+        @endphp
+        <div class="border rounded-2xl p-3.5 mb-5 flex items-center gap-3 {{ $bannerClass }}">
+            <i class="fa-solid {{ $statusIcon }}"></i>
+            <p class="text-sm font-bold">{{ ucfirst($status) }} Lead
+                @if($status === 'pending') — Take action below @endif
+            </p>
+            <span class="ml-auto text-xs opacity-70">{{ $lead->created_at?->format('M d, Y') }}</span>
+        </div>
+
+        {{-- Contact Info --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-user text-blue-600 text-sm"></i> Contact Information
+            </h2>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-xl shrink-0">
+                        {{ $lead->name ? strtoupper(substr($lead->name, 0, 2)) : strtoupper(substr($lead->phone ?? '??', -2)) }}
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-lg">{{ $lead->phone ?? '—' }}</p>
+                        <p class="text-xs text-slate-500">Phone number</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a href="tel:{{ $lead->phone ?? '' }}"
+                       class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition">
+                        <i class="fa-solid fa-phone"></i> Call Now
+                    </a>
+                    <a href="https://wa.me/{{ preg_replace('/\D/','',$lead->phone ?? '') }}" target="_blank"
+                       class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- Request Details --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-blue-600 text-sm"></i> What They Need
+            </h2>
+            <div class="space-y-3">
+                <div class="flex gap-3">
+                    <span class="text-xs font-bold text-slate-400 w-24 shrink-0 pt-0.5">Service</span>
+                    <span class="text-sm font-semibold text-slate-800">{{ $lead->service ?? '—' }}</span>
+                </div>
+                @if($lead->message ?? false)
+                <div class="flex gap-3">
+                    <span class="text-xs font-bold text-slate-400 w-24 shrink-0 pt-0.5">Message</span>
+                    <span class="text-sm text-slate-700 leading-relaxed">{{ $lead->message }}</span>
+                </div>
+                @endif
+                @if($lead->location ?? false)
+                <div class="flex gap-3">
+                    <span class="text-xs font-bold text-slate-400 w-24 shrink-0 pt-0.5">Location</span>
+                    <span class="text-sm text-slate-700">{{ $lead->location }}</span>
+                </div>
+                @endif
+                <div class="flex gap-3">
+                    <span class="text-xs font-bold text-slate-400 w-24 shrink-0 pt-0.5">Received</span>
+                    <span class="text-sm text-slate-700">{{ $lead->created_at?->format('D, M d Y \a\t g:i A') }}</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-bold text-slate-400 w-24 shrink-0 pt-0.5">Lead Fee</span>
+                    <span class="text-sm font-bold {{ ($lead->paid_at ?? false) ? 'text-emerald-600' : 'text-red-600' }}">
+                        ${{ number_format($lead->fee ?? 0, 2) }}
+                        <span class="font-normal text-xs">{{ ($lead->paid_at ?? false) ? '(paid)' : '(unpaid)' }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {{-- Notes --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-note-sticky text-blue-600 text-sm"></i> My Notes
+            </h2>
+            <textarea id="notesArea" rows="3" placeholder="Add private notes about this lead (only you can see these)..."
+                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ $lead->notes ?? '' }}</textarea>
+            <button onclick="saveNotes()" class="mt-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+                Save Notes
+            </button>
+        </div>
+
+        {{-- Actions --}}
+        @if($status === 'pending')
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-1">Update Status</h2>
+            <p class="text-xs text-slate-400 mb-4">Did you win this job, or did it not work out?</p>
+            <div class="flex gap-3">
+                <button onclick="setStatus('won')"
+                    class="flex-1 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> Mark as Won
+                </button>
+                <button onclick="setStatus('lost')"
+                    class="flex-1 py-3.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-xmark"></i> Mark as Lost
+                </button>
+            </div>
+        </div>
+        @endif
+
+        @if(!($lead->paid_at ?? true))
+        <div class="bg-red-50 border border-red-100 rounded-2xl p-5">
+            <p class="font-bold text-red-700 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i> Lead fee unpaid
+            </p>
+            <p class="text-xs text-red-500 mb-3">Pay to unlock full contact details and keep receiving new leads.</p>
+            <a href="{{ route('seller.billing') ?? '#' }}"
+               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                <i class="fa-solid fa-credit-card"></i> Pay ${{ number_format($lead->fee ?? 0, 2) }} Now
+            </a>
+        </div>
+        @endif
+
+    </div>
+</div>
+
+<script>
+function setStatus(status) {
+    if (!confirm('Mark this lead as ' + status + '?')) return;
+    fetch('/seller/leads/{{ $lead->id ?? 0 }}/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '' },
+        body: JSON.stringify({ status })
+    }).then(() => location.reload());
+}
+function saveNotes() {
+    const notes = document.getElementById('notesArea').value;
+    fetch('/seller/leads/{{ $lead->id ?? 0 }}/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '' },
+        body: JSON.stringify({ notes })
+    }).then(() => {
+        const btn = event.target;
+        btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Saved';
+        setTimeout(() => btn.innerHTML = 'Save Notes', 2000);
+    });
+}
+</script>
+@endsection

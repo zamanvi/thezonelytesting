@@ -22,7 +22,7 @@ class ProfileMiddleware
 
         $user = Auth::user();
 
-        if ($user->type === 'profile') {
+        if ($user->type === 'seller') {
             if (!$user->status) {
                 return redirect()->route('profile.edit');
             }

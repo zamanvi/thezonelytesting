@@ -1,25 +1,50 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+@extends('frontend.layouts._app')
+@section('title', 'Reset Password')
+
+@section('content')
+<div class="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-20 pb-16">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10">
+
+            <div class="text-center mb-8">
+                <a href="{{ route('frontend.home') }}" class="inline-block mb-5">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 rounded-xl mx-auto" alt="Zonely">
+                </a>
+                <h1 class="text-2xl font-black text-slate-900">Forgot password?</h1>
+                <p class="text-sm text-slate-500 mt-1">Enter your email and we'll send a reset link.</p>
+            </div>
+
+            @if(session('status'))
+            <div class="mb-5 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-2xl">
+                {{ session('status') }}
+            </div>
+            @endif
+
+            @if($errors->any())
+            <div class="mb-5 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl">
+                @foreach($errors->all() as $e)<p>{{ $e }}</p>@endforeach
+            </div>
+            @endif
+
+            <form method="POST" action="{{ route('password.email') }}">
+                @csrf
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email address</label>
+                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                        class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-slate-50"
+                        placeholder="you@example.com">
+                </div>
+                <button type="submit"
+                    class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-sm transition">
+                    Send Reset Link
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-slate-500 mt-6">
+                <a href="{{ route('user.login') }}" class="text-blue-600 font-bold hover:underline">Back to Sign In</a>
+            </p>
+
+        </div>
     </div>
-
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</div>
+@endsection

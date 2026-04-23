@@ -1,64 +1,100 @@
 <nav class="sidebar" id="sidebar">
-    <div class="d-flex align-items-center justify-content-between mb-1">
-        <h3 class="mb-0 logo-text"><a href="{{ route('admin.dashboard') }}"
-                class="@if (Route::is('admin.dashboard')) active @endif"><i class="fas fa-home"></i>Zonely</a></h3>
-        <i class="fas fa-bars btn-toggle-sidebar text-white" id="toggleSidebar"></i>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-white d-flex align-items-center gap-2 logo-text">
+            <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" width="32" height="32" class="rounded" alt="Zonely">
+            <span class="fw-black fs-5">Zonely</span>
+        </a>
+        <i class="fas fa-bars btn-toggle-sidebar text-white" id="toggleSidebar" style="cursor:pointer"></i>
     </div>
-    <ul class="nav flex-column">
-        <li class="nav-item"><a href="{{ route('admin.blogs.create') }}"
-                class="@if (Route::is(['admin.blogs.create', 'admin.blogs.show', 'admin.blogs.edit'])) active @endif"><i class="fas fa-users"></i><span
-                    class="nav-text ms-1">Blog Management</span></a></li>
-        <li class="nav-item"><a href="{{ route('admin.profiles.index') }}"
-                class="@if (Route::is(['admin.profiles.index'])) active @endif"><i class="fas fa-users"></i><span
-                    class="nav-text ms-1">All Profiles</span></a></li>
-        <li class="d-none nav-item"><a href="{{ route('admin.services.index') }}"
-                class="@if (Route::is(['admin.services.create', 'admin.services.show', 'admin.services.edit'])) active @endif"><i class="fas fa-users"></i><span
-                    class="nav-text ms-1">Services</span></a></li>
-        {{-- <li class="d-none nav-item"><a href="{{ route('admin.vendors.index') }}" class="@if (Route::is(['admin.vendors.index'])) active @endif"><i class="fas fa-users"></i><span class="nav-text ms-1">Vendors</span></a></li> --}}
-        {{-- <li class="nav-item"><a href="{{ route('admin.clear.cache') }}"><i class="fas fa-users"></i><span class="nav-text ms-1">Clear Cache</span></a></li> --}}
+
+    <ul class="nav flex-column gap-1">
+
         <li class="nav-item">
-            <a href="#" class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseAddSetup"
-                aria-expanded="false" aria-controls="collapseAddSetup">
-                <i class="fas fa-cogs"></i><span class="nav-text ms-1"> Add (Setup)</span>
-                <i class="fas fa-chevron-down ms-auto"></i>
+            <a href="{{ route('admin.dashboard') }}"
+               class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-gauge-high"></i>
+                <span class="nav-text ms-2">Dashboard</span>
             </a>
-            <ul class="nav collapse ms-2" id="collapseAddSetup" data-bs-parent="#sidebar-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#collapseAreas" aria-expanded="false" aria-controls="collapseAreas">
-                        <h6><i class="fas fa-map-marked-alt"></i>Areas <i class="fas fa-chevron-down"></i>
-                        </h6>
-                    </a>
-                    <ul class="nav collapse" id="collapseAreas" data-bs-parent="#collapseAddSetup">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.countries.create') }}" class="nav-link ms-2">
-                                <h6><i class="fas fa-map-marked-alt"></i>Countries</h6>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.categories.index') }}"
-                        class="nav-link @if (Route::is(['admin.categories.create', 'admin.categories.show', 'admin.categories.edit'])) active @endif">
-                        <i class="fas fa-tags"></i><span class="nav-text ms-1">Service Categories</span></a>
-                </li>
-            </ul>
         </li>
 
         <li class="nav-item">
-            <a href="#" class="nav-link collapsed" data-bs-toggle="collapse"
-                data-bs-target="#collapseAdminHierarchy" aria-expanded="false" aria-controls="collapseAdminHierarchy">
-                <i class="fas fa-sitemap"></i><span class="nav-text ms-1"> Admin Hierarchy</span>
-                <i class="fas fa-chevron-down ms-auto"></i>
+            <a href="{{ route('admin.profiles.index') }}"
+               class="{{ Route::is('admin.profiles.*') ? 'active' : '' }}">
+                <i class="fas fa-users"></i>
+                <span class="nav-text ms-2">All Profiles</span>
             </a>
-            <ul class="nav collapse" id="collapseAdminHierarchy" data-bs-parent="#sidebar-menu">
-            </ul>
         </li>
 
+        <li class="nav-item">
+            <a href="{{ route('admin.profiles.index', ['type' => 'seller', 'status' => 'unverified']) }}"
+               class="{{ request('status') === 'unverified' ? 'active' : '' }}">
+                <i class="fas fa-user-check"></i>
+                <span class="nav-text ms-2">Pending Verification</span>
+            </a>
+        </li>
 
-        {{-- <li class="nav-item"><a href="#Blog"><i class="fas fa-sitemap"></i><span class="nav-text ms-1">
-                    Blog</span></a></li> --}}
-        {{-- <li class="nav-item mt-5"><a href="#logout"><i class="fas fa-sign-out-alt"></i><span
-                    class="nav-text ms-1">Logout</span></a></li> --}}
+        <li class="nav-item mt-2">
+            <a href="{{ route('admin.leads') }}"
+               class="{{ Route::is('admin.leads') ? 'active' : '' }}">
+                <i class="fas fa-bolt"></i>
+                <span class="nav-text ms-2">Lead Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.affiliate') }}"
+               class="{{ Route::is('admin.affiliate') ? 'active' : '' }}">
+                <i class="fas fa-share-nodes"></i>
+                <span class="nav-text ms-2">Affiliate</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.hierarchy') }}"
+               class="{{ Route::is('admin.hierarchy*') ? 'active' : '' }}">
+                <i class="fas fa-sitemap"></i>
+                <span class="nav-text ms-2">Hierarchy</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.blogs.index') }}"
+               class="{{ Route::is('admin.blogs.*') ? 'active' : '' }}">
+                <i class="fas fa-pen-nib"></i>
+                <span class="nav-text ms-2">Blog</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.categories.index') }}"
+               class="{{ Route::is('admin.categories.*') ? 'active' : '' }}">
+                <i class="fas fa-tags"></i>
+                <span class="nav-text ms-2">Categories</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.locations') }}"
+               class="{{ Route::is('admin.locations') || Route::is('admin.countries.*') || Route::is('admin.states.*') || Route::is('admin.cities.*') ? 'active' : '' }}">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="nav-text ms-2">Locations</span>
+            </a>
+        </li>
+
+        <li class="nav-item mt-4 border-top pt-3">
+            <a href="{{ route('admin.clear.cache') }}"
+               onclick="return confirm('Clear all cache?')">
+                <i class="fas fa-broom"></i>
+                <span class="nav-text ms-2">Clear Cache</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('frontend.home') }}" target="_blank">
+                <i class="fas fa-arrow-up-right-from-square"></i>
+                <span class="nav-text ms-2">View Site</span>
+            </a>
+        </li>
+
     </ul>
 </nav>

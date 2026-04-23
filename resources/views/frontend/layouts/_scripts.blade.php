@@ -1,6 +1,2 @@
-<!-- jQuery (Full Version) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{{-- Global scripts (deferred). Bootstrap/jQuery removed — not used in main design. --}}
+{{-- jQuery lives in __app.blade.php only, where profile-setup pages need it. --}}

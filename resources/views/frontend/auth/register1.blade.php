@@ -1,27 +1,59 @@
-<x-guest-layout>
-    <div class="flex items-center justify-center bg-gray-100">
-        <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center space-y-6">
+@extends('frontend.layouts._app')
+@section('title', 'Join Zonely')
 
-            <!-- Heading Block -->
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">Choose your role</h1>
+@section('content')
+<div class="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-20 pb-16">
+    <div class="w-full max-w-sm">
+
+        {{-- Card --}}
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10">
+
+            {{-- Logo + heading --}}
+            <div class="text-center mb-8">
+                <a href="{{ route('frontend.home') }}" class="inline-block mb-5">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 rounded-xl mx-auto" alt="Zonely">
+                </a>
+                <h1 class="text-2xl font-black text-slate-900">Join Zonely</h1>
+                <p class="text-sm text-slate-500 mt-1">Choose how you'll use the platform</p>
             </div>
 
-            <!-- Buttons Block -->
-            <div class="flex flex-col gap-4">
-                <!-- Buyer Button -->
-                <a href="{{ route('user.register', 'buyer') }}"
-                   class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-black font-semibold rounded-xl shadow transition">
-                    I’m Buyer
-                </a>
+            <div class="space-y-3">
 
-                <!-- Seller Button -->
+                {{-- Seller option --}}
                 <a href="{{ route('user.register', 'seller') }}"
-                   class="px-6 py-3 bg-green-600 hover:bg-green-700 text-black font-semibold rounded-xl shadow transition">
-                    I’m Seller
+                   class="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-100 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-briefcase text-white text-base"></i>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <p class="font-black text-slate-900 text-sm">I'm a Service Provider</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Get leads, grow your business</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-600 transition text-sm shrink-0"></i>
                 </a>
+
+                {{-- Buyer option --}}
+                <a href="{{ route('user.register', 'buyer') }}"
+                   class="flex items-center gap-4 p-5 rounded-2xl border-2 border-slate-100 bg-white hover:border-emerald-400 hover:bg-emerald-50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-magnifying-glass text-white text-base"></i>
+                    </div>
+                    <div class="flex-1 text-left">
+                        <p class="font-black text-slate-900 text-sm">I'm Looking for Help</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Find trusted local experts</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-emerald-600 transition text-sm shrink-0"></i>
+                </a>
+
             </div>
+
+            <p class="text-center text-sm text-slate-500 mt-6">
+                Already have an account?
+                <a href="{{ route('user.login') }}" class="text-blue-600 font-bold hover:underline">Sign in</a>
+            </p>
 
         </div>
+
     </div>
-</x-guest-layout>
+</div>
+@endsection

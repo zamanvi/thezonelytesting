@@ -1,142 +1,268 @@
 @extends('layouts.admin2')
-
-@section('title')
-    Edit Profile
-@endsection
+@section('title', 'Edit User — ' . $user->name)
 
 @section('content')
 <div class="mt-5 pt-4">
-    <div class="section-card">
-        
-        <!-- Header -->
-        <div class="card-header bg-warning text-dark p-4 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-                <i class="fas fa-user-edit me-2"></i>
-                Edit / Verify User Profile
-            </h5>
 
-            <a href="{{ route('admin.profiles.index', ['status' => $user->status ? 'verified' : 'unverified']) }}"
-               class="btn btn-sm btn-dark">
-                <i class="fas fa-arrow-left me-1"></i> Back
-            </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="mb-0 fw-bold">Edit User Profile</h4>
+            <p class="text-muted small mb-0">{{ $user->email }} &mdash; joined {{ $user->created_at?->format('M d, Y') }}</p>
         </div>
+        <a href="{{ route('admin.profiles.index', ['status' => $user->status ? 'verified' : 'unverified']) }}"
+           class="btn btn-sm btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </a>
+    </div>
 
-        <!-- Body -->
-        <div class="card-body p-4">
-            <form method="POST" action="{{ route('admin.profiles.update', $user->id) }}">
-                @csrf
-                @method('PUT')
+    @if($errors->any())
+    <div class="alert alert-danger mb-4">
+        <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+    </div>
+    @endif
 
-                <div class="row g-4">
+    <form method="POST" action="{{ route('admin.profiles.update', $user->id) }}">
+        @csrf @method('PUT')
 
-                    <!-- Left Column (User Info) -->
-                    <div class="col-md-6">
-                        <h6 class="mb-3 text-primary">
-                            <i class="fas fa-user me-2"></i>Basic Information
-                        </h6>
+        <div class="row g-4">
 
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <input type="text" class="form-control" value="{{ $user->name }}" readonly>
-                        </div>
+            {{-- LEFT column --}}
+            <div class="col-lg-4">
 
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" value="{{ $user->email }}" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="text" class="form-control" value="{{ $user->phone ?? '-' }}" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Designation</label>
-                            <input type="text" class="form-control" value="{{ $user->designation ?? '-' }}" readonly>
-                        </div>
+                {{-- Avatar card --}}
+                <div class="section-card mb-4 text-center p-4">
+                    @if($user->profile_photo)
+                    <img src="{{ asset($user->profile_photo) }}"
+                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=120&background=0ea5e9&color=fff'"
+                         class="rounded-circle mb-3" width="100" height="100" style="object-fit:cover">
+                    @else
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3 fw-bold"
+                         style="width:100px;height:100px;font-size:36px">
+                        {{ strtoupper(substr($user->name,0,1)) }}
                     </div>
-
-                    <!-- Right Column (Additional Info) -->
-                    <div class="col-md-6">
-                        <h6 class="mb-3 text-success">
-                            <i class="fas fa-address-card me-2"></i>Additional Details
-                        </h6>
-
-                        <div class="mb-3">
-                            <label class="form-label">Work Address</label>
-                            <input type="text" class="form-control" value="{{ $user->work_address ?? '-' }}" readonly>
-                        </div>
-
-                        @php
-                            $address = $user->contacts()->address()->first();
-                        @endphp
-
-                        <div class="mb-3">
-                            <label class="form-label">Contact Address</label>
-                            <input type="text" class="form-control" 
-                                   value="{{ $address ? $address->value : '-' }}" readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">About</label>
-                            <textarea class="form-control" rows="3" readonly>{{ $user->about ?? '-' }}</textarea>
-                        </div>
+                    @endif
+                    <h5 class="mb-1 fw-bold">{{ $user->name }}</h5>
+                    <div class="mb-2">
+                        <span class="badge {{ $user->type==='seller'?'bg-primary':($user->type==='admin'?'bg-dark':($user->type==='staf'?'bg-warning text-dark':'bg-secondary')) }}">
+                            {{ ucfirst($user->type==='user'?'buyer':$user->type) }}
+                        </span>
+                        <span class="badge {{ $user->status?'bg-success':'bg-warning text-dark' }} ms-1">
+                            {{ $user->status?'Verified':'Pending' }}
+                        </span>
                     </div>
-
-                    <!-- Divider -->
-                    <div class="col-12">
-                        <hr>
-                        <h6 class="text-warning">
-                            <i class="fas fa-cogs me-2"></i>Admin Controls
-                        </h6>
+                    @if($user->slug)
+                    <div class="text-muted small font-monospace">/{{ $user->slug }}</div>
+                    @endif
+                    @if($user->staffProfile)
+                    <div class="mt-2">
+                        <span class="badge bg-info">
+                            <i class="fas fa-sitemap me-1"></i>
+                            {{ \App\Models\StaffProfile::ROLES[$user->staffProfile->role] ?? $user->staffProfile->role }}
+                        </span>
                     </div>
+                    @endif
+                </div>
 
-                    <!-- Editable Fields -->
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">Title</label>
-                            <input type="text" name="title" class="form-control"
-                                   value="{{ old('title', $user->title) }}">
-                        </div>
+                {{-- Admin Controls --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-warning text-dark p-3">
+                        <h6 class="mb-0"><i class="fas fa-shield-halved me-2"></i>Admin Controls</h6>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="card-body p-3">
                         <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="status" required class="form-select">
-                                <option value="0" {{ old('status', $user->status) == 0 ? 'selected' : '' }}>
-                                    Unverified
-                                </option>
-                                <option value="1" {{ old('status', $user->status) == 1 ? 'selected' : '' }}>
-                                    Verified
-                                </option>
+                            <label class="form-label fw-semibold">Account Type</label>
+                            <select name="type" class="form-select">
+                                @foreach(['seller'=>'Seller','user'=>'Buyer','staf'=>'Staff','admin'=>'Admin'] as $val=>$lbl)
+                                <option value="{{ $val }}" {{ old('type',$user->type)===$val?'selected':'' }}>{{ $lbl }}</option>
+                                @endforeach
                             </select>
                         </div>
-                    </div>
-
-                    <div class="col-12">
                         <div class="mb-3">
-                            <label class="form-label">Remark</label>
-                            <textarea name="remark" required rows="3"
-                                      class="form-control">{{ old('remark', $user->remark) }}</textarea>
+                            <label class="form-label fw-semibold">Verification Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="1" {{ old('status',$user->status)?'selected':'' }}>Verified</option>
+                                <option value="0" {{ !old('status',$user->status)?'selected':'' }}>Pending / Unverified</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Title / Badge</label>
+                            <input type="text" name="title" class="form-control"
+                                   value="{{ old('title',$user->title) }}" placeholder="e.g. Pro, Featured">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold">Admin Remark</label>
+                            <textarea name="remark" rows="3" class="form-control"
+                                      placeholder="Internal notes about this user">{{ old('remark',$user->remark) }}</textarea>
                         </div>
                     </div>
-
-                    <!-- Buttons -->
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save me-1"></i> Update Profile
-                        </button>
-
-                        <a href="{{ route('admin.profiles.index', ['type' => $user->status ? 'verified' : 'unverified']) }}"
-                           class="btn btn-secondary">
-                            Cancel
-                        </a>
-                    </div>
-
                 </div>
-            </form>
+
+                {{-- Danger Zone --}}
+                <div class="section-card border border-danger">
+                    <div class="card-header bg-danger text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-triangle-exclamation me-2"></i>Danger Zone</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <p class="small text-muted mb-3">Permanently deletes the user and all their data. Cannot be undone.</p>
+                        <form method="POST" action="{{ route('admin.profiles.destroy', $user->id) }}"
+                              onsubmit="return confirm('Permanently delete {{ addslashes($user->name) }}? This cannot be undone.')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                <i class="fas fa-trash me-1"></i> Delete User
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- RIGHT column --}}
+            <div class="col-lg-8">
+
+                {{-- Basic Info --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-primary text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-user me-2"></i>Basic Information</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Full Name</label>
+                                <input type="text" name="name" class="form-control" required
+                                       value="{{ old('name',$user->name) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" name="email" class="form-control" required
+                                       value="{{ old('email',$user->email) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Phone</label>
+                                <input type="text" name="phone" class="form-control"
+                                       value="{{ old('phone',$user->phone) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">WhatsApp</label>
+                                <input type="text" name="whatsapp" class="form-control"
+                                       value="{{ old('whatsapp',$user->whatsapp) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Designation</label>
+                                <input type="text" name="designation" class="form-control"
+                                       value="{{ old('designation',$user->designation) }}" placeholder="e.g. Plumber, Electrician">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Experience</label>
+                                <input type="text" name="experience" class="form-control"
+                                       value="{{ old('experience',$user->experience) }}" placeholder="e.g. 5 years">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Business Info --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-dark text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-briefcase me-2"></i>Business / Seller Info</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Business Name</label>
+                                <input type="text" name="business_name" class="form-control"
+                                       value="{{ old('business_name',$user->business_name) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Service Type</label>
+                                <input type="text" name="seller_service_type" class="form-control"
+                                       value="{{ old('seller_service_type',$user->seller_service_type) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Category</label>
+                                <select name="category_id" class="form-select">
+                                    <option value="">-- No Category --</option>
+                                    @foreach(\App\Models\Category::whereNull('parent_id')->orderBy('title')->get() as $cat)
+                                    <option value="{{ $cat->id }}" {{ old('category_id',$user->category_id)==$cat->id?'selected':'' }}>
+                                        {{ $cat->title }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Work Address</label>
+                                <input type="text" name="work_address" class="form-control"
+                                       value="{{ old('work_address',$user->work_address) }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Tags</label>
+                                <input type="text" name="tags" class="form-control"
+                                       value="{{ old('tags',$user->tags) }}" placeholder="Comma-separated tags">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Location --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-success text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Location</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">City</label>
+                                <input type="text" name="city" class="form-control"
+                                       value="{{ old('city',$user->city) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">State</label>
+                                <input type="text" name="state" class="form-control"
+                                       value="{{ old('state',$user->state) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Country</label>
+                                <input type="text" name="country" class="form-control"
+                                       value="{{ old('country',$user->country) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">ZIP Code</label>
+                                <input type="text" name="zip_code" class="form-control"
+                                       value="{{ old('zip_code',$user->zip_code) }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Bio / About --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-secondary text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-align-left me-2"></i>Bio / About</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Short Bio</label>
+                            <textarea name="bio" rows="3" class="form-control"
+                                      placeholder="Short bio shown on profile">{{ old('bio',$user->bio) }}</textarea>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold">About (Full)</label>
+                            <textarea name="about" rows="4" class="form-control"
+                                      placeholder="Full about section">{{ old('about',$user->about) }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Save --}}
+                <div class="d-flex gap-2 justify-content-end">
+                    <a href="{{ route('admin.profiles.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="fas fa-save me-1"></i> Save Changes
+                    </button>
+                </div>
+
+            </div>
         </div>
-    </div>
+
+    </form>
 </div>
 @endsection

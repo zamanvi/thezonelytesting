@@ -10,16 +10,21 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
-        $categories = flattenCategories($paginated->items());
-        return view('admin.categories2.index', compact('categories', 'paginated'));
+        $paginated  = Category::whereNull('parent_id')->withCount('children')->with('children')->paginate(20);
+        $categories = flattenCategories(Category::whereNull('parent_id')->with('children')->get()->all());
+        $stats = [
+            'total'    => Category::count(),
+            'mothers'  => Category::whereNull('parent_id')->count(),
+            'subs'     => Category::whereNotNull('parent_id')->count(),
+            'active'   => Category::where('is_active', true)->count(),
+            'inactive' => Category::where('is_active', false)->count(),
+        ];
+        return view('admin.categories2.index', compact('paginated', 'categories', 'stats'));
     }
 
     public function create()
     {
-        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
-        $categories = flattenCategories($paginated->items());
-        return view('admin.categories2.index', compact('categories', 'paginated'));
+        return $this->index();
     }
 
     public function store(Request $request)
@@ -44,16 +49,17 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-        $category = Category::findOrFail($id);
-        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
-        $categories = flattenCategories($paginated->items());
+        $category   = Category::withCount('children')->with('children')->findOrFail($id);
+        $paginated  = Category::whereNull('parent_id')->withCount('children')->with('children')->paginate(20);
+        $categories = flattenCategories(Category::whereNull('parent_id')->with('children')->get()->all());
         return view('admin.categories2.show', compact('category', 'categories', 'paginated'));
     }
+
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        $paginated = Category::whereNull('parent_id')->with('children')->paginate(20);
-        $categories = flattenCategories($paginated->items());
+        $category   = Category::findOrFail($id);
+        $paginated  = Category::whereNull('parent_id')->withCount('children')->with('children')->paginate(20);
+        $categories = flattenCategories(Category::whereNull('parent_id')->with('children')->get()->all());
         return view('admin.categories2.edit', compact('category', 'categories', 'paginated'));
     }
 

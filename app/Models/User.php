@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'type', 'email', 'title', 'phone', 'designation', 'whatsapp', 'bio', 'work_address', 'status', 'password', 'about', 'remark', 'country', 'state', 'city', 'zip_code', 'tags', 'slug', 'business_name', 'seller_service_type', 'experience', 'category_id', 'profile_photo'];
+    protected $fillable = ['name', 'type', 'email', 'title', 'phone', 'designation', 'whatsapp', 'show_phone', 'bio', 'work_address', 'status', 'password', 'about', 'remark', 'country', 'state', 'city', 'zip_code', 'tags', 'slug', 'business_name', 'seller_service_type', 'experience', 'category_id', 'profile_photo', 'referred_by', 'schedule'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,6 +37,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'schedule' => 'array',
     ];
 
     public function services()
@@ -60,8 +61,33 @@ class User extends Authenticatable
         return $this->hasMany(Membership::class);
     }
 
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'seller_id');
+    }
+
+    public function referredBy()
+    {
+        return $this->belongsTo(User::class, 'referred_by');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'referred_by');
+    }
+
+    public function commissionsEarned()
+    {
+        return $this->hasMany(AffiliateCommission::class, 'referrer_id');
+    }
+
     public function category()
     {
-        return parent::belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function staffProfile()
+    {
+        return $this->hasOne(StaffProfile::class);
     }
 }

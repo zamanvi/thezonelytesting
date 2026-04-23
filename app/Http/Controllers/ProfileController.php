@@ -17,21 +17,15 @@ class ProfileController extends Controller
     public function dashboard(Request $request): View
     {
         $user = $request->user();
-        $layout = '__app';
-        if ($user->seller_service_type === 'professional') {
-            $layout = '__prof_app';
-        }
-        if ($user->seller_service_type === 'health') {
-            $layout = '__health_app';
-        }
-        if ($user->seller_service_type === 'home') {
-            $layout = '__home_app';
-        }
-        if ($user->seller_service_type === 'beauty') {
-            $layout = '__beauty_app';
-        }
+        $layout = $user->seller_service_type ? '__prof_app' : '__app';
         $_next = $request->_next ?? 'business';
         return view('frontend.dashboard', compact('user', 'layout', '_next'));
+    }
+
+    public function profile(): View
+    {
+        $user = Auth::user();
+        return view('frontend.profile.edit.index', compact('user'));
     }
     /**
      * Display the user's profile form.
@@ -105,8 +99,7 @@ class ProfileController extends Controller
 
             $next = 'review';
         } elseif ($setup === 'review') {
-            // final step
-            return redirect()->route('user.dashboard')->with('success', 'Profile completed!');
+            return redirect()->route('seller.dashboard')->with('success', 'Profile completed!');
         }
 
         // ======================

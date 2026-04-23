@@ -235,22 +235,22 @@
                             <input type="hidden" name="_next" value="about_bio">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Designation</label>
-                                <input type="text" name="whatsapp" value="{{ $user->designation }}"
+                                <input type="text" name="designation" value="{{ $user->designation }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Work Address</label>
-                                <input type="text" name="whatsapp" value="{{ $user->work_address }}"
+                                <input type="text" name="work_address" value="{{ $user->work_address }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">About</label>
-                                <input type="text" name="whatsapp" value="{{ $user->about }}"
+                                <input type="text" name="about" value="{{ $user->about }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Experience</label>
-                                <input type="text" name="whatsapp" value="{{ $user->experience }}"
+                                <input type="text" name="experience" value="{{ $user->experience }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                         </div>
@@ -293,17 +293,17 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Phone</label>
-                                <input type="text" name="title" value="{{ $user->phone }}"
+                                <input type="text" name="phone" value="{{ $user->phone }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Email</label>
-                                <input type="text" name="title" value="{{ $user->email }}"
+                                <input type="text" name="email" value="{{ $user->email }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Work Address</label>
-                                <input type="text" name="title" value="{{ $user->work_address }}"
+                                <input type="text" name="work_address" value="{{ $user->work_address }}"
                                     class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
                             </div>
                         </div>

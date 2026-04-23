@@ -3,12 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join as Pro | Zonely – Discover & Hire Local Experts Near Me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Complete Your Profile | Zonely</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
-        rel="stylesheet">
+    {{-- jQuery required for Select2 on profile setup pages --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -79,7 +83,7 @@
                             More ▼
                         </button>
                         <div id="dropdownMenu"
-                            class="hidden absolute bg-white shadow-xl rounded-2xl mt-2 w-48 border border-slate-100 z-50">
+                            class="hidden absolute right-0 bg-white shadow-xl rounded-2xl mt-2 w-48 border border-slate-100 z-50">
                             <a href="{{ route('profile.edit') }}" class="block px-5 py-3 hover:bg-blue-50">Edit Profile</a>
                             @if (Auth::user()->type === 'seller')
                                 <a href="{{ route('user.memberships.index') }}"
@@ -99,7 +103,7 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 pt-32 pb-24">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-16 sm:pb-24">
 
         @yield('content')
 
