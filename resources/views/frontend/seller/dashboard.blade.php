@@ -1,365 +1,802 @@
 @extends('frontend.layouts._app')
 @section('title', 'Lead Dashboard')
+
+@section('css')
+<style>
+    .bar { transition: height 0.4s ease; }
+    .bar:hover { filter: brightness(1.1); }
+    .pulse-dot { width:8px; height:8px; border-radius:50%; background:#10b981; animation:pulseDot 1.5s infinite; }
+    @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.8);} }
+    .pill { display:inline-flex; align-items:center; gap:5px; padding:3px 11px; border-radius:999px; font-size:11px; font-weight:700; }
+    .scroll-hide { -ms-overflow-style:none; scrollbar-width:none; }
+    .scroll-hide::-webkit-scrollbar { display:none; }
+    .won-active     { background:#059669!important; color:#fff!important; }
+    .pending-active { background:#d97706!important; color:#fff!important; }
+    .lost-active    { background:#dc2626!important; color:#fff!important; }
+    audio { accent-color:#3b82f6; }
+    .lead-card { transition:transform .2s ease,box-shadow .2s ease; }
+    .lead-card:hover { transform:translateY(-1px); box-shadow:0 8px 20px -4px rgba(0,0,0,.08); }
+</style>
+@endsection
+
 @section('content')
+@php
+    $winRate   = $stats['total'] ? round($stats['won'] / $stats['total'] * 100) : 0;
+    $circ      = 99.9;
+    $wonArc    = $stats['total'] ? round($stats['won']    / $stats['total'] * $circ, 1) : 0;
+    $pendArc   = $stats['total'] ? round($stats['pending']/ $stats['total'] * $circ, 1) : 0;
+    $lostArc   = max(0, $circ - $wonArc - $pendArc);
+    $wonOffset = 0;
+    $pendOffset= -$wonArc;
+    $lostOffset= -($wonArc + $pendArc);
+
+    $wonLeads     = $leads->where('status','won');
+    $pendLeads    = $leads->where('status','pending');
+    $lostLeads    = $leads->where('status','lost');
+    $totalBill    = $wonLeads->sum('fee');
+    $pendBill     = $pendLeads->sum('fee');
+    $avgFee       = $stats['total'] ? round(($totalBill + $pendBill) / $stats['total']) : 0;
+    $currentMonth = now()->format('F Y');
+
+    // Weekly lead counts (last 7 days Mon→Sun)
+    $weekDays  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    $weekCounts= [];
+    for ($i = 6; $i >= 0; $i--) {
+        $d = now()->subDays($i);
+        $weekCounts[] = $leads->filter(fn($l) => $l->created_at?->isSameDay($d))->count();
+    }
+    $maxCount = max(array_merge($weekCounts,[1]));
+
+    $hasLeads = $leads->count() > 0;
+    $unpaidCount = $leads->whereNull('paid_at')->count();
+@endphp
+
+<div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-full opacity-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap"></div>
+
 <div class="min-h-screen bg-slate-50 pt-20 pb-6">
+<div class="max-w-3xl mx-auto px-4 py-6 lg:px-6 lg:py-8">
 
-    {{-- Toast --}}
-    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-full opacity-0 transition-all duration-300 z-50 pointer-events-none whitespace-nowrap"></div>
-
-    <div class="max-w-4xl mx-auto px-4 py-6">
-
-        {{-- Header --}}
-        <div class="flex items-center justify-between mb-6">
-            <div>
+    {{-- ── HEADER ── --}}
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 mb-0.5">
                 <h1 class="text-xl font-bold text-slate-900">Lead Dashboard</h1>
-                <p class="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                    Live · Powered by Twilio
-                </p>
+                <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">Twilio</span>
             </div>
-            <div class="flex items-center gap-2">
-                <a href="{{ route('seller.schedule') }}" class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-blue-300 hover:text-blue-600 transition">
-                    <i class="fa-solid fa-calendar-days mr-1"></i> Schedule
-                </a>
-                <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
-                </div>
+            <p class="text-xs text-slate-500 flex items-center gap-1.5">
+                <span class="pulse-dot"></span> Live
+            </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('seller.schedule') }}" class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-blue-300 hover:text-blue-600 transition">
+                <i class="fa-solid fa-calendar-days mr-1"></i> Schedule
+            </a>
+            <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
         </div>
+    </div>
 
-        {{-- New Lead Alert --}}
-        @if(session('new_lead'))
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3.5 mb-5 flex items-center gap-3">
-            <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-phone text-white text-sm"></i>
-            </div>
-            <div class="flex-1">
-                <p class="text-sm font-bold text-emerald-800">New Lead Incoming!</p>
-                <p class="text-xs text-emerald-600">{{ session('new_lead') }}</p>
-            </div>
-            <button onclick="this.closest('div.bg-emerald-50').remove()" class="text-emerald-400 hover:text-emerald-600">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    {{-- ── NEW LEAD ALERT ── --}}
+    @if(session('new_lead'))
+    <div id="newLeadBanner" class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3.5 mb-5 flex items-center gap-3">
+        <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-bell text-white text-sm"></i>
         </div>
-        @endif
+        <div class="flex-1 min-w-0">
+            <p class="font-bold text-slate-800 text-sm">New lead just arrived!</p>
+            <p class="text-emerald-700 text-sm truncate">{{ session('new_lead') }}</p>
+        </div>
+        <button onclick="document.getElementById('newLeadBanner').style.display='none'"
+                class="shrink-0 text-xs bg-white border border-emerald-200 text-slate-600 px-3 py-1.5 rounded-xl font-semibold hover:bg-slate-50 transition">
+            Dismiss
+        </button>
+    </div>
+    @endif
 
-        {{-- Stats Strip --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Leads</p>
-                <p class="text-2xl font-black text-slate-900">{{ $stats['total'] ?? 0 }}</p>
-                <p class="text-xs text-emerald-600 font-semibold mt-0.5">↑ This month</p>
+    {{-- ── WELCOME ── --}}
+    <div class="mb-6">
+        <h2 class="text-xl font-bold text-slate-900">Welcome back, {{ $user->name }}!</h2>
+        <p class="text-sm text-slate-500 mt-0.5">
+            <span class="font-semibold text-blue-600">{{ $stats['total'] }} leads this month</span>
+            &nbsp;&bull;&nbsp; {{ $user->title ?? 'Your page' }} is live
+            @if($unpaidCount > 0)
+            &nbsp;&bull;&nbsp; <a href="{{ route('seller.billing') }}" class="text-red-500 font-semibold">{{ $unpaidCount }} unpaid →</a>
+            @else
+            &nbsp;&bull;&nbsp; Twilio connected
+            @endif
+        </p>
+    </div>
+
+    {{-- ── STATS ── --}}
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-7">
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
+            <p class="text-3xl font-black text-blue-600">{{ $stats['total'] }}</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Total Leads</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
+            <p class="text-3xl font-black text-emerald-600">{{ $stats['won'] }}</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Won</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
+            <p class="text-3xl font-black text-amber-500">{{ $stats['pending'] }}</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Pending</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
+            <p class="text-3xl font-black text-slate-800">{{ $winRate }}%</p>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Win Rate</p>
+        </div>
+    </div>
+
+    {{-- ── MY PAGE CARD ── --}}
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-7">
+        <div class="bg-blue-600 text-white px-5 py-4 flex items-center gap-4">
+            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-blue-600 text-base shrink-0">
+                {{ strtoupper(substr($user->name, 0, 2)) }}
             </div>
-            <div class="bg-blue-600 rounded-2xl p-4 text-white shadow-sm">
-                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Won</p>
-                <p class="text-2xl font-black">{{ $stats['won'] ?? 0 }}</p>
-                <p class="text-xs opacity-70 mt-0.5">Converted leads</p>
+            <div class="flex-1 min-w-0">
+                <p class="font-bold leading-tight">{{ $user->title ?? $user->name }}</p>
+                <p class="text-blue-200 text-sm mt-0.5 truncate">thezonely.com/{{ $user->slug }}</p>
             </div>
-            <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pending</p>
-                <p class="text-2xl font-black text-amber-500">{{ $stats['pending'] ?? 0 }}</p>
-                <p class="text-xs text-slate-400 mt-0.5">Awaiting action</p>
-            </div>
-            <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Unpaid Fees</p>
-                <p class="text-2xl font-black text-red-500">{{ $stats['unpaid'] ?? 0 }}</p>
-                <a href="{{ route('seller.billing') }}" class="text-xs text-red-500 font-semibold mt-0.5 block hover:underline">Pay now →</a>
+            <div class="flex flex-col items-end gap-1.5 shrink-0">
+                <span class="text-xs bg-white/20 px-3 py-1 rounded-lg font-bold">LIVE</span>
+                <span class="text-xs bg-emerald-500 px-3 py-1 rounded-lg font-bold flex items-center gap-1">
+                    <span class="pulse-dot" style="width:6px;height:6px;background:white;"></span>Twilio
+                </span>
             </div>
         </div>
-
-        {{-- Lead List --}}
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm mb-6">
-
-            {{-- Toolbar --}}
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-b border-slate-100">
-                <div class="flex gap-2 overflow-x-auto pb-1 scroll-hide">
-                    <button onclick="filterLeads(this,'all')" class="filter-btn active-filter shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap">All</button>
-                    <button onclick="filterLeads(this,'won')" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">Won</button>
-                    <button onclick="filterLeads(this,'pending')" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">Pending</button>
-                    <button onclick="filterLeads(this,'lost')" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">Lost</button>
+        <div class="px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-5">
+                <div>
+                    <span class="text-2xl font-black text-emerald-600">{{ $stats['total'] }}</span>
+                    <span class="text-sm text-slate-400 ml-1">leads</span>
                 </div>
-                <div class="flex gap-2 shrink-0">
-                    <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
-                        <input type="text" id="searchInput" oninput="searchLeads()" placeholder="Search..."
-                            class="pl-8 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-blue-400 w-36">
-                    </div>
-                    <button onclick="exportLeads()" class="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:bg-slate-50 transition">
-                        <i class="fa-solid fa-download mr-1"></i>CSV
-                    </button>
+                <div class="w-px h-6 bg-slate-100"></div>
+                <div>
+                    <span class="text-2xl font-black text-slate-800">${{ number_format($totalBill + $pendBill) }}</span>
+                    <span class="text-sm text-slate-400 ml-1">earned</span>
                 </div>
             </div>
+            <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
+               class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition">
+                View Page <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+        </div>
+    </div>
 
-            {{-- Lead Cards --}}
-            <div class="divide-y divide-slate-50" id="leadsList">
+    {{-- ── ANALYTICS ── --}}
+    <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-chart-simple text-blue-600"></i> Analytics
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
 
-                @forelse($leads ?? [] as $lead)
-                <div class="lead-card px-4 py-3.5 hover:bg-slate-50 transition cursor-pointer"
-                     data-status="{{ $lead->status ?? 'pending' }}"
-                     data-id="{{ $lead->id }}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-sm
-                            {{ ($lead->status ?? '') === 'won' ? 'bg-emerald-100 text-emerald-600' : (($lead->status ?? '') === 'lost' ? 'bg-red-100 text-red-400' : 'bg-amber-100 text-amber-600') }}">
-                            {{ strtoupper(substr($lead->phone ?? 'LD', -2)) }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2">
-                                <p class="font-bold text-sm text-slate-900 truncate">{{ $lead->phone ?? '+1 (000) 000-0000' }}</p>
-                                <span class="text-[10px] text-slate-400 shrink-0">{{ $lead->created_at?->diffForHumans() ?? 'Just now' }}</span>
-                            </div>
-                            <div class="flex items-center justify-between gap-2 mt-0.5">
-                                <p class="text-xs text-slate-500 truncate">{{ $lead->service ?? 'General Inquiry' }} — "{{ Str::limit($lead->message ?? $lead->notes ?? 'No message', 40) }}"</p>
-                                <span class="shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold
-                                    {{ ($lead->status ?? '') === 'won' ? 'bg-emerald-100 text-emerald-700' : (($lead->status ?? '') === 'lost' ? 'bg-red-100 text-red-500' : 'bg-amber-100 text-amber-700') }}">
-                                    {{ ucfirst($lead->status ?? 'pending') }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- Action Buttons --}}
-                    <div class="flex gap-2 mt-3 pl-13">
-                        <button onclick="setStatus(this,'won')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition">Won</button>
-                        <button onclick="setStatus(this,'pending')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold bg-amber-50 text-amber-600 hover:bg-amber-100 transition">Pending</button>
-                        <button onclick="setStatus(this,'lost')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold bg-red-50 text-red-400 hover:bg-red-100 transition">Lost</button>
-                        <a href="tel:{{ $lead->phone ?? '' }}" class="flex-1 py-1.5 rounded-xl text-[11px] font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
-                            <i class="fa-solid fa-phone mr-1"></i>Call
-                        </a>
-                    </div>
-                </div>
-                @empty
-                {{-- Demo leads when no real data --}}
-                @foreach([
-                    ['init'=>'TK','phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','note'=>'Need help filing my taxes','time'=>'Today 11:32 AM','status'=>'won','fee'=>'paid'],
-                    ['init'=>'MB','phone'=>'+1 (718) 555-3344','service'=>'Small Business Accounting','note'=>'Need monthly bookkeeping','time'=>'Yesterday 3:14 PM','status'=>'won','fee'=>'paid'],
-                    ['init'=>'IR','phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','note'=>'I received an IRS notice','time'=>'Apr 18 9:05 AM','status'=>'pending','fee'=>'unpaid'],
-                    ['init'=>'LC','phone'=>'+1 (914) 555-9900','service'=>'LLC Formation','note'=>'Need to form an LLC this week','time'=>'Apr 17 4:48 PM','status'=>'pending','fee'=>'unpaid'],
-                    ['init'=>'JR','phone'=>'+1 (646) 555-4421','service'=>'Personal Tax Return','note'=>'Went with H&R Block','time'=>'Apr 15 2:10 PM','status'=>'lost','fee'=>'paid'],
-                ] as $demo)
-                <div class="lead-card px-4 py-3.5 hover:bg-slate-50 transition" data-status="{{ $demo['status'] }}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-sm
-                            {{ $demo['status'] === 'won' ? 'bg-emerald-100 text-emerald-600' : ($demo['status'] === 'lost' ? 'bg-red-100 text-red-400' : 'bg-amber-100 text-amber-600') }}">
-                            {{ $demo['init'] }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2">
-                                <p class="font-bold text-sm text-slate-900 truncate">{{ $demo['phone'] }}</p>
-                                <span class="text-[10px] text-slate-400 shrink-0">{{ $demo['time'] }}</span>
-                            </div>
-                            <div class="flex items-center justify-between gap-2 mt-0.5">
-                                <p class="text-xs text-slate-500 truncate">{{ $demo['service'] }} — "{{ $demo['note'] }}"</p>
-                                <span class="shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold
-                                    {{ $demo['fee'] === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
-                                    {{ ucfirst($demo['fee']) }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 mt-3">
-                        <button onclick="setStatus(this,'won')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold {{ $demo['status']==='won' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' }} transition">Won</button>
-                        <button onclick="setStatus(this,'pending')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold {{ $demo['status']==='pending' ? 'bg-amber-500 text-white' : 'bg-amber-50 text-amber-600 hover:bg-amber-100' }} transition">Pending</button>
-                        <button onclick="setStatus(this,'lost')" class="action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold {{ $demo['status']==='lost' ? 'bg-red-500 text-white' : 'bg-red-50 text-red-400 hover:bg-red-100' }} transition">Lost</button>
-                        <a href="tel:{{ $demo['phone'] }}" class="flex-1 py-1.5 rounded-xl text-[11px] font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
-                            <i class="fa-solid fa-phone mr-1"></i>Call
-                        </a>
-                    </div>
+        {{-- Weekly Chart --}}
+        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
+            <p class="font-semibold text-slate-700 text-sm">Leads This Week</p>
+            <p class="text-xs text-slate-400 mt-0.5 mb-4">Daily call volume via Twilio</p>
+            <div class="flex items-end gap-1.5 h-24">
+                @foreach($weekCounts as $count)
+                @php $pct = $maxCount > 0 ? round($count / $maxCount * 100) : 5; $pct = max($pct, 5); @endphp
+                <div class="flex-1 flex flex-col items-center gap-1">
+                    <span class="text-[9px] text-slate-400 font-semibold">{{ $count }}</span>
+                    <div class="bar w-full {{ $count === $maxCount && $count > 0 ? 'bg-emerald-500' : 'bg-blue-300' }} rounded-t-md" style="height:{{ $pct }}%"></div>
                 </div>
                 @endforeach
-                @endforelse
-
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2 font-medium">
+                @foreach($weekDays as $d)<span>{{ $d }}</span>@endforeach
             </div>
         </div>
 
-        {{-- Chat Section --}}
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm mb-6" id="chatSection">
-            <div class="p-4 border-b border-slate-100">
-                <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-blue-600"></i> Lead Conversations
-                    <span class="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">2 unpaid</span>
-                </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Messages from leads via Twilio / WhatsApp</p>
-            </div>
-
-            {{-- Chat Tabs --}}
-            <div class="flex gap-2 px-4 pt-3 pb-2 overflow-x-auto scroll-hide">
-                <button onclick="filterChat(this,'recent')" class="chat-tab active-chat shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap">Recent</button>
-                <button onclick="filterChat(this,'week')" class="chat-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">This Week</button>
-                <button onclick="filterChat(this,'paid')" class="chat-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">
-                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Paid
-                </button>
-                <button onclick="filterChat(this,'unpaid')" class="chat-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 whitespace-nowrap transition">
-                    <i class="fa-solid fa-clock text-amber-500 mr-1"></i>Unpaid
-                </button>
-            </div>
-
-            <div id="chatPayNote" class="hidden mx-4 mb-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
-                <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-                <strong>Unpaid leads</strong> = lead delivered but platform fee not paid yet.
-                <a href="{{ route('seller.billing') }}" class="font-bold underline ml-1">Pay now →</a>
-            </div>
-
-            {{-- Chat List --}}
-            <div class="divide-y divide-slate-50 pb-2" id="chatList">
-
-                @foreach([
-                    ['init'=>'TK','phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','preview'=>'I need help filing my taxes','time'=>'Today 11:32 AM','filter'=>'recent week paid','fee'=>'paid','msgs'=>[
-                        ['side'=>'lead','time'=>'11:32 AM','text'=>'Hi, I need help filing my taxes for this year. Do you handle small business?'],
-                        ['side'=>'you','time'=>'11:45 AM','text'=>'Yes! We specialize in small business. I\'ll send you our package options.'],
-                        ['side'=>'lead','time'=>'11:50 AM','text'=>'Great, looking forward to it. Can we schedule a call?'],
-                    ]],
-                    ['init'=>'MB','phone'=>'+1 (718) 555-3344','service'=>'Small Business Accounting','preview'=>'Need monthly bookkeeping','time'=>'Yesterday 3:14 PM','filter'=>'week paid','fee'=>'paid','msgs'=>[
-                        ['side'=>'lead','time'=>'3:14 PM','text'=>'Hi, I run a small LLC and need monthly bookkeeping. What are your rates?'],
-                        ['side'=>'you','time'=>'3:28 PM','text'=>'Our monthly bookkeeping starts at $350/mo. Includes reconciliation & reports.'],
-                        ['side'=>'lead','time'=>'3:35 PM','text'=>'Sounds good! Let\'s do it. Send me the contract.'],
-                    ]],
-                    ['init'=>'IR','phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','preview'=>'I received an IRS notice','time'=>'Apr 18 9:05 AM','filter'=>'recent week unpaid','fee'=>'unpaid','amount'=>120,'msgs'=>[
-                        ['side'=>'lead','time'=>'9:05 AM','text'=>'I received an IRS notice last week. Can you help me?'],
-                    ]],
-                    ['init'=>'LC','phone'=>'+1 (914) 555-9900','service'=>'LLC Formation','preview'=>'Need to form an LLC','time'=>'Apr 17 4:48 PM','filter'=>'week unpaid','fee'=>'unpaid','amount'=>200,'msgs'=>[
-                        ['side'=>'lead','time'=>'4:48 PM','text'=>'I need to form an LLC before end of month. How fast can you do it?'],
-                    ]],
-                ] as $i => $chat)
-                <div class="chat-item" data-chat-filter="{{ $chat['filter'] }}">
-                    <div class="flex items-center gap-3 px-4 py-3.5 cursor-pointer hover:bg-slate-50 transition" onclick="toggleChat(this)">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-sm
-                            {{ $chat['fee']==='paid' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' }}">
-                            {{ $chat['init'] }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between gap-2">
-                                <p class="font-bold text-sm text-slate-900 truncate">{{ $chat['phone'] }}</p>
-                                <span class="text-[10px] text-slate-400 shrink-0">{{ $chat['time'] }}</span>
-                            </div>
-                            <div class="flex items-center justify-between gap-2 mt-0.5">
-                                <p class="text-xs text-slate-500 truncate">{{ $chat['service'] }} — "{{ $chat['preview'] }}"</p>
-                                <span class="shrink-0 text-[10px] px-2 py-0.5 rounded-full font-bold
-                                    {{ $chat['fee']==='paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }}">
-                                    {{ ucfirst($chat['fee']) }}
-                                </span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-chevron-down text-slate-300 text-xs shrink-0 chat-chevron transition-transform duration-200"></i>
+        {{-- Lead Sources --}}
+        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
+            <p class="font-semibold text-slate-700 text-sm">Lead Sources</p>
+            <p class="text-xs text-slate-400 mt-0.5 mb-4">Where your leads come from</p>
+            <div class="space-y-3.5">
+                <div>
+                    <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-slate-600">Google Search</span>
+                        <span class="font-bold text-slate-800">58%</span>
                     </div>
-
-                    <div class="chat-thread hidden border-t {{ $chat['fee']==='unpaid' ? 'border-amber-100 bg-amber-50' : 'border-slate-100 bg-slate-50' }} px-4 py-4 space-y-3">
-                        @if($chat['fee']==='unpaid')
-                        <div class="bg-amber-100 border border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-3">
-                            <i class="fa-solid fa-lock text-amber-600 mt-0.5 shrink-0"></i>
-                            <div>
-                                <p class="text-xs font-bold text-amber-800">Platform fee unpaid (${{ $chat['amount'] ?? 68 }})</p>
-                                <p class="text-xs text-amber-700 mt-0.5">Pay Zonely to unlock full chat & keep receiving leads.</p>
-                                <a href="{{ route('seller.billing') }}" class="mt-2 inline-block bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
-                                    Pay ${{ $chat['amount'] ?? 68 }} Now
-                                </a>
-                            </div>
-                        </div>
-                        @endif
-
-                        @foreach($chat['msgs'] as $msg)
-                        <div class="flex {{ $msg['side']==='you' ? 'justify-end' : 'justify-start' }}">
-                            <div class="{{ $msg['side']==='you' ? 'bg-blue-600 rounded-2xl rounded-tr-sm' : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm' }} px-4 py-2.5 max-w-[80%]">
-                                <p class="text-[10px] {{ $msg['side']==='you' ? 'text-blue-200' : 'text-slate-400' }} font-semibold mb-1">{{ $msg['side']==='you' ? 'You' : 'Lead' }} · {{ $msg['time'] }}</p>
-                                <p class="text-sm {{ $msg['side']==='you' ? 'text-white' : 'text-slate-800' }}">{{ $msg['text'] }}</p>
-                            </div>
-                        </div>
-                        @endforeach
-
-                        @if($chat['fee']==='paid')
-                        <div class="flex gap-2 pt-1">
-                            <input type="text" placeholder="Reply via WhatsApp / SMS..."
-                                   class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
-                            <button onclick="showToast('Message sent via Twilio!')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
-                                <i class="fa-solid fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        @else
-                        <div class="flex gap-2 pt-1 opacity-40 pointer-events-none select-none">
-                            <input type="text" placeholder="Pay to unlock reply..." class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5">
-                            <button class="bg-slate-300 text-white px-4 py-2.5 rounded-xl text-xs font-bold shrink-0">
-                                <i class="fa-solid fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        @endif
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400" style="width:58%"></div>
                     </div>
                 </div>
-                @endforeach
+                <div>
+                    <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-slate-600">Facebook Ads</span>
+                        <span class="font-bold text-slate-800">25%</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-purple-500 to-pink-400" style="width:25%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-slate-600">Direct / Referral</span>
+                        <span class="font-bold text-slate-800">17%</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400" style="width:17%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        {{-- Conversion Funnel --}}
+        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm">
+            <p class="font-semibold text-slate-700 text-sm">Conversion Funnel</p>
+            <p class="text-xs text-slate-400 mt-0.5 mb-4">Lead → client pipeline</p>
+            @php
+                $contacted = $stats['total'] > 0 ? $stats['total'] - $lostLeads->count() : 0;
+                $contactedPct = $stats['total'] ? round($contacted / $stats['total'] * 100) : 0;
+                $wonPctFunnel  = $stats['total'] ? round($stats['won'] / $stats['total'] * 100) : 0;
+            @endphp
+            <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500 w-20 text-right shrink-0">{{ $stats['total'] }} calls</span>
+                    <div class="flex-1 h-8 bg-blue-600 rounded-xl flex items-center px-3">
+                        <span class="text-white text-xs font-bold">Leads Received</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500 w-20 text-right shrink-0">{{ $contacted }} replied</span>
+                    <div class="h-8 bg-blue-400 rounded-xl flex items-center px-3" style="flex:0 0 {{ max($contactedPct, 30) }}%">
+                        <span class="text-white text-xs font-bold">Contacted</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500 w-20 text-right shrink-0">{{ $stats['won'] }} closed</span>
+                    <div class="h-8 bg-emerald-500 rounded-xl flex items-center px-3" style="flex:0 0 {{ max($wonPctFunnel, 20) }}%">
+                        <span class="text-white text-xs font-bold">Won</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Win Rate Donut --}}
+        <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex items-center gap-5">
+            <div class="relative w-24 h-24 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-24 h-24 -rotate-90">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f1f5f9" stroke-width="3.5"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="3.5"
+                        stroke-dasharray="{{ $wonArc }} {{ $circ - $wonArc }}" stroke-dashoffset="{{ $wonOffset }}" stroke-linecap="round"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3.5"
+                        stroke-dasharray="{{ $pendArc }} {{ $circ - $pendArc }}" stroke-dashoffset="{{ $pendOffset }}" stroke-linecap="round"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#ef4444" stroke-width="3.5"
+                        stroke-dasharray="{{ $lostArc }} {{ $circ - $lostArc }}" stroke-dashoffset="{{ $lostOffset }}" stroke-linecap="round"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="text-lg font-black text-slate-800 leading-none">{{ $winRate }}%</span>
+                    <span class="text-[9px] text-slate-400 font-medium mt-0.5">Win Rate</span>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></div>
+                    <span class="text-xs text-slate-600">Won — {{ $wonArc > 0 ? round($wonArc/$circ*100) : 0 }}%</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></div>
+                    <span class="text-xs text-slate-600">Pending — {{ $pendArc > 0 ? round($pendArc/$circ*100) : 0 }}%</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-400 shrink-0"></div>
+                    <span class="text-xs text-slate-600">Lost — {{ $lostArc > 0 ? round($lostArc/$circ*100) : 0 }}%</span>
+                </div>
             </div>
         </div>
 
     </div>
+
+    {{-- ── LEAD MANAGEMENT ── --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <h3 class="font-bold text-base flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-blue-600"></i>
+            Lead Management
+            <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">Twilio Synced</span>
+        </h3>
+        <div class="flex items-center gap-2">
+            <div class="relative">
+                <input id="searchInput" type="text" placeholder="Search leads..."
+                       oninput="searchLeads()"
+                       class="pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm w-44 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm pointer-events-none"></i>
+            </div>
+            <button onclick="exportLeads()"
+                    class="bg-white border border-slate-200 hover:bg-slate-50 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+                <i class="fa-solid fa-download text-blue-600"></i> CSV
+            </button>
+        </div>
+    </div>
+
+    {{-- Filter Tabs --}}
+    <div class="flex gap-2 mb-5 overflow-x-auto scroll-hide pb-1">
+        <button onclick="filterLeads(this,'all')"
+                class="filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-blue-600 text-white">
+            All ({{ $stats['total'] }})
+        </button>
+        <button onclick="filterLeads(this,'pending')"
+                class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Pending ({{ $stats['pending'] }})
+        </button>
+        <button onclick="filterLeads(this,'won')"
+                class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Won ({{ $stats['won'] }})
+        </button>
+        <button onclick="filterLeads(this,'lost')"
+                class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+            Lost ({{ $leads->where('status','lost')->count() }})
+        </button>
+    </div>
+
+    {{-- Lead Cards --}}
+    <div class="space-y-4 mb-8" id="leadsList">
+
+        @forelse($leads as $lead)
+        @php
+            $lStatus = $lead->status ?? 'pending';
+            $lPaid   = !is_null($lead->paid_at);
+            $iconBg  = $lStatus==='won' ? 'bg-emerald-100' : ($lStatus==='lost' ? 'bg-red-100' : 'bg-amber-100');
+            $iconClr = $lStatus==='won' ? 'text-emerald-600' : ($lStatus==='lost' ? 'text-red-400' : 'text-amber-600');
+            $feeBg   = $lStatus==='won' ? 'bg-emerald-100 text-emerald-700' : ($lStatus==='lost' ? 'bg-slate-100 text-slate-400' : 'bg-amber-100 text-amber-700');
+            $borderClr = $lStatus==='pending' ? 'border-amber-100' : 'border-slate-100';
+            $wonBtn  = $lStatus==='won'     ? 'won-active'     : 'bg-slate-100 text-slate-500 hover:bg-emerald-100 hover:text-emerald-700 transition';
+            $pendBtn = $lStatus==='pending' ? 'pending-active' : 'bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-700 transition';
+            $lostBtn = $lStatus==='lost'    ? 'lost-active'    : 'bg-slate-100 text-slate-500 hover:bg-red-100 hover:text-red-600 transition';
+        @endphp
+        <div class="lead-card bg-white rounded-3xl p-5 border {{ $borderClr }} shadow-sm {{ $lStatus==='lost' ? 'opacity-60' : '' }}"
+             data-status="{{ $lStatus }}" data-id="{{ $lead->id }}">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3 flex-1 min-w-0">
+                    <div class="w-11 h-11 {{ $iconBg }} rounded-2xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-phone {{ $iconClr }}"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-slate-900">{{ $lead->phone ?? 'Unknown' }}</p>
+                        <p class="text-sm text-slate-500">{{ $lead->service ?? 'General Inquiry' }}</p>
+                        <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            <span class="text-[11px] text-slate-400">{{ $lead->created_at?->format('M d · g:i A') }}</span>
+                            @if($lPaid)
+                            <span class="text-[11px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-semibold">Paid</span>
+                            @else
+                            <span class="text-[11px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-semibold">Unpaid</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                    @if($lead->fee)
+                    <span class="{{ $feeBg }} font-bold px-3 py-1 rounded-xl text-sm">${{ number_format($lead->fee) }}</span>
+                    @endif
+                    <span class="pill {{ $lStatus==='won' ? 'bg-emerald-50 text-emerald-700' : ($lStatus==='lost' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-700') }}">
+                        <i class="fa-solid {{ $lStatus==='won' ? 'fa-circle-check' : ($lStatus==='lost' ? 'fa-circle-xmark' : 'fa-clock') }} text-xs"></i>
+                        {{ ucfirst($lStatus) }}
+                    </span>
+                </div>
+            </div>
+
+            @if($lead->message || $lead->notes)
+            <p class="mt-3 text-xs text-slate-500 bg-slate-50 rounded-xl px-4 py-2">
+                "{{ Str::limit($lead->message ?? $lead->notes, 100) }}"
+            </p>
+            @endif
+
+            <input type="text" placeholder="Add a note..." value="{{ $lead->notes ?? '' }}"
+                   onblur="saveNote(this, {{ $lead->id }})"
+                   class="mt-3 w-full text-sm bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 focus:border-blue-300 focus:bg-white transition">
+
+            <div class="grid grid-cols-4 gap-2 mt-3">
+                <button onclick="setStatus(this,'won')"     class="action-btn {{ $wonBtn }}  py-2 rounded-xl text-xs font-bold">Won</button>
+                <button onclick="setStatus(this,'pending')" class="action-btn {{ $pendBtn }} py-2 rounded-xl text-xs font-bold">Pending</button>
+                <button onclick="setStatus(this,'lost')"    class="action-btn {{ $lostBtn }} py-2 rounded-xl text-xs font-bold">Lost</button>
+                <a href="tel:{{ $lead->phone }}" class="py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
+                    <i class="fa-solid fa-phone mr-1"></i>Call
+                </a>
+            </div>
+        </div>
+        @empty
+        {{-- Demo leads when no real data --}}
+        @foreach([
+            ['id'=>null,'phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','msg'=>'I need help filing my taxes for this year.','time'=>'Apr 20 · 11:32 AM','status'=>'won','paid'=>true,'fee'=>65,'note'=>'Interested in full tax filing.'],
+            ['id'=>null,'phone'=>'+1 (718) 555-3344','service'=>'Small Business Accounting','msg'=>'Need monthly bookkeeping services.','time'=>'Apr 19 · 3:14 PM','status'=>'won','paid'=>true,'fee'=>75,'note'=>'Monthly bookkeeping — $350/mo retainer agreed.'],
+            ['id'=>null,'phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','msg'=>'I received an IRS notice last week.','time'=>'Apr 18 · 9:05 AM','status'=>'pending','paid'=>false,'fee'=>120,'note'=>'Awaiting documents. Call back Monday AM.'],
+            ['id'=>null,'phone'=>'+1 (646) 555-4421','service'=>'Personal Tax Return','msg'=>'Looking for personal tax filing help.','time'=>'Apr 15 · 2:30 PM','status'=>'lost','paid'=>true,'fee'=>0,'note'=>'Went with H&R Block.'],
+        ] as $d)
+        @php
+            $dStatus = $d['status'];
+            $dBorder = $dStatus==='pending' ? 'border-amber-100' : 'border-slate-100';
+            $dIcon   = $dStatus==='won' ? 'bg-emerald-100 text-emerald-600' : ($dStatus==='lost' ? 'bg-red-100 text-red-400' : 'bg-amber-100 text-amber-600');
+            $dFee    = $dStatus==='won' ? 'bg-emerald-100 text-emerald-700' : ($dStatus==='lost' ? 'bg-slate-100 text-slate-400' : 'bg-amber-100 text-amber-700');
+            $dWon  = $dStatus==='won'     ? 'won-active'     : 'bg-slate-100 text-slate-500 hover:bg-emerald-100 hover:text-emerald-700 transition';
+            $dPend = $dStatus==='pending' ? 'pending-active' : 'bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-700 transition';
+            $dLost = $dStatus==='lost'    ? 'lost-active'    : 'bg-slate-100 text-slate-500 hover:bg-red-100 hover:text-red-600 transition';
+        @endphp
+        <div class="lead-card bg-white rounded-3xl p-5 border {{ $dBorder }} shadow-sm {{ $dStatus==='lost' ? 'opacity-60' : '' }}"
+             data-status="{{ $dStatus }}">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3 flex-1 min-w-0">
+                    <div class="w-11 h-11 {{ $dIcon }} rounded-2xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-phone {{ explode(' ', $dIcon)[1] }}"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-bold text-slate-900">{{ $d['phone'] }}</p>
+                        <p class="text-sm text-slate-500">{{ $d['service'] }}</p>
+                        <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            <span class="text-[11px] text-slate-400">{{ $d['time'] }}</span>
+                            <span class="text-[11px] {{ $d['paid'] ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' }} px-2 py-0.5 rounded-full font-semibold">
+                                {{ $d['paid'] ? 'Paid' : 'Unpaid' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                    @if($d['fee'] > 0)
+                    <span class="{{ $dFee }} font-bold px-3 py-1 rounded-xl text-sm">${{ $d['fee'] }}</span>
+                    @endif
+                    <span class="pill {{ $dStatus==='won' ? 'bg-emerald-50 text-emerald-700' : ($dStatus==='lost' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-700') }}">
+                        <i class="fa-solid {{ $dStatus==='won' ? 'fa-circle-check' : ($dStatus==='lost' ? 'fa-circle-xmark' : 'fa-clock') }} text-xs"></i>
+                        {{ ucfirst($dStatus) }}
+                    </span>
+                </div>
+            </div>
+            <p class="mt-3 text-xs text-slate-500 bg-slate-50 rounded-xl px-4 py-2">"{{ $d['msg'] }}"</p>
+            <input type="text" placeholder="Add a note..." value="{{ $d['note'] }}"
+                   class="mt-3 w-full text-sm bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 focus:border-blue-300 focus:bg-white transition">
+            <div class="grid grid-cols-4 gap-2 mt-3">
+                <button onclick="setStatus(this,'won')"     class="action-btn {{ $dWon }}  py-2 rounded-xl text-xs font-bold">Won</button>
+                <button onclick="setStatus(this,'pending')" class="action-btn {{ $dPend }} py-2 rounded-xl text-xs font-bold">Pending</button>
+                <button onclick="setStatus(this,'lost')"    class="action-btn {{ $dLost }} py-2 rounded-xl text-xs font-bold">Lost</button>
+                <a href="tel:{{ $d['phone'] }}" class="py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
+                    <i class="fa-solid fa-phone mr-1"></i>Call
+                </a>
+            </div>
+        </div>
+        @endforeach
+        @endforelse
+
+    </div>
+
+    {{-- ── LEAD CONVERSATIONS ── --}}
+    <div class="mb-8" id="chatSection">
+        <h3 class="font-bold text-base mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-comments text-blue-600"></i> Lead Conversations
+            @if($unpaidCount > 0)
+            <span class="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ $unpaidCount }} unpaid</span>
+            @endif
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">Messages from leads via Twilio / WhatsApp</p>
+
+        <div class="flex gap-2 mb-3 overflow-x-auto scroll-hide pb-1">
+            <button onclick="filterChat(this,'recent')" class="chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-blue-600 text-white">Recent</button>
+            <button onclick="filterChat(this,'week')"   class="chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">This Week</button>
+            <button onclick="filterChat(this,'paid')"   class="chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
+                <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Paid
+            </button>
+            <button onclick="filterChat(this,'unpaid')" class="chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 transition">
+                <i class="fa-solid fa-clock text-amber-500 mr-1"></i>Unpaid
+            </button>
+        </div>
+
+        <div id="chatPayNote" class="hidden bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-3 text-xs text-amber-800">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+            <strong>Unpaid leads</strong> = Zonely sent you this lead but you haven't paid the platform fee yet.
+            <a href="{{ route('seller.billing') }}" class="font-bold underline ml-1">Pay now →</a>
+        </div>
+
+        <div class="space-y-3" id="chatList">
+
+            @forelse($leads->take(6) as $lead)
+            @php
+                $lPaid   = !is_null($lead->paid_at);
+                $filter  = 'recent week ' . ($lPaid ? 'paid' : 'unpaid');
+                $initials= strtoupper(substr($lead->phone ?? 'LD', -2));
+                $bgAvatar= $lPaid ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600';
+            @endphp
+            <div class="chat-item bg-white rounded-2xl border {{ $lPaid ? 'border-slate-100' : 'border-amber-200' }} shadow-sm overflow-hidden"
+                 data-chat-filter="{{ $filter }}">
+                <div class="flex items-center gap-3 px-4 py-3.5 cursor-pointer hover:{{ $lPaid ? 'bg-slate-50' : 'bg-amber-50' }} transition"
+                     onclick="toggleChat(this)">
+                    <div class="w-10 h-10 {{ $bgAvatar }} rounded-xl flex items-center justify-center shrink-0 font-black text-sm">
+                        {{ $initials }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                            <p class="font-bold text-sm text-slate-900 truncate">{{ $lead->phone ?? 'Unknown' }}</p>
+                            <span class="text-[10px] text-slate-400 shrink-0">{{ $lead->created_at?->format('M d g:i A') }}</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mt-0.5">
+                            <p class="text-xs text-slate-500 truncate">{{ $lead->service ?? 'Inquiry' }} — "{{ Str::limit($lead->message ?? 'No message', 35) }}"</p>
+                            <span class="shrink-0 text-[10px] {{ $lPaid ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }} px-2 py-0.5 rounded-full font-bold">
+                                {{ $lPaid ? 'Paid' : 'Unpaid' }}
+                            </span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-slate-300 text-xs shrink-0 chat-chevron transition-transform"></i>
+                </div>
+                <div class="chat-thread hidden border-t {{ $lPaid ? 'border-slate-100 bg-slate-50' : 'border-amber-100 bg-amber-50' }} px-4 py-4 space-y-3">
+                    @if(!$lPaid)
+                    <div class="bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
+                        <i class="fa-solid fa-lock text-amber-600 mt-0.5 shrink-0"></i>
+                        <div>
+                            <p class="text-xs font-bold text-amber-800">Platform fee unpaid{{ $lead->fee ? ' ($' . number_format($lead->fee) . ')' : '' }}</p>
+                            <p class="text-xs text-amber-700 mt-0.5">Pay Zonely to unlock full chat & keep receiving leads.</p>
+                            <a href="{{ route('seller.billing') }}"
+                               class="mt-2 inline-block bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                                Pay Now
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+                    @if($lead->message)
+                    <div class="flex justify-start">
+                        <div class="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[80%]">
+                            <p class="text-xs text-slate-500 font-semibold mb-1">Lead · {{ $lead->created_at?->format('g:i A') }}</p>
+                            <p class="text-sm text-slate-800">{{ $lead->message }}</p>
+                        </div>
+                    </div>
+                    @endif
+                    @if($lPaid)
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" placeholder="Reply via WhatsApp / SMS..."
+                               class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                        <button onclick="showToast('Message sent via Twilio!')"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    @else
+                    <div class="flex gap-2 pt-1 opacity-40 pointer-events-none select-none">
+                        <input type="text" placeholder="Pay to unlock reply..." class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5">
+                        <button class="bg-slate-300 text-white px-4 py-2.5 rounded-xl text-xs font-bold shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @empty
+            {{-- Demo chat items when no real data --}}
+            @foreach([
+                ['init'=>'TK','phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','preview'=>'I need help filing my taxes','time'=>'Today 11:32 AM','filter'=>'recent week paid','paid'=>true,'fee'=>null,'msgs'=>[
+                    ['side'=>'lead','time'=>'11:32 AM','text'=>'Hi, I need help filing my taxes for this year. Do you handle small business?'],
+                    ['side'=>'you','time'=>'11:45 AM','text'=>"Yes! We specialize in small business. I'll send you our package options."],
+                    ['side'=>'lead','time'=>'11:50 AM','text'=>'Great, looking forward to it. Can we schedule a call?'],
+                ]],
+                ['init'=>'IR','phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','preview'=>'I received an IRS notice','time'=>'Apr 18 9:05 AM','filter'=>'recent week unpaid','paid'=>false,'fee'=>120,'msgs'=>[
+                    ['side'=>'lead','time'=>'9:05 AM','text'=>'I received an IRS notice last week. Can you help me?'],
+                ]],
+                ['init'=>'LC','phone'=>'+1 (914) 555-9900','service'=>'LLC Formation','preview'=>'Need to form an LLC','time'=>'Apr 17 4:48 PM','filter'=>'week unpaid','paid'=>false,'fee'=>200,'msgs'=>[
+                    ['side'=>'lead','time'=>'4:48 PM','text'=>'I want to form an LLC and need help with S-Corp election.'],
+                ]],
+            ] as $chat)
+            <div class="chat-item bg-white rounded-2xl border {{ $chat['paid'] ? 'border-slate-100' : 'border-amber-200' }} shadow-sm overflow-hidden"
+                 data-chat-filter="{{ $chat['filter'] }}">
+                <div class="flex items-center gap-3 px-4 py-3.5 cursor-pointer hover:{{ $chat['paid'] ? 'bg-slate-50' : 'bg-amber-50' }} transition"
+                     onclick="toggleChat(this)">
+                    <div class="w-10 h-10 {{ $chat['paid'] ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' }} rounded-xl flex items-center justify-center shrink-0 font-black text-sm">
+                        {{ $chat['init'] }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                            <p class="font-bold text-sm text-slate-900 truncate">{{ $chat['phone'] }}</p>
+                            <span class="text-[10px] text-slate-400 shrink-0">{{ $chat['time'] }}</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 mt-0.5">
+                            <p class="text-xs text-slate-500 truncate">{{ $chat['service'] }} — "{{ $chat['preview'] }}"</p>
+                            <span class="shrink-0 text-[10px] {{ $chat['paid'] ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }} px-2 py-0.5 rounded-full font-bold">
+                                {{ $chat['paid'] ? 'Paid' : 'Unpaid' }}
+                            </span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-slate-300 text-xs shrink-0 chat-chevron transition-transform"></i>
+                </div>
+                <div class="chat-thread hidden border-t {{ $chat['paid'] ? 'border-slate-100 bg-slate-50' : 'border-amber-100 bg-amber-50' }} px-4 py-4 space-y-3">
+                    @if(!$chat['paid'])
+                    <div class="bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
+                        <i class="fa-solid fa-lock text-amber-600 mt-0.5 shrink-0"></i>
+                        <div>
+                            <p class="text-xs font-bold text-amber-800">Platform fee unpaid{{ $chat['fee'] ? ' ($'.$chat['fee'].')' : '' }}</p>
+                            <p class="text-xs text-amber-700 mt-0.5">Pay Zonely to unlock full chat & keep receiving leads.</p>
+                            <a href="{{ route('seller.billing') }}"
+                               class="mt-2 inline-block bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                                Pay {{ $chat['fee'] ? '$'.$chat['fee'] : '' }} Now
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+                    @foreach($chat['msgs'] as $msg)
+                    <div class="flex {{ $msg['side']==='you' ? 'justify-end' : 'justify-start' }}">
+                        <div class="{{ $msg['side']==='you' ? 'bg-blue-600 rounded-2xl rounded-tr-sm' : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm' }} px-4 py-2.5 max-w-[80%]">
+                            <p class="text-xs {{ $msg['side']==='you' ? 'text-blue-200' : 'text-slate-500' }} font-semibold mb-1">{{ $msg['side']==='you' ? 'You' : 'Lead' }} · {{ $msg['time'] }}</p>
+                            <p class="text-sm {{ $msg['side']==='you' ? 'text-white' : 'text-slate-800' }}">{{ $msg['text'] }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                    @if($chat['paid'])
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" placeholder="Reply via WhatsApp / SMS..."
+                               class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                        <button onclick="showToast('Message sent via Twilio!')"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    @else
+                    <div class="flex gap-2 pt-1 opacity-40 pointer-events-none select-none">
+                        <input type="text" placeholder="Pay to unlock reply..." class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5">
+                        <button class="bg-slate-300 text-white px-4 py-2.5 rounded-xl text-xs font-bold shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+            @endforelse
+
+        </div>
+    </div>
+
+    {{-- ── CONTACT NUMBERS ── --}}
+    <form action="{{ route('seller.settings.update') }}" method="POST"
+          class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm mb-6">
+        @csrf
+        <h3 class="font-bold text-base">My Contact Numbers</h3>
+        <p class="text-xs text-slate-400 mt-0.5 mb-5">Twilio forwards all leads to these numbers</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="text-xs text-slate-500 font-semibold mb-2 block">
+                    <i class="fa-solid fa-phone text-slate-400 mr-1"></i> Call Number
+                </label>
+                <input type="tel" name="phone" value="{{ $user->phone }}"
+                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+            </div>
+            <div>
+                <label class="text-xs text-slate-500 font-semibold mb-2 block">
+                    <i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> WhatsApp Number
+                </label>
+                <input type="tel" name="whatsapp" value="{{ $user->whatsapp }}"
+                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+            </div>
+        </div>
+        <button type="submit" class="mt-5 w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl font-bold transition">
+            Save Numbers
+        </button>
+    </form>
+
+    {{-- ── BILLING ── --}}
+    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm mb-4" id="billingSection">
+        <div class="flex items-center justify-between mb-5">
+            <div>
+                <h3 class="font-bold text-base">{{ $currentMonth }} — Billing</h3>
+                <p class="text-xs text-orange-600 font-semibold mt-0.5">Twilio Billing</p>
+            </div>
+            <span class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1 rounded-xl font-bold">
+                Due {{ now()->endOfMonth()->format('M d') }}
+            </span>
+        </div>
+        <div class="flex items-end justify-between border-b border-slate-100 pb-5 mb-5">
+            <div>
+                <p class="text-5xl font-black text-slate-900">${{ number_format($totalBill + $pendBill) }}</p>
+                <p class="text-sm text-slate-500 mt-1">{{ $stats['total'] }} verified leads · avg ${{ $avgFee }} each</p>
+            </div>
+            @if(($totalBill + $pendBill) > 0)
+            <a href="{{ route('seller.billing') }}"
+               class="bg-emerald-600 hover:bg-emerald-700 text-white px-7 py-3.5 rounded-2xl font-bold transition text-sm">
+                Pay Now
+            </a>
+            @endif
+        </div>
+        <div class="space-y-2.5 text-sm mb-4">
+            <div class="flex justify-between">
+                <span class="text-slate-600">{{ $wonLeads->count() }} Won leads × ${{ $avgFee ?: 68 }}</span>
+                <span class="font-bold text-slate-800">${{ number_format($totalBill) }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-600">{{ $pendLeads->count() }} Pending leads × ${{ $avgFee ?: 68 }}</span>
+                <span class="font-semibold text-amber-600">${{ number_format($pendBill) }} <span class="text-slate-400 font-normal">(on close)</span></span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-600">{{ $lostLeads->count() }} Lost leads</span>
+                <span class="font-semibold text-slate-400">$0</span>
+            </div>
+        </div>
+        <p class="text-xs text-slate-400">You only pay for real verified calls via Twilio. No hidden fees.</p>
+    </div>
+
 </div>
+</div>
+@endsection
 
-<style>
-    .scroll-hide { -ms-overflow-style:none; scrollbar-width:none; }
-    .scroll-hide::-webkit-scrollbar { display:none; }
-</style>
-
+@section('scripts')
 <script>
 function filterLeads(btn, status) {
     document.querySelectorAll('.filter-btn').forEach(b => {
-        b.className = 'filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition';
+        b.className = 'filter-btn px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
     });
-    btn.className = 'filter-btn active-filter shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap';
+    btn.className = 'filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-blue-600 text-white';
     document.querySelectorAll('#leadsList .lead-card').forEach(card => {
-        card.style.display = (status === 'all' || card.dataset.status === status) ? '' : 'none';
+        card.style.display = (status === 'all' || card.dataset.status === status) ? 'block' : 'none';
     });
 }
 
 function setStatus(btn, newStatus) {
-    const card    = btn.closest('.lead-card');
-    const leadId  = card.dataset.id;
-    const colors  = { won:'bg-emerald-500 text-white', pending:'bg-amber-500 text-white', lost:'bg-red-500 text-white' };
-    const defaults= { won:'bg-emerald-50 text-emerald-600 hover:bg-emerald-100', pending:'bg-amber-50 text-amber-600 hover:bg-amber-100', lost:'bg-red-50 text-red-400 hover:bg-red-100' };
-
-    // Update UI immediately
+    const card   = btn.closest('.lead-card');
+    const leadId = card.dataset.id;
     card.dataset.status = newStatus;
+    const active  = { won:'won-active', pending:'pending-active', lost:'lost-active' };
+    const defClass= 'bg-slate-100 text-slate-500 hover:bg-gray-200 transition';
     card.querySelectorAll('.action-btn').forEach(b => {
-        const s = b.textContent.trim().toLowerCase();
-        b.className = `action-btn flex-1 py-1.5 rounded-xl text-[11px] font-bold transition ${s === newStatus ? colors[s] : defaults[s]}`;
+        const s = b.getAttribute('onclick').match(/'(\w+)'/)[1];
+        b.className = `action-btn py-2 rounded-xl text-xs font-bold ${s === newStatus ? active[s] : defClass}`;
     });
-
-    // Persist to server (only for real leads that have an id)
+    card.classList.toggle('opacity-60', newStatus === 'lost');
+    card.style.borderColor = newStatus === 'pending' ? '#fde68a' : '';
     if (leadId) {
         fetch(`/seller/leads/${leadId}/status`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ status: newStatus }),
-        }).then(r => {
-            if (!r.ok) showToast('Failed to save status');
-        }).catch(() => showToast('Network error'));
+            headers: { 'Content-Type':'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+            body: JSON.stringify({ status: newStatus })
+        }).catch(() => {});
     }
-
     showToast('Lead marked as ' + newStatus.charAt(0).toUpperCase() + newStatus.slice(1));
+}
+
+function saveNote(input, leadId) {
+    if (!leadId) return;
+    fetch(`/seller/leads/${leadId}/notes`, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+        body: JSON.stringify({ notes: input.value })
+    }).then(r => r.ok && showToast('Note saved')).catch(() => {});
 }
 
 function searchLeads() {
     const q = document.getElementById('searchInput').value.toLowerCase();
     document.querySelectorAll('.lead-card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+        card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
     });
+}
+
+function exportLeads() {
+    const rows = [['Phone','Service','Status','Date','Fee','Note']];
+    document.querySelectorAll('#leadsList .lead-card').forEach(card => {
+        const cells = card.querySelectorAll('p');
+        const note  = card.querySelector('input[type="text"]')?.value || '';
+        rows.push([
+            cells[0]?.textContent.trim(),
+            cells[1]?.textContent.trim(),
+            card.dataset.status,
+            cells[2]?.textContent.trim(),
+            card.querySelector('[class*="font-bold px-3"]')?.textContent.trim() || '',
+            note
+        ]);
+    });
+    const csv = rows.map(r => r.map(c => `"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'Zonely_Leads_{{ now()->format("Y_m") }}.csv';
+    a.click();
+    showToast('Leads exported as CSV');
 }
 
 function filterChat(btn, filter) {
     document.querySelectorAll('.chat-tab').forEach(b => {
-        b.className = 'chat-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 whitespace-nowrap transition';
+        b.className = 'chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
     });
-    btn.className = 'chat-tab active-chat shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap';
+    btn.className = 'chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-blue-600 text-white';
     document.getElementById('chatPayNote').classList.toggle('hidden', filter !== 'unpaid');
     document.querySelectorAll('#chatList .chat-item').forEach(item => {
         const filters = (item.dataset.chatFilter || '').split(' ');
-        item.style.display = filters.includes(filter === 'recent' ? 'recent' : filter) ? '' : 'none';
+        item.style.display = (filter === 'recent' ? filters.includes('recent') : filters.includes(filter)) ? 'block' : 'none';
     });
 }
 
 function toggleChat(row) {
-    const thread = row.nextElementSibling;
+    const thread  = row.nextElementSibling;
     const chevron = row.querySelector('.chat-chevron');
-    const isOpen = !thread.classList.contains('hidden');
+    const isOpen  = !thread.classList.contains('hidden');
     document.querySelectorAll('.chat-thread').forEach(t => t.classList.add('hidden'));
     document.querySelectorAll('.chat-chevron').forEach(c => c.style.transform = '');
     if (!isOpen) {
@@ -367,20 +804,6 @@ function toggleChat(row) {
         chevron.style.transform = 'rotate(180deg)';
         setTimeout(() => thread.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
     }
-}
-
-function exportLeads() {
-    const rows = [['Phone','Service','Status','Time']];
-    document.querySelectorAll('.lead-card').forEach(card => {
-        const cells = card.querySelectorAll('p');
-        rows.push([cells[0]?.textContent.trim(), cells[1]?.textContent.split('—')[0].trim(), card.dataset.status, cells[0]?.nextSibling?.textContent?.trim()]);
-    });
-    const csv = rows.map(r => r.join(',')).join('\n');
-    const a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = 'Zonely_Leads.csv';
-    a.click();
-    showToast('Leads exported as CSV');
 }
 
 function showToast(msg) {

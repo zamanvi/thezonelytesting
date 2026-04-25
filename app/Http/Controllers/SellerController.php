@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -130,18 +131,41 @@ class SellerController extends Controller
 
     public function reviews()
     {
-        $user = Auth::user();
+        $user    = Auth::user();
+        $reviews = Review::where('seller_id', $user->id)->latest()->get();
+
+        $avgRating = $reviews->count() ? round($reviews->avg('rating'), 1) : 0;
+
+        $ratingBreakdown = [];
+        for ($i = 5; $i >= 1; $i--) {
+            $count = $reviews->where('rating', $i)->count();
+            $ratingBreakdown[$i] = [
+                'count' => $count,
+                'pct'   => $reviews->count() ? round($count / $reviews->count() * 100) : 0,
+            ];
+        }
+
         return view('frontend.seller.reviews', [
-            'reviews'         => collect(),
-            'avgRating'       => 0,
-            'totalReviews'    => 0,
-            'ratingBreakdown' => [],
+            'reviews'         => $reviews,
+            'avgRating'       => $avgRating,
+            'totalReviews'    => $reviews->count(),
+            'ratingBreakdown' => $ratingBreakdown,
         ]);
     }
 
     public function reviewReply(Request $request, $id)
     {
         $request->validate(['reply' => 'required|string|max:500']);
+
+        $review = Review::where('id', $id)
+            ->where('seller_id', Auth::id())
+            ->firstOrFail();
+
+        $review->update([
+            'reply'      => $request->reply,
+            'replied_at' => now(),
+        ]);
+
         return response()->json(['success' => true]);
     }
 

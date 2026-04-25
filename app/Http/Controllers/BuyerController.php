@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,30 +66,44 @@ class BuyerController extends Controller
         return redirect()->route('buyer.bookings')->with('success', 'Booking confirmed!');
     }
 
-    public function review($bookingId)
+    public function review($sellerId)
     {
-        // $booking = Booking::where('id', $bookingId)->where('buyer_id', Auth::id())->firstOrFail();
+        $seller  = User::where('id', $sellerId)->where('type', 'seller')->firstOrFail();
         $booking = (object)[
-            'id'       => $bookingId,
+            'id'       => $sellerId,
             'date'     => now(),
-            'slot_time'=> '10:00 AM',
-            'service'  => 'Service',
-            'seller'   => (object)['id' => 0, 'name' => 'Professional'],
+            'slot_time'=> null,
+            'service'  => $seller->title ?? 'Service',
+            'seller'   => $seller,
         ];
         return view('frontend.buyer.review', compact('booking'));
     }
 
-    public function reviewStore(Request $request, $bookingId)
+    public function reviewStore(Request $request, $sellerId)
     {
+        $seller = User::where('id', $sellerId)->where('type', 'seller')->firstOrFail();
+
         $data = $request->validate([
             'rating'  => 'required|integer|min:1|max:5',
             'review'  => 'required|string|min:10|max:1000',
-            'tags'    => 'nullable|string',
+            'tags'    => 'nullable|string|max:255',
         ]);
 
-        // Review::create([...]);
+        $user = Auth::user();
 
-        return redirect()->route('buyer.bookings')->with('success', 'Review submitted. Thank you!');
+        // Prevent duplicate reviews
+        Review::updateOrCreate(
+            ['seller_id' => $seller->id, 'reviewer_id' => $user->id],
+            [
+                'reviewer_name' => $user->name,
+                'rating'        => $data['rating'],
+                'review'        => $data['review'],
+                'tags'          => $data['tags'] ?? null,
+            ]
+        );
+
+        return redirect()->route('frontend.service.show', $seller->slug)
+            ->with('success', 'Review submitted. Thank you!');
     }
 
     public function profile()
