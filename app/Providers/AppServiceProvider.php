@@ -18,8 +18,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        View::composer('frontend.layouts._header', function ($view) {
-            $view->with('allMenuCategories', Category::with('children')->whereNull('parent_id')->get());
-        });
+        try {
+            View::share('allMenuCategories', Category::with('children')->whereNull('parent_id')->get());
+        } catch (\Exception $e) {
+            View::share('allMenuCategories', collect());
+        }
     }
 }

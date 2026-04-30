@@ -10,7 +10,7 @@
 
             {{-- DESKTOP MENU --}}
             <div class="hidden lg:flex gap-6 xl:gap-8 text-xs font-bold uppercase tracking-widest text-slate-500">
-                @foreach ($allMenuCategories as $category)
+                @foreach ($allMenuCategories ?? collect() as $category)
                 <div class="relative group">
                     <a href="#" class="hover:text-blue-600 transition flex items-center gap-1 py-2" style="min-height:unset;">
                         {{ $category->title }}
@@ -79,7 +79,7 @@
         {{-- MOBILE MENU --}}
         <div id="mobileMenu" class="hidden mt-4 pb-2 space-y-1">
 
-            @foreach ($allMenuCategories as $category)
+            @foreach ($allMenuCategories ?? collect() as $category)
             <div>
                 <button class="mobile-toggle w-full flex justify-between items-center px-3 py-3 text-sm font-semibold text-slate-700 rounded-xl hover:bg-slate-50 transition">
                     {{ $category->title }}
