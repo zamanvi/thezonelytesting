@@ -68,5 +68,8 @@ class Kernel extends HttpKernel
         'profile' => \App\Http\Middleware\ProfileMiddleware::class,
         'user' => \App\Http\Middleware\UserMiddleware::class,
         'seller' => \App\Http\Middleware\SellerMiddleware::class,
+        'staff'          => \App\Http\Middleware\StaffMiddleware::class,
+        'manager.module' => \App\Http\Middleware\ManagerModuleMiddleware::class,
+        'terms'          => \App\Http\Middleware\RequireTermsAgreement::class,
     ];
 }

@@ -4,93 +4,67 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ContactController extends Controller
 {
-    protected $type;
-    protected $model;
-
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->type = getUserType();
-            return $next($request);
-        });
-        $this->model = new Contact();
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $contacts = $this->model->where('user_id', auth()->id())->paginate(10);
+        $contacts = Contact::where('user_id', auth()->id())->paginate(10);
         return view('profile.contacts.index', compact('contacts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('profile.contacts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $type = $request->input('type');
+
         $validated = $request->validate([
-            'type'  => 'required|in:email,phone,address',
-            'value' => 'required|string|max:255',
+            'type'  => ['required', Rule::in(['email', 'phone', 'address', 'whatsapp'])],
+            'value' => $this->valueRules($type),
         ]);
 
-        $contact = new Contact();
-        $contact->user_id = auth()->id();
-        $contact->type = $validated['type'];
-        $contact->value = $validated['value'];
-        $contact->save();
+        Contact::create(array_merge($validated, ['user_id' => auth()->id()]));
 
-        return redirect()->route('profile.contacts.index')
-            ->with('success', 'Contact added successfully.');
+        return redirect()->route('profile.contacts.index')->with('success', 'Contact added.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        $contact = $this->model->where('user_id', auth()->id())->findOrFail($id);
+        $contact = Contact::where('user_id', auth()->id())->findOrFail($id);
         return view('profile.contacts.edit', compact('contact'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
+        $type = $request->input('type');
+
         $validated = $request->validate([
-            'type'  => 'required|in:email,phone,address',
-            'value' => 'required|string|max:255',
+            'type'  => ['required', Rule::in(['email', 'phone', 'address', 'whatsapp'])],
+            'value' => $this->valueRules($type),
         ]);
 
-        $contact = Contact::where('user_id', auth()->id())->findOrFail($id);
-        $contact->update($validated);
+        Contact::where('user_id', auth()->id())->findOrFail($id)->update($validated);
 
-        return redirect()->route('profile.contacts.index')
-            ->with('success', 'Contact updated successfully.');
+        return redirect()->route('profile.contacts.index')->with('success', 'Contact updated.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $contact = Contact::where('user_id', auth()->id())->findOrFail($id);
-        $contact->delete();
+        Contact::where('user_id', auth()->id())->findOrFail($id)->delete();
+        return redirect()->route('profile.contacts.index')->with('success', 'Contact deleted.');
+    }
 
-        return redirect()->route('profile.contacts.index')
-            ->with('success', 'Contact deleted successfully.');
+    private function valueRules(?string $type): array
+    {
+        return match ($type) {
+            'email'            => ['required', 'email', 'max:255'],
+            'phone', 'whatsapp'=> ['required', 'string', 'regex:/^\+?[0-9\s\-\(\)]{7,20}$/'],
+            default            => ['required', 'string', 'max:500'],
+        };
     }
 }

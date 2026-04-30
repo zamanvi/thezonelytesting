@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
+    public function onboarding()
+    {
+        $user = Auth::user()->load(['services', 'educations', 'memberships', 'languages', 'category']);
+        return view('frontend.seller.onboarding', compact('user'));
+    }
+
     public function dashboard()
     {
         $user  = Auth::user();
-        $leads = $user->leads()->latest()->get();
+        $leads = $user->leads()->with('seller')->latest()->get();
 
         $stats = [
             'total'   => $leads->count(),

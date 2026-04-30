@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'type', 'email', 'title', 'phone', 'designation', 'whatsapp', 'show_phone', 'bio', 'work_address', 'status', 'password', 'about', 'remark', 'country', 'state', 'city', 'zip_code', 'tags', 'slug', 'business_name', 'seller_service_type', 'experience', 'category_id', 'profile_photo', 'referred_by', 'schedule'];
+    protected $fillable = ['name', 'type', 'email', 'title', 'phone', 'designation', 'whatsapp', 'show_phone', 'bio', 'work_address', 'status', 'password', 'about', 'remark', 'country', 'state', 'city', 'zip_code', 'tags', 'slug', 'business_name', 'seller_service_type', 'experience', 'category_id', 'profile_photo', 'referred_by', 'schedule', 'twilio_enabled', 'agreed_terms_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -36,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'agreed_terms_at'  => 'datetime',
         'password' => 'hashed',
         'schedule' => 'array',
     ];
@@ -96,8 +97,28 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    public function twilioNumber()
+    {
+        return $this->hasOne(\App\Models\TwilioNumber::class, 'seller_id');
+    }
+
+    public function callLogs()
+    {
+        return $this->hasMany(\App\Models\CallLog::class, 'seller_id');
+    }
+
+    public function scopeActiveSellers($query)
+    {
+        return $query->where('type', 'seller')->where('status', true);
+    }
+
     public function staffProfile()
     {
         return $this->hasOne(StaffProfile::class);
+    }
+
+    public function managerProfile()
+    {
+        return $this->hasOne(\App\Models\ManagerProfile::class);
     }
 }

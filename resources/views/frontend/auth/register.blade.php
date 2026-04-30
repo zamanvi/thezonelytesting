@@ -1,109 +1,240 @@
-@extends('frontend.layouts.__app')
+@extends('frontend.layouts._app')
+@section('title', ($type === 'seller' ? 'Join as a Local Expert' : 'Create Account') . ' — Zonely')
 
 @section('content')
-    <div class="text-center mb-12">
-        @if (isset($type) && $type == 'seller')
-            <h1 class="font-serif text-4xl md:text-6xl text-slate-900 mb-4">
-                Join as a Local Expert
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Create your professional profile in minutes and start
-                receiving verified leads from customers near you.
-                No upfront costs – pay only for quality leads.
-            </p>
-        @else
-            <h1 class="font-serif text-4xl md:text-6xl text-slate-900 mb-4">
-                Join as a Customer
-            </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                Find trusted local experts near you and get your job done easily.
-            </p>
-        @endif
-    </div>
+<div class="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-24 pb-16">
+    <div class="w-full {{ $type === 'seller' ? 'max-w-2xl' : 'max-w-sm' }}">
 
-    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-slate-100">
-        <form id="proSignupForm" action="{{ route('user.submit.register') }}" method="POST" class="space-y-10">
-            @csrf
-            <!-- Step 1: Account -->
-            <input type="hidden" name="type" value="{{ $type }}">
-            <div class="step active" data-step="1">
-                <h2 class="text-3xl font-bold mb-6">Create Your Account</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">
-                            @if (isset($type) && $type == 'seller')
-                                Owner Name
-                            @else
-                                Full Name
-                            @endif
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" required name="name"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="e.g. Kaitlin Moran">
-                    </div>
-                    @if (isset($type) && $type == 'seller')
-                        <div>
-                            <label class="block text-lg font-semibold text-slate-800 mb-2">Business Name
-                                (optional)</label>
-                            <input type="text" name="business_name"
-                                class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                                placeholder="e.g. Moran Legal Services">
-                        </div>
-                    @endif
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Email <span
-                                class="text-red-500">*</span></label>
-                        <input type="email" name="email" required
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="you@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Phone Number <span
-                                class="text-red-500">*</span></label>
-                        <input type="tel" required name="phone"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition"
-                            placeholder="+1 (555) 123-4567">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Password <span
-                                class="text-red-500">*</span></label>
-                        <input type="password" id="password" name="password" required minlength="8"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
-                        <p class="text-sm text-slate-500 mt-2">Minimum 8 characters, include a number and symbol.
-                        </p>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-lg font-semibold text-slate-800 mb-2">Confirm Password <span
-                                class="text-red-500">*</span></label>
-                        <input type="password" id="confirmPassword" name="confirm_password" required minlength="8"
-                            class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
-                    </div>
-                </div>
-                <div class="flex justify-between mt-12">
-                    <button type="button"
-                        class="prev-step text-slate-600 font-bold hover:text-slate-900 opacity-50 cursor-not-allowed"
-                        disabled></button>
-                    <button type="submit"
-                        class="bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">
-                        Create Account →
-                    </button>
-                </div>
+        @if($type === 'seller')
+        {{-- Seller progress steps --}}
+        <div class="flex items-center justify-center gap-2 mb-8">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black">1</div>
+                <span class="text-xs font-bold text-blue-600 hidden sm:inline">Create Account</span>
             </div>
-        </form>
+            <div class="w-8 h-px bg-slate-200 mx-1"></div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 text-xs font-black">2</div>
+                <span class="text-xs font-bold text-slate-400 hidden sm:inline">Business Type</span>
+            </div>
+            <div class="w-8 h-px bg-slate-200 mx-1"></div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 text-xs font-black">3</div>
+                <span class="text-xs font-bold text-slate-400 hidden sm:inline">Profile Setup</span>
+            </div>
+        </div>
+        @endif
+
+        {{-- Card --}}
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10">
+
+            {{-- Header --}}
+            <div class="text-center mb-8">
+                <a href="{{ route('frontend.home') }}" class="inline-block mb-4">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 rounded-xl mx-auto" alt="Zonely"
+                         onerror="this.src='https://ui-avatars.com/api/?name=Z&background=2563eb&color=fff&size=48'">
+                </a>
+                @if($type === 'seller')
+                    <h1 class="text-2xl font-black text-slate-900">Join as a Local Expert</h1>
+                    <p class="text-sm text-slate-500 mt-1">Free to join · Pay only for verified leads</p>
+                @else
+                    <h1 class="text-2xl font-black text-slate-900">Create Your Account</h1>
+                    <p class="text-sm text-slate-500 mt-1">Takes 10 seconds · No credit card needed</p>
+                @endif
+            </div>
+
+            {{-- Errors --}}
+            @if ($errors->any())
+            <div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-4 mb-6">
+                <ul class="text-sm text-red-600 space-y-1">
+                    @foreach ($errors->all() as $error)
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-xs"></i> {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            {{-- Form --}}
+            <form id="registerForm" action="{{ route('user.submit.register') }}" method="POST">
+                @csrf
+                <input type="hidden" name="type" value="{{ $type }}">
+
+                @if($type === 'user')
+                {{-- ── BUYER: 3 fields only ── --}}
+                <div class="space-y-4">
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="name" required autofocus value="{{ old('name') }}"
+                               placeholder="Your name"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" name="email" required value="{{ old('email') }}"
+                               placeholder="you@example.com"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="password" name="password" required minlength="6"
+                               placeholder="Min. 6 characters"
+                               class="w-full px-4 py-3.5 pr-12 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                        <button type="button" onclick="togglePwd('password',this)"
+                                class="absolute right-4 top-[38px] text-slate-400 hover:text-slate-600">
+                            <i class="fa-solid fa-eye text-sm"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                @else
+                {{-- ── SELLER: full form ── --}}
+                <div class="grid md:grid-cols-2 gap-5">
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Business Owner Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="name" required value="{{ old('name') }}"
+                               placeholder="e.g. John Smith"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Business Name <span class="text-slate-400 font-normal text-xs">(optional)</span>
+                        </label>
+                        <input type="text" name="business_name" value="{{ old('business_name') }}"
+                               placeholder="e.g. Smith Legal Services"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" name="email" required value="{{ old('email') }}"
+                               placeholder="you@example.com"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Phone Number <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" name="phone" required value="{{ old('phone') }}"
+                               placeholder="+1 (555) 123-4567"
+                               class="w-full px-4 py-3.5 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="password" name="password" required minlength="6"
+                               placeholder="Min. 6 characters"
+                               class="w-full px-4 py-3.5 pr-12 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                        <button type="button" onclick="togglePwd('password',this)"
+                                class="absolute right-4 top-[38px] text-slate-400 hover:text-slate-600">
+                            <i class="fa-solid fa-eye text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="relative">
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Confirm Password <span class="text-red-500">*</span>
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirm_password" required minlength="6"
+                               placeholder="Repeat password"
+                               class="w-full px-4 py-3.5 pr-12 rounded-2xl border border-slate-200 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition text-sm">
+                        <button type="button" onclick="togglePwd('confirmPassword',this)"
+                                class="absolute right-4 top-[38px] text-slate-400 hover:text-slate-600">
+                            <i class="fa-solid fa-eye text-sm"></i>
+                        </button>
+                    </div>
+
+                </div>
+                @endif
+
+                {{-- Terms --}}
+                <div class="flex items-start gap-3 mt-6">
+                    <input type="checkbox" id="terms" required
+                           class="mt-0.5 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 shrink-0">
+                    <label for="terms" class="text-xs text-slate-500 leading-relaxed">
+                        By creating an account you agree to our
+                        <a href="{{ route('frontend.terms-and-condition') }}" class="text-blue-600 font-bold hover:underline" target="_blank">Terms</a> and
+                        <a href="{{ route('frontend.privacy-policy') }}" class="text-blue-600 font-bold hover:underline" target="_blank">Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <button type="submit"
+                        class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 shadow-lg transition">
+                    {{ $type === 'seller' ? 'Create My Free Account' : 'Get Started' }}
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+
+            <p class="text-center text-sm text-slate-500 mt-6">
+                Already have an account?
+                <a href="{{ route('user.login') }}" class="text-blue-600 font-bold hover:underline">Sign in</a>
+            </p>
+
+            @if($type === 'user')
+            <div class="mt-6 pt-6 border-t border-slate-100 text-center">
+                <p class="text-xs text-slate-400">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    No account needed to contact a seller — you can inquire directly from any service page.
+                </p>
+            </div>
+            @endif
+
+        </div>
+
+        @if($type === 'seller')
+        <div class="flex flex-wrap justify-center gap-5 mt-8 text-xs text-slate-400">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-green-500"></i> 100% Free to Join</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-blue-500"></i> Secure & Private</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-blue-500"></i> No Credit Card Required</span>
+        </div>
+        @endif
+
     </div>
+</div>
 @endsection
 
-@section('script')
-    <script>
-        document.getElementById('proSignupForm').addEventListener('submit', function(e) {
-            const pwd = document.getElementById('password').value;
-            const confirm = document.getElementById('confirmPassword').value;
+@section('scripts')
+<script>
+function togglePwd(id, btn) {
+    const input = document.getElementById(id);
+    const icon  = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
 
-            if (pwd !== confirm) {
-                e.preventDefault();
-                alert('Passwords do not match!');
-            }
-        });
-    </script>
+@if($type === 'seller')
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const pwd     = document.getElementById('password').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    if (pwd !== confirm) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+    }
+});
+@endif
+</script>
 @endsection

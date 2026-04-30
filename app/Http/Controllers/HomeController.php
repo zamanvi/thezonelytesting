@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Lead;
 use App\Models\User;
+use App\Models\AffiliateCommission;
+use App\Services\Sms\SmsService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -21,6 +25,23 @@ class HomeController extends Controller
     {
         return view('frontend.auth.register1');
     }
+    function user_register_category()
+    {
+        $categories = Category::where('is_active', true)->whereNull('parent_id')->with('children')->get();
+        return view('frontend.auth.register_category', compact('categories'));
+    }
+
+    function user_save_category(Request $request)
+    {
+        $categoryId = ($request->category_id && $request->category_id !== 'other')
+            ? (int) $request->category_id
+            : null;
+
+        auth()->user()->update(['category_id' => $categoryId]);
+
+        return redirect()->route('seller.onboarding')->with('success', 'Category saved! Now complete your business profile.');
+    }
+
     function user_register2($type)
     {
         $categories = Category::where('is_active', true)->whereNull('parent_id')->get();
@@ -69,10 +90,10 @@ class HomeController extends Controller
         ]);
         Auth::login($user);
         if ($user->type === 'user') {
-            return redirect()->route('frontend.home')->with('success', 'Please complete your profile.');
+            return redirect()->route('buyer.dashboard')->with('success', 'Welcome to Zonely! Find local experts near you.');
         }
         if ($user->type === 'seller') {
-            return redirect()->route('seller.dashboard')->with('success', 'Please complete your profile.');
+            return redirect()->route('user.register.category')->with('success', 'Account created! Now select your business category.');
         }
         return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome, ' . $user->name);
     }
@@ -81,12 +102,12 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        $users = User::where('type', 'seller')->where('status', true)->latest()->take(8)->get();
+        $users = User::activeSellers()->latest()->take(8)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function service_all()
     {
-        $users = User::where('type', 'seller')->where('status', true)->latest()->paginate(4);
+        $users = User::activeSellers()->latest()->paginate(4);
         $isSearch = false;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
@@ -97,8 +118,7 @@ class HomeController extends Controller
     {
         $query = $request->input('q');
         $city  = $request->input('city');
-        $users = User::where('type', 'seller')
-            ->where('status', true)
+        $users = User::activeSellers()
             ->when($city, fn($q) => $q->where(function($q) use ($city) {
                 $q->where('city', 'like', '%' . $city . '%')
                   ->orWhere('state', 'like', '%' . $city . '%')
@@ -125,8 +145,7 @@ class HomeController extends Controller
     function category_show($slug)
     {
         $category = Category::where('slug', $slug)->firstOrFail();
-        $users = User::where('type', 'seller')
-            ->where('status', true)
+        $users = User::activeSellers()
             ->where('category_id', $category->id)
             ->latest()
             ->paginate(12);
@@ -138,9 +157,72 @@ class HomeController extends Controller
 
     function service_show($slug)
     {
-        $user = User::where('slug', $slug)->where('type', 'seller')->where('status', true)->firstOrFail();
+        $user = User::activeSellers()->where('slug', $slug)
+            ->with(['contacts','languages','educations','memberships','services.category','reviews.reviewer','category','twilioNumber'])
+            ->firstOrFail();
         return view('frontend.service_details', compact('user'));
     }
+
+    function serviceInquiry(Request $request, $slug)
+    {
+        $seller = User::activeSellers()->where('slug', $slug)->firstOrFail();
+
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'email' => 'required|email|max:255',
+        ]);
+
+        $lead = Lead::create([
+            'seller_id' => $seller->id,
+            'name'      => $request->name,
+            'phone'     => $request->phone,
+            'email'     => $request->email,
+            'service'   => $request->service ?? 'General Inquiry',
+            'message'   => $request->message ?? null,
+            'status'    => 'new',
+            'fee'       => 68,
+        ]);
+
+        // Auto-create affiliate commission on seller's FIRST lead
+        if ($seller->referred_by && $lead && $seller->leads()->count() === 1) {
+            AffiliateCommission::firstOrCreate(
+                ['referrer_id' => $seller->referred_by, 'referred_user_id' => $seller->id],
+                ['amount' => 10, 'status' => 'pending']
+            );
+        }
+
+        if ($seller->twilio_enabled && $seller->phone) {
+            $msg = "🔔 New Zonely Lead!\n"
+                 . "Name: {$lead->name}\n"
+                 . "Phone: {$lead->phone}\n"
+                 . "Service: {$lead->service}\n"
+                 . ($lead->message ? "Message: " . Str::limit($lead->message, 80) . "\n" : '')
+                 . "View: " . route('seller.dashboard');
+            (new SmsService())->send($seller->phone, $msg);
+        }
+
+        return back()->with('inquiry_success', 'Your request has been sent! ' . $seller->name . ' will contact you shortly.');
+    }
+    function termsAgree()
+    {
+        if (auth()->user()?->agreed_terms_at) {
+            return redirect()->route('dashboard');
+        }
+        return view('frontend.terms_agree');
+    }
+
+    function termsStore(Request $request)
+    {
+        $request->validate([
+            'agree' => 'accepted',
+        ]);
+
+        auth()->user()->update(['agreed_terms_at' => now()]);
+
+        return redirect()->route('dashboard')->with('success', 'Thank you for agreeing to our Terms & Conditions.');
+    }
+
     function help()
     {
         return view('frontend.help');
@@ -174,35 +256,31 @@ class HomeController extends Controller
     }
     function blog()
     {
-        // Get latest blog as featured
         $featuredBlog = Blog::latest()->first();
-
-        // Get next 10 blogs excluding featured one
-        $blogs = Blog::where('id', '!=', optional($featuredBlog)->id)
-            ->latest()
-            ->take(10)
-            ->get();
+        $blogs        = $this->sideBlogs($featuredBlog?->id);
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
         return view('frontend.blog', compact('featuredBlog', 'blogs', 'meta_title', 'meta_description', 'meta_keywords'));
     }
+
     function blog_show($slug)
     {
-        $featuredBlog = Blog::where('slug', $slug)->firstOrFail();
-        $featuredBlog->increment('pageview');
-
-        $blogs = Blog::where('id', '!=', optional($featuredBlog)->id)
-            ->latest()
-            ->take(10)
-            ->get(); 
-        
+        $blog  = Blog::where('slug', $slug)->firstOrFail();
+        $blog->increment('pageview');
+        $blogs = $this->sideBlogs($blog->id);
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-
-        $blog = $featuredBlog;
         return view('frontend.blog_details', compact('blog', 'meta_title', 'meta_description', 'meta_keywords'));
+    }
+
+    private function sideBlogs(?int $excludeId)
+    {
+        return Blog::when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+            ->latest()
+            ->take(10)
+            ->get();
     }
     function sitemap()
     {

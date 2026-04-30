@@ -1,3 +1,9 @@
+@php
+    $isAdmin   = auth()->user()?->type === 'admin';
+    $mgProfile = auth()->user()?->managerProfile;
+    $canSee    = fn(string $module) => $isAdmin || ($mgProfile && $mgProfile->hasModule($module));
+@endphp
+
 <nav class="sidebar" id="sidebar">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-white d-flex align-items-center gap-2 logo-text">
@@ -17,6 +23,7 @@
             </a>
         </li>
 
+        @if($canSee('profiles'))
         <li class="nav-item">
             <a href="{{ route('admin.profiles.index') }}"
                class="{{ Route::is('admin.profiles.*') ? 'active' : '' }}">
@@ -32,7 +39,9 @@
                 <span class="nav-text ms-2">Pending Verification</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('leads'))
         <li class="nav-item mt-2">
             <a href="{{ route('admin.leads') }}"
                class="{{ Route::is('admin.leads') ? 'active' : '' }}">
@@ -40,7 +49,9 @@
                 <span class="nav-text ms-2">Lead Dashboard</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('affiliate'))
         <li class="nav-item">
             <a href="{{ route('admin.affiliate') }}"
                class="{{ Route::is('admin.affiliate') ? 'active' : '' }}">
@@ -48,7 +59,9 @@
                 <span class="nav-text ms-2">Affiliate</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('hierarchy'))
         <li class="nav-item">
             <a href="{{ route('admin.hierarchy') }}"
                class="{{ Route::is('admin.hierarchy*') ? 'active' : '' }}">
@@ -56,7 +69,9 @@
                 <span class="nav-text ms-2">Hierarchy</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('blogs'))
         <li class="nav-item">
             <a href="{{ route('admin.blogs.index') }}"
                class="{{ Route::is('admin.blogs.*') ? 'active' : '' }}">
@@ -64,7 +79,9 @@
                 <span class="nav-text ms-2">Blog</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('categories'))
         <li class="nav-item">
             <a href="{{ route('admin.categories.index') }}"
                class="{{ Route::is('admin.categories.*') ? 'active' : '' }}">
@@ -72,12 +89,51 @@
                 <span class="nav-text ms-2">Categories</span>
             </a>
         </li>
+        @endif
 
+        @if($canSee('locations'))
         <li class="nav-item">
             <a href="{{ route('admin.locations') }}"
                class="{{ Route::is('admin.locations') || Route::is('admin.countries.*') || Route::is('admin.states.*') || Route::is('admin.cities.*') ? 'active' : '' }}">
                 <i class="fas fa-map-marked-alt"></i>
                 <span class="nav-text ms-2">Locations</span>
+            </a>
+        </li>
+        @endif
+
+        @if($canSee('services'))
+        <li class="nav-item">
+            <a href="{{ route('admin.services.index') }}"
+               class="{{ Route::is('admin.services.*') ? 'active' : '' }}">
+                <i class="fas fa-briefcase"></i>
+                <span class="nav-text ms-2">Services</span>
+            </a>
+        </li>
+        @endif
+
+        {{-- Managers section — admin only --}}
+        @if($isAdmin)
+        <li class="nav-item">
+            <a href="{{ route('admin.managers.index') }}"
+               class="{{ Route::is('admin.managers.*') ? 'active' : '' }}">
+                <i class="fas fa-user-shield"></i>
+                <span class="nav-text ms-2">Managers</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.twilio.settings') }}"
+               class="{{ Route::is('admin.twilio.*') ? 'active' : '' }}">
+                <i class="fas fa-message"></i>
+                <span class="nav-text ms-2">SMS Settings</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.phone-pool.index') }}"
+               class="{{ Route::is('admin.phone-pool.*') ? 'active' : '' }}">
+                <i class="fas fa-phone-volume"></i>
+                <span class="nav-text ms-2">Phone Pool</span>
             </a>
         </li>
 
@@ -88,8 +144,9 @@
                 <span class="nav-text ms-2">Clear Cache</span>
             </a>
         </li>
+        @endif
 
-        <li class="nav-item">
+        <li class="nav-item {{ $isAdmin ? '' : 'mt-4 border-top pt-3' }}">
             <a href="{{ route('frontend.home') }}" target="_blank">
                 <i class="fas fa-arrow-up-right-from-square"></i>
                 <span class="nav-text ms-2">View Site</span>

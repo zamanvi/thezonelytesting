@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ManagerController;
+use App\Http\Controllers\Admin\TwilioController;
+use App\Http\Controllers\Admin\PhonePoolController;
+use App\Http\Controllers\TwilioWebhookController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CityController;
@@ -14,6 +18,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PostalCodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StateController;
 use App\Models\Category;
@@ -51,7 +56,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 });
 
-Route::get('/get-subcategories/{id}', function ($id) {
+Route::get('/get-subcategories/{id}', function (int $id) {
     return Category::where('parent_id', $id)->get();
 });
 
@@ -59,23 +64,30 @@ Route::get('/countries', function () {
     return Country::where('status', 1)->get();
 });
 
-Route::get('/states/{country_id}', function ($country_id) {
+Route::get('/states/{country_id}', function (int $country_id) {
     return State::where('country_id', $country_id)->where('status', 1)->get();
 });
 
-Route::get('/cities/{state_id}', function ($state_id) {
+Route::get('/cities/{state_id}', function (int $state_id) {
     return City::where('state_id', $state_id)->where('status', 1)->get();
 });
 
-Route::get('/postal-codes/{city_id}', function ($city_id) {
+Route::get('/postal-codes/{city_id}', function (int $city_id) {
     return PostalCode::where('city_id', $city_id)->where('status', 1)->get();
 });
 Route::get('user/login', [HomeController::class, 'user_login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'user_register1'])->name('user.register1');
+Route::get('user/register/seller/category', [HomeController::class, 'user_register_category'])->name('user.register.category')->middleware('auth');
+Route::post('user/register/seller/category', [HomeController::class, 'user_save_category'])->name('user.save.category')->middleware('auth');
 Route::get('user/register/{type}', [HomeController::class, 'user_register2'])->name('user.register');
 Route::post('user/login', [HomeController::class, 'user_submit_login'])->name('user.submit.login');
 Route::post('user/register', [HomeController::class, 'user_submit_register'])->name('user.submit.register');
 
+Route::post('/service/{slug}/inquiry', [HomeController::class, 'serviceInquiry'])->name('service.inquiry');
+
+// Twilio webhooks — no auth, verified by Twilio signature
+Route::post('/webhook/twilio/voice',  [TwilioWebhookController::class, 'voice'])->name('twilio.webhook.voice');
+Route::post('/webhook/twilio/status', [TwilioWebhookController::class, 'status'])->name('twilio.webhook.status');
 Route::get('/blog/{slug}', [HomeController::class, 'blog_show'])->name('blog.show');
 Route::get('/sitemap', [HomeController::class, 'sitemap'])->name('sitemap');
 
@@ -99,11 +111,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if ($user->type === 'seller') {
             return redirect()->route('seller.dashboard');
         }
+        if ($user->type === 'staff') {
+            return redirect()->route('staff.dashboard');
+        }
+        if ($user->type === 'manager') {
+            $profile = $user->managerProfile;
+            if ($profile && $profile->status === 'active') {
+                return redirect($profile->firstModuleRoute());
+            }
+            return redirect()->route('frontend.home');
+        }
         if ($user->type === 'user') {
-            return redirect()->route('profile.edit');
+            return redirect()->route('buyer.dashboard');
         }
         return redirect()->route('user.dashboard');
     })->name('dashboard');
+
+    Route::get('terms', [HomeController::class, 'termsAgree'])->name('terms.agree');
+    Route::post('terms', [HomeController::class, 'termsStore'])->name('terms.store');
 
     Route::get('profile/first', [ProfileController::class, 'edit'])->name('profile.first');
     Route::get('profile/{type}/{setup}', [ProfileController::class, 'typeProfile'])->name('type.profile');
@@ -135,8 +160,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     | Seller Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware('seller')->prefix('seller')->name('seller.')->group(function () {
+    Route::middleware(['seller', 'terms'])->prefix('seller')->name('seller.')->group(function () {
         Route::get('dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
+        Route::get('onboarding', [SellerController::class, 'onboarding'])->name('onboarding');
         Route::get('affiliate', [SellerController::class, 'affiliate'])->name('affiliate');
         Route::get('settings', [SellerController::class, 'settings'])->name('settings');
         Route::put('settings', [SellerController::class, 'settingsUpdate'])->name('settings.update');
@@ -155,10 +181,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Staff Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('staff')->prefix('staff')->name('staff.')->group(function () {
+        Route::get('dashboard', [StaffController::class, 'dashboard'])->name('dashboard');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
     | Buyer Routes
     |--------------------------------------------------------------------------
     */
-    Route::prefix('buyer')->name('buyer.')->group(function () {
+    Route::middleware('terms')->prefix('buyer')->name('buyer.')->group(function () {
         Route::get('dashboard', [BuyerController::class, 'dashboard'])->name('dashboard');
         Route::get('bookings', [BuyerController::class, 'bookings'])->name('bookings');
         Route::post('bookings/{id}/cancel', [BuyerController::class, 'cancelBooking'])->name('bookings.cancel');
@@ -170,6 +205,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('profile', [BuyerController::class, 'profileUpdate'])->name('profile.update');
         Route::delete('profile', [BuyerController::class, 'profileDestroy'])->name('profile.destroy');
         Route::get('booking/{id}/confirmation', [BuyerController::class, 'bookingConfirmation'])->name('booking.confirmation');
+        Route::get('affiliate', [BuyerController::class, 'affiliate'])->name('affiliate');
         Route::get('notifications', [BuyerController::class, 'notifications'])->name('notifications');
         Route::post('notifications/read-all', [BuyerController::class, 'notificationsReadAll'])->name('notifications.read-all');
     });
@@ -181,41 +217,87 @@ Route::middleware(['auth', 'verified'])->group(function () {
     */
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
-        Route::prefix('profiles')->name('profiles.')->group(function () {
+        Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
+
+        // Profiles module
+        Route::middleware('manager.module:profiles')->prefix('profiles')->name('profiles.')->group(function () {
             Route::get('index', [PageController::class, 'profiles_index'])->name('index');
             Route::get('edit/{id}', [PageController::class, 'profiles_edit'])->name('edit');
             Route::put('update/{id}', [PageController::class, 'profiles_update'])->name('update');
             Route::delete('destroy/{id}', [PageController::class, 'profiles_destroy'])->name('destroy');
         });
 
-        Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
-        Route::get('leads', [PageController::class, 'leads'])->name('leads');
-        Route::post('leads/{id}/status', [PageController::class, 'leadUpdateStatus'])->name('leads.status');
-        Route::post('leads/{id}/pay', [PageController::class, 'leadMarkPaid'])->name('leads.pay');
-        Route::delete('leads/{id}', [PageController::class, 'leadDestroy'])->name('leads.destroy');
+        // Leads module
+        Route::middleware('manager.module:leads')->group(function () {
+            Route::get('leads', [PageController::class, 'leads'])->name('leads');
+            Route::post('leads/{id}/status', [PageController::class, 'leadUpdateStatus'])->name('leads.status');
+            Route::post('leads/{id}/pay', [PageController::class, 'leadMarkPaid'])->name('leads.pay');
+            Route::delete('leads/{id}', [PageController::class, 'leadDestroy'])->name('leads.destroy');
+        });
 
-        Route::get('affiliate', [PageController::class, 'affiliate'])->name('affiliate');
-        Route::post('affiliate/commission/{id}/pay', [PageController::class, 'affiliateCommissionPay'])->name('affiliate.commission.pay');
-        Route::post('affiliate/commission/create', [PageController::class, 'affiliateCommissionCreate'])->name('affiliate.commission.create');
-        Route::delete('affiliate/commission/{id}', [PageController::class, 'affiliateCommissionDestroy'])->name('affiliate.commission.destroy');
+        // Affiliate module
+        Route::middleware('manager.module:affiliate')->group(function () {
+            Route::get('affiliate', [PageController::class, 'affiliate'])->name('affiliate');
+            Route::post('affiliate/commission/{id}/pay', [PageController::class, 'affiliateCommissionPay'])->name('affiliate.commission.pay');
+            Route::post('affiliate/commission/create', [PageController::class, 'affiliateCommissionCreate'])->name('affiliate.commission.create');
+            Route::delete('affiliate/commission/{id}', [PageController::class, 'affiliateCommissionDestroy'])->name('affiliate.commission.destroy');
+        });
 
-        Route::get('hierarchy', [PageController::class, 'hierarchy'])->name('hierarchy');
-        Route::get('hierarchy/parents', [PageController::class, 'hierarchyParents'])->name('hierarchy.parents');
-        Route::post('hierarchy', [PageController::class, 'hierarchyStore'])->name('hierarchy.store');
-        Route::put('hierarchy/{id}', [PageController::class, 'hierarchyUpdate'])->name('hierarchy.update');
-        Route::delete('hierarchy/{id}', [PageController::class, 'hierarchyDestroy'])->name('hierarchy.destroy');
-        Route::post('hierarchy/{id}/status', [PageController::class, 'hierarchyStatusToggle'])->name('hierarchy.status');
+        // Hierarchy module
+        Route::middleware('manager.module:hierarchy')->group(function () {
+            Route::get('hierarchy', [PageController::class, 'hierarchy'])->name('hierarchy');
+            Route::get('hierarchy/parents', [PageController::class, 'hierarchyParents'])->name('hierarchy.parents');
+            Route::post('hierarchy', [PageController::class, 'hierarchyStore'])->name('hierarchy.store');
+            Route::put('hierarchy/{id}', [PageController::class, 'hierarchyUpdate'])->name('hierarchy.update');
+            Route::delete('hierarchy/{id}', [PageController::class, 'hierarchyDestroy'])->name('hierarchy.destroy');
+            Route::post('hierarchy/{id}/status', [PageController::class, 'hierarchyStatusToggle'])->name('hierarchy.status');
+        });
 
-        Route::get('locations', [PageController::class, 'locations'])->name('locations');
-        Route::resource('countries', CountryController::class);
-        Route::resource('countries.states', StateController::class);
-        Route::resource('states.cities', CityController::class);
-        Route::resource('cities.postal-codes', PostalCodeController::class);
+        // Locations module
+        Route::middleware('manager.module:locations')->group(function () {
+            Route::get('locations', [PageController::class, 'locations'])->name('locations');
+            Route::resource('countries', CountryController::class);
+            Route::resource('countries.states', StateController::class);
+            Route::resource('states.cities', CityController::class);
+            Route::resource('cities.postal-codes', PostalCodeController::class);
+        });
 
-        // Blog management
-        Route::resource('blogs', BlogController::class);
-        Route::resource('categories', CategoryController::class);
-        Route::resource('services', ServiceController::class);
+        // Blogs module
+        Route::middleware('manager.module:blogs')->group(function () {
+            Route::resource('blogs', BlogController::class);
+        });
+
+        // Categories module
+        Route::middleware('manager.module:categories')->group(function () {
+            Route::resource('categories', CategoryController::class);
+        });
+
+        // Services module
+        Route::middleware('manager.module:services')->group(function () {
+            Route::resource('services', ServiceController::class);
+        });
+
+        // Managers CRUD — admin only (no module middleware needed, managers can't manage other managers)
+        Route::resource('managers', ManagerController::class)->only(['index','create','store','edit','update','destroy']);
+
+        // Twilio SMS settings — admin only
+        Route::prefix('twilio')->name('twilio.')->group(function () {
+            Route::get('settings',             [TwilioController::class, 'settings'])->name('settings');
+            Route::post('settings',            [TwilioController::class, 'settingsUpdate'])->name('settings.update');
+            Route::get('sellers',              [TwilioController::class, 'sellers'])->name('sellers');
+            Route::post('sellers/{id}/toggle', [TwilioController::class, 'toggle'])->name('toggle');
+            Route::post('sellers/{id}/test',   [TwilioController::class, 'testSms'])->name('test');
+        });
+
+        // Phone number pool — admin only
+        Route::prefix('phone-pool')->name('phone-pool.')->group(function () {
+            Route::get('/',              [PhonePoolController::class, 'index'])->name('index');
+            Route::post('/',             [PhonePoolController::class, 'store'])->name('store');
+            Route::post('{id}/assign',   [PhonePoolController::class, 'assign'])->name('assign');
+            Route::post('{id}/release',  [PhonePoolController::class, 'release'])->name('release');
+            Route::delete('{id}',        [PhonePoolController::class, 'destroy'])->name('destroy');
+            Route::get('call-logs',      [PhonePoolController::class, 'callLogs'])->name('call-logs');
+        });
     });
 
 });

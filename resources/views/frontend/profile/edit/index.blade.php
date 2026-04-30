@@ -1,4 +1,4 @@
-@extends('frontend.layouts.__app')
+@extends('frontend.layouts._app')
 
 @section('content')
     <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-4 sm:p-8 md:p-12 border border-slate-100">

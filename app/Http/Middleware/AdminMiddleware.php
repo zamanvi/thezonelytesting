@@ -23,12 +23,15 @@ class AdminMiddleware
 
         $user = Auth::user();
 
-        // Allow only admin to proceed
         if ($user->type === 'admin') {
             return $next($request);
         }
 
-        // Non-admin users go back to their dashboard
+        // Managers pass through here; ManagerModule middleware handles per-route checks
+        if ($user->type === 'manager' && $user->managerProfile?->status === 'active') {
+            return $next($request);
+        }
+
         return redirect()->route('dashboard');
     }
 }

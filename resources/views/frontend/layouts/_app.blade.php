@@ -15,7 +15,7 @@
         $ogDescription = trim($__env->yieldContent('og_description'))  ?: ($meta_description ?? '');
         $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/favicon.png');
     @endphp
-    <title>@yield('title', 'Zonely') – Find &amp; Hire Local Experts Near You</title>
+    <title>Zonely — @yield('title', 'Find & Hire Local Experts Near You')</title>
     <meta name="title"       content="{{ $ogTitle }}">
     <meta name="description" content="{{ Str::limit(strip_tags($ogDescription), 160) }}">
     @if($meta_keywords ?? false)<meta name="keywords" content="{{ $meta_keywords }}">@endif

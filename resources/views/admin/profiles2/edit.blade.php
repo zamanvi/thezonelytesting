@@ -89,11 +89,81 @@
                             <input type="text" name="title" class="form-control"
                                    value="{{ old('title',$user->title) }}" placeholder="e.g. Pro, Featured">
                         </div>
-                        <div class="mb-0">
+                        <div class="mb-3">
                             <label class="form-label fw-semibold">Admin Remark</label>
                             <textarea name="remark" rows="3" class="form-control"
                                       placeholder="Internal notes about this user">{{ old('remark',$user->remark) }}</textarea>
                         </div>
+                        @if($user->type === 'seller')
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold d-flex align-items-center gap-2">
+                                <i class="fas fa-phone-volume text-danger"></i> Twilio SMS Notifications
+                            </label>
+                            <div class="form-check form-switch mt-1">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       name="twilio_enabled" id="twilioEnabled" value="1"
+                                       {{ old('twilio_enabled', $user->twilio_enabled) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="twilioEnabled">
+                                    Send SMS to seller when new lead arrives
+                                </label>
+                            </div>
+                            @if(!$user->phone)
+                            <div class="text-warning small mt-1">
+                                <i class="fas fa-triangle-exclamation me-1"></i>No phone set — seller won't receive SMS until phone is added.
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold d-flex align-items-center gap-2">
+                                <i class="fas fa-hashtag text-primary"></i> Tracking Number (shown on frontend)
+                            </label>
+                            @if($user->twilioNumber)
+                            <div class="d-flex align-items-center gap-2 mt-1">
+                                <span class="badge bg-success px-3 py-2 font-monospace fs-6">
+                                    {{ $user->twilioNumber->number }}
+                                </span>
+                                <span class="text-muted small">assigned {{ $user->twilioNumber->assigned_at?->format('M d, Y') }}</span>
+                                <a href="{{ route('admin.phone-pool.index') }}" class="btn btn-sm btn-outline-secondary ms-1">
+                                    <i class="fas fa-arrows-rotate me-1"></i>Change
+                                </a>
+                            </div>
+                            @else
+                            <div class="mt-1 d-flex align-items-center gap-2">
+                                <span class="badge bg-warning text-dark px-3 py-2">No tracking number assigned</span>
+                                <a href="{{ route('admin.phone-pool.index') }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-plus me-1"></i>Assign from Pool
+                                </a>
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Terms Agreement --}}
+                <div class="section-card mb-4">
+                    <div class="card-header bg-secondary text-white p-3">
+                        <h6 class="mb-0"><i class="fas fa-file-contract me-2"></i>Terms Agreement</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        @if($user->agreed_terms_at)
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-circle-check text-success"></i>
+                            <div>
+                                <div class="fw-semibold text-success small">Agreed to Terms</div>
+                                <div class="text-muted" style="font-size:12px">{{ $user->agreed_terms_at->format('M d, Y \a\t g:i A') }}</div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-circle-xmark text-warning"></i>
+                            <div>
+                                <div class="fw-semibold text-warning small">Not Yet Agreed</div>
+                                <div class="text-muted" style="font-size:12px">User will be prompted on next login</div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 

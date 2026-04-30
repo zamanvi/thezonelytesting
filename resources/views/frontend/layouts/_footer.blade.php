@@ -29,5 +29,13 @@
         </a>
     </div>
 
+    <div class="mt-4 mb-2">
+        <a href="{{ route('user.register', 'seller') }}"
+           class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition" style="min-height:unset;">
+            <i class="fa-solid fa-briefcase text-xs"></i>
+            List Your Business — It's Free
+        </a>
+    </div>
+
     <p class="text-xs text-slate-400">© {{ date('Y') }} Zonely. Empowering Local Experts.</p>
 </footer>

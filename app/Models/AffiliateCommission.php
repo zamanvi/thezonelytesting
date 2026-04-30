@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AffiliateCommission extends Model
 {
-    use HasFactory;
-
     protected $fillable = ['referrer_id', 'referred_user_id', 'amount', 'status', 'paid_at', 'note'];
 
     protected $casts = ['paid_at' => 'datetime'];

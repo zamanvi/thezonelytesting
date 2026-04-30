@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lead;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,14 +14,26 @@ class BuyerController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
+
+        $myLeads = Lead::where('email', $user->email)
+            ->with('seller')
+            ->latest()
+            ->get();
+
+        $activeLeads    = $myLeads->whereIn('status', ['new', 'pending']);
+        $resolvedLeads  = $myLeads->whereIn('status', ['won', 'lost', 'closed']);
+
         $stats = [
-            'bookings'  => 0,
-            'completed' => 0,
-            'reviews'   => 0,
+            'bookings'  => $myLeads->count(),
+            'active'    => $activeLeads->count(),
+            'resolved'  => $resolvedLeads->count(),
         ];
-        $upcomingBookings = collect();
-        $pendingReviews   = collect();
-        return view('frontend.buyer.dashboard', compact('stats', 'upcomingBookings', 'pendingReviews'));
+
+        $pendingReviews = collect();
+
+        return view('frontend.buyer.dashboard', compact(
+            'stats', 'pendingReviews', 'activeLeads', 'resolvedLeads'
+        ));
     }
 
     public function bookings()
@@ -31,12 +44,13 @@ class BuyerController extends Controller
 
     public function cancelBooking(Request $request, $id)
     {
-        // Find booking by id, verify ownership, update status
         return response()->json(['success' => true]);
     }
 
     public function book(User $seller)
     {
+        abort_unless($seller->type === 'seller' && $seller->status, 404);
+
         $schedule    = $seller->schedule ?? [
             'working_days' => ['mon', 'tue', 'wed', 'thu', 'fri'],
             'periods'      => [
@@ -59,9 +73,6 @@ class BuyerController extends Controller
             'email'         => 'nullable|email',
             'message'       => 'nullable|string|max:1000',
         ]);
-
-        // Create booking record here
-        // Booking::create([...]);
 
         return redirect()->route('buyer.bookings')->with('success', 'Booking confirmed!');
     }
@@ -156,7 +167,6 @@ class BuyerController extends Controller
 
     public function bookingConfirmation($id)
     {
-        // $booking = Booking::where('id', $id)->where('buyer_id', Auth::id())->firstOrFail();
         $booking = (object)[
             'id'       => $id,
             'date'     => now()->addDays(4),
@@ -167,6 +177,21 @@ class BuyerController extends Controller
         return view('frontend.buyer.booking_confirmation', compact('booking'));
     }
 
+    public function affiliate()
+    {
+        $user        = Auth::user();
+        $commissions = $user->commissionsEarned()->with('referredUser')->latest()->get();
+
+        $stats = [
+            'referrals' => $user->referrals()->where('type', 'seller')->count(),
+            'earned'    => $commissions->sum('amount'),
+            'pending'   => $commissions->where('status', 'pending')->sum('amount'),
+            'paid_out'  => $commissions->where('status', 'paid')->sum('amount'),
+        ];
+
+        return view('frontend.buyer.affiliate', compact('user', 'commissions', 'stats'));
+    }
+
     public function notifications()
     {
         return view('frontend.buyer.notifications', ['notifications' => collect()]);
@@ -174,7 +199,6 @@ class BuyerController extends Controller
 
     public function notificationsReadAll()
     {
-        // Auth::user()->notifications()->update(['read_at' => now()]);
         return response()->json(['success' => true]);
     }
 }

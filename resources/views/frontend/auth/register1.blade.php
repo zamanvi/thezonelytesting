@@ -33,7 +33,7 @@
                 </a>
 
                 {{-- Buyer option --}}
-                <a href="{{ route('user.register', 'buyer') }}"
+                <a href="{{ route('user.register', 'user') }}"
                    class="flex items-center gap-4 p-5 rounded-2xl border-2 border-slate-100 bg-white hover:border-emerald-400 hover:bg-emerald-50 transition group">
                     <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-magnifying-glass text-white text-base"></i>

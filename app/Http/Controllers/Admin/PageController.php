@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AffiliateCommission;
+use App\Models\Blog;
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Lead;
@@ -35,11 +37,8 @@ class PageController extends Controller
         $pendingComm  = AffiliateCommission::pending()->sum('amount');
         $paidComm     = AffiliateCommission::paid()->sum('amount');
 
-        // Blog
-        $blogCount    = \App\Models\Blog::count();
-
-        // Categories & Locations
-        $catCount     = \App\Models\Category::count();
+        $blogCount    = Blog::count();
+        $catCount     = Category::count();
         $cityCount    = City::count();
 
         // Monthly lead counts for chart (last 6 months)
@@ -87,12 +86,6 @@ class PageController extends Controller
             'leadStatusData'
         ));
     }
-    // function profiles_index(Request $request)
-    // {
-    //     $type = $request->query('type', 'unverified');
-    //     $users = User::latest()->where('status', false)->get();
-    //     return view('admin.profiles.index', compact('users', 'type'));
-    // }
     public function profiles_index(Request $request)
     {
         $status = $request->query('status'); // 'verified', 'unverified', or null
@@ -116,7 +109,7 @@ class PageController extends Controller
     }
     function profiles_edit($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('admin.profiles2.edit', compact('user'));
     }
     public function profiles_update(Request $request, $id)
@@ -130,7 +123,7 @@ class PageController extends Controller
             'whatsapp'            => 'nullable|string|max:50',
             'designation'         => 'nullable|string|max:255',
             'title'               => 'nullable|string|max:255',
-            'type'                => 'required|in:admin,staf,seller,user',
+            'type'                => 'required|in:admin,staff,manager,seller,user',
             'status'              => 'required|boolean',
             'remark'              => 'nullable|string',
             'bio'                 => 'nullable|string',
@@ -145,8 +138,10 @@ class PageController extends Controller
             'zip_code'            => 'nullable|string|max:20',
             'tags'                => 'nullable|string',
             'category_id'         => 'nullable|exists:categories,id',
+            'twilio_enabled'      => 'nullable|boolean',
         ]);
 
+        $validated['twilio_enabled'] = $request->boolean('twilio_enabled');
         $user->update($validated);
 
         return redirect()
@@ -219,7 +214,6 @@ class PageController extends Controller
             ->latest()
             ->paginate(25);
 
-        // Sellers with referral counts for the summary table
         $topReferrers = User::where('type', 'seller')
             ->withCount('referrals')
             ->withSum(['commissionsEarned as earned_total' => function($q){ $q->where('status','paid'); }], 'amount')
@@ -348,8 +342,7 @@ class PageController extends Controller
             'parent_id', 'base_salary', 'commission_rate', 'joined_at', 'notes',
         ]));
 
-        // Update user type to 'staf'
-        User::find($request->user_id)?->update(['type' => 'staf']);
+        User::find($request->user_id)?->update(['type' => 'staff']);
 
         return back()->with('success', 'Staff member added.');
     }

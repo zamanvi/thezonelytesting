@@ -153,7 +153,8 @@
                         <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-4 border-slate-800">
                             <img src="{{ asset('frontend/img/ceo.webp') }}"
                                 class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                                alt="Md. Norozzaman">
+                                alt="Md. Norozzaman"
+                                onerror="this.src='https://ui-avatars.com/api/?name=Md+Norozzaman&background=1e293b&color=fff&size=400'">
                         </div>
                     </div>
                 </div>
