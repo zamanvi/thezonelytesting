@@ -15,7 +15,6 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN npm ci && npm run build
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 EXPOSE 8080
-CMD php artisan migrate --force && php artisan db:seed --force && php -S 0.0.0.0:${PORT:-8080} -t public
+CMD php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php artisan db:seed --force && php -S 0.0.0.0:${PORT:-8080} -t public
