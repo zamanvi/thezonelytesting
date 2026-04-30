@@ -1,5 +1,8 @@
 <?php
 
+// Health check — no DB needed, Railway healthcheck passes immediately
+Route::get('/health', function () { return response('OK', 200); });
+
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ManagerController;
