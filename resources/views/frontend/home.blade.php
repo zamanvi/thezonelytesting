@@ -44,12 +44,13 @@
         </p>
 
         {{-- Search — dominant --}}
-        <div class="bg-slate-900 rounded-2xl p-1.5 mb-5 shadow-xl">
+        <div class="relative">
+        <div class="bg-slate-900 rounded-2xl p-1.5 mb-2 shadow-xl">
             <form action="{{ route('frontend.service.search') }}" method="GET"
-                  class="flex flex-col sm:flex-row gap-1.5">
+                  class="flex flex-col sm:flex-row gap-1.5" id="searchForm">
                 <div class="flex items-center gap-3 flex-1 bg-white rounded-xl px-4 py-4">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 shrink-0"></i>
-                    <input type="text" name="q" id="searchQ"
+                    <input type="text" name="q" id="searchQ" autocomplete="off"
                            placeholder="What do you need? e.g. Plumber"
                            class="flex-1 text-base text-slate-900 placeholder-slate-400 bg-transparent w-full">
                 </div>
@@ -64,6 +65,16 @@
                     Find Now
                 </button>
             </form>
+        </div>
+
+        {{-- Live search results --}}
+        <div id="liveResults" class="hidden absolute left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+            <div id="liveResultsList"></div>
+            <a id="liveResultsMore" href="#"
+               class="block text-center text-sm font-bold text-blue-600 py-3 border-t border-slate-100 hover:underline">
+                See all results →
+            </a>
+        </div>
         </div>
 
         {{-- One-tap emergency buttons --}}
@@ -102,7 +113,7 @@
         </div>
 
         <div class="space-y-3">
-            @forelse($users as $user)
+            @forelse(($users ?? collect())->take(2) as $user)
             <div class="flex items-center gap-4 p-4 border border-slate-200 rounded-2xl hover:border-blue-300 hover:shadow-sm transition">
                 @if($user->profile_photo)
                 <img src="{{ asset($user->profile_photo) }}"
@@ -187,5 +198,64 @@
         </div>
     </div>
 </section>
+
+@section('scripts')
+<script>
+(function() {
+    const allUsers = @json(($users ?? collect())->map(fn($u) => [
+        'id'    => $u->id,
+        'name'  => $u->name,
+        'slug'  => $u->slug ?? $u->id,
+        'title' => $u->title ?? $u->designation ?? null,
+        'city'  => $u->city ?? null,
+        'status'=> $u->status ?? false,
+        'photo' => $u->profile_photo ?? null,
+    ]));
+
+    const input    = document.getElementById('searchQ');
+    const box      = document.getElementById('liveResults');
+    const list     = document.getElementById('liveResultsList');
+    const moreLink = document.getElementById('liveResultsMore');
+    const base     = "{{ route('frontend.service.search') }}";
+
+    function avatar(u) {
+        const i = (u.name || 'ZZ').substring(0,2).toUpperCase();
+        return u.photo
+            ? `<img src="/storage/${u.photo}" onerror="this.style.display='none'" class="w-10 h-10 rounded-xl object-cover shrink-0">`
+            : `<div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">${i}</div>`;
+    }
+
+    input.addEventListener('input', function () {
+        const q = this.value.trim().toLowerCase();
+        if (q.length < 2) { box.classList.add('hidden'); return; }
+
+        const hits = allUsers.filter(u =>
+            (u.name  && u.name.toLowerCase().includes(q))  ||
+            (u.title && u.title.toLowerCase().includes(q)) ||
+            (u.city  && u.city.toLowerCase().includes(q))
+        ).slice(0, 5);
+
+        if (!hits.length) { box.classList.add('hidden'); return; }
+
+        list.innerHTML = hits.map(u => `
+            <a href="/service/${u.slug}" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition">
+                ${avatar(u)}
+                <div class="min-w-0 flex-1">
+                    <p class="font-bold text-slate-900 text-sm truncate">${u.name || ''}</p>
+                    <p class="text-xs text-slate-400 truncate">${u.title || 'Professional'}${u.city ? ' · '+u.city : ''}</p>
+                </div>
+                ${u.status ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md shrink-0">Verified</span>' : ''}
+            </a>`).join('');
+
+        moreLink.href = base + '?q=' + encodeURIComponent(q);
+        box.classList.remove('hidden');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!input.contains(e.target) && !box.contains(e.target)) box.classList.add('hidden');
+    });
+})();
+</script>
+@endsection
 
 @endsection

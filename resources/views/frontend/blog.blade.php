@@ -40,10 +40,22 @@
     </header>
 
     {{-- Featured + sidebar --}}
+    @php $blogs = $blogs ?? collect(); $featuredBlog = $featuredBlog ?? null; @endphp
+
+    @if($blogs->isEmpty() && !$featuredBlog)
+    {{-- Empty state --}}
+    <div class="flex flex-col items-center justify-center py-24 text-center">
+        <div class="w-20 h-20 bg-slate-100 rounded-3xl flex items-center justify-center mb-6">
+            <i class="fa-regular fa-newspaper text-3xl text-slate-300"></i>
+        </div>
+        <h2 class="font-serif text-2xl text-slate-700 mb-2">No articles yet</h2>
+        <p class="text-slate-400 text-sm max-w-xs">Check back soon — expert guides and local tips are on the way.</p>
+    </div>
+    @else
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-14">
 
         {{-- Featured --}}
-        @if(isset($featuredBlog))
+        @if($featuredBlog)
         <article class="lg:col-span-8 group cursor-pointer">
             <a href="{{ route('frontend.blog') }}/{{ $featuredBlog->slug ?? '' }}" class="block" style="min-height:unset;">
                 <div class="rounded-3xl overflow-hidden aspect-video mb-6 bg-slate-100 relative">
@@ -69,9 +81,9 @@
         @endif
 
         {{-- Sidebar list --}}
-        <div class="lg:col-span-4 space-y-5">
+        <div class="{{ $featuredBlog ? 'lg:col-span-4' : 'lg:col-span-12' }} space-y-5">
             <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-3">More Articles</h4>
-            @foreach($blogs as $blog)
+            @forelse($blogs as $blog)
             <article class="group flex gap-4 items-start">
                 <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-slate-100">
                     <img src="{{ asset($blog->image_path ?? '') }}"
@@ -90,9 +102,12 @@
                     @endif
                 </div>
             </article>
-            @endforeach
+            @empty
+            <p class="text-slate-400 text-sm py-4">No more articles.</p>
+            @endforelse
         </div>
     </div>
+    @endif
 
     {{-- CTA --}}
     <section class="bg-blue-600 rounded-3xl p-8 sm:p-12 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">

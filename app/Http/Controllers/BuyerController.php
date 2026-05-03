@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lead;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -136,8 +137,7 @@ class BuyerController extends Controller
         ]);
 
         if ($request->hasFile('profile_photo')) {
-            $path = $request->file('profile_photo')->store('profiles', 'public');
-            $data['profile_photo'] = 'storage/' . $path;
+            $data['profile_photo'] = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
         }
 
         $user->update($data);

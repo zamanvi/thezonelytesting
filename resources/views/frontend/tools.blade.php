@@ -9,7 +9,7 @@
 
     {{-- HERO SECTION (MATCHES HOME PAGE) --}}
     <header class="mt-20 max-w-5xl mx-auto pt-14 pb-10 px-4 text-center">
-        <h1 class="font-['Playfair_Display'] text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
+        <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
             NYC Car Insurance <br class="hidden sm:block">
             <span class="text-blue-600 italic font-normal">Calculator</span>
         </h1>

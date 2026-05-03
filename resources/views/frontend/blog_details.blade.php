@@ -45,7 +45,7 @@
     @endif
 
     {{-- Title --}}
-    <h1 class="font-['Playfair_Display'] text-2xl sm:text-3xl md:text-4xl text-slate-900 leading-tight mb-4">
+    <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl text-slate-900 leading-tight mb-4">
         {{ $blog->name }}
     </h1>
 

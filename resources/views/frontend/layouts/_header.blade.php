@@ -10,9 +10,9 @@
 
             {{-- DESKTOP MENU --}}
             <div class="hidden lg:flex gap-6 xl:gap-8 text-xs font-bold uppercase tracking-widest text-slate-500">
-                @foreach ($allMenuCategories as $category)
+                @foreach ($allMenuCategories ?? [] as $category)
                 <div class="relative group">
-                    <a href="#" class="hover:text-blue-600 transition flex items-center gap-1 py-2" style="min-height:unset;">
+                    <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-blue-600 transition flex items-center gap-1 py-2" style="min-height:unset;">
                         {{ $category->title }}
                         @if ($category->children->count())
                         <svg class="w-3 h-3 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
                     @if ($category->children->count())
                     <div class="absolute left-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         @foreach ($category->children as $child)
-                        <a href="#" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">
+                        <a href="{{ route('frontend.category', $child->slug) }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">
                             {{ $child->title }}
                         </a>
                         @endforeach
@@ -79,24 +79,29 @@
         {{-- MOBILE MENU --}}
         <div id="mobileMenu" class="hidden mt-4 pb-2 space-y-1">
 
-            @foreach ($allMenuCategories as $category)
+            @foreach ($allMenuCategories ?? [] as $category)
             <div>
+                @if ($category->children->count())
                 <button class="mobile-toggle w-full flex justify-between items-center px-3 py-3 text-sm font-semibold text-slate-700 rounded-xl hover:bg-slate-50 transition">
                     {{ $category->title }}
-                    @if ($category->children->count())
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                     </svg>
-                    @endif
                 </button>
-                @if ($category->children->count())
                 <div class="mobile-submenu hidden pl-4 pb-1 space-y-0.5">
+                    <a href="{{ route('frontend.category', $category->slug) }}" class="block px-3 py-2.5 text-sm font-semibold text-blue-600 rounded-xl hover:bg-slate-50 transition">
+                        All {{ $category->title }}
+                    </a>
                     @foreach ($category->children as $child)
-                    <a href="#" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">
+                    <a href="{{ route('frontend.category', $child->slug) }}" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">
                         {{ $child->title }}
                     </a>
                     @endforeach
                 </div>
+                @else
+                <a href="{{ route('frontend.category', $category->slug) }}" class="block px-3 py-3 text-sm font-semibold text-slate-700 rounded-xl hover:bg-slate-50 transition">
+                    {{ $category->title }}
+                </a>
                 @endif
             </div>
             @endforeach

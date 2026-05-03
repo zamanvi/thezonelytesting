@@ -11,13 +11,30 @@
 <header class="mt-16 sm:mt-20 max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-10 pb-6 sm:pb-8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-            <h1 class="font-['Playfair_Display'] text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-900 mb-1">
-                Top Professionals
+            @if(isset($category))
+            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">
+                @if($category->parent) {{ $category->parent->title }} · @endif Browse
+            </p>
+            @endif
+            <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-900 mb-1">
+                {{ isset($category) ? $category->title : 'Top Professionals' }}
             </h1>
             <p class="text-slate-500 text-sm sm:text-base italic">
                 Showing verified experts
                 @if(isset($city)) in <span class="text-blue-600 font-bold">{{ $city }}</span>@endif
             </p>
+            @if(isset($category) && $category->children->count())
+            <div class="flex flex-wrap gap-2 mt-3">
+                <a href="{{ route('frontend.category', $category->slug) }}"
+                   class="px-3 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-bold">All</a>
+                @foreach($category->children as $child)
+                <a href="{{ route('frontend.category', $child->slug) }}"
+                   class="px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 rounded-xl text-xs font-semibold transition">
+                    {{ $child->title }}
+                </a>
+                @endforeach
+            </div>
+            @endif
         </div>
 
         {{-- Search bar --}}
@@ -69,7 +86,7 @@
                 {{-- Info --}}
                 <div class="flex-1 min-w-0 flex flex-col justify-between">
                     <div>
-                        <h3 class="font-['Playfair_Display'] text-lg sm:text-xl text-slate-900 leading-snug truncate">
+                        <h3 class="font-serif text-lg sm:text-xl text-slate-900 leading-snug truncate">
                             {{ $user->name }}
                         </h3>
                         @if($user->title ?? $user->designation ?? false)

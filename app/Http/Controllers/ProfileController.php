@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Category;
 use App\Models\Country;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,8 +93,7 @@ class ProfileController extends Controller
             ]);
 
             if ($request->hasFile('profile_photo')) {
-                $path = $request->file('profile_photo')->store('uploads', 'public');
-                $user->profile_photo = 'storage/' . $path;
+                $user->profile_photo = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
             }
 
             $user->bio        = $request->bio;

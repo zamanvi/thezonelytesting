@@ -144,9 +144,10 @@ class HomeController extends Controller
 
     function category_show($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->with('children')->firstOrFail();
+        $categoryIds = $category->children->pluck('id')->prepend($category->id);
         $users = User::activeSellers()
-            ->where('category_id', $category->id)
+            ->whereIn('category_id', $categoryIds)
             ->latest()
             ->paginate(12);
         $meta_title = $category->name . ' — Zonely';
@@ -160,7 +161,10 @@ class HomeController extends Controller
         $user = User::activeSellers()->where('slug', $slug)
             ->with(['contacts','languages','educations','memberships','services.category','reviews.reviewer','category','twilioNumber'])
             ->firstOrFail();
-        return view('frontend.service_details', compact('user'));
+        $view = $user->seller_service_type === 'professional'
+            ? 'frontend.service_details_professional'
+            : 'frontend.service_details';
+        return view($view, compact('user'));
     }
 
     function serviceInquiry(Request $request, $slug)
