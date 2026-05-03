@@ -67,6 +67,7 @@
     .testimonial-card { background: linear-gradient(135deg, #f8faff, #ffffff); border: 1px solid #e3ecff; }
     .price-num { font-size: 2rem; font-weight: 800; color: #1e40af; line-height: 1; }
     @media (max-width: 767px) { .pro-page { padding-bottom: 80px; } }
+    footer.max-w-7xl { display: none !important; }
     .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -540,6 +541,56 @@
     </div>
 
 </div>
+
+    {{-- ── CUSTOM FOOTER ───────────────────────────────────────────── --}}
+    <footer class="bg-slate-900 text-slate-400 py-10">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 pb-8 border-b border-slate-700">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
+                        <span class="text-white font-bold text-lg">Zonely</span>
+                    </div>
+                    <p class="text-xs leading-relaxed">Connecting you with trusted, verified local professionals across the USA.</p>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold mb-3">{{ $user->name }}</h5>
+                    <div class="space-y-2 text-sm">
+                        @if($user->work_address || $user->city)
+                        <div class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt w-4 text-blue-500 mt-0.5 flex-shrink-0"></i>
+                            <span>{{ $user->work_address ?? '' }}{{ $user->city ? ', '.$user->city : '' }}{{ $user->state ? ', '.$user->state : '' }}</span>
+                        </div>
+                        @endif
+                        @if($callNumber)
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-phone w-4 text-blue-500 flex-shrink-0"></i>
+                            <a href="tel:{{ $callNumber }}" class="hover:text-white transition">{{ $callNumber }}</a>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @if(count($workingDays))
+                <div>
+                    <h5 class="text-white font-semibold mb-3">Office Hours</h5>
+                    <div class="space-y-1.5 text-sm">
+                        @foreach(['Mon – Fri' => ['Monday','Tuesday','Wednesday','Thursday','Friday'], 'Saturday' => ['Saturday'], 'Sunday' => ['Sunday']] as $label => $days)
+                        <div class="flex justify-between">
+                            <span>{{ $label }}</span>
+                            @if(count(array_intersect($days, $workingDays)))
+                            <span class="text-white font-medium">Open</span>
+                            @else
+                            <span>Closed</span>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </div>
+            <div class="pt-6 text-center text-xs opacity-60">&copy; {{ date('Y') }} Zonely &bull; All Rights Reserved</div>
+        </div>
+    </footer>
 
 {{-- ── MOBILE STICKY CTA ────────────────────────────────────────── --}}
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-2xl px-4 py-3 flex gap-3">
