@@ -199,18 +199,21 @@
     </div>
 </section>
 
-@section('scripts')
-<script>
-(function() {
-    const allUsers = @json(($users ?? collect())->map(fn($u) => [
+@php
+    $searchUsersJson = ($users ?? collect())->map(fn($u) => [
         'id'    => $u->id,
         'name'  => $u->name,
         'slug'  => $u->slug ?? $u->id,
         'title' => $u->title ?? $u->designation ?? null,
         'city'  => $u->city ?? null,
-        'status'=> $u->status ?? false,
+        'status'=> (bool)($u->status ?? false),
         'photo' => $u->profile_photo ?? null,
-    ]));
+    ])->values()->toJson();
+@endphp
+@section('scripts')
+<script>
+(function() {
+    const allUsers = {!! $searchUsersJson !!};
 
     const input    = document.getElementById('searchQ');
     const box      = document.getElementById('liveResults');
