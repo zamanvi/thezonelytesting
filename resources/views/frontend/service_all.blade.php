@@ -67,58 +67,76 @@
 <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-12">
 
     @if($users->count())
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         @foreach($users as $user)
-        <div class="group bg-white rounded-3xl p-5 sm:p-6 border border-slate-100 hover:shadow-xl hover:border-blue-100 transition-all duration-300">
-            <div class="flex gap-4">
+        @php
+            $specialty = $user->title ?? $user->designation ?? $user->category?->title ?? 'Professional';
+            $specialty = Str::before($specialty, '|');
+            $specialty = Str::limit(trim($specialty), 40);
+            $initials  = strtoupper(substr($user->name, 0, 2));
+        @endphp
+        <div class="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-lg hover:border-blue-100 transition-all duration-300 flex flex-col">
 
-                {{-- Photo --}}
-                <div class="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden relative shrink-0">
-                    <img src="{{ $user->profile_photo }}"
-                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&size=120&background=3b82f6&color=fff'"
-                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
-                         alt="{{ $user->name }}" loading="lazy">
-                    <span class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 text-[9px] font-bold {{ $user->status ? 'text-blue-600' : 'text-slate-400' }} rounded-lg leading-none">
-                        {{ $user->status ? 'VERIFIED' : 'UNVERIFIED' }}
-                    </span>
+            {{-- Photo --}}
+            <div class="relative h-44 sm:h-52 bg-slate-100 overflow-hidden">
+                @if($user->profile_photo)
+                <img src="{{ $user->profile_photo }}"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                     class="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition duration-500"
+                     alt="{{ $user->name }}" loading="lazy">
+                <div class="hidden w-full h-full bg-blue-600 items-center justify-center text-white font-black text-3xl">
+                    {{ $initials }}
                 </div>
-
-                {{-- Info --}}
-                <div class="flex-1 min-w-0 flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-serif text-lg sm:text-xl text-slate-900 leading-snug truncate">
-                            {{ $user->name }}
-                        </h3>
-                        @if($user->title ?? $user->designation ?? false)
-                        <p class="text-xs text-slate-500 mt-0.5 line-clamp-2 leading-snug">
-                            {{ $user->title ?? $user->designation }}
-                        </p>
-                        @endif
-                        @if($user->city ?? false)
-                        <p class="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px]"></i> {{ $user->city }}
-                        </p>
-                        @endif
-                    </div>
-                    <div class="flex items-center gap-2 mt-3">
-                        <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="flex-1 bg-slate-900 hover:bg-blue-600 active:scale-95 text-white px-3 py-2 rounded-xl text-xs font-bold transition text-center"
-                           style="min-height:unset;">
-                            View Profile
-                        </a>
-                        @auth
-                        @if(auth()->user()->type === 'user')
-                        <a href="{{ route('buyer.book', $user->slug ?? $user->id) ?? '#' }}"
-                           class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-2 rounded-xl text-xs font-bold transition"
-                           style="min-height:unset;" title="Book">
-                            <i class="fa-solid fa-calendar-plus"></i>
-                        </a>
-                        @endif
-                        @endauth
-                    </div>
+                @else
+                <div class="w-full h-full bg-blue-600 flex items-center justify-center text-white font-black text-3xl">
+                    {{ $initials }}
                 </div>
+                @endif
 
+                @if($user->status)
+                <span class="absolute top-3 left-3 bg-white text-blue-600 text-[9px] font-black px-2.5 py-1 rounded-full shadow-sm tracking-widest uppercase">
+                    ✓ Verified
+                </span>
+                @endif
             </div>
+
+            {{-- Info --}}
+            <div class="p-4 flex flex-col flex-1 justify-between">
+                <div>
+                    <h3 class="font-serif text-base sm:text-lg text-slate-900 leading-snug truncate">
+                        {{ $user->name }}
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5 truncate">{{ $specialty }}</p>
+                    @if($user->city)
+                    <p class="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-[10px] text-blue-400"></i>
+                        {{ $user->city }}@if($user->state), {{ $user->state }}@endif
+                    </p>
+                    @endif
+                    <div class="flex items-center gap-1 mt-2">
+                        @for($i=0;$i<5;$i++)<i class="fa-solid fa-star text-amber-400 text-[9px]"></i>@endfor
+                        <span class="text-xs font-semibold text-slate-600 ml-1">4.9</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mt-4">
+                    <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
+                       class="flex-1 text-center bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                       style="min-height:unset;">
+                        View Profile
+                    </a>
+                    @auth
+                    @if(auth()->user()->type === 'user')
+                    <a href="{{ route('buyer.book', $user->slug ?? $user->id) }}"
+                       class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-2.5 rounded-xl text-xs font-bold transition shrink-0"
+                       style="min-height:unset;" title="Book">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </a>
+                    @endif
+                    @endauth
+                </div>
+            </div>
+
         </div>
         @endforeach
     </div>
