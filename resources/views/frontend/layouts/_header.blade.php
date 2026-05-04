@@ -10,10 +10,10 @@
             </a>
 
             {{-- DESKTOP MENU --}}
-            <div class="hidden lg:flex gap-6 xl:gap-8 text-xs font-bold uppercase tracking-widest text-slate-500">
+            <div class="hidden lg:flex gap-5 xl:gap-7 text-[11px] font-semibold tracking-wide text-slate-500">
                 @foreach ($allMenuCategories ?? [] as $category)
                 <div class="relative group">
-                    <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-blue-600 transition flex items-center gap-1 py-2" style="min-height:unset;">
+                    <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-blue-600 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
                         {{ $category->title }}
                         @if ($category->children->count())
                         <svg class="w-3 h-3 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@
 
                 {{-- Others dropdown --}}
                 <div class="relative group">
-                    <a href="#" class="hover:text-blue-600 transition flex items-center gap-1 py-2" style="min-height:unset;">
+                    <a href="#" class="hover:text-blue-600 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
                         Others
                         <svg class="w-3 h-3 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>

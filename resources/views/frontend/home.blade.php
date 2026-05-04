@@ -63,12 +63,6 @@
 <section class="hero-bg relative overflow-hidden pt-28 pb-16 px-4 sm:px-6">
     <div class="relative max-w-3xl mx-auto text-center">
 
-        {{-- Live badge --}}
-        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-xs font-bold px-4 py-2 rounded-full mb-8">
-            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-            Professionals available now across the USA
-        </div>
-
         {{-- Headline --}}
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] tracking-tight mb-5">
             Find trusted local<br>
