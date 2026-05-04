@@ -202,21 +202,21 @@
         @if($activeServices->count() || count($tags))
         <section id="services">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Professional Services</h3>
-                <p class="text-slate-500 mt-7">Everything {{ $user->name }} offers</p>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Professional Services</h3>
+                <p class="text-slate-500 mt-7 text-base">Everything {{ $user->name }} offers</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 @forelse($activeServices->take(8) as $svc)
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lift text-center">
                     <div class="service-icon mx-auto mb-4"><i class="fas fa-briefcase text-blue-600 text-xl"></i></div>
-                    <h4 class="font-semibold text-sm leading-snug">{{ $svc->title }}</h4>
-                    @if($svc->description)<p class="text-xs text-slate-500 mt-2">{{ Str::limit($svc->description, 60) }}</p>@endif
+                    <h4 class="font-semibold text-base leading-snug">{{ $svc->title }}</h4>
+                    @if($svc->description)<p class="text-sm text-slate-500 mt-2">{{ Str::limit($svc->description, 60) }}</p>@endif
                 </div>
                 @empty
                 @foreach(array_slice($tags, 0, 8) as $tag)
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lift text-center">
                     <div class="service-icon mx-auto mb-4"><i class="fas fa-circle-check text-blue-600 text-xl"></i></div>
-                    <h4 class="font-semibold text-sm leading-snug">{{ ucfirst($tag) }}</h4>
+                    <h4 class="font-semibold text-base leading-snug">{{ ucfirst($tag) }}</h4>
                 </div>
                 @endforeach
                 @endforelse
@@ -228,8 +228,8 @@
         @if($activeServices->count())
         <section id="pricing">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Transparent Pricing</h3>
-                <p class="text-slate-500 mt-7">No hidden fees · Click any service to see full details</p>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Transparent Pricing</h3>
+                <p class="text-slate-500 mt-7 text-base">No hidden fees · Click any service to see full details</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 @foreach($activeServices as $svc)
@@ -243,20 +243,20 @@
                         <div class="flex items-center gap-4">
                             <div class="service-icon flex-shrink-0"><i class="fas fa-briefcase text-blue-600 text-lg"></i></div>
                             <div>
-                                <p class="font-semibold text-base">{{ $svc->title }}</p>
-                                @if($svc->category)<p class="text-xs text-slate-500 mt-0.5">{{ $svc->category->title }}</p>@endif
+                                <p class="font-semibold text-lg">{{ $svc->title }}</p>
+                                @if($svc->category)<p class="text-sm text-slate-500 mt-0.5">{{ $svc->category->title }}</p>@endif
                             </div>
                         </div>
                         <div class="text-right flex-shrink-0 ml-4">
                             @if($svc->price)
                             <div class="price-num">${{ $svc->price }}</div>
-                            <div class="text-xs text-slate-500">starting at</div>
+                            <div class="text-sm text-slate-500">starting at</div>
                             @else
-                            <div class="text-sm font-bold text-slate-500">Contact</div>
+                            <div class="text-base font-bold text-slate-500">Contact</div>
                             @endif
                         </div>
                     </button>
-                    <div class="accordion-content px-6 pb-6 text-sm border-t">
+                    <div class="accordion-content px-6 pb-6 text-base border-t">
                         @if($svc->description)
                         <p class="text-slate-600 leading-relaxed mt-4">{{ $svc->description }}</p>
                         @endif
@@ -279,25 +279,25 @@
         @if($user->reviews->count())
         <section id="testimonials">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Client Reviews</h3>
-                <p class="text-slate-500 mt-7">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Client Reviews</h3>
+                <p class="text-slate-500 mt-7 text-base">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 @foreach($user->reviews->take(3) as $review)
                 <div class="testimonial-card rounded-2xl p-6 lift">
                     <div class="flex gap-1 mb-3">
                         @for($i=1;$i<=5;$i++)
-                        <i class="fas fa-star text-sm {{ $i <= ($review->rating ?? 5) ? 'text-yellow-400' : 'text-slate-200' }}"></i>
+                        <i class="fas fa-star text-base {{ $i <= ($review->rating ?? 5) ? 'text-yellow-400' : 'text-slate-200' }}"></i>
                         @endfor
                     </div>
-                    <p class="text-sm text-slate-600 leading-relaxed">"{{ Str::limit($review->review ?? '', 120) }}"</p>
+                    <p class="text-base text-slate-600 leading-relaxed">"{{ Str::limit($review->review ?? '', 120) }}"</p>
                     <div class="mt-5 flex items-center gap-3">
                         <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm flex-shrink-0">
                             {{ strtoupper(substr($review->reviewer?->name ?? 'C', 0, 1)) }}
                         </div>
                         <div>
-                            <p class="text-sm font-semibold">{{ $review->reviewer?->name ?? 'Verified Client' }}</p>
-                            <p class="text-xs text-slate-500">{{ $review->created_at?->format('M Y') }}</p>
+                            <p class="text-base font-semibold">{{ $review->reviewer?->name ?? 'Verified Client' }}</p>
+                            <p class="text-sm text-slate-500">{{ $review->created_at?->format('M Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -310,8 +310,8 @@
         @if($user->memberships->count() || $user->educations->count() || $user->about || $user->bio)
         <section id="background">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Professional Background</h3>
-                <p class="text-slate-500 mt-7">Credentials and expertise behind the work</p>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Professional Background</h3>
+                <p class="text-slate-500 mt-7 text-base">Credentials and expertise behind the work</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
 
@@ -319,7 +319,7 @@
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="bg-icon"><i class="fas fa-briefcase text-blue-600 text-base"></i></div>
-                        <h4 class="font-bold text-lg text-slate-800">Experience</h4>
+                        <h4 class="font-bold text-xl text-slate-800">Experience</h4>
                     </div>
                     <div class="space-y-5">
                         @foreach($user->memberships as $m)
@@ -329,11 +329,11 @@
                                 @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[32px]"></div>@endif
                             </div>
                             <div class="pb-4">
-                                <p class="font-semibold text-sm text-slate-800">{{ $m->name }}</p>
+                                <p class="font-semibold text-base text-slate-800">{{ $m->name }}</p>
                                 @if($m->start || $m->end)
-                                <p class="text-xs text-blue-600 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
+                                <p class="text-sm text-blue-600 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
                                 @endif
-                                @if($m->address)<p class="text-xs text-slate-500 mt-1">{{ $m->address }}</p>@endif
+                                @if($m->address)<p class="text-sm text-slate-500 mt-1">{{ $m->address }}</p>@endif
                             </div>
                         </div>
                         @endforeach
@@ -345,7 +345,7 @@
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="bg-icon"><i class="fas fa-graduation-cap text-blue-600 text-base"></i></div>
-                        <h4 class="font-bold text-lg text-slate-800">Education</h4>
+                        <h4 class="font-bold text-xl text-slate-800">Education</h4>
                     </div>
                     <div class="space-y-5">
                         @foreach($user->educations as $edu)
@@ -355,9 +355,9 @@
                                 @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[32px]"></div>@endif
                             </div>
                             <div class="pb-4">
-                                <p class="font-semibold text-sm text-slate-800">{{ $edu->degree }}</p>
-                                @if($edu->institution)<p class="text-xs text-blue-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
-                                @if($edu->passing_year)<p class="text-xs text-slate-500 mt-1">{{ $edu->passing_year }}</p>@endif
+                                <p class="font-semibold text-base text-slate-800">{{ $edu->degree }}</p>
+                                @if($edu->institution)<p class="text-sm text-blue-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
+                                @if($edu->passing_year)<p class="text-sm text-slate-500 mt-1">{{ $edu->passing_year }}</p>@endif
                             </div>
                         </div>
                         @endforeach
@@ -382,8 +382,8 @@
         @if($user->work_address || $user->city)
         <section id="location">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Find Us</h3>
-                <p class="text-slate-500 mt-7">Walk-in, call, or meet virtually — your choice</p>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Find Us</h3>
+                <p class="text-slate-500 mt-7 text-base">Walk-in, call, or meet virtually — your choice</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-stretch">
                 <div class="map-container shadow-md">
@@ -392,8 +392,8 @@
                 </div>
                 <div class="bg-slate-50 rounded-2xl p-7 flex flex-col justify-between">
                     <div>
-                        <h4 class="font-bold text-lg text-slate-800 mb-4">Office &amp; Contact</h4>
-                        <div class="space-y-3 text-sm">
+                        <h4 class="font-bold text-xl text-slate-800 mb-4">Office &amp; Contact</h4>
+                        <div class="space-y-3 text-base">
                             @if($user->work_address)
                             <div class="flex items-center gap-3">
                                 <i class="fas fa-map-marker-alt text-blue-600 w-5 text-center"></i>
@@ -416,8 +416,8 @@
                     </div>
                     @if(count($workingDays))
                     <div class="mt-6 border-t border-slate-200 pt-5">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Office Hours</p>
-                        <div class="text-sm space-y-1.5 text-slate-600">
+                        <p class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Office Hours</p>
+                        <div class="text-base space-y-1.5 text-slate-600">
                             @foreach($allDays as $day)
                             <div class="flex justify-between">
                                 <span>{{ $day }}</span>
@@ -439,7 +439,7 @@
         {{-- ── FAQ ───────────────────────────────────────────────────── --}}
         <section>
             <div class="text-center mb-10">
-                <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Frequently Asked Questions</h3>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Frequently Asked Questions</h3>
             </div>
             <div class="max-w-3xl mx-auto space-y-3">
                 @php
@@ -453,10 +453,10 @@
                 @foreach($faqs as $faq)
                 <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-sm pr-4">{{ $faq['q'] }}</span>
-                        <i class="fas fa-chevron-down text-slate-400 text-sm flex-shrink-0 faq-icon transition-transform duration-300"></i>
+                        <span class="font-medium text-base pr-4">{{ $faq['q'] }}</span>
+                        <i class="fas fa-chevron-down text-slate-400 text-base flex-shrink-0 faq-icon transition-transform duration-300"></i>
                     </button>
-                    <div class="faq-content px-6 text-sm text-slate-600 border-t">
+                    <div class="faq-content px-6 text-base text-slate-600 border-t">
                         <p class="py-4">{{ $faq['a'] }}</p>
                     </div>
                 </div>
@@ -469,11 +469,11 @@
     {{-- ── CONTACT / BOOKING ────────────────────────────────────────── --}}
     <div id="contact" class="bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-700 text-white py-12 md:py-16">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-sm font-semibold px-4 py-2 rounded-full mb-6">
                 <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
             </div>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Book Your Free Consultation</h2>
-            <p class="text-blue-100 mt-3 text-base">Fill in your details — {{ $user->name }} will respond within 24 hours</p>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold">Book Your Free Consultation</h2>
+            <p class="text-blue-100 mt-3 text-lg">Fill in your details — {{ $user->name }} will respond within 24 hours</p>
 
             @if(session('inquiry_success'))
             <div class="mt-6 bg-green-500 text-white rounded-2xl px-6 py-4 font-bold">
@@ -482,7 +482,7 @@
             @endif
 
             <button id="bookingToggleBtn" onclick="toggleBooking()"
-                    class="flex items-center justify-center gap-3 mx-auto mt-8 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-3.5 rounded-2xl font-semibold text-sm transition">
+                    class="flex items-center justify-center gap-3 mx-auto mt-8 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-3.5 rounded-2xl font-semibold text-base transition">
                 <i class="fas fa-plus-circle" id="bookingIcon"></i>
                 <span id="bookingBtnText">Open Booking Form</span>
             </button>
@@ -490,19 +490,19 @@
             <div id="bookingBody" class="booking-body mt-6">
                 <div class="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 text-left overflow-hidden">
                     <div class="px-5 md:px-8 pt-6 pb-4 border-b border-white/10">
-                        <h4 class="font-semibold text-base">Booking Request — {{ $user->name }}</h4>
+                        <h4 class="font-semibold text-lg">Booking Request — {{ $user->name }}</h4>
                     </div>
                     <form action="{{ route('service.inquiry', $user->slug) }}" method="POST"
                           class="px-5 md:px-8 pb-6 md:pb-8 pt-5">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                             <div>
-                                <label class="block text-sm mb-2 font-medium">Full Name *</label>
+                                <label class="block text-base mb-2 font-medium">Full Name *</label>
                                 <input type="text" name="name" required value="{{ old('name') }}" placeholder="John Smith"
                                        class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
                             </div>
                             <div>
-                                <label class="block text-sm mb-2 font-medium">Phone Number *</label>
+                                <label class="block text-base mb-2 font-medium">Phone Number *</label>
                                 <input type="tel" name="phone" required value="{{ old('phone') }}" placeholder="(917) 000-0000"
                                        class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
                             </div>
@@ -532,7 +532,7 @@
                                       class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition resize-none">{{ old('message') }}</textarea>
                         </div>
                         <button type="submit"
-                                class="w-full mt-6 bg-white text-blue-700 hover:bg-yellow-300 py-4 rounded-3xl font-semibold text-lg flex items-center justify-center gap-2 transition shadow-xl">
+                                class="w-full mt-6 bg-white text-blue-700 hover:bg-yellow-300 py-4 rounded-3xl font-semibold text-xl flex items-center justify-center gap-2 transition shadow-xl">
                             <i class="fas fa-paper-plane"></i> Send Booking Request
                         </button>
                     </form>
@@ -552,7 +552,7 @@
                         <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
                         <span class="text-white font-bold text-lg">Zonely</span>
                     </div>
-                    <p class="text-xs leading-relaxed">Connecting you with trusted, verified local professionals across the USA.</p>
+                    <p class="text-sm leading-relaxed">Connecting you with trusted, verified local professionals across the USA.</p>
                 </div>
                 <div>
                     <h5 class="text-white font-semibold mb-3">{{ $user->name }}</h5>
@@ -589,7 +589,7 @@
                 </div>
                 @endif
             </div>
-            <div class="pt-6 text-center text-xs opacity-60">&copy; {{ date('Y') }} Zonely &bull; All Rights Reserved</div>
+            <div class="pt-6 text-center text-sm opacity-60">&copy; {{ date('Y') }} Zonely &bull; All Rights Reserved</div>
         </div>
     </footer>
 
@@ -597,19 +597,19 @@
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-2xl px-4 py-3 flex gap-3">
     @if($callNumber)
     <a href="tel:{{ $callNumber }}"
-       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold text-sm transition">
+       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold text-base transition">
         <i class="fas fa-phone"></i> Call Now
     </a>
     @endif
     @if($waNumber)
     <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" target="_blank"
-       class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold text-sm transition">
+       class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold text-base transition">
         <i class="fab fa-whatsapp"></i> WhatsApp
     </a>
     @endif
     @if(!$callNumber && !$waNumber)
     <a href="#contact"
-       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-2xl font-semibold text-sm">
+       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-2xl font-semibold text-base">
         <i class="fas fa-envelope"></i> Contact
     </a>
     @endif
