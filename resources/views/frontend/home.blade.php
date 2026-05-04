@@ -298,9 +298,9 @@
 {{-- ═══════════════════════════════════════════════════════
      FOR PROFESSIONALS CTA
 ═══════════════════════════════════════════════════════ --}}
-<section class="py-16 px-4 sm:px-6 bg-white">
+<section class="pt-14 pb-0 px-4 sm:px-6 bg-slate-950">
     <div class="max-w-3xl mx-auto">
-        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl overflow-hidden relative">
+        <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-3xl overflow-hidden relative">
             {{-- Decorative glow --}}
             <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative p-8 sm:p-12 flex flex-col sm:flex-row items-start gap-10">
