@@ -24,7 +24,7 @@
     {{-- Text --}}
     <div class="flex-1 min-w-0">
         <div class="flex items-center gap-2 mb-0.5">
-            <h3 class="font-black text-slate-900 text-sm">{{ $title }}</h3>
+            <h3 class="font-bold text-slate-900 text-base">{{ $title }}</h3>
             @if($required && !$done)
                 <span class="text-xs bg-red-50 text-red-500 font-bold px-2 py-0.5 rounded-full">Required</span>
             @endif
@@ -32,7 +32,7 @@
                 <span class="text-xs bg-green-100 text-green-600 font-bold px-2 py-0.5 rounded-full">Complete</span>
             @endif
         </div>
-        <p class="text-xs text-slate-500 leading-relaxed">{{ $desc }}</p>
+        <p class="text-sm text-slate-500 leading-relaxed">{{ $desc }}</p>
     </div>
 
     {{-- Arrow --}}

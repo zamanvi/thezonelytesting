@@ -52,31 +52,23 @@
 
     {{-- Header --}}
     <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 mb-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-1">
-                    <div class="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center shrink-0 overflow-hidden">
-                        @if($user->profile_photo)
-                            <img src="{{ asset($user->profile_photo) }}" class="w-full h-full object-cover">
-                        @else
-                            <span class="text-white font-black text-lg">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                        @endif
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-black text-slate-900">Welcome, {{ $user->name }}!</h1>
-                        <p class="text-xs text-slate-500">
-                            {{ $user->category?->title ?? 'No category selected' }}
-                            @if(!$user->category)
-                                · <a href="{{ route('user.register.category') }}" class="text-blue-600 hover:underline">Select category</a>
-                            @endif
-                        </p>
-                    </div>
-                </div>
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center shrink-0 overflow-hidden shadow">
+                @if($user->profile_photo)
+                    <img src="{{ asset($user->profile_photo) }}" class="w-full h-full object-cover">
+                @else
+                    <span class="text-white font-black text-xl">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                @endif
             </div>
-            <a href="{{ route('seller.dashboard') }}"
-               class="shrink-0 text-sm font-bold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 border border-slate-200 px-4 py-2 rounded-xl hover:border-blue-300 transition">
-                <i class="fa-solid fa-gauge-high text-xs"></i> Go to Dashboard
-            </a>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">{{ $user->name }}</h1>
+                <p class="text-sm text-slate-500 mt-0.5">
+                    {{ $user->category?->title ?? 'No category selected' }}
+                    @if(!$user->category)
+                        · <a href="{{ route('user.register.category') }}" class="text-blue-600 hover:underline">Select category</a>
+                    @endif
+                </p>
+            </div>
         </div>
 
         {{-- Progress bar --}}
@@ -89,7 +81,7 @@
                 <div class="h-3 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-green-500' : 'bg-blue-600' }}"
                      style="width: {{ $pct }}%"></div>
             </div>
-            <p class="text-xs text-slate-400 mt-1.5">{{ $completed }} of {{ $total }} sections complete · {{ $pct >= 80 ? 'Great job! Your profile is ready.' : 'Complete all sections to start receiving leads.' }}</p>
+            <p class="text-sm text-slate-400 mt-1.5">{{ $completed }} of {{ $total }} sections complete · {{ $pct >= 80 ? 'Great job! Your profile is ready.' : 'Complete all sections to start receiving leads.' }}</p>
         </div>
     </div>
 
@@ -211,14 +203,10 @@
             @endif
         </div>
         <div class="flex gap-3">
-            <a href="{{ route('seller.dashboard') }}"
-               class="px-6 py-3 rounded-2xl border border-slate-200 text-sm font-bold text-slate-600 hover:border-blue-300 hover:text-blue-600 transition">
-                Dashboard
-            </a>
             <a href="{{ route('frontend.service.show', $user->slug) }}"
                target="_blank"
-               class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold flex items-center gap-2 transition">
-                <i class="fa-solid fa-eye text-xs"></i> Preview My Page
+               class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-base font-bold flex items-center gap-2 transition">
+                <i class="fa-solid fa-eye"></i> Preview My Page
             </a>
         </div>
     </div>
