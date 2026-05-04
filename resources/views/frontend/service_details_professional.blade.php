@@ -205,7 +205,7 @@
                 <h3 class="font-bold text-2xl sm:text-3xl sh sh-center">Professional Services</h3>
                 <p class="text-slate-500 mt-7">Everything {{ $user->name }} offers</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 {{ $activeServices->count() >= 4 || count($tags) >= 4 ? 'lg:grid-cols-4' : '' }} gap-4 md:gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 @forelse($activeServices->take(8) as $svc)
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lift text-center">
                     <div class="service-icon mx-auto mb-4"><i class="fas fa-briefcase text-blue-600 text-xl"></i></div>

@@ -10,7 +10,7 @@
             </a>
 
             {{-- DESKTOP MENU --}}
-            <div class="hidden lg:flex gap-5 xl:gap-7 text-[11px] font-semibold tracking-wide text-slate-500">
+            <div class="hidden lg:flex gap-5 xl:gap-7 text-[13px] font-semibold tracking-wide text-slate-600">
                 @foreach ($allMenuCategories ?? [] as $category)
                 <div class="relative group">
                     <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-blue-600 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
