@@ -77,6 +77,8 @@
         </div>
     </div>
 
+    @include('frontend.seller._nav')
+
     {{-- ── NEW LEAD ALERT ── --}}
     @if(session('new_lead'))
     <div id="newLeadBanner" class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3.5 mb-5 flex items-center gap-3">

@@ -4,6 +4,7 @@
 <div class="min-h-screen bg-slate-50 pt-20 pb-16 px-4">
     <div class="max-w-2xl mx-auto py-6">
 
+        @include('frontend.seller._nav')
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
                 <a href="{{ route('seller.dashboard') ?? '#' }}" class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition">
