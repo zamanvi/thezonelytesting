@@ -6,14 +6,12 @@
 
         @include('frontend.seller._nav')
         <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
-                <a href="{{ route('seller.dashboard') ?? '#' }}" class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition">
-                    <i class="fa-solid fa-arrow-left text-sm"></i>
-                </a>
-                <h1 class="text-xl font-bold text-slate-900">Notifications</h1>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Notifications</h1>
+                <p class="text-sm text-slate-500 mt-0.5">Stay updated on leads, bookings and payments</p>
             </div>
             @if(isset($notifications) && $notifications->count())
-            <button onclick="markAllRead()" class="text-xs font-bold text-blue-600 hover:underline">Mark all read</button>
+            <button onclick="markAllRead()" class="text-sm font-bold text-blue-600 hover:underline shrink-0">Mark all read</button>
             @endif
         </div>
 
@@ -39,8 +37,8 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-bold text-slate-900">{{ $notif->title ?? 'Notification' }}</p>
-                    <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">{{ $notif->message ?? '' }}</p>
-                    <p class="text-[10px] text-slate-400 mt-1.5">{{ $notif->created_at?->diffForHumans() }}</p>
+                    <p class="text-sm text-slate-500 mt-0.5 leading-relaxed">{{ $notif->message ?? '' }}</p>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ $notif->created_at?->diffForHumans() }}</p>
                 </div>
                 @if(!$notif->read_at)
                 <div class="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5"></div>
@@ -67,8 +65,8 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-bold text-slate-900">{{ $n['title'] }}</p>
-                    <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">{{ $n['msg'] }}</p>
-                    <p class="text-[10px] text-slate-400 mt-1.5">{{ $n['time'] }}</p>
+                    <p class="text-sm text-slate-500 mt-0.5 leading-relaxed">{{ $n['msg'] }}</p>
+                    <p class="text-xs text-slate-400 mt-1.5">{{ $n['time'] }}</p>
                 </div>
                 @if($n['unread'])
                 <div class="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5"></div>

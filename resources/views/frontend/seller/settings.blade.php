@@ -22,24 +22,25 @@
             </h2>
             <form action="{{ route('seller.settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf @method('PUT')
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="relative">
+                <div class="flex items-center gap-5 mb-5 p-4 bg-slate-50 rounded-2xl">
+                    <div class="relative shrink-0">
                         @if(auth()->user()->profile_photo)
                             <img src="{{ asset(auth()->user()->profile_photo) }}"
                                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=80&background=3b82f6&color=fff'"
-                                 class="w-16 h-16 rounded-2xl object-cover">
+                                 class="w-20 h-20 rounded-2xl object-cover shadow">
                         @else
-                            <div class="w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl">
+                            <div class="w-20 h-20 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-2xl shadow">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                             </div>
                         @endif
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-blue-600 cursor-pointer hover:underline">
-                            <i class="fa-solid fa-camera mr-1"></i> Change Photo
+                        <p class="font-bold text-slate-900 text-sm">Profile Photo</p>
+                        <label class="mt-1.5 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 cursor-pointer hover:underline">
+                            <i class="fa-solid fa-camera"></i> Change Photo
                             <input type="file" name="profile_photo" accept="image/*" class="hidden" onchange="this.form.submit()">
                         </label>
-                        <p class="text-xs text-slate-400 mt-0.5">JPG, PNG up to 2MB</p>
+                        <p class="text-xs text-slate-400 mt-0.5">JPG, PNG, WebP · max 2MB</p>
                     </div>
                 </div>
                 <div class="grid sm:grid-cols-2 gap-4">
@@ -74,8 +75,8 @@
                             class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-2xl text-sm transition">
-                    Save Changes
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-2xl text-base transition">
+                    <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
                 </button>
             </form>
         </div>
@@ -105,8 +106,8 @@
                             class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
                     </div>
                 </div>
-                <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-6 py-3 rounded-2xl text-sm transition">
-                    Update Password
+                <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-2xl text-base transition">
+                    <i class="fa-solid fa-lock mr-2"></i> Update Password
                 </button>
             </form>
         </div>
@@ -125,8 +126,8 @@
                 ] as $n)
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="font-semibold text-sm text-slate-900">{{ $n['label'] }}</p>
-                        <p class="text-xs text-slate-400">{{ $n['desc'] }}</p>
+                        <p class="font-semibold text-base text-slate-900">{{ $n['label'] }}</p>
+                        <p class="text-sm text-slate-400">{{ $n['desc'] }}</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" name="{{ $n['key'] }}" {{ auth()->user()->{$n['key']} ?? true ? 'checked' : '' }} class="sr-only peer" onchange="saveNotification('{{ $n['key'] }}', this.checked)">

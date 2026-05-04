@@ -12,7 +12,7 @@
         </div>
 
         {{-- Stats --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 text-center">
             <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm text-center">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Referrals</p>
                 <p class="text-3xl font-black text-slate-900">{{ $stats['referrals'] ?? 0 }}</p>
@@ -74,8 +74,8 @@
                         <i class="fa-solid {{ $s['icon'] }} text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-sm text-slate-900">{{ $s['step'] }}. {{ $s['title'] }}</p>
-                        <p class="text-xs text-slate-500 mt-0.5">{{ $s['desc'] }}</p>
+                        <p class="font-bold text-base text-slate-900">{{ $s['step'] }}. {{ $s['title'] }}</p>
+                        <p class="text-sm text-slate-500 mt-0.5">{{ $s['desc'] }}</p>
                     </div>
                 </div>
                 @endforeach

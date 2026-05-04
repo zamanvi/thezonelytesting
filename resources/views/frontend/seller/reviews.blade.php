@@ -5,14 +5,9 @@
     <div class="max-w-2xl mx-auto py-6">
 
         @include('frontend.seller._nav')
-        <div class="flex items-center gap-3 mb-6">
-            <a href="{{ route('seller.dashboard') ?? '#' }}" class="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition">
-                <i class="fa-solid fa-arrow-left text-sm"></i>
-            </a>
-            <div>
-                <h1 class="text-xl font-bold text-slate-900">My Reviews</h1>
-                <p class="text-xs text-slate-500">What clients say about you</p>
-            </div>
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-slate-900">My Reviews</h1>
+            <p class="text-sm text-slate-500 mt-0.5">What clients say about you</p>
         </div>
 
         {{-- Rating Summary --}}
@@ -77,7 +72,7 @@
                         @endfor
                     </div>
                 </div>
-                <p class="text-sm text-slate-700 leading-relaxed">"{{ $review->review }}"</p>
+                <p class="text-base text-slate-700 leading-relaxed">"{{ $review->review }}"</p>
                 @if($review->tags)
                 <div class="flex flex-wrap gap-1.5 mt-3">
                     @foreach(explode(',', $review->tags) as $tag)
@@ -128,7 +123,7 @@
                         @endfor
                     </div>
                 </div>
-                <p class="text-sm text-slate-700 leading-relaxed">"{{ $r['text'] }}"</p>
+                <p class="text-base text-slate-700 leading-relaxed">"{{ $r['text'] }}"</p>
                 <div class="flex flex-wrap gap-1.5 mt-3">
                     @foreach(explode(',', $r['tags']) as $tag)
                     <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>

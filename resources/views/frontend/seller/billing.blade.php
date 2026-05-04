@@ -57,7 +57,7 @@
                         </div>
                         <div>
                             <p class="font-bold text-sm text-slate-900">{{ $lead->phone ?? 'Unknown' }}</p>
-                            <p class="text-xs text-slate-500">{{ $lead->service ?? 'General' }} · {{ $lead->created_at?->format('M d, Y') }}</p>
+                            <p class="text-sm text-slate-500">{{ $lead->service ?? 'General' }} · {{ $lead->created_at?->format('M d, Y') }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 shrink-0">
@@ -108,7 +108,7 @@
                         </div>
                         <div>
                             <p class="font-bold text-sm text-slate-900">{{ $lead->phone ?? 'Unknown' }}</p>
-                            <p class="text-xs text-slate-500">{{ $lead->service ?? 'General' }} · {{ $lead->paid_at?->format('M d, Y') }}</p>
+                            <p class="text-sm text-slate-500">{{ $lead->service ?? 'General' }} · {{ $lead->paid_at?->format('M d, Y') }}</p>
                         </div>
                     </div>
                     <div class="text-right shrink-0">

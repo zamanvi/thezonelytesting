@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Schedule
             </button>
         </form>
