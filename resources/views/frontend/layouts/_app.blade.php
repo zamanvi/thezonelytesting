@@ -64,7 +64,9 @@
         @include('frontend.layouts._account_nav')
     @endauth
 
-    @include('frontend.layouts._footer')
+    @unless(View::hasSection('hideLayoutFooter'))
+        @include('frontend.layouts._footer')
+    @endunless
 
     @include('frontend.layouts._scripts')
 

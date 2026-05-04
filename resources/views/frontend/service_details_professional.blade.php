@@ -43,6 +43,8 @@
 </script>
 @endsection
 
+@section('hideLayoutFooter', true)
+
 @section('css')
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
@@ -67,7 +69,6 @@
     .testimonial-card { background: linear-gradient(135deg, #f8faff, #ffffff); border: 1px solid #e3ecff; }
     .price-num { font-size: 2rem; font-weight: 800; color: #1e40af; line-height: 1; }
     @media (max-width: 767px) { .pro-page { padding-bottom: 80px; } }
-    #zonely-platform-footer { display: none !important; }
     .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
