@@ -1,4 +1,5 @@
-<footer class="max-w-7xl mx-auto mt-8 px-4 sm:px-6 border-t pt-12 pb-8">
+<div id="zonely-platform-footer" class="bg-white border-t mt-8">
+<footer class="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-8">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
 
@@ -69,3 +70,4 @@
     </div>
 
 </footer>
+</div>
