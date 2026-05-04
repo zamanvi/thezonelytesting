@@ -1,11 +1,12 @@
-<nav class="fixed top-0 w-full z-[100] px-3 sm:px-4 md:px-8 py-3 sm:py-4">
+<nav id="mainNav" class="fixed top-0 w-full z-[100] px-3 sm:px-4 md:px-8 py-3 sm:py-4 transition-all duration-300">
     <div class="max-w-7xl mx-auto glass rounded-2xl px-4 sm:px-6 py-3 shadow-sm">
 
         <div class="flex justify-between items-center">
 
             {{-- LOGO --}}
-            <a href="{{ route('frontend.home') }}" class="shrink-0" style="min-height:unset;min-width:unset;">
+            <a href="{{ route('frontend.home') }}" class="flex items-center gap-2.5 shrink-0" style="min-height:unset;min-width:unset;">
                 <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg" alt="Zonely">
+                <span class="text-base font-extrabold text-slate-900 tracking-tight hidden sm:inline">ZONELY<span class="text-blue-600">.</span></span>
             </a>
 
             {{-- DESKTOP MENU --}}

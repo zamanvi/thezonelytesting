@@ -79,6 +79,14 @@
             btn.nextElementSibling?.classList.toggle('hidden');
         });
     });
+    // Nav scroll shadow
+    (function() {
+        const nav = document.getElementById('mainNav');
+        if (!nav) return;
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('drop-shadow-xl', window.scrollY > 10);
+        }, { passive: true });
+    })();
     </script>
 
     @yield('scripts')

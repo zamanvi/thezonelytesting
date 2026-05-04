@@ -25,176 +25,185 @@
 @section('css')
 <style>
     input:focus { outline: none; }
-    .service-btn { transition: transform .15s ease, box-shadow .15s ease; }
-    .service-btn:hover { transform: translateY(-1px); }
+    .service-btn { transition: all .2s ease; }
+    .service-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -4px rgba(0,0,0,0.10); }
+    .pro-card { transition: all .2s ease; }
+    .pro-card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px -8px rgba(0,0,0,0.10); border-color: #93c5fd; }
 </style>
 @endsection
 
 @section('content')
 
-{{-- ═══ HERO — one job only ═══ --}}
-<section class="pt-24 pb-14 px-5 bg-white">
-    <div class="max-w-2xl mx-auto">
+{{-- ═══ HERO ═══ --}}
+<section class="pt-28 pb-16 px-4 sm:px-6 bg-white">
+    <div class="max-w-3xl mx-auto">
 
-        <h1 class="text-3xl sm:text-5xl font-black text-slate-900 leading-tight mb-2">
-            Need help right now?
+        <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold px-4 py-2 rounded-full mb-6">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+            Professionals available now across the USA
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-4">
+            Find trusted local<br>
+            <span class="text-blue-600">experts near you</span>
         </h1>
-        <p class="text-slate-500 text-base sm:text-lg mb-8">
-            Find a verified local professional in minutes.
+        <p class="text-slate-500 text-base sm:text-lg mb-10 max-w-xl">
+            Verified professionals. Real reviews. Same-day available. From plumbers to lawyers — find the right person in minutes.
         </p>
 
-        {{-- Search — dominant --}}
+        {{-- Search --}}
         <div class="relative">
-        <div class="bg-slate-900 rounded-2xl p-1.5 mb-2 shadow-xl">
-            <form action="{{ route('frontend.service.search') }}" method="GET"
-                  class="flex flex-col sm:flex-row gap-1.5" id="searchForm">
-                <div class="flex items-center gap-3 flex-1 bg-white rounded-xl px-4 py-4">
-                    <i class="fa-solid fa-magnifying-glass text-slate-400 shrink-0"></i>
-                    <input type="text" name="q" id="searchQ" autocomplete="off"
-                           placeholder="What do you need? e.g. Plumber"
-                           class="flex-1 text-base text-slate-900 placeholder-slate-400 bg-transparent w-full">
-                </div>
-                <div class="flex items-center gap-3 bg-white rounded-xl px-4 py-4 sm:w-40">
-                    <i class="fa-solid fa-location-dot text-slate-400 shrink-0"></i>
-                    <input type="text" name="city" id="searchCity"
-                           placeholder="ZIP or City"
-                           class="flex-1 text-base text-slate-900 placeholder-slate-400 bg-transparent w-full">
-                </div>
-                <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-500 text-white font-black text-base px-8 py-4 rounded-xl transition shrink-0">
-                    Find Now
-                </button>
-            </form>
+            <div class="bg-slate-900 rounded-2xl p-1.5 shadow-2xl mb-3">
+                <form action="{{ route('frontend.service.search') }}" method="GET"
+                      class="flex flex-col sm:flex-row gap-1.5" id="searchForm">
+                    <div class="flex items-center gap-3 flex-1 bg-white rounded-xl px-4 py-3.5">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 shrink-0 text-sm"></i>
+                        <input type="text" name="q" id="searchQ" autocomplete="off"
+                               placeholder="What do you need? e.g. Plumber, Lawyer…"
+                               class="flex-1 text-sm text-slate-900 placeholder-slate-400 bg-transparent w-full font-medium">
+                    </div>
+                    <div class="flex items-center gap-3 bg-white rounded-xl px-4 py-3.5 sm:w-44">
+                        <i class="fa-solid fa-location-dot text-slate-400 shrink-0 text-sm"></i>
+                        <input type="text" name="city" id="searchCity"
+                               placeholder="ZIP or City"
+                               class="flex-1 text-sm text-slate-900 placeholder-slate-400 bg-transparent w-full font-medium">
+                    </div>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition shrink-0">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            {{-- Live search results --}}
+            <div id="liveResults" class="hidden absolute left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden mt-1">
+                <div id="liveResultsList"></div>
+                <a id="liveResultsMore" href="#"
+                   class="block text-center text-xs font-bold text-blue-600 py-3 border-t border-slate-100 hover:bg-slate-50 transition">
+                    See all results →
+                </a>
+            </div>
         </div>
 
-        {{-- Live search results --}}
-        <div id="liveResults" class="hidden absolute left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden">
-            <div id="liveResultsList"></div>
-            <a id="liveResultsMore" href="#"
-               class="block text-center text-sm font-bold text-blue-600 py-3 border-t border-slate-100 hover:underline">
-                See all results →
-            </a>
-        </div>
-        </div>
-
-        {{-- One-tap emergency buttons --}}
-        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Common emergencies</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            @foreach([
-                ['q'=>'Plumber',      'icon'=>'fa-wrench',          'color'=>'blue'],
-                ['q'=>'Electrician',  'icon'=>'fa-bolt',            'color'=>'amber'],
-                ['q'=>'Locksmith',    'icon'=>'fa-key',             'color'=>'emerald'],
-                ['q'=>'Handyman',     'icon'=>'fa-screwdriver-wrench', 'color'=>'orange'],
-                ['q'=>'Tax Expert',   'icon'=>'fa-calculator',      'color'=>'blue'],
-                ['q'=>'Lawyer',       'icon'=>'fa-scale-balanced',  'color'=>'purple'],
-                ['q'=>'HVAC',         'icon'=>'fa-wind',            'color'=>'cyan'],
-                ['q'=>'Cleaning',     'icon'=>'fa-broom',           'color'=>'slate'],
-            ] as $s)
-            <a href="{{ route('frontend.service.search') }}?q={{ urlencode($s['q']) }}"
-               class="service-btn flex items-center gap-2.5 bg-slate-50 hover:bg-{{ $s['color'] }}-50 border border-slate-200 hover:border-{{ $s['color'] }}-300 px-4 py-3 rounded-xl transition">
-                <i class="fa-solid {{ $s['icon'] }} text-{{ $s['color'] }}-600 text-sm shrink-0"></i>
-                <span class="text-sm font-bold text-slate-700">{{ $s['q'] }}</span>
-            </a>
-            @endforeach
+        {{-- Quick service shortcuts --}}
+        <div class="mt-6">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Popular searches</p>
+            <div class="flex flex-wrap gap-2">
+                @foreach([
+                    ['q'=>'Plumber',      'icon'=>'fa-wrench'],
+                    ['q'=>'Electrician',  'icon'=>'fa-bolt'],
+                    ['q'=>'Locksmith',    'icon'=>'fa-key'],
+                    ['q'=>'Tax Expert',   'icon'=>'fa-calculator'],
+                    ['q'=>'Lawyer',       'icon'=>'fa-scale-balanced'],
+                    ['q'=>'HVAC',         'icon'=>'fa-wind'],
+                    ['q'=>'Handyman',     'icon'=>'fa-screwdriver-wrench'],
+                    ['q'=>'Cleaning',     'icon'=>'fa-broom'],
+                ] as $s)
+                <a href="{{ route('frontend.service.search') }}?q={{ urlencode($s['q']) }}"
+                   class="service-btn flex items-center gap-2 bg-white border border-slate-200 hover:border-blue-300 hover:bg-blue-50 px-4 py-2.5 rounded-full text-sm font-semibold text-slate-700 hover:text-blue-700 shadow-sm">
+                    <i class="fa-solid {{ $s['icon'] }} text-blue-500 text-xs"></i>
+                    {{ $s['q'] }}
+                </a>
+                @endforeach
+            </div>
         </div>
 
     </div>
 </section>
 
-<div class="border-t border-slate-100 max-w-5xl mx-auto px-5"></div>
+{{-- ═══ PROFESSIONALS ═══ --}}
+<section class="py-14 px-4 sm:px-6 bg-slate-50">
+    <div class="max-w-3xl mx-auto">
 
-{{-- ═══ PROFESSIONALS LIST ═══ --}}
-<section class="py-14 px-5 bg-white">
-    <div class="max-w-2xl mx-auto">
-
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg font-black text-slate-900">Available near you</h2>
-            <span class="text-xs text-slate-400 font-semibold">Responds within 1 hour</span>
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900">Available near you</h2>
+                <p class="text-xs text-slate-400 mt-0.5 font-medium">Verified · Responds within 1 hour</p>
+            </div>
+            <a href="{{ route('frontend.service.all') }}" class="text-xs font-bold text-blue-600 hover:underline">
+                View all →
+            </a>
         </div>
 
-        <div class="space-y-3">
-            @forelse(($users ?? collect())->take(2) as $user)
-            <div class="flex items-center gap-4 p-4 border border-slate-200 rounded-2xl hover:border-blue-300 hover:shadow-sm transition">
+        <div class="grid sm:grid-cols-2 gap-3">
+            @forelse(($users ?? collect())->take(4) as $user)
+            <div class="pro-card flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl">
                 @if($user->profile_photo)
                 <img src="{{ asset($user->profile_photo) }}"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-                     class="w-12 h-12 rounded-2xl object-cover shrink-0">
-                <div class="w-12 h-12 bg-blue-600 rounded-2xl hidden items-center justify-center text-white font-black text-base shrink-0">
+                     class="w-14 h-14 rounded-2xl object-cover shrink-0">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl hidden items-center justify-center text-white font-black text-base shrink-0">
                     {{ strtoupper(substr($user->name, 0, 2)) }}
                 </div>
                 @else
-                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-base shrink-0">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center text-white font-black text-base shrink-0">
                     {{ strtoupper(substr($user->name, 0, 2)) }}
                 </div>
                 @endif
 
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <p class="font-bold text-slate-900">{{ $user->name }}</p>
+                        <p class="font-bold text-slate-900 text-sm">{{ $user->name }}</p>
                         @if($user->status)
-                        <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md">Verified</span>
+                        <span class="text-[9px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full">✓ Verified</span>
                         @endif
                     </div>
-                    <p class="text-sm text-slate-500 mt-0.5">
+                    <p class="text-xs text-slate-500 mt-0.5 truncate">
                         {{ $user->title ?? $user->designation ?? 'Professional' }}
                         @if($user->city) · {{ $user->city }}@endif
                     </p>
-                    <div class="flex items-center gap-1 mt-1">
-                        <i class="fa-solid fa-star text-amber-400 text-[10px]"></i>
+                    <div class="flex items-center gap-1 mt-1.5">
+                        <i class="fa-solid fa-star text-amber-400 text-[9px]"></i>
                         <span class="text-xs font-bold text-slate-700">4.9</span>
-                        <span class="text-[10px] text-slate-400">({{ rand(12,180) }} reviews)</span>
+                        <span class="text-[10px] text-slate-400 font-medium">({{ rand(12,180) }})</span>
                     </div>
                 </div>
 
                 <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                   class="shrink-0 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition">
-                    Contact
+                   class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                    View
                 </a>
             </div>
             @empty
-            <p class="text-center text-slate-400 py-10 text-sm">No professionals found yet.</p>
+            <div class="sm:col-span-2 text-center text-slate-400 py-12 text-sm">
+                No professionals found yet.
+            </div>
             @endforelse
         </div>
-
-        <a href="{{ route('frontend.service.all') }}"
-           class="mt-5 w-full block text-center text-sm font-bold text-blue-600 hover:underline py-3">
-            See all professionals →
-        </a>
 
     </div>
 </section>
 
-<div class="border-t border-slate-100 max-w-5xl mx-auto px-5"></div>
-
 {{-- ═══ FOR PROS ═══ --}}
-<section class="py-14 px-5 bg-slate-50">
-    <div class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center gap-8">
-        <div class="flex-1">
-            <p class="text-xs font-black text-slate-400 uppercase tracking-wider mb-3">For Professionals</p>
-            <h2 class="text-2xl font-black text-slate-900 mb-3">
-                Get qualified leads.<br>Pay only per call.
-            </h2>
-            <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                Customers in your area are searching right now. Your verified profile shows up first.
-                No subscription. No ads. Just real leads.
-            </p>
-            <a href="{{ route('user.register', 'seller') }}"
-               class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition">
-                Create free profile →
-            </a>
-        </div>
-        <div class="shrink-0 w-full sm:w-64 space-y-2">
-            @foreach([
-                'Free to join',
-                'Pay per verified lead only',
-                'Real-time call forwarding',
-                'Avg. $2,400/month in leads',
-            ] as $f)
-            <div class="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3.5">
-                <i class="fa-solid fa-circle-check text-emerald-500 text-lg shrink-0"></i>
-                <span class="text-sm font-semibold text-slate-700">{{ $f }}</span>
+<section class="py-16 px-4 sm:px-6 bg-white border-t border-slate-100">
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 sm:p-12 flex flex-col sm:flex-row items-start gap-10">
+            <div class="flex-1">
+                <span class="inline-block text-[11px] font-black text-blue-400 uppercase tracking-widest mb-4">For Professionals</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-snug">
+                    Get qualified leads.<br>Pay only per call.
+                </h2>
+                <p class="text-slate-400 text-sm leading-relaxed mb-7">
+                    Customers in your area are searching right now. Your verified profile shows up first. No subscription. No ads.
+                </p>
+                <a href="{{ route('user.register', 'seller') }}"
+                   class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition shadow-lg">
+                    Create free profile →
+                </a>
             </div>
-            @endforeach
+            <div class="shrink-0 w-full sm:w-56 space-y-2.5">
+                @foreach([
+                    ['icon'=>'fa-check-circle', 'text'=>'Free to join'],
+                    ['icon'=>'fa-check-circle', 'text'=>'Pay per verified lead only'],
+                    ['icon'=>'fa-check-circle', 'text'=>'Real-time call forwarding'],
+                    ['icon'=>'fa-check-circle', 'text'=>'Avg. $2,400/month in leads'],
+                ] as $f)
+                <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                    <i class="fa-solid {{ $f['icon'] }} text-emerald-400 shrink-0 text-sm"></i>
+                    <span class="text-sm font-semibold text-slate-200">{{ $f['text'] }}</span>
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
@@ -247,7 +256,7 @@
                     <p class="font-bold text-slate-900 text-sm truncate">${u.name || ''}</p>
                     <p class="text-xs text-slate-400 truncate">${u.title || 'Professional'}${u.city ? ' · '+u.city : ''}</p>
                 </div>
-                ${u.status ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md shrink-0">Verified</span>' : ''}
+                ${u.status ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full shrink-0">✓ Verified</span>' : ''}
             </a>`).join('');
 
         moreLink.href = base + '?q=' + encodeURIComponent(q);

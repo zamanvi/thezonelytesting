@@ -5,7 +5,7 @@
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
 
 {{-- ── Fonts — display=swap prevents invisible text during load ── --}}
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 {{-- ── Font Awesome ── --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -18,7 +18,7 @@ tailwind.config = {
     theme: {
         extend: {
             fontFamily: {
-                sans:  ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                sans:  ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
                 serif: ['"DM Serif Display"', 'Georgia', 'serif'],
             }
         }
@@ -38,7 +38,7 @@ tailwind.config = {
     }
 
     body {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
