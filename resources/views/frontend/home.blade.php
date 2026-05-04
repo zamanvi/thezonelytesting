@@ -183,61 +183,58 @@
 {{-- ═══════════════════════════════════════════════════════
      PROFESSIONALS NEAR YOU
 ═══════════════════════════════════════════════════════ --}}
-<section class="py-16 px-4 sm:px-6 bg-white">
+<section class="py-14 px-4 sm:px-6 bg-white">
     <div class="max-w-3xl mx-auto">
 
-        <div class="flex items-end justify-between mb-8">
+        <div class="flex items-center justify-between mb-8">
             <div>
-                <p class="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-1">Top Rated</p>
-                <h2 class="text-2xl font-extrabold text-slate-900">Available near you</h2>
-                <p class="text-xs text-slate-400 mt-1 font-medium">Verified · Responds within 1 hour</p>
+                <h2 class="text-xl font-extrabold text-slate-900">Available near you</h2>
+                <p class="text-sm text-slate-400 mt-1">Verified professionals · Responds within 1 hour</p>
             </div>
             <a href="{{ route('frontend.service.all') }}"
-               class="text-xs font-bold text-blue-600 hover:text-blue-800 transition flex items-center gap-1">
-                View all <i class="fa-solid fa-arrow-right text-[10px]"></i>
+               class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition flex items-center gap-1.5" style="min-height:unset;">
+                View all <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
+        <div class="grid sm:grid-cols-2 gap-3">
             @forelse(($users ?? collect())->take(4) as $user)
-            <div class="pro-card flex items-center gap-4 p-5 bg-white border border-slate-100 rounded-2xl shadow-sm">
+            @php $initials = strtoupper(substr($user->name, 0, 2)); @endphp
+            <div class="pro-card flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-2xl shadow-sm hover:border-blue-200 transition">
                 @if($user->profile_photo)
                 <img src="{{ asset($user->profile_photo) }}"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-                     class="w-16 h-16 rounded-2xl object-cover shrink-0">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl hidden items-center justify-center text-white font-black text-lg shrink-0">
-                    {{ strtoupper(substr($user->name, 0, 2)) }}
+                     class="w-14 h-14 rounded-xl object-cover shrink-0">
+                <div class="w-14 h-14 bg-blue-600 rounded-xl hidden items-center justify-center text-white font-black text-base shrink-0">
+                    {{ $initials }}
                 </div>
                 @else
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-black text-lg shrink-0">
-                    {{ strtoupper(substr($user->name, 0, 2)) }}
+                <div class="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-base shrink-0">
+                    {{ $initials }}
                 </div>
                 @endif
 
                 <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <p class="font-bold text-slate-900 text-sm leading-tight">{{ $user->name }}</p>
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <p class="font-bold text-slate-900 text-sm truncate">{{ $user->name }}</p>
                         @if($user->status)
-                        <span class="inline-flex items-center gap-1 text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold px-2 py-0.5 rounded-full">
+                        <span class="shrink-0 inline-flex items-center gap-0.5 text-[9px] bg-emerald-50 text-emerald-700 font-bold px-1.5 py-0.5 rounded-full">
                             <i class="fa-solid fa-circle-check text-[8px]"></i> Verified
                         </span>
                         @endif
                     </div>
-                    <p class="text-xs text-slate-500 mt-0.5 truncate">
+                    <p class="text-xs text-slate-500 truncate">
                         {{ $user->title ?? $user->designation ?? ($user->category?->title ?? 'Professional') }}
                         @if($user->city) · {{ $user->city }}@endif
                     </p>
-                    <div class="flex items-center gap-1.5 mt-2">
-                        <div class="flex gap-0.5">
-                            @for($i=0;$i<5;$i++)<i class="fa-solid fa-star text-amber-400 text-[9px]"></i>@endfor
-                        </div>
-                        <span class="text-xs font-bold text-slate-700">4.9</span>
-                        <span class="text-[10px] text-slate-400">({{ rand(12,180) }})</span>
+                    <div class="flex items-center gap-1 mt-1.5">
+                        @for($i=0;$i<5;$i++)<i class="fa-solid fa-star text-amber-400 text-[9px]"></i>@endfor
+                        <span class="text-xs font-semibold text-slate-600 ml-1">4.9</span>
                     </div>
                 </div>
 
                 <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                   class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm shadow-blue-200">
+                   class="shrink-0 text-xs font-bold text-blue-600 border border-blue-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 px-4 py-2 rounded-xl transition" style="min-height:unset;">
                     View
                 </a>
             </div>
@@ -251,7 +248,7 @@
 
         <div class="text-center mt-8">
             <a href="{{ route('frontend.service.all') }}"
-               class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white font-bold px-8 py-3.5 rounded-2xl text-sm transition shadow-lg">
+               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3 rounded-xl text-sm transition" style="min-height:unset;">
                 Browse all professionals <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
