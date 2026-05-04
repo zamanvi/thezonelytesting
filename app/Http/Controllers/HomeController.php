@@ -107,7 +107,7 @@ class HomeController extends Controller
     }
     function service_all()
     {
-        $users = User::activeSellers()->latest()->paginate(4);
+        $users = User::activeSellers()->latest()->paginate(12);
         $isSearch = false;
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
