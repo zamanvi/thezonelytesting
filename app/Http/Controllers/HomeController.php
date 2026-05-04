@@ -167,6 +167,163 @@ class HomeController extends Controller
         return view($view, compact('user'));
     }
 
+    function ogImage($slug)
+    {
+        $user = User::activeSellers()
+            ->where('slug', $slug)
+            ->with(['services', 'category'])
+            ->firstOrFail();
+
+        $W = 1200; $H = 630;
+        $img = imagecreatetruecolor($W, $H);
+
+        // Colors
+        $cBg     = imagecolorallocate($img, 10,  17,  35);
+        $cBlue   = imagecolorallocate($img, 59,  130, 246);
+        $cWhite  = imagecolorallocate($img, 255, 255, 255);
+        $cSlate4 = imagecolorallocate($img, 148, 163, 184);
+        $cSlate5 = imagecolorallocate($img, 100, 116, 139);
+        $cEmerald= imagecolorallocate($img, 16,  185, 129);
+        $cAmber  = imagecolorallocate($img, 245, 158, 11);
+
+        // Background
+        imagefilledrectangle($img, 0, 0, $W, $H, $cBg);
+
+        // Subtle top-right blue glow
+        for ($r = 280; $r >= 0; $r -= 2) {
+            $a = (int)(127 - ($r / 280) * 100);
+            $c = imagecolorallocatealpha($img, 37, 99, 235, $a);
+            imagefilledellipse($img, $W, 0, $r * 2, $r * 2, $c);
+        }
+
+        // Blue left accent bar
+        imagefilledrectangle($img, 0, 0, 6, $H, $cBlue);
+
+        // --- PHOTO (left 420px) ---
+        $photoW = 420;
+        $photoLoaded = false;
+
+        if ($user->profile_photo) {
+            $path = public_path($user->profile_photo);
+            if (file_exists($path)) {
+                $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+                $src = match($ext) {
+                    'jpg','jpeg' => @imagecreatefromjpeg($path),
+                    'png'        => @imagecreatefrompng($path),
+                    'webp'       => @imagecreatefromwebp($path),
+                    default      => false,
+                };
+                if ($src) {
+                    $sw = imagesx($src); $sh = imagesy($src);
+                    $targetRatio = $photoW / $H;
+                    $srcRatio    = $sw / $sh;
+                    if ($srcRatio > $targetRatio) {
+                        $cropH = $sh; $cropW = (int)($sh * $targetRatio);
+                        $srcX  = (int)(($sw - $cropW) / 2); $srcY = 0;
+                    } else {
+                        $cropW = $sw; $cropH = (int)($sw / $targetRatio);
+                        $srcX  = 0;   $srcY  = 0;
+                    }
+                    imagecopyresampled($img, $src, 0, 0, $srcX, $srcY, $photoW, $H, $cropW, $cropH);
+                    imagedestroy($src);
+                    $photoLoaded = true;
+                }
+            }
+        }
+
+        if (!$photoLoaded) {
+            imagefilledrectangle($img, 0, 0, $photoW, $H, $cBlue);
+            $ini = strtoupper(substr($user->name, 0, 2));
+            imagestring($img, 5, (int)($photoW/2 - 20), (int)($H/2 - 10), $ini, $cWhite);
+        }
+
+        // Photo → dark fade (right edge of photo)
+        imagealphablending($img, true);
+        for ($i = 0; $i <= 180; $i++) {
+            $alpha = (int)(127 * ($i / 180));
+            $c = imagecolorallocatealpha($img, 10, 17, 35, 127 - $alpha);
+            imageline($img, $photoW - 180 + $i, 0, $photoW - 180 + $i, $H, $c);
+        }
+
+        // --- FONTS ---
+        $fontPaths = [
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+            '/usr/share/fonts/truetype/freefont/FreeSansBold.ttf',
+        ];
+        $fontRegPaths = [
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+            '/usr/share/fonts/truetype/freefont/FreeSans.ttf',
+        ];
+        $fontB = collect($fontPaths)->first(fn($p) => file_exists($p));
+        $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p));
+        $ttf   = $fontB && $fontR;
+
+        // --- RIGHT CONTENT ---
+        $cx = 460; $cy = 72;
+
+        // Brand
+        if ($ttf) imagettftext($img, 13, 0, $cx, $cy, $cBlue, $fontB, 'ZONELY.');
+        $cy += 58;
+
+        // Name
+        $name = $user->name;
+        if ($ttf) {
+            $bbox = imagettfbbox(36, 0, $fontB, $name);
+            $fs   = abs($bbox[4] - $bbox[0]) > ($W - $cx - 40) ? 26 : 36;
+            imagettftext($img, $fs, 0, $cx, $cy, $cWhite, $fontB, $name);
+        }
+        $cy += 48;
+
+        // Verified badge
+        if ($user->status && $ttf) {
+            imagefilledrectangle($img, $cx, $cy - 18, $cx + 128, $cy + 7, $cEmerald);
+            imagettftext($img, 11, 0, $cx + 10, $cy, $cWhite, $fontB, 'VERIFIED');
+            $cy += 38;
+        }
+
+        // Specialty
+        $specialty = Str::before($user->title ?? $user->designation ?? $user->category?->title ?? '', '|');
+        $specialty = Str::limit(trim($specialty), 48);
+        if ($ttf && $specialty) {
+            imagettftext($img, 15, 0, $cx, $cy, $cSlate4, $fontR, $specialty);
+            $cy += 34;
+        }
+
+        // Services (first 3)
+        $cy += 6;
+        foreach ($user->services->take(3) as $svc) {
+            $t = Str::limit($svc->title ?? '', 40);
+            if ($ttf && $t) {
+                imagettftext($img, 12, 0, $cx, $cy, $cSlate5, $fontR, '– ' . $t);
+                $cy += 24;
+            }
+        }
+        $cy += 10;
+
+        // Location
+        if ($user->city && $ttf) {
+            $loc = $user->city . ($user->state ? ', ' . $user->state : '');
+            imagettftext($img, 13, 0, $cx, $cy, $cSlate4, $fontR, $loc);
+            $cy += 30;
+        }
+
+        // Stars
+        if ($ttf) imagettftext($img, 16, 0, $cx, $cy, $cAmber, $fontB, '★★★★★  4.9');
+
+        // Domain
+        $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
+        if ($ttf) imagettftext($img, 11, 0, $cx, $H - 32, $cSlate5, $fontR, $domain);
+
+        // Output
+        header('Content-Type: image/png');
+        header('Cache-Control: public, max-age=86400');
+        imagepng($img, null, 6);
+        imagedestroy($img);
+        exit;
+    }
+
     function serviceInquiry(Request $request, $slug)
     {
         $seller = User::activeSellers()->where('slug', $slug)->firstOrFail();

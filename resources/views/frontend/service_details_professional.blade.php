@@ -17,9 +17,9 @@
 @endphp
 @extends('frontend.layouts._app')
 @section('title', $meta_title)
-@section('og_title',       $user->name . ' — ' . ($user->title ?? $user->category?->title))
-@section('og_description', Str::limit(strip_tags($user->bio ?? ''), 200))
-@section('og_image',       $user->profile_photo)
+@section('og_title',       $user->name . ' | ' . ($user->title ?? $user->category?->title ?? 'Professional') . ' — Zonely')
+@section('og_description', Str::limit(strip_tags($user->about ?? $user->bio ?? 'Verified professional on Zonely. Book a consultation today.'), 155))
+@section('og_image',       route('frontend.og.image', $user->slug))
 
 @section('schema')
 <script type="application/ld+json">
