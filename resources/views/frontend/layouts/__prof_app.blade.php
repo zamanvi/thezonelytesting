@@ -69,10 +69,10 @@
                         $menuItems = [
                             ['route' => 'seller.dashboard',     'icon' => 'fa-gauge-high',          'label' => 'Lead Dashboard'],
                             ['route' => 'seller.onboarding',    'icon' => 'fa-user-pen',            'label' => 'Profile'],
+                            ['route' => 'seller.notifications', 'icon' => 'fa-bell',                'label' => 'Notifications'],
                             ['route' => 'seller.billing',       'icon' => 'fa-file-invoice-dollar', 'label' => 'Billing'],
                             ['route' => 'seller.schedule',      'icon' => 'fa-calendar-days',       'label' => 'Schedule'],
                             ['route' => 'seller.reviews',       'icon' => 'fa-star',                'label' => 'Reviews'],
-                            ['route' => 'seller.notifications', 'icon' => 'fa-bell',                'label' => 'Notifications'],
                             ['route' => 'seller.affiliate',     'icon' => 'fa-link',                'label' => 'Affiliate'],
                             ['route' => 'seller.settings',      'icon' => 'fa-gear',                'label' => 'Settings'],
                         ];
