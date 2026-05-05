@@ -1,15 +1,14 @@
 @extends('frontend.layouts.__prof_app')
-@section('title', 'Complete Your Profile — Zonely')
+@section('title', 'Build Your Page — Zonely')
 
 @section('content')
 @php
     $cat = strtolower($user->category?->title ?? '');
-    $isPro      = str_contains($cat, 'professional');
-    $isHealth   = str_contains($cat, 'health');
-    $isHome     = str_contains($cat, 'home');
-    $isBeauty   = str_contains($cat, 'beauty');
+    $isPro    = str_contains($cat, 'professional');
+    $isHealth = str_contains($cat, 'health');
+    $isHome   = str_contains($cat, 'home');
+    $isBeauty = str_contains($cat, 'beauty');
 
-    // Completion checks
     $done = [
         'basics'      => filled($user->business_name) || filled($user->title),
         'bio'         => filled($user->bio),
@@ -21,12 +20,10 @@
         'languages'   => $user->languages->count() > 0,
     ];
 
-    // Which sections this category shows
     $showEducation   = $isPro || $isHealth || $isHome;
     $showMemberships = $isPro || $isHealth;
     $showLanguages   = $isPro || $isHealth;
 
-    // Calculate % complete
     $total = 5 + ($showEducation ? 1 : 0) + ($showMemberships ? 1 : 0) + ($showLanguages ? 1 : 0);
     $completed = collect($done)->only(
         array_filter([
@@ -39,19 +36,32 @@
     $pct = $total > 0 ? round($completed / $total * 100) : 0;
 @endphp
 
-<div class="pb-10">
-<div class="max-w-4xl mx-auto">
+<div class="pb-12 max-w-4xl mx-auto">
+
     {{-- Flash --}}
     @if(session('success'))
-        <div class="bg-green-50 border border-green-200 rounded-2xl px-5 py-3 mb-6 flex items-center gap-3">
-            <i class="fa-solid fa-circle-check text-green-500"></i>
-            <p class="text-sm text-green-700 font-semibold">{{ session('success') }}</p>
-        </div>
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-3 mb-5 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+        <p class="text-sm text-emerald-700 font-semibold">{{ session('success') }}</p>
+    </div>
     @endif
 
-    {{-- Header --}}
-    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 sm:p-8 mb-6">
-        <div class="flex items-center gap-4">
+    {{-- Page URL Banner --}}
+    <div class="bg-slate-900 rounded-2xl px-5 py-3.5 mb-6 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2 h-2 bg-emerald-400 rounded-full shrink-0 animate-pulse"></span>
+            <span class="text-xs text-slate-400 font-medium shrink-0">Your live page:</span>
+            <span class="text-sm text-white font-mono truncate">thezonely.com/{{ $user->slug }}</span>
+        </div>
+        <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
+           class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> Preview
+        </a>
+    </div>
+
+    {{-- Progress Header --}}
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-6">
+        <div class="flex items-center gap-4 mb-5">
             <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center shrink-0 overflow-hidden shadow">
                 @if($user->profile_photo)
                     <img src="{{ asset($user->profile_photo) }}" class="w-full h-full object-cover">
@@ -59,157 +69,368 @@
                     <span class="text-white font-black text-xl">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                 @endif
             </div>
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">{{ $user->name }}</h1>
-                <p class="text-sm text-slate-500 mt-0.5">
-                    {{ $user->category?->title ?? 'No category selected' }}
+            <div class="flex-1 min-w-0">
+                <h1 class="text-xl font-bold text-slate-900 truncate">{{ $user->name }}</h1>
+                <p class="text-sm text-slate-500 mt-0.5 flex items-center gap-2">
+                    <span>{{ $user->category?->title ?? 'No category' }}</span>
                     @if(!$user->category)
                         · <a href="{{ route('user.register.category') }}" class="text-blue-600 hover:underline">Select category</a>
                     @endif
                 </p>
             </div>
+            @if($pct >= 80)
+            <span class="shrink-0 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl flex items-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> Page Ready
+            </span>
+            @endif
         </div>
 
-        {{-- Progress bar --}}
-        <div class="mt-5">
-            <div class="flex justify-between items-center mb-1.5">
-                <span class="text-sm font-bold text-slate-700">Profile Completion</span>
-                <span class="text-sm font-black {{ $pct >= 80 ? 'text-green-600' : 'text-blue-600' }}">{{ $pct }}%</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-3">
-                <div class="h-3 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-green-500' : 'bg-blue-600' }}"
-                     style="width: {{ $pct }}%"></div>
-            </div>
-            <p class="text-sm text-slate-400 mt-1.5">{{ $completed }} of {{ $total }} sections complete · {{ $pct >= 80 ? 'Great job! Your profile is ready.' : 'Complete all sections to start receiving leads.' }}</p>
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-bold text-slate-700">Page Completion</span>
+            <span class="text-sm font-black {{ $pct >= 80 ? 'text-emerald-600' : 'text-blue-600' }}">{{ $pct }}%</span>
         </div>
+        <div class="w-full bg-slate-100 rounded-full h-2.5 mb-2">
+            <div class="h-2.5 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-emerald-500' : 'bg-blue-600' }}"
+                 style="width: {{ $pct }}%"></div>
+        </div>
+        <p class="text-xs text-slate-400">{{ $completed }} of {{ $total }} sections complete
+            · {{ $pct >= 80 ? 'Your page is live and ready to receive leads.' : 'Complete all sections to maximise lead conversions.' }}
+        </p>
     </div>
 
-    {{-- Step 3 indicator --}}
-    <div class="flex items-center justify-center gap-2 mb-6">
-        <div class="flex items-center gap-1.5">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-check text-white text-xs"></i></div>
-            <span class="text-xs font-bold text-green-600 hidden sm:inline">Account</span>
-        </div>
-        <div class="w-6 h-px bg-green-300"></div>
-        <div class="flex items-center gap-1.5">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-check text-white text-xs"></i></div>
-            <span class="text-xs font-bold text-green-600 hidden sm:inline">Business Type</span>
-        </div>
-        <div class="w-6 h-px bg-blue-300"></div>
-        <div class="flex items-center gap-1.5">
-            <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black">3</div>
-            <span class="text-xs font-bold text-blue-600 hidden sm:inline">Profile Setup</span>
-        </div>
-    </div>
-
-    {{-- Sections grid --}}
+    {{-- Section Cards --}}
     <div class="grid sm:grid-cols-2 gap-4">
 
         {{-- 1. Business Basics --}}
-        <x-onboarding-card
-            title="Business Basics"
-            desc="Business name, owner name, phone number"
-            icon="fa-building"
-            :done="$done['basics']"
-            :href="route('type.profile', ['seller', 'account'])"
-            required="true"
-        />
+        @php $isDone = $done['basics']; @endphp
+        <a href="{{ route('type.profile', ['seller', 'account']) }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-building {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Business Basics</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Hero Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
+                    @if($user->business_name)<p><span class="font-semibold">Business:</span> {{ $user->business_name }}</p>@endif
+                    @if($user->title)<p><span class="font-semibold">Title:</span> {{ $user->title }}</p>@endif
+                    @if($user->phone)<p><span class="font-semibold">Phone:</span> {{ $user->phone }}</p>@endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">Business name, owner name, phone number</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Edit' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
         {{-- 2. Profile & Bio --}}
-        <x-onboarding-card
-            title="Profile & Bio"
-            desc="Photo, professional title, years of experience, about you"
-            icon="fa-user-circle"
-            :done="$done['bio']"
-            :href="route('type.profile', ['seller', 'profile'])"
-            required="true"
-        />
+        @php $isDone = $done['bio']; @endphp
+        <a href="{{ route('type.profile', ['seller', 'profile']) }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user-circle {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Profile & Bio</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Hero + About Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <p class="line-clamp-2 leading-relaxed">{{ $user->bio }}</p>
+                </div>
+            @else
+                <p class="text-xs text-slate-400">Photo, professional title, years of experience, about you</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Edit' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
         {{-- 3. Service Location --}}
-        <x-onboarding-card
-            title="Service Location"
-            desc="City, state, zip code, service area radius"
-            icon="fa-location-dot"
-            :done="$done['location']"
-            :href="route('type.profile', ['seller', 'service_location'])"
-            required="true"
-        />
+        @php $isDone = $done['location']; @endphp
+        <a href="{{ route('type.profile', ['seller', 'service_location']) }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-location-dot {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Service Location</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Find Us Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
+                    @if($user->city || $user->state)<p><span class="font-semibold">Area:</span> {{ collect([$user->city, $user->state])->filter()->implode(', ') }}</p>@endif
+                    @if($user->zip_code)<p><span class="font-semibold">ZIP:</span> {{ $user->zip_code }}</p>@endif
+                    @if($user->service_radius)<p><span class="font-semibold">Radius:</span> {{ $user->service_radius }} miles</p>@endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">City, state, zip code, service area radius</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Edit' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
         {{-- 4. Contact Info --}}
-        <x-onboarding-card
-            title="Contact Info"
-            desc="WhatsApp, website, social media links"
-            icon="fa-address-card"
-            :done="$done['contact']"
-            :href="route('type.profile', ['seller', 'contact'])"
-            required="true"
-        />
+        @php $isDone = $done['contact']; @endphp
+        <a href="{{ route('type.profile', ['seller', 'contact']) }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-address-card {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Contact Info</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Contact Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
+                    @if($user->whatsapp)<p><i class="fab fa-whatsapp text-emerald-500 mr-1"></i>{{ $user->whatsapp }}</p>@endif
+                    @if($user->website)<p><i class="fa-solid fa-globe text-blue-500 mr-1"></i>{{ $user->website }}</p>@endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">WhatsApp, website, social media links</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Edit' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
         {{-- 5. Services & Pricing --}}
-        <x-onboarding-card
-            title="Services & Pricing"
-            desc="List the services you offer with pricing details"
-            icon="fa-list-check"
-            :done="$done['services']"
-            :href="route('user.services.index')"
-            required="true"
-        />
+        @php $isDone = $done['services']; @endphp
+        <a href="{{ route('user.services.index') }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-list-check {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Services & Pricing</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Services Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <p class="font-semibold mb-1">{{ $user->services->count() }} service{{ $user->services->count() > 1 ? 's' : '' }} listed</p>
+                    <div class="flex flex-wrap gap-1">
+                        @foreach($user->services->take(3) as $svc)
+                            <span class="px-2 py-0.5 bg-white border border-slate-200 rounded-lg text-slate-500">{{ $svc->title }}</span>
+                        @endforeach
+                        @if($user->services->count() > 3)
+                            <span class="px-2 py-0.5 text-slate-400">+{{ $user->services->count() - 3 }} more</span>
+                        @endif
+                    </div>
+                </div>
+            @else
+                <p class="text-xs text-slate-400">List the services you offer with pricing details</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Manage' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
-        {{-- 6. Education & Certifications (Pro + Health + Home) --}}
+        {{-- 6. Education & Certifications --}}
         @if($showEducation)
-        <x-onboarding-card
-            title="{{ $isHome ? 'Licenses & Certifications' : 'Education & Certifications' }}"
-            desc="{{ $isHome ? 'Trade licenses, insurance, bonding certificates' : 'Degrees, certifications, professional qualifications' }}"
-            icon="fa-graduation-cap"
-            :done="$done['education']"
-            :href="route('user.educations.index')"
-        />
+        @php $isDone = $done['education']; $eduTitle = $isHome ? 'Licenses & Certifications' : 'Education & Certifications'; @endphp
+        <a href="{{ route('user.educations.index') }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-graduation-cap {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">{{ $eduTitle }}</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Professional Background</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <p class="font-semibold mb-1">{{ $user->educations->count() }} {{ $isHome ? 'license' : 'credential' }}{{ $user->educations->count() > 1 ? 's' : '' }} added</p>
+                    @if($user->educations->first())
+                        <p class="text-slate-500 truncate">{{ $user->educations->first()->degree ?? $user->educations->first()->institution ?? '' }}</p>
+                    @endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">{{ $isHome ? 'Trade licenses, insurance, bonding certificates' : 'Degrees, certifications, professional qualifications' }}</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Manage' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
         @endif
 
-        {{-- 7. Memberships & Associations (Pro + Health) --}}
+        {{-- 7. Memberships & Associations --}}
         @if($showMemberships)
-        <x-onboarding-card
-            title="Memberships & Associations"
-            desc="Bar associations, medical boards, professional organizations"
-            icon="fa-id-badge"
-            :done="$done['memberships']"
-            :href="route('user.memberships.index')"
-        />
+        @php $isDone = $done['memberships']; @endphp
+        <a href="{{ route('user.memberships.index') }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-id-badge {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Memberships & Associations</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Professional Background</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <p class="font-semibold mb-1">{{ $user->memberships->count() }} membership{{ $user->memberships->count() > 1 ? 's' : '' }} added</p>
+                    @if($user->memberships->first())
+                        <p class="text-slate-500 truncate">{{ $user->memberships->first()->name ?? $user->memberships->first()->organization ?? '' }}</p>
+                    @endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">Bar associations, medical boards, professional organizations</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Manage' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
         @endif
 
-        {{-- 8. Languages (Pro + Health) --}}
+        {{-- 8. Languages --}}
         @if($showLanguages)
-        <x-onboarding-card
-            title="Languages Spoken"
-            desc="Languages you can serve clients in"
-            icon="fa-language"
-            :done="$done['languages']"
-            :href="route('user.languages.index')"
-        />
+        @php $isDone = $done['languages']; @endphp
+        <a href="{{ route('user.languages.index') }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-language {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Languages Spoken</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Profile Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <div class="flex flex-wrap gap-1">
+                        @foreach($user->languages->take(4) as $lang)
+                            <span class="px-2 py-0.5 bg-white border border-slate-200 rounded-lg text-slate-500">{{ $lang->language ?? $lang->name ?? $lang }}</span>
+                        @endforeach
+                        @if($user->languages->count() > 4)
+                            <span class="text-slate-400">+{{ $user->languages->count() - 4 }} more</span>
+                        @endif
+                    </div>
+                </div>
+            @else
+                <p class="text-xs text-slate-400">Languages you can serve clients in</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Manage' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
         @endif
 
     </div>
 
     {{-- Bottom CTA --}}
-    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+    <div class="mt-6 bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
             @if($pct >= 80)
-                <p class="font-black text-slate-900">Your profile looks great!</p>
-                <p class="text-sm text-slate-500 mt-0.5">You're ready to start receiving verified leads.</p>
+                <p class="font-black text-slate-900">Your page looks great!</p>
+                <p class="text-sm text-slate-500 mt-0.5">You're set — leads can find and contact you.</p>
             @else
-                <p class="font-black text-slate-900">Keep going — {{ 100 - $pct }}% left</p>
+                <p class="font-black text-slate-900">{{ 100 - $pct }}% left to complete</p>
                 <p class="text-sm text-slate-500 mt-0.5">Complete sellers get 3× more leads on average.</p>
             @endif
         </div>
-        <div class="flex gap-3">
-            <a href="{{ route('frontend.service.show', $user->slug) }}"
-               target="_blank"
-               class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-base font-bold flex items-center gap-2 transition">
-                <i class="fa-solid fa-eye"></i> Preview My Page
-            </a>
-        </div>
+        <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
+           class="shrink-0 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold flex items-center gap-2 transition">
+            <i class="fa-solid fa-eye"></i> Preview My Page
+        </a>
     </div>
 
-</div>
 </div>
 @endsection
