@@ -1,7 +1,7 @@
 @extends('frontend.layouts._app')
 @section('title', 'Settings')
 @section('content')
-<div class="min-h-screen bg-slate-50 pt-20 pb-28 lg:pb-16 px-4 lg:pl-60 lg:pr-6">
+<div class="min-h-screen bg-slate-50 pt-20 lg:pt-32 pb-28 lg:pb-16 px-4 lg:px-8">
     <div class="max-w-2xl mx-auto py-6">
         @include('frontend.seller._nav')
         <div class="mb-6">

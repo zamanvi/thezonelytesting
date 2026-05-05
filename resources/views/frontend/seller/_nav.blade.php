@@ -12,28 +12,28 @@
     ];
 @endphp
 
-{{-- ── DESKTOP SIDEBAR ─────────────────────────────────────────── --}}
-<aside class="hidden lg:flex flex-col fixed left-0 top-[68px] bottom-0 w-56 bg-white border-r border-slate-100 z-30">
-    <div class="flex-1 px-3 pt-6 space-y-0.5 overflow-y-auto">
+{{-- ── DESKTOP TOP SUBNAV ───────────────────────────────────────── --}}
+<div class="hidden lg:flex fixed left-0 right-0 top-[68px] z-30 bg-white border-b border-slate-100 shadow-sm">
+    <div class="w-full max-w-7xl mx-auto px-6 flex items-stretch">
         @foreach($navItems as $item)
         <a href="{{ $item['route'] }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all
+           class="flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-all
                   {{ $cr === $item['name']
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-blue-600' }}">
-            <i class="fa-solid {{ $item['icon'] }} w-4 text-center shrink-0 text-[15px]"></i>
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300' }}">
+            <i class="fa-solid {{ $item['icon'] }} text-[13px]"></i>
             {{ $item['label'] }}
         </a>
         @endforeach
+        <div class="ml-auto flex items-center pl-4 shrink-0">
+            <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}"
+               target="_blank"
+               class="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> View Public Page
+            </a>
+        </div>
     </div>
-    <div class="px-4 py-4 border-t border-slate-100 shrink-0">
-        <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}"
-           target="_blank"
-           class="flex items-center gap-2 text-xs font-bold text-blue-600 hover:underline">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> View Public Page
-        </a>
-    </div>
-</aside>
+</div>
 
 {{-- ── MOBILE BOTTOM NAV ────────────────────────────────────────── --}}
 <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 z-40 flex justify-around px-1 py-1 shadow-lg">
