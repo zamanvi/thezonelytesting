@@ -231,40 +231,53 @@
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Transparent Pricing</h3>
                 <p class="text-slate-500 mt-7 text-base">No hidden fees · Click any service to see full details</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            @php
+                $ptMap = ['starting_at'=>'starting at','per_month'=>'per month','per_hour'=>'per hour','flat_rate'=>'flat rate','free'=>'free','contact'=>'contact us'];
+            @endphp
+            <div class="space-y-3">
                 @foreach($activeServices as $svc)
-                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border {{ $loop->first ? 'border-2 border-blue-500' : 'border-slate-100' }}">
-                    @if($loop->first)
-                    <div class="bg-blue-600 text-white text-xs font-bold px-6 py-1.5 flex items-center gap-2">
-                        <i class="fas fa-star text-yellow-300"></i> MOST POPULAR
-                    </div>
-                    @endif
-                    <button onclick="toggleAccordion(this)" class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
+                @php
+                    $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'starting at';
+                    $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
+                @endphp
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <button onclick="toggleAccordion(this)"
+                        class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
                         <div class="flex items-center gap-4">
-                            <div class="service-icon flex-shrink-0"><i class="fas fa-briefcase text-blue-600 text-lg"></i></div>
-                            <div>
-                                <p class="font-semibold text-lg">{{ $svc->title }}</p>
-                                @if($svc->category)<p class="text-sm text-slate-500 mt-0.5">{{ $svc->category->title }}</p>@endif
+                            <div class="service-icon flex-shrink-0">
+                                <i class="fas fa-briefcase text-blue-600 text-lg"></i>
                             </div>
+                            <p class="font-semibold text-lg text-slate-900">{{ $svc->title }}</p>
                         </div>
                         <div class="text-right flex-shrink-0 ml-4">
-                            @if($svc->price)
-                            <div class="price-num">${{ $svc->price }}</div>
-                            <div class="text-sm text-slate-500">starting at</div>
+                            @if($svc->price && $svc->pricing_type !== 'free' && $svc->pricing_type !== 'contact')
+                                <div class="price-num">${{ number_format($svc->price, 0) }}</div>
+                                <div class="text-sm text-blue-500 font-semibold">{{ $ptLabel }}</div>
+                            @elseif($svc->pricing_type === 'free')
+                                <div class="text-xl font-black text-emerald-600">Free</div>
                             @else
-                            <div class="text-base font-bold text-slate-500">Contact</div>
+                                <div class="text-base font-bold text-slate-400">Contact us</div>
                             @endif
                         </div>
                     </button>
-                    <div class="accordion-content px-6 pb-6 text-base border-t">
+                    {{-- Accordion content --}}
+                    <div class="accordion-content border-t border-slate-100">
+                        @if($features)
+                        <div class="px-6 pt-4 pb-2 space-y-2">
+                            @foreach($features as $feature)
+                            <div class="flex items-center gap-2.5">
+                                <i class="fas fa-check text-emerald-500 text-xs shrink-0"></i>
+                                <span class="text-sm text-slate-600">{{ $feature }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
                         @if($svc->description)
-                        <p class="text-slate-600 leading-relaxed mt-4">{{ $svc->description }}</p>
+                        <p class="px-6 pt-3 pb-4 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
                         @endif
-                        @if($svc->image_one)
-                        <img src="{{ asset($svc->image_one) }}" class="w-full rounded-2xl mt-4 object-cover max-h-48" alt="{{ $svc->title }}">
-                        @endif
-                        <div class="mt-4">
-                            <a href="#contact" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
+                        <div class="px-6 pb-5 {{ ($features || $svc->description) ? '' : 'pt-4' }}">
+                            <a href="#contact"
+                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
                                 <i class="fas fa-phone text-xs"></i> Inquire About This Service
                             </a>
                         </div>

@@ -24,10 +24,12 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'price'       => 'nullable|numeric|min:0',
-            'category_id' => 'nullable|exists:categories,id',
+            'title'        => 'required|string|max:255',
+            'description'  => 'nullable|string|max:2000',
+            'price'        => 'nullable|numeric|min:0',
+            'pricing_type' => 'nullable|string|max:50',
+            'features'     => 'nullable|string',
+            'category_id'  => 'nullable|exists:categories,id',
         ]);
 
         Service::create(array_merge($validated, ['user_id' => Auth::id()]));
@@ -51,10 +53,12 @@ class ServiceController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string|max:2000',
-            'price'       => 'nullable|numeric|min:0',
-            'category_id' => 'nullable|exists:categories,id',
+            'title'        => 'required|string|max:255',
+            'description'  => 'nullable|string|max:2000',
+            'price'        => 'nullable|numeric|min:0',
+            'pricing_type' => 'nullable|string|max:50',
+            'features'     => 'nullable|string',
+            'category_id'  => 'nullable|exists:categories,id',
         ]);
 
         Service::where('user_id', Auth::id())->findOrFail($id)->update($validated);
