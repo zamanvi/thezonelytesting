@@ -106,7 +106,7 @@
 </style>
 @endsection
 
-@section('script')
+@section('scripts')
 <script>
     let selectedId = null;
 
