@@ -41,8 +41,17 @@ class ProfileController extends Controller
         $countries  = [];
 
         if ($setup === 'service_location') {
-            $categories = Category::all();
-            $countries  = Country::all();
+            $userCat = $user->category;
+            if ($userCat && $userCat->parent_id) {
+                // user has a child category → show siblings (children of same parent)
+                $categories = Category::where('parent_id', $userCat->parent_id)->get();
+            } elseif ($userCat) {
+                // user has a parent-level category → show its children
+                $categories = Category::where('parent_id', $userCat->id)->get();
+            } else {
+                $categories = collect();
+            }
+            $countries = Country::all();
         }
 
         $view = match ($setup) {

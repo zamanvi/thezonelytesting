@@ -17,9 +17,24 @@
 @endphp
 @extends('frontend.layouts._app')
 @section('title', $meta_title)
+@php
+    $ogSvcs = $activeServices->take(2)->pluck('title')->filter();
+    $ogDesc = $user->name . ' — ' . ($user->category?->title ?? 'Professional') . ($user->city ? ' in ' . $user->city : '') . '.';
+    if ($ogSvcs->count()) {
+        $ogDesc .= ' Services: ' . $ogSvcs->map(fn($s) => '✓ ' . $s)->implode('  ');
+    } else {
+        $ogDesc .= ' ' . Str::limit(strip_tags($user->about ?? $user->bio ?? 'Verified professional on Zonely. Book a consultation today.'), 100);
+    }
+    $ogDesc = Str::limit($ogDesc, 200);
+@endphp
 @section('og_title',       $user->name . ' | ' . ($user->title ?? $user->category?->title ?? 'Professional') . ' — Zonely')
-@section('og_description', Str::limit(strip_tags($user->about ?? $user->bio ?? 'Verified professional on Zonely. Book a consultation today.'), 155))
+@section('og_description', $ogDesc)
 @section('og_image',       route('frontend.og.image', $user->slug))
+@section('og_extra')
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type"   content="image/png">
+@endsection
 
 @section('schema')
 <script type="application/ld+json">
