@@ -154,6 +154,29 @@
             </div>
         </div>
 
+        {{-- Business Category --}}
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-briefcase text-blue-600 text-sm"></i> Business Category
+            </h2>
+            <p class="text-xs text-slate-500 mb-4">Your current category determines which profile fields and lead forms appear on your page.</p>
+            <div class="flex items-center justify-between gap-4 p-4 bg-slate-50 rounded-2xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-tag text-blue-600 text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm text-slate-900">{{ auth()->user()->category?->title ?? 'No category selected' }}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">{{ auth()->user()->category?->parent?->title ?? 'Uncategorized' }}</p>
+                    </div>
+                </div>
+                <a href="{{ route('user.register.category') }}"
+                   class="shrink-0 px-4 py-2.5 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-pen text-[11px]"></i> Change
+                </a>
+            </div>
+        </div>
+
         {{-- Danger Zone --}}
         <div class="bg-white rounded-3xl border border-red-100 shadow-sm p-6">
             <h2 class="font-bold text-red-600 mb-1 flex items-center gap-2">
