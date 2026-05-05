@@ -67,13 +67,13 @@
                     class="hidden absolute right-0 mt-3 w-56 sm:w-64 bg-white rounded-3xl shadow-xl py-4 border border-gray-100 z-50 text-sm sm:text-base">
                     @php
                         $menuItems = [
-                            ['route' => 'seller.dashboard',     'icon' => 'fa-gauge-high',          'label' => 'Lead Dashboard'],
                             ['route' => 'seller.onboarding',    'icon' => 'fa-user-pen',            'label' => 'Profile'],
+                            ['route' => 'seller.dashboard',     'icon' => 'fa-gauge-high',          'label' => 'Lead Dashboard'],
+                            ['route' => 'seller.affiliate',     'icon' => 'fa-link',                'label' => 'Affiliate'],
                             ['route' => 'seller.notifications', 'icon' => 'fa-bell',                'label' => 'Notifications'],
                             ['route' => 'seller.billing',       'icon' => 'fa-file-invoice-dollar', 'label' => 'Billing'],
                             ['route' => 'seller.schedule',      'icon' => 'fa-calendar-days',       'label' => 'Schedule'],
                             ['route' => 'seller.reviews',       'icon' => 'fa-star',                'label' => 'Reviews'],
-                            ['route' => 'seller.affiliate',     'icon' => 'fa-link',                'label' => 'Affiliate'],
                             ['route' => 'seller.settings',      'icon' => 'fa-gear',                'label' => 'Settings'],
                         ];
                     @endphp
