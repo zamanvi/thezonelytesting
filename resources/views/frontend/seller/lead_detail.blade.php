@@ -1,4 +1,4 @@
-@extends('frontend.layouts._app')
+@extends('frontend.layouts.__prof_app')
 @section('title', 'Lead Details')
 @section('content')
 <div class="min-h-screen bg-slate-50 pt-20 pb-16 px-4">

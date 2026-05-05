@@ -1,10 +1,9 @@
-@extends('frontend.layouts._app')
+@extends('frontend.layouts.__prof_app')
 @section('title', 'Affiliate Dashboard')
 @section('content')
-<div class="min-h-screen bg-slate-50 pt-20 lg:pt-32 pb-28 lg:pb-16 px-4 lg:px-8">
+<div class="pb-10">
     <div class="max-w-3xl mx-auto py-6">
 
-        @include('frontend.seller._nav')
         {{-- Header --}}
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-slate-900">Affiliate Dashboard</h1>

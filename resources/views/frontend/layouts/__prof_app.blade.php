@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zonely - Leads Dashboard</title>
+    <title>@yield('title', 'Zonely Dashboard')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -55,20 +56,37 @@
             <h1 class="hidden sm:block text-xl font-semibold text-gray-800">@yield('page-title', 'Dashboard')</h1>
 
             <!-- More Menu -->
-            <div class="relative">
+            @php $cr = Route::currentRouteName(); @endphp
+            <div class="relative" id="moreMenuWrap">
                 <button onclick="toggleMenu()"
                     class="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-2xl hover:border-blue-300 transition-all text-sm font-medium">
                     <span class="hidden sm:inline">More</span>
-                    <i class="fas fa-bars sm:fa-chevron-down"></i>
+                    <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div id="moreMenu"
                     class="hidden absolute right-0 mt-3 w-56 sm:w-64 bg-white rounded-3xl shadow-xl py-4 border border-gray-100 z-50 text-sm sm:text-base">
-                    <a href="{{ route('frontend.home') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50"><i class="fas fa-home w-4"></i> Back to Home</a>
-                    <a href="{{ route('seller.dashboard') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50"><i class="fas fa-phone w-4"></i> Leads Dashboard</a>
-                    <a href="{{ route('seller.affiliate') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50"><i class="fas fa-handshake w-4"></i> Affiliate</a>
-                    <a href="{{ route('seller.settings') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50"><i class="fas fa-cog w-4"></i> Settings</a>
-                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50"><i class="fas fa-user w-4"></i> Edit Profile</a>
+                    @php
+                        $menuItems = [
+                            ['route' => 'seller.dashboard',     'icon' => 'fa-gauge-high',          'label' => 'Lead Dashboard'],
+                            ['route' => 'seller.onboarding',    'icon' => 'fa-user-pen',            'label' => 'Profile'],
+                            ['route' => 'seller.billing',       'icon' => 'fa-file-invoice-dollar', 'label' => 'Billing'],
+                            ['route' => 'seller.schedule',      'icon' => 'fa-calendar-days',       'label' => 'Schedule'],
+                            ['route' => 'seller.reviews',       'icon' => 'fa-star',                'label' => 'Reviews'],
+                            ['route' => 'seller.notifications', 'icon' => 'fa-bell',                'label' => 'Notifications'],
+                            ['route' => 'seller.affiliate',     'icon' => 'fa-link',                'label' => 'Affiliate'],
+                            ['route' => 'seller.settings',      'icon' => 'fa-gear',                'label' => 'Settings'],
+                        ];
+                    @endphp
+                    @foreach($menuItems as $m)
+                    <a href="{{ route($m['route']) }}"
+                       class="flex items-center gap-3 px-5 sm:px-6 py-3 transition {{ $cr === $m['route'] ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-gray-50 text-gray-700' }}">
+                        <i class="fas {{ $m['icon'] }} w-4 text-center"></i> {{ $m['label'] }}
+                    </a>
+                    @endforeach
                     <div class="border-t border-gray-100 my-2 mx-4"></div>
+                    <a href="{{ route('frontend.home') }}" class="flex items-center gap-3 px-5 sm:px-6 py-3 hover:bg-gray-50 text-gray-700">
+                        <i class="fas fa-home w-4"></i> Back to Home
+                    </a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="w-full flex items-center gap-3 px-5 sm:px-6 py-3 text-red-600 hover:bg-gray-50 text-left">
@@ -110,7 +128,7 @@
         }
 
         document.addEventListener('click', function (e) {
-            if (!e.target.closest('.group')) {
+            if (!e.target.closest('#moreMenuWrap')) {
                 document.getElementById('moreMenu').classList.add('hidden');
             }
         });

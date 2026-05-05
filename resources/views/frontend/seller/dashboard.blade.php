@@ -1,4 +1,4 @@
-@extends('frontend.layouts._app')
+@extends('frontend.layouts.__prof_app')
 @section('title', 'Lead Dashboard')
 
 @section('css')
@@ -53,7 +53,7 @@
 
 <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-full opacity-0 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap"></div>
 
-<div class="min-h-screen bg-slate-50 pt-20 lg:pt-32 pb-28 lg:pb-6 px-4 lg:px-8">
+<div class="pb-10">
 <div class="max-w-3xl mx-auto px-4 py-6 lg:px-6 lg:py-8">
 
     {{-- ── HEADER ── --}}
@@ -77,7 +77,6 @@
         </div>
     </div>
 
-    @include('frontend.seller._nav')
 
     {{-- ── NEW LEAD ALERT ── --}}
     @if(session('new_lead'))

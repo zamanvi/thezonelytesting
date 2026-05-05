@@ -1,4 +1,4 @@
-@extends('frontend.layouts._app')
+@extends('frontend.layouts.__prof_app')
 @section('title', 'Complete Your Profile — Zonely')
 
 @section('content')
@@ -39,9 +39,8 @@
     $pct = $total > 0 ? round($completed / $total * 100) : 0;
 @endphp
 
-<div class="min-h-screen bg-slate-50 pt-20 lg:pt-32 pb-28 lg:pb-16 px-4 lg:px-8">
+<div class="pb-10">
 <div class="max-w-4xl mx-auto">
-    @include('frontend.seller._nav')
     {{-- Flash --}}
     @if(session('success'))
         <div class="bg-green-50 border border-green-200 rounded-2xl px-5 py-3 mb-6 flex items-center gap-3">
