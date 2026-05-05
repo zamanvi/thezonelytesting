@@ -31,6 +31,7 @@ class ServiceController extends Controller
             'features'     => 'nullable|string',
             'category_id'  => 'nullable|exists:categories,id',
         ]);
+        $validated['is_active'] = $request->boolean('is_active');
 
         Service::create(array_merge($validated, ['user_id' => Auth::id()]));
 
@@ -60,6 +61,7 @@ class ServiceController extends Controller
             'features'     => 'nullable|string',
             'category_id'  => 'nullable|exists:categories,id',
         ]);
+        $validated['is_active'] = $request->boolean('is_active');
 
         Service::where('user_id', Auth::id())->findOrFail($id)->update($validated);
 

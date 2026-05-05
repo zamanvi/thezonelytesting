@@ -22,12 +22,14 @@
     </div>
     @endif
 
-    <form action="{{ route('user.services.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <form action="{{ route('user.services.store') }}" method="POST" class="space-y-4">
         @csrf
 
         {{-- Title --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Service Title <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-bold text-slate-700 mb-2">
+                Service Title <span class="text-red-500">*</span>
+            </label>
             <input type="text" name="title" value="{{ old('title') }}" required
                 placeholder="e.g. Individual Tax Return (1040)"
                 class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
@@ -38,20 +40,20 @@
             <label class="block text-sm font-bold text-slate-700 mb-3">Pricing</label>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs text-slate-500 mb-1.5">Price ($)</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5">Price ($)</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">$</span>
                         <input type="number" name="price" value="{{ old('price') }}" min="0" step="0.01"
                             placeholder="179"
                             class="w-full pl-7 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
                     </div>
-                    <p class="text-xs text-slate-400 mt-1">Leave blank to show "Contact"</p>
+                    <p class="text-xs text-slate-400 mt-1">Leave blank → shows "Contact us"</p>
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-500 mb-1.5">Pricing Type</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5">Pricing Type</label>
                     <select name="pricing_type"
                         class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-white">
-                        <option value="starting_at" {{ old('pricing_type')=='starting_at' ? 'selected' : '' }}>starting at</option>
+                        <option value="starting_at" {{ old('pricing_type','starting_at')=='starting_at' ? 'selected' : '' }}>starting at</option>
                         <option value="per_month"   {{ old('pricing_type')=='per_month'   ? 'selected' : '' }}>per month</option>
                         <option value="per_hour"    {{ old('pricing_type')=='per_hour'    ? 'selected' : '' }}>per hour</option>
                         <option value="flat_rate"   {{ old('pricing_type')=='flat_rate'   ? 'selected' : '' }}>flat rate</option>
@@ -60,48 +62,41 @@
                     </select>
                 </div>
             </div>
-        </div>
 
-        {{-- Features / Bullet Points --}}
-        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-            <label class="block text-sm font-bold text-slate-700 mb-1">Feature Bullet Points</label>
-            <p class="text-xs text-slate-400 mb-3">One feature per line — shown as ✓ checkmarks under the service</p>
-            <div id="featuresContainer" class="space-y-2">
-                @foreach(array_filter(array_map('trim', explode("\n", old('features', '')))) as $f)
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-check text-emerald-500 text-xs shrink-0"></i>
-                    <input type="text" name="feature_lines[]" value="{{ $f }}"
-                        class="flex-1 px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
-                        placeholder="e.g. Federal & New York State Return">
-                    <button type="button" onclick="this.closest('div').remove()"
-                        class="text-slate-300 hover:text-red-400 transition"><i class="fa-solid fa-times text-xs"></i></button>
-                </div>
-                @endforeach
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-check text-emerald-500 text-xs shrink-0"></i>
-                    <input type="text" name="feature_lines[]"
-                        class="flex-1 px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
-                        placeholder="e.g. Federal & New York State Return">
-                    <button type="button" onclick="this.closest('div').remove()"
-                        class="text-slate-300 hover:text-red-400 transition"><i class="fa-solid fa-times text-xs"></i></button>
+            {{-- Live preview --}}
+            <div class="mt-4 flex items-center justify-between px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
+                <span class="text-sm font-semibold text-slate-500" id="previewTitle">Your service name</span>
+                <div class="text-right">
+                    <div class="text-xl font-black text-blue-700" id="previewPrice">$—</div>
+                    <div class="text-xs text-blue-500 font-semibold" id="previewType">starting at</div>
                 </div>
             </div>
-            <button type="button" onclick="addFeature()"
-                class="mt-3 flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline">
-                <i class="fa-solid fa-plus text-[10px]"></i> Add Feature
-            </button>
-            <input type="hidden" name="features" id="featuresHidden">
+        </div>
+
+        {{-- Feature Bullet Points --}}
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <label class="block text-sm font-bold text-slate-700 mb-1">
+                Feature Bullet Points <span class="text-slate-400 font-normal">(optional)</span>
+            </label>
+            <p class="text-xs text-slate-400 mb-3">
+                One feature per line — displayed as <span class="text-emerald-600 font-semibold">✓ checkmarks</span> on your public page
+            </p>
+            <textarea name="features" rows="4"
+                placeholder="Federal & New York State Return&#10;Itemized deductions & credits&#10;EITC & Child Tax Credit optimization"
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none font-mono">{{ old('features') }}</textarea>
         </div>
 
         {{-- Description --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Description <span class="text-slate-400 font-normal">(optional)</span></label>
+            <label class="block text-sm font-bold text-slate-700 mb-2">
+                Description <span class="text-slate-400 font-normal">(optional)</span>
+            </label>
             <textarea name="description" rows="3"
-                placeholder="Brief description shown when expanded..."
+                placeholder="Brief additional details shown when expanded..."
                 class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('description') }}</textarea>
         </div>
 
-        {{-- Status --}}
+        {{-- Visibility toggle --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-center justify-between">
             <div>
                 <p class="text-sm font-bold text-slate-700">Show on public page</p>
@@ -109,13 +104,15 @@
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" name="is_active" value="1" checked class="sr-only peer">
-                <div class="w-11 h-6 bg-slate-200 peer-checked:bg-blue-600 rounded-full peer transition-all after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+                <div class="w-11 h-6 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all
+                            after:content-[''] after:absolute after:top-0.5 after:left-0.5
+                            after:bg-white after:rounded-full after:h-5 after:w-5
+                            after:transition-all peer-checked:after:translate-x-5"></div>
             </label>
         </div>
 
         <div class="flex justify-end">
             <button type="submit"
-                onclick="buildFeatures()"
                 class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Service
             </button>
@@ -125,21 +122,17 @@
 </div>
 
 <script>
-function addFeature() {
-    const d = document.createElement('div');
-    d.className = 'flex items-center gap-2';
-    d.innerHTML = `<i class="fa-solid fa-check text-emerald-500 text-xs shrink-0"></i>
-        <input type="text" name="feature_lines[]"
-            class="flex-1 px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
-            placeholder="e.g. Itemized deductions & credits">
-        <button type="button" onclick="this.closest('div').remove()" class="text-slate-300 hover:text-red-400 transition"><i class="fa-solid fa-times text-xs"></i></button>`;
-    document.getElementById('featuresContainer').appendChild(d);
-    d.querySelector('input').focus();
+const ptLabels = {starting_at:'starting at',per_month:'per month',per_hour:'per hour',flat_rate:'flat rate',free:'free',contact:'contact us'};
+function updatePreview() {
+    const title = document.querySelector('[name=title]').value || 'Your service name';
+    const price = document.querySelector('[name=price]').value;
+    const pt    = document.querySelector('[name=pricing_type]').value;
+    document.getElementById('previewTitle').textContent = title;
+    document.getElementById('previewPrice').textContent = price ? '$' + parseFloat(price).toLocaleString() : '—';
+    document.getElementById('previewType').textContent  = ptLabels[pt] || 'starting at';
 }
-function buildFeatures() {
-    const lines = [...document.querySelectorAll('[name="feature_lines[]"]')]
-        .map(i => i.value.trim()).filter(Boolean).join("\n");
-    document.getElementById('featuresHidden').value = lines;
-}
+document.querySelector('[name=title]').addEventListener('input', updatePreview);
+document.querySelector('[name=price]').addEventListener('input', updatePreview);
+document.querySelector('[name=pricing_type]').addEventListener('change', updatePreview);
 </script>
 @endsection
