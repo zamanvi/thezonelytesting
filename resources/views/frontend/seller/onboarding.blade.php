@@ -39,7 +39,7 @@
     $pct = $total > 0 ? round($completed / $total * 100) : 0;
 @endphp
 
-<div class="min-h-screen bg-slate-50 pt-20 pb-16 px-4">
+<div class="min-h-screen bg-slate-50 pt-20 pb-28 lg:pb-16 px-4 lg:pl-60 lg:pr-6">
 <div class="max-w-4xl mx-auto">
     @include('frontend.seller._nav')
     {{-- Flash --}}
