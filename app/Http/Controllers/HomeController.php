@@ -167,6 +167,14 @@ class HomeController extends Controller
         return view($view, compact('user'));
     }
 
+    function shareCard($slug)
+    {
+        $user = User::activeSellers()->where('slug', $slug)
+            ->with(['services', 'category'])
+            ->firstOrFail();
+        return view('frontend.share_card', compact('user'));
+    }
+
     function ogImage($slug)
     {
         $user = User::activeSellers()

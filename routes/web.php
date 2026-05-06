@@ -50,6 +50,7 @@ Route::name('frontend.')->group(function () {
     Route::get('search', [HomeController::class, 'service_search'])->name('service.search');
     Route::get('service/{slug}', [HomeController::class, 'service_show'])->name('service.show');
     Route::get('og-image/{slug}', [HomeController::class, 'ogImage'])->name('og.image');
+    Route::get('card/{slug}', [HomeController::class, 'shareCard'])->name('share.card');
     Route::get('category/{slug}', [HomeController::class, 'category_show'])->name('category');
     Route::get('/help', [HomeController::class, 'help'])->name('help');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
