@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HomeController;
@@ -156,6 +157,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('memberships', MembershipController::class);
         Route::resource('languages', LanguageController::class);
         Route::resource('contacts', ContactController::class);
+        Route::resource('faqs', FaqController::class);
         Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
     });
     

@@ -18,16 +18,17 @@
         'education'   => $user->educations->count() > 0,
         'memberships' => $user->memberships->count() > 0,
         'languages'   => $user->languages->count() > 0,
+        'faqs'        => $user->faqs->count() > 0,
     ];
 
     $showEducation   = $isPro || $isHealth || $isHome;
     $showMemberships = $isPro || $isHealth;
     $showLanguages   = $isPro || $isHealth;
 
-    $total = 5 + ($showEducation ? 1 : 0) + ($showMemberships ? 1 : 0) + ($showLanguages ? 1 : 0);
+    $total = 6 + ($showEducation ? 1 : 0) + ($showMemberships ? 1 : 0) + ($showLanguages ? 1 : 0);
     $completed = collect($done)->only(
         array_filter([
-            'basics', 'bio', 'location', 'contact', 'services',
+            'basics', 'bio', 'location', 'contact', 'services', 'faqs',
             $showEducation   ? 'education'   : null,
             $showMemberships ? 'memberships' : null,
             $showLanguages   ? 'languages'   : null,
@@ -412,6 +413,44 @@
             </div>
         </a>
         @endif
+
+        {{-- 9. Q & A --}}
+        @php $isDone = $done['faqs']; @endphp
+        <a href="{{ route('user.faqs.index') }}"
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-circle-question {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Q & A</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ FAQ Section</p>
+                    </div>
+                </div>
+                @if($isDone)
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
+                @else
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
+                @endif
+            </div>
+            @if($isDone)
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
+                    <p class="font-semibold mb-1">{{ $user->faqs->count() }} question{{ $user->faqs->count() > 1 ? 's' : '' }} added</p>
+                    @if($user->faqs->first())
+                        <p class="text-slate-500 truncate">{{ $user->faqs->first()->question }}</p>
+                    @endif
+                </div>
+            @else
+                <p class="text-xs text-slate-400">Common questions clients ask — builds trust before they contact you</p>
+            @endif
+            <div class="mt-3 flex items-center justify-end">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
+                    {{ $isDone ? 'Manage' : 'Add Now' }}
+                </span>
+            </div>
+        </a>
 
     </div>
 

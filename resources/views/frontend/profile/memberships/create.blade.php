@@ -1,38 +1,50 @@
-@extends('frontend.layouts.__app')
+@extends('frontend.layouts.__prof_app')
+@section('title', 'Add Membership')
+@section('page-title', 'Add Membership')
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border">
-
-    <h2 class="text-3xl font-bold mb-6">Create Working Zone</h2>
-
-    <form action="{{ route('user.memberships.store') }}" method="POST" class="space-y-6">
+<div class="pb-10 max-w-2xl mx-auto">
+    <div class="mb-6 flex items-center gap-3">
+        <a href="{{ route('user.memberships.index') }}" class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+        </a>
+        <div>
+            <h1 class="text-xl font-bold text-gray-900">Add Membership</h1>
+            <p class="text-xs text-gray-500 mt-0.5">Professional organizations, boards, associations</p>
+        </div>
+    </div>
+    @if($errors->any())
+    <div class="mb-5 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl">
+        <ul class="list-disc list-inside space-y-1">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+    </div>
+    @endif
+    <form action="{{ route('user.memberships.store') }}" method="POST" class="space-y-4">
         @csrf
-
-        <div>
-            <label class="block font-semibold mb-2">Working Zone Name</label>
-            <input type="text" name="name"
-                class="w-full px-6 py-4 rounded-2xl border focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <label class="block text-sm font-bold text-slate-700 mb-2">Organization Name <span class="text-red-500">*</span></label>
+            <input type="text" name="name" value="{{ old('name') }}" required placeholder="e.g. American Institute of CPAs (AICPA)" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
         </div>
-        <div>
-            <label class="block font-semibold mb-2">Start</label>
-            <input type="text" name="start"
-                class="w-full px-6 py-4 rounded-2xl border focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Start Year</label>
+                    <input type="text" name="start" value="{{ old('start') }}" placeholder="e.g. 2015" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">End Year</label>
+                    <input type="text" name="end" value="{{ old('end') }}" placeholder="e.g. Present" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                </div>
+            </div>
         </div>
-        <div>
-            <label class="block font-semibold mb-2">End</label>
-            <input type="text" name="end"
-                class="w-full px-6 py-4 rounded-2xl border focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <label class="block text-sm font-bold text-slate-700 mb-2">Location / Details <span class="text-slate-400 font-normal">(optional)</span></label>
+            <input type="text" name="address" value="{{ old('address') }}" placeholder="e.g. New York Chapter" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
         </div>
-        <div>
-            <label class="block font-semibold mb-2">Address</label>
-            <input type="text" name="address"
-                class="w-full px-6 py-4 rounded-2xl border focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+        <div class="flex justify-end">
+            <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                <i class="fa-solid fa-floppy-disk mr-2"></i> Save
+            </button>
         </div>
-
-        <button class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600">
-            Save
-        </button>
     </form>
-
 </div>
 @endsection

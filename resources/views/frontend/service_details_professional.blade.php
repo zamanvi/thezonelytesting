@@ -465,32 +465,26 @@
         @endif
 
         {{-- ── FAQ ───────────────────────────────────────────────────── --}}
+        @if($user->faqs->count())
         <section>
             <div class="text-center mb-10">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Frequently Asked Questions</h3>
             </div>
             <div class="max-w-3xl mx-auto space-y-3">
-                @php
-                $faqs = [
-                    ['q'=>'How do I get started?',             'a'=>'Simply call or send a WhatsApp message. '.$user->name.' will respond within 24 hours to discuss your needs and next steps.'],
-                    ['q'=>'Do you offer virtual / remote services?', 'a'=>'Yes. Services are available both in-person and remotely. Documents can be shared securely online and consultations are available by phone or video call.'],
-                    ['q'=>'How quickly can you respond?',      'a'=>'Most inquiries receive a response within 1–2 business hours during office hours. For urgent matters, please call directly.'],
-                    ['q'=>'Are your services confidential?',   'a'=>'Absolutely. All client information is handled with strict confidentiality and professional ethics standards.'],
-                ];
-                @endphp
-                @foreach($faqs as $faq)
+                @foreach($user->faqs as $faq)
                 <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
                     <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-base pr-4">{{ $faq['q'] }}</span>
+                        <span class="font-medium text-base pr-4">{{ $faq->question }}</span>
                         <i class="fas fa-chevron-down text-slate-400 text-base flex-shrink-0 faq-icon transition-transform duration-300"></i>
                     </button>
                     <div class="faq-content px-6 text-base text-slate-600 border-t">
-                        <p class="py-4">{{ $faq['a'] }}</p>
+                        <p class="py-4">{{ $faq->answer }}</p>
                     </div>
                 </div>
                 @endforeach
             </div>
         </section>
+        @endif
 
     </div>
 

@@ -62,6 +62,11 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->hasMany(Membership::class);
     }
 
+    public function faqs()
+    {
+        return $this->hasMany(\App\Models\Faq::class)->orderBy('sort_order')->orderBy('id');
+    }
+
     public function leads()
     {
         return $this->hasMany(Lead::class, 'seller_id');

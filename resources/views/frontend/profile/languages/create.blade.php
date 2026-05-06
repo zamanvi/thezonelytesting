@@ -1,32 +1,47 @@
-@extends('frontend.layouts.__app')
+﻿@extends('frontend.layouts.__prof_app')
+@section('title', 'Add Language')
+@section('page-title', 'Add Language')
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border">
-
-    <h2 class="text-3xl font-bold mb-6">Add Language</h2>
-
-    <form action="{{ route('user.languages.store') }}" method="POST" class="space-y-6">
-        @csrf
-
+<div class="pb-10 max-w-2xl mx-auto">
+    <div class="mb-6 flex items-center gap-3">
+        <a href="{{ route('user.languages.index') }}" class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+        </a>
         <div>
-            <label class="block font-semibold mb-2">Language Name</label>
-            <input type="text" name="name" required
-                placeholder="e.g. English, Bangla"
-                class="w-full px-6 py-4 rounded-2xl border focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+            <h1 class="text-xl font-bold text-gray-900">Add Language</h1>
+            <p class="text-xs text-gray-500 mt-0.5">Languages you can serve clients in</p>
         </div>
-
-        <div class="flex justify-between">
-            <a href="{{ route('user.languages.index') }}"
-               class="text-slate-500 font-semibold hover:text-slate-900">
-                ← Back
-            </a>
-
-            <button class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-blue-600">
-                Save
+    </div>
+    @if($errors->any())
+    <div class="mb-5 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl">
+        <ul class="list-disc list-inside space-y-1">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+    </div>
+    @endif
+    <div class="mb-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+        <p class="text-xs font-bold text-slate-600 mb-2">Quick add:</p>
+        <div class="flex flex-wrap gap-2">
+            <button type="button" onclick="document.getElementById('langInput').value='English'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">English</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Spanish'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Spanish</button>
+            <button type="button" onclick="document.getElementById('langInput').value='French'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">French</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Mandarin'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Mandarin</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Arabic'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Arabic</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Bengali'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Bengali</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Hindi'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Hindi</button>
+            <button type="button" onclick="document.getElementById('langInput').value='Portuguese'" class="text-xs px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:border-blue-400 hover:text-blue-700 transition">Portuguese</button>
+        </div>
+    </div>
+    <form action="{{ route('user.languages.store') }}" method="POST" class="space-y-4">
+        @csrf
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <label class="block text-sm font-bold text-slate-700 mb-2">Language <span class="text-red-500">*</span></label>
+            <input type="text" id="langInput" name="name" value="{{ old('name') }}" required placeholder="e.g. English, Spanish, Bengali" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                <i class="fa-solid fa-floppy-disk mr-2"></i> Save
             </button>
         </div>
-
     </form>
-
 </div>
 @endsection

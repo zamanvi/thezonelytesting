@@ -12,7 +12,7 @@ class SellerController extends Controller
 {
     public function onboarding()
     {
-        $user = Auth::user()->load(['services', 'educations', 'memberships', 'languages', 'category']);
+        $user = Auth::user()->load(['services', 'educations', 'memberships', 'languages', 'faqs', 'category']);
         return view('frontend.seller.onboarding', compact('user'));
     }
 
