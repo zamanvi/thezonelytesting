@@ -500,7 +500,7 @@
                         <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
                     </div>
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-snug">Book a Free Consultation with {{ $user->business_name ?? $user->name }}</h2>
-                    <p class="text-blue-200 mt-2 text-base">{{ $user->name }} will respond within 24 hours</p>
+                    <p class="text-blue-200 mt-2 text-base">We will respond within 24 hours</p>
                 </div>
                 <div class="flex-shrink-0 flex flex-col items-center gap-4">
                     @if(session('inquiry_success'))
