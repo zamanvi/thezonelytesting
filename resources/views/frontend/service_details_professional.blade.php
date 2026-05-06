@@ -491,26 +491,32 @@
 
     {{-- ── CONTACT / BOOKING ────────────────────────────────────────── --}}
     <div id="contact" class="bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-700 text-white py-12 md:py-16">
-        <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-sm font-semibold px-4 py-2 rounded-full mb-6">
-                <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+            {{-- 2-col header: text left, button right --}}
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+                <div class="text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                        <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-snug">Book Your Free Consultation</h2>
+                    <p class="text-blue-200 mt-2 text-base">{{ $user->name }} will respond within 24 hours</p>
+                </div>
+                <div class="flex-shrink-0 flex flex-col items-center gap-4">
+                    @if(session('inquiry_success'))
+                    <div class="bg-green-500 text-white rounded-2xl px-6 py-3 font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i>{{ session('inquiry_success') }}
+                    </div>
+                    @endif
+                    <button id="bookingToggleBtn" onclick="toggleBooking()"
+                            class="flex items-center gap-3 bg-white text-blue-700 hover:bg-yellow-300 px-10 py-4 rounded-2xl font-bold text-base transition shadow-xl whitespace-nowrap">
+                        <i class="fas fa-calendar-plus" id="bookingIcon"></i>
+                        <span id="bookingBtnText">Open Booking Form</span>
+                    </button>
+                </div>
             </div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold">Book Your Free Consultation</h2>
-            <p class="text-blue-100 mt-3 text-lg">Fill in your details — {{ $user->name }} will respond within 24 hours</p>
 
-            @if(session('inquiry_success'))
-            <div class="mt-6 bg-green-500 text-white rounded-2xl px-6 py-4 font-bold">
-                <i class="fa-solid fa-circle-check mr-2"></i>{{ session('inquiry_success') }}
-            </div>
-            @endif
-
-            <button id="bookingToggleBtn" onclick="toggleBooking()"
-                    class="flex items-center justify-center gap-3 mx-auto mt-8 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-3.5 rounded-2xl font-semibold text-base transition">
-                <i class="fas fa-plus-circle" id="bookingIcon"></i>
-                <span id="bookingBtnText">Open Booking Form</span>
-            </button>
-
-            <div id="bookingBody" class="booking-body mt-6">
+            <div id="bookingBody" class="booking-body mt-8">
                 <div class="bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 text-left overflow-hidden">
                     <div class="px-5 md:px-8 pt-6 pb-4 border-b border-white/10">
                         <h4 class="font-semibold text-lg">Booking Request — {{ $user->name }}</h4>
@@ -566,7 +572,7 @@
 
 </div>
 
-    {{-- ── CUSTOM FOOTER ───────────────────────────────────────────── --}}
+{{-- ── CUSTOM FOOTER ───────────────────────────────────────────── --}}
     <footer class="bg-slate-900 text-slate-400 py-8">
         <div class="max-w-5xl mx-auto px-6">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-700">
