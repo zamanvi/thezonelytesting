@@ -244,102 +244,147 @@
 
     <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-12 space-y-10 md:space-y-12">
 
-        {{-- ── PRICING ──────────────────────────────────────────────── --}}
-        @if($activeServices->count())
-        <section id="pricing">
-            <div class="mb-7">
-                <h3 class="font-bold text-3xl sm:text-4xl sh">Services &amp; Pricing</h3>
-                <p class="text-slate-500 mt-5 text-sm font-medium">No hidden fees · Click any service to see full details</p>
-            </div>
-            @php
-                $ptMap = ['starting_at'=>'Starting at','per_month'=>'Per month','per_hour'=>'Per hour','flat_rate'=>'Flat rate','free'=>'Free','contact'=>'Contact us'];
-            @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                @foreach($activeServices as $svc)
-                @php
-                    $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
-                    $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
-                    $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
-                @endphp
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md hover:border-blue-100 transition-all duration-200">
-                    <div class="h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                    <button onclick="toggleAccordion(this)"
-                        class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-blue-50/30 transition-colors">
-                        <div class="flex items-center gap-4 min-w-0">
-                            <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
-                                <i class="fas fa-briefcase text-blue-600 text-base"></i>
+        {{-- ── ROW 1: Pricing (left) + Memberships (right) ────────────── --}}
+        @php
+            $ptMap = ['starting_at'=>'Starting at','per_month'=>'Per month','per_hour'=>'Per hour','flat_rate'=>'Flat rate','free'=>'Free','contact'=>'Contact us'];
+            $hasPricing     = $activeServices->count() || count($tags);
+            $hasMemberships = $user->memberships->count();
+            $hasEducation   = $user->educations->count();
+            $hasBio         = $user->about || $user->bio;
+        @endphp
+        @if($hasPricing || $hasMemberships)
+        <section id="pricing" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+            {{-- LEFT: Pricing --}}
+            @if($activeServices->count())
+            <div>
+                <div class="mb-6">
+                    <h3 class="font-bold text-3xl sm:text-4xl sh">Services &amp; Pricing</h3>
+                    <p class="text-slate-500 mt-4 text-sm font-medium">No hidden fees · Click to see details</p>
+                </div>
+                <div class="space-y-4">
+                    @foreach($activeServices as $svc)
+                    @php
+                        $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
+                        $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
+                        $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
+                    @endphp
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md hover:border-blue-100 transition-all duration-200">
+                        <div class="h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                        <button onclick="toggleAccordion(this)"
+                            class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-blue-50/30 transition-colors">
+                            <div class="flex items-center gap-4 min-w-0">
+                                <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
+                                    <i class="fas fa-briefcase text-blue-600 text-base"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-bold text-base text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
+                                    @if($features)
+                                    <p class="text-xs text-slate-400 mt-0.5">{{ count($features) }} {{ Str::plural('item', count($features)) }} included</p>
+                                    @elseif($svc->description)
+                                    <p class="text-xs text-slate-400 mt-0.5 truncate">{{ Str::limit($svc->description, 55) }}</p>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="min-w-0">
-                                <p class="font-bold text-base text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
-                                @if($features)
-                                <p class="text-xs text-slate-400 mt-0.5">{{ count($features) }} {{ Str::plural('item', count($features)) }} included</p>
-                                @elseif($svc->description)
-                                <p class="text-xs text-slate-400 mt-0.5 truncate">{{ Str::limit($svc->description, 55) }}</p>
-                                @endif
+                            <div class="flex items-center gap-3 flex-shrink-0 ml-3">
+                                <div class="text-right">
+                                    @if($hasPrice)
+                                        <div class="text-2xl font-black text-blue-700 leading-none">${{ number_format($svc->price, 0) }}</div>
+                                        <div class="text-xs text-blue-400 font-semibold mt-0.5">{{ $ptLabel }}</div>
+                                    @elseif($svc->pricing_type === 'free')
+                                        <div class="text-xl font-black text-emerald-600">Free</div>
+                                    @else
+                                        <div class="text-sm font-bold text-slate-400">Contact us</div>
+                                    @endif
+                                </div>
+                                <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
+                                    <i class="fas fa-chevron-down text-slate-400 text-xs accordion-icon transition-transform duration-300"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex items-center gap-3 flex-shrink-0 ml-3">
-                            <div class="text-right">
-                                @if($hasPrice)
-                                    <div class="text-2xl font-black text-blue-700 leading-none">${{ number_format($svc->price, 0) }}</div>
-                                    <div class="text-xs text-blue-400 font-semibold mt-0.5">{{ $ptLabel }}</div>
-                                @elseif($svc->pricing_type === 'free')
-                                    <div class="text-xl font-black text-emerald-600">Free</div>
-                                @else
-                                    <div class="text-sm font-bold text-slate-400">Contact us</div>
-                                @endif
+                        </button>
+                        <div class="accordion-content border-t border-slate-100">
+                            @if($features)
+                            <div class="px-5 pt-4 pb-3 space-y-2">
+                                @foreach($features as $feature)
+                                <div class="flex items-start gap-2.5">
+                                    <span class="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-check text-emerald-600" style="font-size:9px"></i>
+                                    </span>
+                                    <span class="text-sm text-slate-700">{{ $feature }}</span>
+                                </div>
+                                @endforeach
                             </div>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
-                                <i class="fas fa-chevron-down text-slate-400 text-xs accordion-icon transition-transform duration-300"></i>
-                            </div>
-                        </div>
-                    </button>
-                    <div class="accordion-content border-t border-slate-100">
-                        @if($features)
-                        <div class="px-5 pt-4 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            @foreach($features as $feature)
-                            <div class="flex items-start gap-2.5">
-                                <span class="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-check text-emerald-600" style="font-size:9px"></i>
-                                </span>
-                                <span class="text-sm text-slate-700">{{ $feature }}</span>
-                            </div>
-                            @endforeach
-                        </div>
-                        @endif
-                        @if($svc->description)
-                        <p class="px-5 pt-2 pb-3 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
-                        @endif
-                        <div class="px-5 pb-4 pt-3 flex items-center gap-3 border-t border-slate-100 bg-slate-50/50">
-                            <a href="#contact"
-                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
-                                <i class="fas fa-paper-plane text-xs"></i> Get a Quote
-                            </a>
-                            @if($callNumber)
-                            <a href="tel:{{ $callNumber }}"
-                               class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-sm transition">
-                                <i class="fas fa-phone text-xs"></i> Call Now
-                            </a>
                             @endif
+                            @if($svc->description)
+                            <p class="px-5 pt-2 pb-3 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
+                            @endif
+                            <div class="px-5 pb-4 pt-3 flex items-center gap-3 border-t border-slate-100 bg-slate-50/50">
+                                <a href="#contact"
+                                   class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                                    <i class="fas fa-paper-plane text-xs"></i> Get a Quote
+                                </a>
+                                @if($callNumber)
+                                <a href="tel:{{ $callNumber }}"
+                                   class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-sm transition">
+                                    <i class="fas fa-phone text-xs"></i> Call Now
+                                </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
-        </section>
-        @elseif(count($tags))
-        {{-- Fallback: show tags as service chips if no priced services --}}
-        <section id="pricing">
-            <div class="mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh">Services Offered</h3>
+            @elseif(count($tags))
+            <div>
+                <div class="mb-6">
+                    <h3 class="font-bold text-3xl sm:text-4xl sh">Services Offered</h3>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    @foreach($tags as $tag)
+                    <span class="flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 font-semibold px-5 py-3 rounded-2xl text-sm">
+                        <i class="fas fa-circle-check text-blue-400 text-xs"></i> {{ ucfirst($tag) }}
+                    </span>
+                    @endforeach
+                </div>
             </div>
-            <div class="flex flex-wrap gap-3 justify-center">
-                @foreach($tags as $tag)
-                <span class="flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 font-semibold px-5 py-3 rounded-2xl text-sm">
-                    <i class="fas fa-circle-check text-blue-400 text-xs"></i> {{ ucfirst($tag) }}
-                </span>
-                @endforeach
+            @endif
+
+            {{-- RIGHT: Memberships --}}
+            @if($hasMemberships)
+            <div>
+                <div class="mb-6">
+                    <h3 class="font-bold text-3xl sm:text-4xl sh">Professional Background</h3>
+                    <p class="text-slate-500 mt-4 text-sm font-medium">Credentials and expertise</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center gap-3">
+                        <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-id-badge text-white text-base"></i>
+                        </div>
+                        <h4 class="font-bold text-lg text-white">Memberships & Associations</h4>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        @foreach($user->memberships as $m)
+                        <div class="flex gap-4 items-start">
+                            <div class="flex flex-col items-center pt-1.5">
+                                <div class="w-3 h-3 {{ $loop->first ? 'bg-blue-600 ring-4 ring-blue-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
+                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[36px]"></div>@endif
+                            </div>
+                            <div class="pb-4 min-w-0">
+                                <p class="font-semibold text-base text-slate-800">{{ $m->name }}</p>
+                                @if($m->start || $m->end)
+                                <p class="text-sm text-blue-600 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
+                                @endif
+                                @if($m->address)<p class="text-sm text-slate-500 mt-1">{{ $m->address }}</p>@endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
+            @endif
+
         </section>
         @endif
 
@@ -374,74 +419,41 @@
         </section>
         @endif
 
-        {{-- ── PROFESSIONAL BACKGROUND ──────────────────────────────── --}}
-        @if($user->memberships->count() || $user->educations->count() || $user->about || $user->bio)
-        <section id="background">
-            <div class="mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh">Professional Background</h3>
-                <p class="text-slate-500 mt-5 text-sm font-medium">Credentials and expertise behind the work</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        {{-- ── ROW 2: Education (left) + About/Bio (right) ─────────── --}}
+        @if($hasEducation || $hasBio)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
 
-                @if($user->memberships->count())
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center gap-3">
-                        <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-id-badge text-white text-base"></i>
-                        </div>
-                        <h4 class="font-bold text-lg text-white">Memberships & Associations</h4>
+            {{-- LEFT: Education --}}
+            @if($hasEducation)
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4 flex items-center gap-3">
+                    <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-graduation-cap text-white text-base"></i>
                     </div>
-                    <div class="p-6 space-y-4">
-                        @foreach($user->memberships as $m)
-                        <div class="flex gap-4 items-start">
-                            <div class="flex flex-col items-center pt-1.5">
-                                <div class="w-3 h-3 {{ $loop->first ? 'bg-blue-600 ring-4 ring-blue-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
-                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[36px]"></div>@endif
-                            </div>
-                            <div class="pb-4 min-w-0">
-                                <p class="font-semibold text-base text-slate-800">{{ $m->name }}</p>
-                                @if($m->start || $m->end)
-                                <p class="text-sm text-blue-600 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
-                                @endif
-                                @if($m->address)<p class="text-sm text-slate-500 mt-1">{{ $m->address }}</p>@endif
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
+                    <h4 class="font-bold text-lg text-white">Education</h4>
                 </div>
-                @endif
-
-                @if($user->educations->count())
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4 flex items-center gap-3">
-                        <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-graduation-cap text-white text-base"></i>
+                <div class="p-6 space-y-4">
+                    @foreach($user->educations as $edu)
+                    <div class="flex gap-4 items-start">
+                        <div class="flex flex-col items-center pt-1.5">
+                            <div class="w-3 h-3 {{ $loop->first ? 'bg-emerald-600 ring-4 ring-emerald-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
+                            @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[36px]"></div>@endif
                         </div>
-                        <h4 class="font-bold text-lg text-white">Education</h4>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        @foreach($user->educations as $edu)
-                        <div class="flex gap-4 items-start">
-                            <div class="flex flex-col items-center pt-1.5">
-                                <div class="w-3 h-3 {{ $loop->first ? 'bg-emerald-600 ring-4 ring-emerald-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
-                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[36px]"></div>@endif
-                            </div>
-                            <div class="pb-4 min-w-0">
-                                <p class="font-semibold text-base text-slate-800">{{ $edu->degree }}</p>
-                                @if($edu->institution)<p class="text-sm text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
-                                @if($edu->passing_year)<p class="text-sm text-slate-500 mt-1">{{ $edu->passing_year }}</p>@endif
-                            </div>
+                        <div class="pb-4 min-w-0">
+                            <p class="font-semibold text-base text-slate-800">{{ $edu->degree }}</p>
+                            @if($edu->institution)<p class="text-sm text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
+                            @if($edu->passing_year)<p class="text-sm text-slate-500 mt-1">{{ $edu->passing_year }}</p>@endif
                         </div>
-                        @endforeach
                     </div>
+                    @endforeach
                 </div>
-                @endif
-
             </div>
+            @endif
 
-            @if($user->about || $user->bio)
-            <div class="mt-6 bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-                <div class="border-l-4 border-blue-500 p-6">
+            {{-- RIGHT: About / Bio --}}
+            @if($hasBio)
+            <div class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden h-full">
+                <div class="border-l-4 border-blue-500 p-6 h-full">
                     <div class="flex items-center gap-2 mb-3">
                         <i class="fas fa-quote-left text-blue-300 text-lg"></i>
                         <span class="text-xs font-bold text-blue-500 uppercase tracking-wider">About</span>
@@ -453,7 +465,8 @@
                 </div>
             </div>
             @endif
-        </section>
+
+        </div>
         @endif
 
         {{-- ── FAQ ───────────────────────────────────────────────────── --}}
