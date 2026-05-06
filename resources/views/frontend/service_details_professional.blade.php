@@ -247,8 +247,8 @@
         {{-- ── PRICING ──────────────────────────────────────────────── --}}
         @if($activeServices->count())
         <section id="pricing">
-            <div class="text-center mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Services &amp; Pricing</h3>
+            <div class="mb-6">
+                <h3 class="font-bold text-3xl sm:text-4xl sh">Services &amp; Pricing</h3>
                 <p class="text-slate-500 mt-5 text-sm font-medium">No hidden fees · Click any service to see full details</p>
             </div>
             @php
@@ -329,8 +329,8 @@
         @elseif(count($tags))
         {{-- Fallback: show tags as service chips if no priced services --}}
         <section id="pricing">
-            <div class="text-center mb-10">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Services Offered</h3>
+            <div class="mb-6">
+                <h3 class="font-bold text-3xl sm:text-4xl sh">Services Offered</h3>
             </div>
             <div class="flex flex-wrap gap-3 justify-center">
                 @foreach($tags as $tag)
@@ -345,8 +345,8 @@
         {{-- ── REVIEWS / TESTIMONIALS ───────────────────────────────── --}}
         @if($user->reviews->count())
         <section id="testimonials">
-            <div class="text-center mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Client Reviews</h3>
+            <div class="mb-6">
+                <h3 class="font-bold text-3xl sm:text-4xl sh">Client Reviews</h3>
                 <p class="text-slate-500 mt-5 text-sm font-medium">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -376,8 +376,8 @@
         {{-- ── PROFESSIONAL BACKGROUND ──────────────────────────────── --}}
         @if($user->memberships->count() || $user->educations->count() || $user->about || $user->bio)
         <section id="background">
-            <div class="text-center mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Professional Background</h3>
+            <div class="mb-6">
+                <h3 class="font-bold text-3xl sm:text-4xl sh">Professional Background</h3>
                 <p class="text-slate-500 mt-5 text-sm font-medium">Credentials and expertise behind the work</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
@@ -448,8 +448,8 @@
         {{-- ── FAQ ───────────────────────────────────────────────────── --}}
         @if($user->faqs->count())
         <section>
-            <div class="text-center mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Frequently Asked Questions</h3>
+            <div class="mb-6">
+                <h3 class="font-bold text-3xl sm:text-4xl sh">Frequently Asked Questions</h3>
             </div>
             <div class="max-w-3xl mx-auto space-y-2">
                 @foreach($user->faqs as $faq)
