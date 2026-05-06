@@ -242,64 +242,64 @@
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14 space-y-12 md:space-y-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 md:py-12 space-y-10 md:space-y-12">
 
         {{-- ── PRICING ──────────────────────────────────────────────── --}}
         @if($activeServices->count())
         <section id="pricing">
-            <div class="text-center mb-10">
+            <div class="text-center mb-6">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Services &amp; Pricing</h3>
-                <p class="text-slate-500 mt-7 text-base">No hidden fees · Click any service to see full details</p>
+                <p class="text-slate-500 mt-5 text-sm font-medium">No hidden fees · Click any service to see full details</p>
             </div>
             @php
                 $ptMap = ['starting_at'=>'Starting at','per_month'=>'Per month','per_hour'=>'Per hour','flat_rate'=>'Flat rate','free'=>'Free','contact'=>'Contact us'];
             @endphp
-            <div class="space-y-3">
+            <div class="space-y-2">
                 @foreach($activeServices as $svc)
                 @php
                     $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
                     $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
                     $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
                 @endphp
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
                     <button onclick="toggleAccordion(this)"
-                        class="w-full flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 text-left hover:bg-blue-50/40 transition-colors">
-                        <div class="flex items-center gap-4 min-w-0">
-                            <div class="service-icon flex-shrink-0">
-                                <i class="fas fa-briefcase text-blue-600 text-base"></i>
+                        class="w-full flex items-center justify-between px-4 sm:px-5 py-3 sm:py-3.5 text-left hover:bg-blue-50/40 transition-colors">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-briefcase text-blue-600 text-sm"></i>
                             </div>
                             <div class="min-w-0">
-                                <p class="font-bold text-base sm:text-lg text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
-                                @if($svc->description && !$features)
-                                <p class="text-xs text-slate-400 mt-0.5 truncate">{{ Str::limit($svc->description, 60) }}</p>
-                                @elseif($features)
+                                <p class="font-bold text-sm sm:text-base text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
+                                @if($features)
                                 <p class="text-xs text-slate-400 mt-0.5">{{ count($features) }} {{ Str::plural('item', count($features)) }} included</p>
+                                @elseif($svc->description)
+                                <p class="text-xs text-slate-400 mt-0.5 truncate">{{ Str::limit($svc->description, 55) }}</p>
                                 @endif
                             </div>
                         </div>
-                        <div class="flex items-center gap-3 flex-shrink-0 ml-4">
+                        <div class="flex items-center gap-2.5 flex-shrink-0 ml-3">
                             <div class="text-right">
                                 @if($hasPrice)
-                                    <div class="price-num leading-none">${{ number_format($svc->price, 0) }}</div>
+                                    <div class="text-xl font-black text-blue-700 leading-none">${{ number_format($svc->price, 0) }}</div>
                                     <div class="text-xs text-blue-500 font-semibold mt-0.5">{{ $ptLabel }}</div>
                                 @elseif($svc->pricing_type === 'free')
-                                    <div class="text-xl font-black text-emerald-600">Free</div>
+                                    <div class="text-lg font-black text-emerald-600">Free</div>
                                 @else
                                     <div class="text-sm font-bold text-slate-400">Contact us</div>
                                 @endif
                             </div>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
+                            <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
                                 <i class="fas fa-chevron-down text-slate-400 text-xs accordion-icon transition-transform duration-300"></i>
                             </div>
                         </div>
                     </button>
                     <div class="accordion-content border-t border-slate-100">
                         @if($features)
-                        <div class="px-5 sm:px-6 pt-4 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div class="px-4 sm:px-5 pt-3 pb-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                             @foreach($features as $feature)
-                            <div class="flex items-start gap-2.5">
-                                <span class="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-check text-emerald-600" style="font-size:9px"></i>
+                            <div class="flex items-start gap-2">
+                                <span class="mt-0.5 w-3.5 h-3.5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-emerald-600" style="font-size:8px"></i>
                                 </span>
                                 <span class="text-sm text-slate-700">{{ $feature }}</span>
                             </div>
@@ -307,11 +307,11 @@
                         </div>
                         @endif
                         @if($svc->description)
-                        <p class="px-5 sm:px-6 pt-2 pb-3 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
+                        <p class="px-4 sm:px-5 pt-1.5 pb-2 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
                         @endif
-                        <div class="px-5 sm:px-6 pb-5 pt-3 flex items-center gap-3 border-t border-slate-50">
+                        <div class="px-4 sm:px-5 pb-3.5 pt-2.5 flex items-center gap-3 border-t border-slate-50">
                             <a href="#contact"
-                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
                                 <i class="fas fa-paper-plane text-xs"></i> Get a Quote
                             </a>
                             @if($callNumber)
@@ -345,9 +345,9 @@
         {{-- ── REVIEWS / TESTIMONIALS ───────────────────────────────── --}}
         @if($user->reviews->count())
         <section id="testimonials">
-            <div class="text-center mb-10">
+            <div class="text-center mb-6">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Client Reviews</h3>
-                <p class="text-slate-500 mt-7 text-base">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
+                <p class="text-slate-500 mt-5 text-sm font-medium">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 @foreach($user->reviews->take(3) as $review)
@@ -376,9 +376,9 @@
         {{-- ── PROFESSIONAL BACKGROUND ──────────────────────────────── --}}
         @if($user->memberships->count() || $user->educations->count() || $user->about || $user->bio)
         <section id="background">
-            <div class="text-center mb-10">
+            <div class="text-center mb-6">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Professional Background</h3>
-                <p class="text-slate-500 mt-7 text-base">Credentials and expertise behind the work</p>
+                <p class="text-slate-500 mt-5 text-sm font-medium">Credentials and expertise behind the work</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
 
@@ -435,9 +435,9 @@
             </div>
 
             @if($user->about || $user->bio)
-            <div class="mt-6 bg-slate-50 rounded-2xl p-7">
-                <p class="text-slate-600 leading-relaxed">
-                    <strong>{{ $user->name }}</strong>{{ $user->title ? ', '.$user->title : '' }} —
+            <div class="mt-5 bg-slate-50 rounded-2xl p-6">
+                <p class="text-base text-slate-700 leading-relaxed">
+                    <strong class="font-bold text-slate-900">{{ $user->name }}</strong>{{ $user->title ? ', '.$user->title : '' }} —
                     {{ $user->about ?? $user->bio }}
                 </p>
             </div>
@@ -445,79 +445,21 @@
         </section>
         @endif
 
-        {{-- ── LOCATION & HOURS ─────────────────────────────────────── --}}
-        @if($user->work_address || $cityName)
-        <section id="location">
-            <div class="text-center mb-10">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Find Us</h3>
-                <p class="text-slate-500 mt-7 text-base">Walk-in, call, or meet virtually — your choice</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-stretch">
-                <div class="map-container shadow-md">
-                    <iframe src="https://maps.google.com/maps?q={{ urlencode(($user->work_address ?? '').($cityName ? ' '.$cityName : '').($stateName ? ' '.$stateName : '')) }}&output=embed"
-                            width="100%" height="100%" style="border:0; min-height:260px;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-                <div class="bg-slate-50 rounded-2xl p-7 flex flex-col justify-between">
-                    <div>
-                        <h4 class="font-bold text-xl text-slate-800 mb-4">Office &amp; Contact</h4>
-                        <div class="space-y-3 text-base">
-                            @if($user->work_address)
-                            <div class="flex items-center gap-3">
-                                <i class="fas fa-map-marker-alt text-blue-600 w-5 text-center"></i>
-                                <span class="text-slate-700">{{ $user->work_address }}{{ $cityName ? ', '.$cityName : '' }}{{ $stateName ? ', '.$stateName : '' }}</span>
-                            </div>
-                            @endif
-                            @if($callNumber)
-                            <div class="flex items-center gap-3">
-                                <i class="fas fa-phone text-blue-600 w-5 text-center"></i>
-                                <a href="tel:{{ $callNumber }}" class="text-blue-600 font-semibold">{{ $callNumber }}</a>
-                            </div>
-                            @endif
-                            @if($waNumber)
-                            <div class="flex items-center gap-3">
-                                <i class="fab fa-whatsapp text-emerald-600 w-5 text-center"></i>
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" class="text-emerald-600 font-semibold">WhatsApp</a>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    @if(count($workingDays))
-                    <div class="mt-6 border-t border-slate-200 pt-5">
-                        <p class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Office Hours</p>
-                        <div class="text-base space-y-1.5 text-slate-600">
-                            @foreach($allDays as $day)
-                            <div class="flex justify-between">
-                                <span>{{ $day }}</span>
-                                @if(in_array($day, $workingDays))
-                                <span class="font-semibold text-slate-800">Open</span>
-                                @else
-                                <span class="text-slate-400">Closed</span>
-                                @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </section>
-        @endif
-
         {{-- ── FAQ ───────────────────────────────────────────────────── --}}
         @if($user->faqs->count())
         <section>
-            <div class="text-center mb-10">
+            <div class="text-center mb-6">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Frequently Asked Questions</h3>
             </div>
-            <div class="max-w-3xl mx-auto space-y-3">
+            <div class="max-w-3xl mx-auto space-y-2">
                 @foreach($user->faqs as $faq)
-                <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
-                        <span class="font-medium text-base pr-4">{{ $faq->question }}</span>
-                        <i class="fas fa-chevron-down text-slate-400 text-base flex-shrink-0 faq-icon transition-transform duration-300"></i>
+                <div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 transition">
+                        <span class="font-semibold text-sm sm:text-base pr-4 text-slate-800">{{ $faq->question }}</span>
+                        <i class="fas fa-chevron-down text-slate-400 text-sm flex-shrink-0 faq-icon transition-transform duration-300"></i>
                     </button>
-                    <div class="faq-content px-6 text-base text-slate-600 border-t">
-                        <p class="py-4">{{ $faq->answer }}</p>
+                    <div class="faq-content px-5 text-sm text-slate-600 leading-relaxed border-t">
+                        <p class="py-3.5">{{ $faq->answer }}</p>
                     </div>
                 </div>
                 @endforeach
@@ -605,52 +547,27 @@
 </div>
 
     {{-- ── CUSTOM FOOTER ───────────────────────────────────────────── --}}
-    <footer class="bg-slate-900 text-slate-400 py-10">
+    <footer class="bg-slate-900 text-slate-400 py-8">
         <div class="max-w-5xl mx-auto px-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 pb-8 border-b border-slate-700">
-                <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
-                        <span class="text-white font-bold text-lg">Zonely</span>
-                    </div>
-                    <p class="text-sm leading-relaxed">Connecting you with trusted, verified local professionals across the USA.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-700">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
+                    <span class="text-white font-bold text-lg">Zonely</span>
                 </div>
-                <div>
-                    <h5 class="text-white font-semibold mb-3">{{ $user->name }}</h5>
-                    <div class="space-y-2 text-sm">
-                        @if($user->work_address || $cityName)
-                        <div class="flex items-start gap-2">
-                            <i class="fas fa-map-marker-alt w-4 text-blue-500 mt-0.5 flex-shrink-0"></i>
-                            <span>{{ $user->work_address ?? '' }}{{ $cityName ? ', '.$cityName : '' }}{{ $stateName ? ', '.$stateName : '' }}</span>
-                        </div>
-                        @endif
-                        @if($callNumber)
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-phone w-4 text-blue-500 flex-shrink-0"></i>
-                            <a href="tel:{{ $callNumber }}" class="hover:text-white transition">{{ $callNumber }}</a>
-                        </div>
-                        @endif
-                    </div>
+                <div class="flex items-center gap-5 text-sm">
+                    @if($callNumber)
+                    <a href="tel:{{ $callNumber }}" class="flex items-center gap-1.5 hover:text-white transition">
+                        <i class="fas fa-phone text-blue-400 text-xs"></i> {{ $callNumber }}
+                    </a>
+                    @endif
+                    @if($waNumber)
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" class="flex items-center gap-1.5 hover:text-white transition">
+                        <i class="fab fa-whatsapp text-emerald-400 text-xs"></i> WhatsApp
+                    </a>
+                    @endif
                 </div>
-                @if(count($workingDays))
-                <div>
-                    <h5 class="text-white font-semibold mb-3">Office Hours</h5>
-                    <div class="space-y-1.5 text-sm">
-                        @foreach(['Mon – Fri' => ['Monday','Tuesday','Wednesday','Thursday','Friday'], 'Saturday' => ['Saturday'], 'Sunday' => ['Sunday']] as $label => $days)
-                        <div class="flex justify-between">
-                            <span>{{ $label }}</span>
-                            @if(count(array_intersect($days, $workingDays)))
-                            <span class="text-white font-medium">Open</span>
-                            @else
-                            <span>Closed</span>
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
             </div>
-            <div class="pt-6 text-center text-sm opacity-60">&copy; {{ date('Y') }} Zonely &bull; All Rights Reserved</div>
+            <div class="pt-5 text-center text-xs opacity-50">&copy; {{ date('Y') }} Zonely &bull; All Rights Reserved</div>
         </div>
     </footer>
 
