@@ -29,11 +29,12 @@ class ServiceController extends Controller
             'price'        => 'nullable|numeric|min:0',
             'pricing_type' => 'nullable|string|max:50',
             'features'     => 'nullable|string',
-            'category_id'  => 'nullable|exists:categories,id',
         ]);
-        $validated['is_active'] = $request->boolean('is_active');
+        $validated['is_active']   = $request->boolean('is_active');
+        $validated['user_id']     = Auth::id();
+        $validated['category_id'] = Auth::user()->category_id;
 
-        Service::create(array_merge($validated, ['user_id' => Auth::id()]));
+        Service::create($validated);
 
         return redirect()->route('user.services.index')->with('success', 'Service added.');
     }
@@ -59,7 +60,6 @@ class ServiceController extends Controller
             'price'        => 'nullable|numeric|min:0',
             'pricing_type' => 'nullable|string|max:50',
             'features'     => 'nullable|string',
-            'category_id'  => 'nullable|exists:categories,id',
         ]);
         $validated['is_active'] = $request->boolean('is_active');
 
