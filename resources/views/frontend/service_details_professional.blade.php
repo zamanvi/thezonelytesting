@@ -1,6 +1,11 @@
 @php
-    $meta_title       = 'Trusted ' . ($user->category?->title ?? 'Professional') . ' in ' . ($user->city ?? 'Your City') . ($user->state ? ', '.$user->state : '') . ' | ' . $user->name;
-    $meta_description = $user->name . ' — verified ' . ($user->category?->title ?? 'professional') . ($user->city ? ' in '.$user->city : '') . '. ' . Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 120);
+    // Resolve city/state/country to names if stored as numeric IDs (legacy data)
+    $cityName    = $user->city    ? (is_numeric($user->city)    ? (\App\Models\City::find($user->city)?->title    ?? $user->city)    : $user->city)    : null;
+    $stateName   = $user->state   ? (is_numeric($user->state)   ? (\App\Models\State::find($user->state)?->title   ?? $user->state)   : $user->state)   : null;
+    $countryName = $user->country ? (is_numeric($user->country) ? (\App\Models\Country::find($user->country)?->title ?? $user->country) : $user->country) : null;
+
+    $meta_title       = 'Trusted ' . ($user->category?->title ?? 'Professional') . ' in ' . ($cityName ?? 'Your City') . ($stateName ? ', '.$stateName : '') . ' | ' . $user->name;
+    $meta_description = $user->name . ' — verified ' . ($user->category?->title ?? 'professional') . ($cityName ? ' in '.$cityName : '') . '. ' . Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 120);
     $reviewCount      = $user->reviews->count();
     $avgRating        = $reviewCount ? round($user->reviews->avg('rating'), 1) : null;
     $schedule         = is_array($user->schedule) ? $user->schedule : (json_decode($user->schedule, true) ?? []);
@@ -20,7 +25,7 @@
 @section('title', $meta_title)
 @php
     $ogSvcs = $activeServices->take(2)->pluck('title')->filter();
-    $ogDesc = $user->name . ' — ' . ($user->category?->title ?? 'Professional') . ($user->city ? ' in ' . $user->city : '') . '.';
+    $ogDesc = $user->name . ' — ' . ($user->category?->title ?? 'Professional') . ($cityName ? ' in ' . $cityName : '') . '.';
     if ($ogSvcs->count()) {
         $ogDesc .= ' Services: ' . $ogSvcs->map(fn($s) => '✓ ' . $s)->implode('  ');
     } else {
@@ -50,8 +55,8 @@
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "{{ addslashes($user->work_address ?? '') }}",
-    "addressLocality": "{{ $user->city ?? '' }}",
-    "addressRegion": "{{ $user->state ?? '' }}",
+    "addressLocality": "{{ $cityName ?? '' }}",
+    "addressRegion": "{{ $stateName ?? '' }}",
     "addressCountry": "US"
   }
   @if($callNumber),"telephone": "{{ $callNumber }}"@endif
@@ -119,7 +124,7 @@
                             <h3 class="text-lg font-bold">{{ $user->name }}</h3>
                             <p class="text-blue-200 text-sm mt-0.5">
                                 {{ $user->title ?? $user->designation ?? $user->category?->title }}
-                                @if($user->city) · {{ $user->city }}{{ $user->state ? ', '.$user->state : '' }}@endif
+                                @if($cityName) · {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                             </p>
                         </div>
                         @php $statCount = ($yearsExp ? 1 : 0) + ($reviewCount ? 1 : 0) + ($avgRating ? 1 : 0); @endphp
@@ -145,10 +150,10 @@
                             @endif
                         </div>
                         @endif
-                        @if($user->work_address || $user->city)
+                        @if($user->work_address || $cityName)
                         <div class="flex items-center justify-center gap-1.5 mt-4 text-blue-200 text-xs">
                             <i class="fas fa-map-marker-alt text-emerald-400 text-xs"></i>
-                            {{ $user->work_address ?? $user->city.($user->state ? ', '.$user->state : '') }}
+                            {{ $user->work_address ?? $cityName.($stateName ? ', '.$stateName : '') }}
                         </div>
                         @endif
                         @if($user->languages->count())
@@ -171,11 +176,11 @@
                     <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-xs font-semibold px-4 py-2 rounded-full mb-6">
                         <i class="fas fa-shield-halved text-emerald-400"></i>
                         Verified {{ $user->category?->title ?? 'Professional' }}
-                        @if($user->city) &nbsp;·&nbsp; {{ $user->city }}{{ $user->state ? ', '.$user->state : '' }}@endif
+                        @if($cityName) &nbsp;·&nbsp; {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </div>
                     <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
                         Trusted {{ $user->category?->title ?? 'Professional' }}<br>
-                        @if($user->city)in {{ $user->city }}{{ $user->state ? ', '.$user->state : '' }}@endif
+                        @if($cityName)in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </h1>
                     @if($user->bio || $user->about)
                     <p class="mt-6 text-blue-100 text-base md:text-lg leading-relaxed">
@@ -441,7 +446,7 @@
         @endif
 
         {{-- ── LOCATION & HOURS ─────────────────────────────────────── --}}
-        @if($user->work_address || $user->city)
+        @if($user->work_address || $cityName)
         <section id="location">
             <div class="text-center mb-10">
                 <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Find Us</h3>
@@ -449,7 +454,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 items-stretch">
                 <div class="map-container shadow-md">
-                    <iframe src="https://maps.google.com/maps?q={{ urlencode(($user->work_address ?? '').($user->city ? ' '.$user->city : '').($user->state ? ' '.$user->state : '')) }}&output=embed"
+                    <iframe src="https://maps.google.com/maps?q={{ urlencode(($user->work_address ?? '').($cityName ? ' '.$cityName : '').($stateName ? ' '.$stateName : '')) }}&output=embed"
                             width="100%" height="100%" style="border:0; min-height:260px;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
                 <div class="bg-slate-50 rounded-2xl p-7 flex flex-col justify-between">
@@ -459,7 +464,7 @@
                             @if($user->work_address)
                             <div class="flex items-center gap-3">
                                 <i class="fas fa-map-marker-alt text-blue-600 w-5 text-center"></i>
-                                <span class="text-slate-700">{{ $user->work_address }}{{ $user->city ? ', '.$user->city : '' }}{{ $user->state ? ', '.$user->state : '' }}</span>
+                                <span class="text-slate-700">{{ $user->work_address }}{{ $cityName ? ', '.$cityName : '' }}{{ $stateName ? ', '.$stateName : '' }}</span>
                             </div>
                             @endif
                             @if($callNumber)
@@ -613,10 +618,10 @@
                 <div>
                     <h5 class="text-white font-semibold mb-3">{{ $user->name }}</h5>
                     <div class="space-y-2 text-sm">
-                        @if($user->work_address || $user->city)
+                        @if($user->work_address || $cityName)
                         <div class="flex items-start gap-2">
                             <i class="fas fa-map-marker-alt w-4 text-blue-500 mt-0.5 flex-shrink-0"></i>
-                            <span>{{ $user->work_address ?? '' }}{{ $user->city ? ', '.$user->city : '' }}{{ $user->state ? ', '.$user->state : '' }}</span>
+                            <span>{{ $user->work_address ?? '' }}{{ $cityName ? ', '.$cityName : '' }}{{ $stateName ? ', '.$stateName : '' }}</span>
                         </div>
                         @endif
                         @if($callNumber)

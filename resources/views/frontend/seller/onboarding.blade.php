@@ -196,7 +196,11 @@
             </div>
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
-                    @if($user->city || $user->state)<p><span class="font-semibold">Area:</span> {{ collect([$user->city, $user->state])->filter()->implode(', ') }}</p>@endif
+                    @php
+                        $oc = $user->city    ? (is_numeric($user->city)  ? (\App\Models\City::find($user->city)?->title  ?? $user->city)  : $user->city)  : null;
+                        $os = $user->state   ? (is_numeric($user->state) ? (\App\Models\State::find($user->state)?->title ?? $user->state) : $user->state) : null;
+                    @endphp
+                    @if($oc || $os)<p><span class="font-semibold">Area:</span> {{ collect([$oc, $os])->filter()->implode(', ') }}</p>@endif
                     @if($user->zip_code)<p><span class="font-semibold">ZIP:</span> {{ $user->zip_code }}</p>@endif
                     @if($user->service_radius)<p><span class="font-semibold">Radius:</span> {{ $user->service_radius }} miles</p>@endif
                 </div>

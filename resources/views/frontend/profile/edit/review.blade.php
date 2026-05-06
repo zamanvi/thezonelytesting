@@ -59,8 +59,12 @@
             </div>
             <div class="flex items-center justify-between px-5 py-3">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Location</span>
+                @php
+                    $rc = $user->city  ? (is_numeric($user->city)  ? (\App\Models\City::find($user->city)?->title  ?? $user->city)  : $user->city)  : null;
+                    $rs = $user->state ? (is_numeric($user->state) ? (\App\Models\State::find($user->state)?->title ?? $user->state) : $user->state) : null;
+                @endphp
                 <span class="text-sm font-semibold text-slate-700">
-                    {{ collect([$user->city, $user->state])->filter()->implode(', ') ?: '—' }}
+                    {{ collect([$rc, $rs])->filter()->implode(', ') ?: '—' }}
                 </span>
             </div>
         </div>
