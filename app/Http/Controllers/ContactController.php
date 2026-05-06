@@ -11,12 +11,12 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::where('user_id', auth()->id())->paginate(10);
-        return view('profile.contacts.index', compact('contacts'));
+        return view('frontend.profile.contacts.index', compact('contacts'));
     }
 
     public function create()
     {
-        return view('profile.contacts.create');
+        return view('frontend.profile.contacts.create');
     }
 
     public function store(Request $request)
@@ -30,13 +30,13 @@ class ContactController extends Controller
 
         Contact::create(array_merge($validated, ['user_id' => auth()->id()]));
 
-        return redirect()->route('profile.contacts.index')->with('success', 'Contact added.');
+        return redirect()->route('user.contacts.index')->with('success', 'Contact added.');
     }
 
     public function edit($id)
     {
         $contact = Contact::where('user_id', auth()->id())->findOrFail($id);
-        return view('profile.contacts.edit', compact('contact'));
+        return view('frontend.profile.contacts.edit', compact('contact'));
     }
 
     public function update(Request $request, $id)
@@ -50,21 +50,21 @@ class ContactController extends Controller
 
         Contact::where('user_id', auth()->id())->findOrFail($id)->update($validated);
 
-        return redirect()->route('profile.contacts.index')->with('success', 'Contact updated.');
+        return redirect()->route('user.contacts.index')->with('success', 'Contact updated.');
     }
 
     public function destroy($id)
     {
         Contact::where('user_id', auth()->id())->findOrFail($id)->delete();
-        return redirect()->route('profile.contacts.index')->with('success', 'Contact deleted.');
+        return redirect()->route('user.contacts.index')->with('success', 'Contact deleted.');
     }
 
     private function valueRules(?string $type): array
     {
         return match ($type) {
-            'email'            => ['required', 'email', 'max:255'],
-            'phone', 'whatsapp'=> ['required', 'string', 'regex:/^\+?[0-9\s\-\(\)]{7,20}$/'],
-            default            => ['required', 'string', 'max:500'],
+            'email'             => ['required', 'email', 'max:255'],
+            'phone', 'whatsapp' => ['required', 'string', 'regex:/^\+?[0-9\s\-\(\)]{7,20}$/'],
+            default             => ['required', 'string', 'max:500'],
         };
     }
 }

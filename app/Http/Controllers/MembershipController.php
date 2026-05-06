@@ -21,7 +21,10 @@ class MembershipController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'    => 'required|string|max:255',
+            'start'   => 'nullable|string|max:20',
+            'end'     => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
         ]);
 
         Membership::create(array_merge($validated, ['user_id' => auth()->id()]));
@@ -38,12 +41,15 @@ class MembershipController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'    => 'required|string|max:255',
+            'start'   => 'nullable|string|max:20',
+            'end'     => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
         ]);
 
         Membership::where('user_id', auth()->id())->findOrFail($id)->update($validated);
 
-        return back()->with('success', 'Membership updated.');
+        return redirect()->route('user.memberships.index')->with('success', 'Membership updated.');
     }
 
     public function destroy($id)

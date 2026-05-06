@@ -11,14 +11,20 @@
     </div>
     @endif
 
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Services & Pricing</h1>
-            <p class="text-sm text-gray-500 mt-0.5">These appear in the Pricing section of your public page</p>
+    <div class="flex items-center justify-between mb-6 gap-3">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('seller.onboarding') }}"
+               class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition shrink-0">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+            </a>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Services & Pricing</h1>
+                <p class="text-xs text-gray-500 mt-0.5">Shown in the Pricing section of your public page</p>
+            </div>
         </div>
         <a href="{{ route('user.services.create') }}"
-           class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-2xl text-sm transition">
-            <i class="fa-solid fa-plus"></i> Add Service
+           class="shrink-0 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-2xl text-sm transition">
+            <i class="fa-solid fa-plus"></i> Add
         </a>
     </div>
 

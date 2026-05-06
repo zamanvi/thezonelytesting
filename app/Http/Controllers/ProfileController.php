@@ -80,7 +80,16 @@ class ProfileController extends Controller
             $next = 'service_location';
 
         } elseif ($setup === 'service_location') {
-            $next = 'contact';
+            $request->validate([
+                'category_id'        => 'nullable|integer|exists:categories,id',
+                'country'            => 'nullable|integer',
+                'state'              => 'nullable|integer',
+                'city'               => 'nullable|integer',
+                'zip_code'           => 'nullable|integer',
+                'additional_details' => 'nullable|string|max:500',
+            ]);
+            $user->update($request->only(['category_id', 'country', 'state', 'city', 'zip_code', 'additional_details']));
+            return redirect()->route('seller.onboarding')->with('success', 'Location saved.');
 
         } elseif ($setup === 'contact') {
             $request->validate([
@@ -92,12 +101,13 @@ class ProfileController extends Controller
                 'whatsapp'   => $request->whatsapp,
                 'show_phone' => $request->boolean('show_phone'),
             ]);
-            $next = 'profile';
+            return redirect()->route('seller.onboarding')->with('success', 'Contact info saved.');
 
         } elseif ($setup === 'profile') {
             $request->validate([
                 'bio'           => 'nullable|string|max:2000',
-                'experience'    => 'nullable|string|max:255',
+                'title'         => 'nullable|string|max:255',
+                'experience'    => 'nullable|integer|min:0|max:99',
                 'profile_photo' => 'nullable|image|max:2048',
             ]);
 
@@ -106,9 +116,10 @@ class ProfileController extends Controller
             }
 
             $user->bio        = $request->bio;
+            $user->title      = $request->title;
             $user->experience = $request->experience;
             $user->save();
-            $next = 'review';
+            return redirect()->route('seller.onboarding')->with('success', 'Profile saved.');
 
         } elseif ($setup === 'review') {
             return redirect()->route('seller.dashboard')->with('success', 'Profile completed!');

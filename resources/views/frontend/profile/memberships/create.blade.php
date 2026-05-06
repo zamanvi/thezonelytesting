@@ -32,9 +32,15 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">End Year</label>
-                    <input type="text" name="end" value="{{ old('end') }}" placeholder="e.g. Present" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                    <input type="text" id="endYear" value="{{ old('end') }}" placeholder="e.g. 2023" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                    <input type="hidden" name="end" id="endYearHidden" value="{{ old('end') }}">
                 </div>
             </div>
+            <label class="flex items-center gap-2.5 mt-3 cursor-pointer select-none">
+                <input type="checkbox" id="ongoingMembership" onchange="toggleOngoing('endYear','Present',this)"
+                    class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+                <span class="text-sm text-slate-600">Currently a member <span class="text-emerald-600 font-semibold">(Ongoing)</span></span>
+            </label>
         </div>
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <label class="block text-sm font-bold text-slate-700 mb-2">Location / Details <span class="text-slate-400 font-normal">(optional)</span></label>
@@ -47,4 +53,17 @@
         </div>
     </form>
 </div>
+<script>
+function toggleOngoing(inputId, presentLabel, checkbox) {
+    const input  = document.getElementById(inputId);
+    const hidden = document.getElementById(inputId + 'Hidden');
+    const val    = checkbox.checked ? presentLabel : '';
+    input.value  = val;
+    if (hidden) hidden.value = val;
+    input.disabled = checkbox.checked;
+    input.classList.toggle('bg-slate-50',   checkbox.checked);
+    input.classList.toggle('text-slate-400', checkbox.checked);
+    input.addEventListener('input', () => { if (hidden) hidden.value = input.value; });
+}
+</script>
 @endsection

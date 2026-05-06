@@ -22,19 +22,13 @@ class EducationController extends Controller
     {
         $validated = $request->validate([
             'degree'       => 'required|string|max:255',
-            'institution'  => 'required|string|max:255',
-            'passing_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'institution'  => 'nullable|string|max:255',
+            'passing_year' => 'nullable|string|max:20',
         ]);
 
         Education::create(array_merge($validated, ['user_id' => auth()->id()]));
 
         return redirect()->route('user.educations.index')->with('success', 'Education added.');
-    }
-
-    public function show($id)
-    {
-        $education = Education::where('user_id', auth()->id())->findOrFail($id);
-        return view('frontend.profile.educations.show', compact('education'));
     }
 
     public function edit($id)
@@ -47,13 +41,13 @@ class EducationController extends Controller
     {
         $validated = $request->validate([
             'degree'       => 'required|string|max:255',
-            'institution'  => 'required|string|max:255',
-            'passing_year' => 'required|integer|min:1900|max:' . date('Y'),
+            'institution'  => 'nullable|string|max:255',
+            'passing_year' => 'nullable|string|max:20',
         ]);
 
         Education::where('user_id', auth()->id())->findOrFail($id)->update($validated);
 
-        return back()->with('success', 'Education updated.');
+        return redirect()->route('user.educations.index')->with('success', 'Education updated.');
     }
 
     public function destroy($id)

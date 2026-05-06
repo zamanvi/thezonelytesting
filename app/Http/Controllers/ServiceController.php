@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,8 +16,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        return view('frontend.profile.services.create', compact('categories'));
+        return view('frontend.profile.services.create');
     }
 
     public function store(Request $request)
@@ -39,17 +37,10 @@ class ServiceController extends Controller
         return redirect()->route('user.services.index')->with('success', 'Service added.');
     }
 
-    public function show(string $id)
-    {
-        $service = Service::where('user_id', Auth::id())->findOrFail($id);
-        return view('frontend.profile.services.show', compact('service'));
-    }
-
     public function edit(string $id)
     {
-        $service    = Service::where('user_id', Auth::id())->findOrFail($id);
-        $categories = Category::all();
-        return view('frontend.profile.services.edit', compact('service', 'categories'));
+        $service = Service::where('user_id', Auth::id())->findOrFail($id);
+        return view('frontend.profile.services.edit', compact('service'));
     }
 
     public function update(Request $request, string $id)

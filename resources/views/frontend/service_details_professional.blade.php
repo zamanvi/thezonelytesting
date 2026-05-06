@@ -9,7 +9,8 @@
     $phone            = $user->contacts->where('type','phone')->first();
     $wa               = $user->contacts->where('type','whatsapp')->first();
     $trackingNumber   = $user->twilioNumber?->number;
-    $callNumber       = $trackingNumber ?? $phone?->value ?? $user->phone;
+    $rawPhone         = $phone?->value ?? $user->phone;
+    $callNumber       = $trackingNumber ?? ($user->show_phone ? $rawPhone : null);
     $waNumber         = $wa?->value ?? $user->whatsapp;
     $activeServices   = $user->services->where('is_active', true);
     $tags             = array_filter(array_map('trim', explode(',', $user->tags ?? '')));
@@ -69,8 +70,8 @@
     .sh::after { content: ''; position: absolute; width: 48px; height: 3px; background: #2563eb; bottom: -8px; left: 0; border-radius: 9999px; }
     .sh-center::after { left: 50%; transform: translateX(-50%); }
     .map-container { border-radius: 16px; overflow: hidden; }
-    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; }
-    .accordion-content.open { max-height: 320px; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .accordion-content.open { max-height: 500px; }
     .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
     .faq-content.open { max-height: 200px; }
     .booking-body { max-height: 0; overflow: hidden; transition: max-height 0.45s ease-out, opacity 0.3s ease; opacity: 0; }
@@ -141,6 +142,18 @@
                             {{ $user->work_address ?? $user->city.($user->state ? ', '.$user->state : '') }}
                         </div>
                         @endif
+                        @if($user->languages->count())
+                        <div class="mt-4 pt-4 border-t border-white/10">
+                            <p class="text-xs text-blue-300 mb-2 font-semibold uppercase tracking-wide">Speaks</p>
+                            <div class="flex flex-wrap justify-center gap-1.5">
+                                @foreach($user->languages as $lang)
+                                <span class="bg-white/10 border border-white/20 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                                    {{ $lang->name }}
+                                </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -160,7 +173,7 @@
                         {{ Str::limit($user->bio ?? $user->about, 160) }}
                     </p>
                     @endif
-                    <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start flex-wrap">
                         @if($callNumber)
                         <a href="tel:{{ $callNumber }}"
                            class="flex items-center justify-center gap-3 bg-white text-blue-700 hover:bg-yellow-300 px-8 py-4 rounded-full font-bold text-base shadow-xl transition">
@@ -174,6 +187,10 @@
                             <i class="fab fa-whatsapp text-xl"></i> WhatsApp
                         </a>
                         @endif
+                        <a href="#contact"
+                           class="flex items-center justify-center gap-3 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-4 rounded-full font-bold text-base transition">
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </a>
                     </div>
                     @if($reviewCount)
                     <a href="#testimonials"
@@ -213,91 +230,99 @@
 
     <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14 space-y-12 md:space-y-16">
 
-        {{-- ── SERVICES ─────────────────────────────────────────────── --}}
-        @if($activeServices->count() || count($tags))
-        <section id="services">
-            <div class="text-center mb-10">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Professional Services</h3>
-                <p class="text-slate-500 mt-7 text-base">Everything {{ $user->name }} offers</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-                @forelse($activeServices->take(8) as $svc)
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lift text-center">
-                    <div class="service-icon mx-auto mb-4"><i class="fas fa-briefcase text-blue-600 text-xl"></i></div>
-                    <h4 class="font-semibold text-base leading-snug">{{ $svc->title }}</h4>
-                    @if($svc->description)<p class="text-sm text-slate-500 mt-2">{{ Str::limit($svc->description, 60) }}</p>@endif
-                </div>
-                @empty
-                @foreach(array_slice($tags, 0, 8) as $tag)
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 lift text-center">
-                    <div class="service-icon mx-auto mb-4"><i class="fas fa-circle-check text-blue-600 text-xl"></i></div>
-                    <h4 class="font-semibold text-base leading-snug">{{ ucfirst($tag) }}</h4>
-                </div>
-                @endforeach
-                @endforelse
-            </div>
-        </section>
-        @endif
-
         {{-- ── PRICING ──────────────────────────────────────────────── --}}
         @if($activeServices->count())
         <section id="pricing">
             <div class="text-center mb-10">
-                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Transparent Pricing</h3>
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Services &amp; Pricing</h3>
                 <p class="text-slate-500 mt-7 text-base">No hidden fees · Click any service to see full details</p>
             </div>
             @php
-                $ptMap = ['starting_at'=>'starting at','per_month'=>'per month','per_hour'=>'per hour','flat_rate'=>'flat rate','free'=>'free','contact'=>'contact us'];
+                $ptMap = ['starting_at'=>'Starting at','per_month'=>'Per month','per_hour'=>'Per hour','flat_rate'=>'Flat rate','free'=>'Free','contact'=>'Contact us'];
             @endphp
             <div class="space-y-3">
                 @foreach($activeServices as $svc)
                 @php
-                    $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'starting at';
+                    $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
                     $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
+                    $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
                 @endphp
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group">
                     <button onclick="toggleAccordion(this)"
-                        class="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-slate-50 transition">
-                        <div class="flex items-center gap-4">
+                        class="w-full flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 text-left hover:bg-blue-50/40 transition-colors">
+                        <div class="flex items-center gap-4 min-w-0">
                             <div class="service-icon flex-shrink-0">
-                                <i class="fas fa-briefcase text-blue-600 text-lg"></i>
+                                <i class="fas fa-briefcase text-blue-600 text-base"></i>
                             </div>
-                            <p class="font-semibold text-lg text-slate-900">{{ $svc->title }}</p>
+                            <div class="min-w-0">
+                                <p class="font-bold text-base sm:text-lg text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
+                                @if($svc->description && !$features)
+                                <p class="text-xs text-slate-400 mt-0.5 truncate">{{ Str::limit($svc->description, 60) }}</p>
+                                @elseif($features)
+                                <p class="text-xs text-slate-400 mt-0.5">{{ count($features) }} {{ Str::plural('item', count($features)) }} included</p>
+                                @endif
+                            </div>
                         </div>
-                        <div class="text-right flex-shrink-0 ml-4">
-                            @if($svc->price && $svc->pricing_type !== 'free' && $svc->pricing_type !== 'contact')
-                                <div class="price-num">${{ number_format($svc->price, 0) }}</div>
-                                <div class="text-sm text-blue-500 font-semibold">{{ $ptLabel }}</div>
-                            @elseif($svc->pricing_type === 'free')
-                                <div class="text-xl font-black text-emerald-600">Free</div>
-                            @else
-                                <div class="text-base font-bold text-slate-400">Contact us</div>
-                            @endif
+                        <div class="flex items-center gap-3 flex-shrink-0 ml-4">
+                            <div class="text-right">
+                                @if($hasPrice)
+                                    <div class="price-num leading-none">${{ number_format($svc->price, 0) }}</div>
+                                    <div class="text-xs text-blue-500 font-semibold mt-0.5">{{ $ptLabel }}</div>
+                                @elseif($svc->pricing_type === 'free')
+                                    <div class="text-xl font-black text-emerald-600">Free</div>
+                                @else
+                                    <div class="text-sm font-bold text-slate-400">Contact us</div>
+                                @endif
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
+                                <i class="fas fa-chevron-down text-slate-400 text-xs accordion-icon transition-transform duration-300"></i>
+                            </div>
                         </div>
                     </button>
-                    {{-- Accordion content --}}
                     <div class="accordion-content border-t border-slate-100">
                         @if($features)
-                        <div class="px-6 pt-4 pb-2 space-y-2">
+                        <div class="px-5 sm:px-6 pt-4 pb-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                             @foreach($features as $feature)
-                            <div class="flex items-center gap-2.5">
-                                <i class="fas fa-check text-emerald-500 text-xs shrink-0"></i>
-                                <span class="text-sm text-slate-600">{{ $feature }}</span>
+                            <div class="flex items-start gap-2.5">
+                                <span class="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-emerald-600" style="font-size:9px"></i>
+                                </span>
+                                <span class="text-sm text-slate-700">{{ $feature }}</span>
                             </div>
                             @endforeach
                         </div>
                         @endif
                         @if($svc->description)
-                        <p class="px-6 pt-3 pb-4 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
+                        <p class="px-5 sm:px-6 pt-2 pb-3 text-sm text-slate-500 leading-relaxed">{{ $svc->description }}</p>
                         @endif
-                        <div class="px-6 pb-5 {{ ($features || $svc->description) ? '' : 'pt-4' }}">
+                        <div class="px-5 sm:px-6 pb-5 pt-3 flex items-center gap-3 border-t border-slate-50">
                             <a href="#contact"
-                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
-                                <i class="fas fa-phone text-xs"></i> Inquire About This Service
+                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                                <i class="fas fa-paper-plane text-xs"></i> Get a Quote
                             </a>
+                            @if($callNumber)
+                            <a href="tel:{{ $callNumber }}"
+                               class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-sm transition">
+                                <i class="fas fa-phone text-xs"></i> Call Now
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>
+                @endforeach
+            </div>
+        </section>
+        @elseif(count($tags))
+        {{-- Fallback: show tags as service chips if no priced services --}}
+        <section id="pricing">
+            <div class="text-center mb-10">
+                <h3 class="font-bold text-3xl sm:text-4xl sh sh-center">Services Offered</h3>
+            </div>
+            <div class="flex flex-wrap gap-3 justify-center">
+                @foreach($tags as $tag)
+                <span class="flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 font-semibold px-5 py-3 rounded-2xl text-sm">
+                    <i class="fas fa-circle-check text-blue-400 text-xs"></i> {{ ucfirst($tag) }}
+                </span>
                 @endforeach
             </div>
         </section>
@@ -650,10 +675,13 @@
     });
 
     function toggleAccordion(btn) {
-        const content = btn.nextElementSibling;
-        const icon    = btn.querySelector('.acc-icon');
+        const content  = btn.nextElementSibling;
+        const icon     = btn.querySelector('.acc-icon');
+        const chevron  = btn.querySelector('.accordion-icon');
         content.classList.toggle('open');
-        if (icon) icon.style.transform = content.classList.contains('open') ? 'rotate(45deg)' : '';
+        const isOpen = content.classList.contains('open');
+        if (icon)    icon.style.transform    = isOpen ? 'rotate(45deg)'  : '';
+        if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
     }
 
     function toggleFaq(btn) {

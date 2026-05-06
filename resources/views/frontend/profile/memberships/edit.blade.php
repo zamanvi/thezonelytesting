@@ -24,17 +24,27 @@
             <label class="block text-sm font-bold text-slate-700 mb-2">Organization Name <span class="text-red-500">*</span></label>
             <input type="text" name="name" value="{{ old('name', $membership->name) }}" required class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
         </div>
+        @php $isOngoing = strtolower($membership->end ?? '') === 'present'; @endphp
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">Start Year</label>
-                    <input type="text" name="start" value="{{ old('start', $membership->start) }}" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                    <input type="text" name="start" value="{{ old('start', $membership->start) }}" placeholder="e.g. 2015" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">End Year</label>
-                    <input type="text" name="end" value="{{ old('end', $membership->end) }}" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                    <input type="text" id="endYear" value="{{ old('end', $membership->end) }}" placeholder="e.g. 2023"
+                        {{ $isOngoing ? 'disabled' : '' }}
+                        class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition {{ $isOngoing ? 'bg-slate-50 text-slate-400' : '' }}">
+                    <input type="hidden" name="end" id="endYearHidden" value="{{ old('end', $membership->end) }}">
                 </div>
             </div>
+            <label class="flex items-center gap-2.5 mt-3 cursor-pointer select-none">
+                <input type="checkbox" id="ongoingMembership" onchange="toggleOngoing('endYear','Present',this)"
+                    {{ $isOngoing ? 'checked' : '' }}
+                    class="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+                <span class="text-sm text-slate-600">Currently a member <span class="text-emerald-600 font-semibold">(Ongoing)</span></span>
+            </label>
         </div>
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <label class="block text-sm font-bold text-slate-700 mb-2">Location / Details</label>
@@ -54,4 +64,17 @@
         @csrf @method('DELETE')
     </form>
 </div>
+<script>
+function toggleOngoing(inputId, presentLabel, checkbox) {
+    const input  = document.getElementById(inputId);
+    const hidden = document.getElementById(inputId + 'Hidden');
+    const val    = checkbox.checked ? presentLabel : '';
+    input.value  = val;
+    if (hidden) hidden.value = val;
+    input.disabled = checkbox.checked;
+    input.classList.toggle('bg-slate-50',   checkbox.checked);
+    input.classList.toggle('text-slate-400', checkbox.checked);
+    input.addEventListener('input', () => { if (hidden) hidden.value = input.value; });
+}
+</script>
 @endsection

@@ -266,6 +266,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('countries.states', StateController::class);
             Route::resource('states.cities', CityController::class);
             Route::resource('cities.postal-codes', PostalCodeController::class);
+            Route::resource('states', StateController::class)->only(['index','edit','update','destroy']);
+            Route::resource('cities', CityController::class)->only(['index','edit','update','destroy']);
         });
 
         // Blogs module
