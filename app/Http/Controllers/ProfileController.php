@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Country;
+use App\Models\PostalCode;
+use App\Models\State;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -88,7 +91,14 @@ class ProfileController extends Controller
                 'zip_code'           => 'nullable|integer',
                 'additional_details' => 'nullable|string|max:500',
             ]);
-            $user->update($request->only(['category_id', 'country', 'state', 'city', 'zip_code', 'additional_details']));
+            $user->update([
+                'category_id'        => $request->category_id ?: null,
+                'country'            => $request->country ? (Country::find($request->country)?->title ?? $request->country) : null,
+                'state'              => $request->state   ? (State::find($request->state)?->title   ?? $request->state)   : null,
+                'city'               => $request->city    ? (City::find($request->city)?->title     ?? $request->city)    : null,
+                'zip_code'           => $request->zip_code ? (PostalCode::find($request->zip_code)?->code ?? $request->zip_code) : null,
+                'additional_details' => $request->additional_details,
+            ]);
             return redirect()->route('seller.onboarding')->with('success', 'Location saved.');
 
         } elseif ($setup === 'contact') {

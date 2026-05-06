@@ -1,8 +1,8 @@
 @php
     $meta_title       = 'Trusted ' . ($user->category?->title ?? 'Professional') . ' in ' . ($user->city ?? 'Your City') . ($user->state ? ', '.$user->state : '') . ' | ' . $user->name;
     $meta_description = $user->name . ' — verified ' . ($user->category?->title ?? 'professional') . ($user->city ? ' in '.$user->city : '') . '. ' . Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 120);
-    $avgRating        = $user->reviews->count() ? round($user->reviews->avg('rating'), 1) : 4.9;
     $reviewCount      = $user->reviews->count();
+    $avgRating        = $reviewCount ? round($user->reviews->avg('rating'), 1) : null;
     $schedule         = is_array($user->schedule) ? $user->schedule : (json_decode($user->schedule, true) ?? []);
     $workingDays      = $schedule['working_days'] ?? [];
     $allDays          = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -14,7 +14,7 @@
     $waNumber         = $wa?->value ?? $user->whatsapp;
     $activeServices   = $user->services->where('is_active', true);
     $tags             = array_filter(array_map('trim', explode(',', $user->tags ?? '')));
-    $yearsExp         = $user->experience ?? (date('Y') - date('Y', strtotime($user->created_at)));
+    $yearsExp         = $user->experience ? (int)$user->experience : null;
 @endphp
 @extends('frontend.layouts._app')
 @section('title', $meta_title)
@@ -45,7 +45,7 @@
   "name": "{{ addslashes($user->name) }}",
   "description": "{{ addslashes(Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 200)) }}",
   "url": "{{ url()->current() }}",
-  "image": "{{ $user->profile_photo }}",
+  "image": "{{ $user->profile_photo ? asset($user->profile_photo) : '' }}",
   "@id": "{{ url()->current() }}",
   "address": {
     "@type": "PostalAddress",
@@ -122,20 +122,29 @@
                                 @if($user->city) · {{ $user->city }}{{ $user->state ? ', '.$user->state : '' }}@endif
                             </p>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 mt-5">
+                        @php $statCount = ($yearsExp ? 1 : 0) + ($reviewCount ? 1 : 0) + ($avgRating ? 1 : 0); @endphp
+                        @if($statCount)
+                        <div class="grid grid-cols-{{ $statCount }} gap-2 mt-5">
+                            @if($yearsExp)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
                                 <div class="text-xl font-bold text-yellow-300">{{ $yearsExp }}+</div>
                                 <div class="text-xs text-blue-200 mt-0.5 leading-tight">Years<br>Exp.</div>
                             </div>
+                            @endif
+                            @if($reviewCount)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-xl font-bold text-yellow-300">{{ $reviewCount ?: '50+' }}</div>
-                                <div class="text-xs text-blue-200 mt-0.5 leading-tight">Happy<br>Clients</div>
+                                <div class="text-xl font-bold text-yellow-300">{{ $reviewCount }}</div>
+                                <div class="text-xs text-blue-200 mt-0.5 leading-tight">Client<br>Reviews</div>
                             </div>
+                            @endif
+                            @if($avgRating)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
                                 <div class="text-xl font-bold text-yellow-300">{{ $avgRating }}★</div>
                                 <div class="text-xs text-blue-200 mt-0.5 leading-tight">Avg.<br>Rating</div>
                             </div>
+                            @endif
                         </div>
+                        @endif
                         @if($user->work_address || $user->city)
                         <div class="flex items-center justify-center gap-1.5 mt-4 text-blue-200 text-xs">
                             <i class="fas fa-map-marker-alt text-emerald-400 text-xs"></i>
@@ -192,7 +201,7 @@
                             <i class="fas fa-calendar-check"></i> Book Now
                         </a>
                     </div>
-                    @if($reviewCount)
+                    @if($reviewCount && $avgRating)
                     <a href="#testimonials"
                        class="mt-4 inline-flex items-center gap-2.5 justify-center md:justify-start text-white/80 hover:text-white text-sm font-semibold transition group">
                         <span class="flex items-center gap-0.5 text-yellow-300">
@@ -371,8 +380,8 @@
                 @if($user->memberships->count())
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-7">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="bg-icon"><i class="fas fa-briefcase text-blue-600 text-base"></i></div>
-                        <h4 class="font-bold text-xl text-slate-800">Experience</h4>
+                        <div class="bg-icon"><i class="fas fa-id-badge text-blue-600 text-base"></i></div>
+                        <h4 class="font-bold text-xl text-slate-800">Memberships & Associations</h4>
                     </div>
                     <div class="space-y-5">
                         @foreach($user->memberships as $m)
@@ -667,21 +676,11 @@
 
 @section('scripts')
 <script>
-    document.querySelectorAll('[onclick="toggleAccordion(this)"]').forEach(btn => {
-        const i = document.createElement('i');
-        i.className = 'acc-icon fas fa-plus text-slate-300 text-xs ml-3 shrink-0 self-center';
-        i.style.transition = 'transform 0.3s ease';
-        btn.appendChild(i);
-    });
-
     function toggleAccordion(btn) {
-        const content  = btn.nextElementSibling;
-        const icon     = btn.querySelector('.acc-icon');
-        const chevron  = btn.querySelector('.accordion-icon');
+        const content = btn.nextElementSibling;
+        const chevron = btn.querySelector('.accordion-icon');
         content.classList.toggle('open');
-        const isOpen = content.classList.contains('open');
-        if (icon)    icon.style.transform    = isOpen ? 'rotate(45deg)'  : '';
-        if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+        if (chevron) chevron.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : '';
     }
 
     function toggleFaq(btn) {
@@ -704,7 +703,7 @@
     }
 
     @if(session('inquiry_success'))
-        toggleBooking();
+        document.getElementById('bookingBody').scrollIntoView({ behavior: 'smooth', block: 'center' });
     @endif
 </script>
 @endsection
