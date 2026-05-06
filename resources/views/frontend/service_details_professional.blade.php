@@ -178,7 +178,7 @@
                         Verified {{ $user->category?->title ?? 'Professional' }}
                         @if($cityName) &nbsp;·&nbsp; {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </div>
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
                         Trusted {{ $user->category?->title ?? 'Professional' }}
                         @if($cityName) in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </h1>
@@ -275,7 +275,7 @@
             @if($activeServices->count())
             <div>
                 <div class="mb-6">
-                    <h3 class="font-bold text-3xl sm:text-4xl sh">Services &amp; Pricing</h3>
+                    <h3 class="font-bold text-2xl sm:text-3xl sh">Services &amp; Pricing</h3>
                     <p class="text-slate-500 mt-4 text-sm font-medium">No hidden fees · Click to see details</p>
                 </div>
                 <div class="space-y-4">
@@ -354,7 +354,7 @@
             @elseif(count($tags))
             <div>
                 <div class="mb-6">
-                    <h3 class="font-bold text-3xl sm:text-4xl sh">Services Offered</h3>
+                    <h3 class="font-bold text-2xl sm:text-3xl sh">Services Offered</h3>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     @foreach($tags as $tag)
@@ -373,7 +373,7 @@
         @if($user->reviews->count())
         <section id="testimonials">
             <div class="mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh">Client Reviews</h3>
+                <h3 class="font-bold text-2xl sm:text-3xl sh">Client Reviews</h3>
                 <p class="text-slate-500 mt-5 text-sm font-medium">{{ $reviewCount }} verified reviews &nbsp;·&nbsp; Avg. {{ $avgRating }} / 5 stars</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -467,7 +467,7 @@
         @if($user->faqs->count())
         <section>
             <div class="mb-6">
-                <h3 class="font-bold text-3xl sm:text-4xl sh">Frequently Asked Questions</h3>
+                <h3 class="font-bold text-2xl sm:text-3xl sh">Frequently Asked Questions</h3>
             </div>
             <div class="space-y-3">
                 @foreach($user->faqs as $faq)

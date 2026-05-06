@@ -113,7 +113,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Business Basics</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Hero Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Your name, business & phone number</p>
                     </div>
                 </div>
                 @if($isDone)
@@ -150,7 +150,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Profile & Bio</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Hero + About Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Photo, title, bio & about description</p>
                     </div>
                 </div>
                 @if($isDone)
@@ -185,7 +185,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Service Location</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Find Us Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Your city, state & service area</p>
                     </div>
                 </div>
                 @if($isDone)
@@ -226,7 +226,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Contact Info</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Contact Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Phone, WhatsApp & contact details</p>
                     </div>
                 </div>
                 @if($isDone)
@@ -262,7 +262,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Services & Pricing</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Services Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ List your services & set prices</p>
                     </div>
                 </div>
                 @if($isDone)
@@ -429,7 +429,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Q & A</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ FAQ Section</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Answer common questions from clients</p>
                     </div>
                 </div>
                 @if($isDone)
