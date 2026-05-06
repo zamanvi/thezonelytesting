@@ -121,8 +121,8 @@
                             </div>
                         </div>
                         <div class="mt-6">
-                            <h3 class="text-lg font-bold">{{ $user->name }}</h3>
-                            <p class="text-blue-200 text-sm mt-0.5">
+                            <h3 class="text-xl font-bold">{{ $user->name }}</h3>
+                            <p class="text-blue-200 text-base mt-0.5">
                                 {{ $user->title ?? $user->designation ?? $user->category?->title }}
                                 @if($cityName) · {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                             </p>
@@ -132,36 +132,36 @@
                         <div class="grid grid-cols-{{ $statCount }} gap-2 mt-5">
                             @if($yearsExp)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-xl font-bold text-yellow-300">{{ $yearsExp }}+</div>
-                                <div class="text-xs text-blue-200 mt-0.5 leading-tight">Years<br>Exp.</div>
+                                <div class="text-2xl font-bold text-yellow-300">{{ $yearsExp }}+</div>
+                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Years<br>Exp.</div>
                             </div>
                             @endif
                             @if($reviewCount)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-xl font-bold text-yellow-300">{{ $reviewCount }}</div>
-                                <div class="text-xs text-blue-200 mt-0.5 leading-tight">Client<br>Reviews</div>
+                                <div class="text-2xl font-bold text-yellow-300">{{ $reviewCount }}</div>
+                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Client<br>Reviews</div>
                             </div>
                             @endif
                             @if($avgRating)
                             <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-xl font-bold text-yellow-300">{{ $avgRating }}★</div>
-                                <div class="text-xs text-blue-200 mt-0.5 leading-tight">Avg.<br>Rating</div>
+                                <div class="text-2xl font-bold text-yellow-300">{{ $avgRating }}★</div>
+                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Avg.<br>Rating</div>
                             </div>
                             @endif
                         </div>
                         @endif
                         @if($user->work_address || $cityName)
-                        <div class="flex items-center justify-center gap-1.5 mt-4 text-blue-200 text-xs">
+                        <div class="flex items-center justify-center gap-1.5 mt-4 text-blue-200 text-sm">
                             <i class="fas fa-map-marker-alt text-emerald-400 text-xs"></i>
                             {{ $user->work_address ?? $cityName.($stateName ? ', '.$stateName : '') }}
                         </div>
                         @endif
                         @if($user->languages->count())
                         <div class="mt-4 pt-4 border-t border-white/10">
-                            <p class="text-xs text-blue-300 mb-2 font-semibold uppercase tracking-wide">Speaks</p>
+                            <p class="text-sm text-blue-300 mb-2 font-semibold uppercase tracking-wide">Speaks</p>
                             <div class="flex flex-wrap justify-center gap-1.5">
                                 @foreach($user->languages as $lang)
-                                <span class="bg-white/10 border border-white/20 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+                                <span class="bg-white/10 border border-white/20 text-white text-sm font-medium px-3 py-1.5 rounded-full">
                                     {{ $lang->name }}
                                 </span>
                                 @endforeach
@@ -178,9 +178,9 @@
                         Verified {{ $user->category?->title ?? 'Professional' }}
                         @if($cityName) &nbsp;·&nbsp; {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-                        Trusted {{ $user->category?->title ?? 'Professional' }}<br>
-                        @if($cityName)in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                        Trusted {{ $user->category?->title ?? 'Professional' }}
+                        @if($cityName) in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </h1>
                     @if($user->bio || $user->about)
                     <p class="mt-6 text-blue-100 text-base md:text-lg leading-relaxed">
@@ -254,7 +254,7 @@
             @php
                 $ptMap = ['starting_at'=>'Starting at','per_month'=>'Per month','per_hour'=>'Per hour','flat_rate'=>'Flat rate','free'=>'Free','contact'=>'Contact us'];
             @endphp
-            <div class="space-y-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 @foreach($activeServices as $svc)
                 @php
                     $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
