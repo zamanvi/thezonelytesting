@@ -253,7 +253,7 @@
             $hasBio         = $user->about || $user->bio;
         @endphp
         @if($hasBio || $hasPricing)
-        <section id="pricing" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <section id="pricing" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
 
             {{-- LEFT: Bio --}}
             @if($hasBio)
