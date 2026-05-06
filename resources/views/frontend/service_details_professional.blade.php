@@ -263,7 +263,7 @@
                         <i class="fas fa-quote-left text-blue-300 text-lg"></i>
                         <span class="text-xs font-bold text-blue-500 uppercase tracking-wider">About</span>
                     </div>
-                    <p class="text-base text-slate-700 leading-relaxed">
+                    <p class="text-base text-slate-700 leading-relaxed text-justify">
                         <strong class="font-bold text-slate-900">{{ $user->name }}</strong>{{ $user->title ? ', '.$user->title : '' }} —
                         {{ $user->about ?? $user->bio }}
                     </p>

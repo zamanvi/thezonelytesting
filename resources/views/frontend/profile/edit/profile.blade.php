@@ -82,6 +82,16 @@
             <p class="text-xs text-slate-400 mt-2 text-right" id="bioCount">{{ strlen($user->bio ?? '') }} / 2000</p>
         </div>
 
+        {{-- About --}}
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+            <label class="block text-sm font-bold text-slate-700 mb-1">About</label>
+            <p class="text-xs text-slate-400 mb-3">Detailed description shown in the About section of your public page</p>
+            <textarea name="about" rows="6"
+                placeholder="e.g. A. K. Azad, CPA, PLLC is a public accounting firm based in the Bronx. We are dedicated to delivering value-added professional services..."
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('about', $user->about) }}</textarea>
+            <p class="text-xs text-slate-400 mt-2 text-right" id="aboutCount">{{ strlen($user->about ?? '') }} / 3000</p>
+        </div>
+
         {{-- Years of Experience --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <label class="block text-sm font-bold text-slate-700 mb-1">Years of Experience</label>
@@ -120,6 +130,14 @@ const bioCount    = document.getElementById('bioCount');
 if (bioTextarea && bioCount) {
     bioTextarea.addEventListener('input', () => {
         bioCount.textContent = bioTextarea.value.length + ' / 2000';
+    });
+}
+
+const aboutTextarea = document.querySelector('textarea[name="about"]');
+const aboutCount    = document.getElementById('aboutCount');
+if (aboutTextarea && aboutCount) {
+    aboutTextarea.addEventListener('input', () => {
+        aboutCount.textContent = aboutTextarea.value.length + ' / 3000';
     });
 }
 </script>

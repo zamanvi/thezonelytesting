@@ -116,6 +116,7 @@ class ProfileController extends Controller
         } elseif ($setup === 'profile') {
             $request->validate([
                 'bio'           => 'nullable|string|max:2000',
+                'about'         => 'nullable|string|max:3000',
                 'title'         => 'nullable|string|max:255',
                 'experience'    => 'nullable|integer|min:0|max:99',
                 'profile_photo' => 'nullable|image|max:2048',
@@ -126,6 +127,7 @@ class ProfileController extends Controller
             }
 
             $user->bio        = $request->bio;
+            $user->about      = $request->about;
             $user->title      = $request->title;
             $user->experience = $request->experience;
             $user->save();
