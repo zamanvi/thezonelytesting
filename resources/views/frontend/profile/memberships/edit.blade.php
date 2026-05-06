@@ -41,16 +41,17 @@
             <input type="text" name="address" value="{{ old('address', $membership->address) }}" class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
         </div>
         <div class="flex items-center justify-between">
-            <form action="{{ route('user.memberships.destroy', $membership->id) }}" method="POST" onsubmit="return confirm('Delete this?')">
-                @csrf @method('DELETE')
-                <button type="submit" class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
-                    <i class="fa-solid fa-trash text-xs"></i> Delete
-                </button>
-            </form>
+            <button type="submit" form="deleteForm" onclick="return confirm('Delete this?')"
+                class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
+                <i class="fa-solid fa-trash text-xs"></i> Delete
+            </button>
             <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
             </button>
         </div>
+    </form>
+    <form id="deleteForm" action="{{ route('user.memberships.destroy', $membership->id) }}" method="POST">
+        @csrf @method('DELETE')
     </form>
 </div>
 @endsection

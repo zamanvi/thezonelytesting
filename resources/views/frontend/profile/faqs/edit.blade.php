@@ -42,19 +42,18 @@
         </div>
 
         <div class="flex items-center justify-between">
-            <form action="{{ route('user.faqs.destroy', $faq->id) }}" method="POST"
-                  onsubmit="return confirm('Delete this question?')">
-                @csrf @method('DELETE')
-                <button type="submit"
-                    class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
-                    <i class="fa-solid fa-trash text-xs"></i> Delete
-                </button>
-            </form>
+            <button type="submit" form="deleteForm" onclick="return confirm('Delete this question?')"
+                class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
+                <i class="fa-solid fa-trash text-xs"></i> Delete
+            </button>
             <button type="submit"
                 class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
             </button>
         </div>
+    </form>
+    <form id="deleteForm" action="{{ route('user.faqs.destroy', $faq->id) }}" method="POST">
+        @csrf @method('DELETE')
     </form>
 </div>
 @endsection
