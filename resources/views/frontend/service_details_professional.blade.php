@@ -289,7 +289,7 @@
                         <div class="h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
                         <button onclick="toggleAccordion(this)"
                             class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-blue-50/30 transition-colors">
-                            <div class="flex items-center gap-4 min-w-0">
+                            <div class="flex items-center gap-6 min-w-0">
                                 <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
                                     <i class="fas fa-briefcase text-blue-600 text-base"></i>
                                 </div>
