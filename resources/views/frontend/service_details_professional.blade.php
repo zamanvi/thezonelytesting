@@ -127,28 +127,32 @@
                             </p>
                         </div>
                         @php $statCount = ($yearsExp ? 1 : 0) + ($reviewCount ? 1 : 0) + ($avgRating ? 1 : 0); @endphp
-                        @if($statCount || $user->languages->count())
-                        <div class="flex flex-wrap items-center justify-center gap-2 mt-4">
+                        @if($statCount)
+                        <div class="grid grid-cols-{{ $statCount }} gap-2 mt-4">
                             @if($yearsExp)
-                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
-                                <span class="text-base font-bold text-yellow-300">{{ $yearsExp }}+</span>
-                                <span class="text-xs text-blue-200">Yrs Exp.</span>
+                            <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
+                                <div class="text-lg font-bold text-yellow-300">{{ $yearsExp }}+</div>
+                                <div class="text-xs text-blue-200 leading-tight">Yrs Exp.</div>
                             </div>
                             @endif
                             @if($reviewCount)
-                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
-                                <span class="text-base font-bold text-yellow-300">{{ $reviewCount }}</span>
-                                <span class="text-xs text-blue-200">Reviews</span>
+                            <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
+                                <div class="text-lg font-bold text-yellow-300">{{ $reviewCount }}</div>
+                                <div class="text-xs text-blue-200 leading-tight">Reviews</div>
                             </div>
                             @endif
                             @if($avgRating)
-                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
-                                <span class="text-base font-bold text-yellow-300">{{ $avgRating }}★</span>
-                                <span class="text-xs text-blue-200">Rating</span>
+                            <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
+                                <div class="text-lg font-bold text-yellow-300">{{ $avgRating }}★</div>
+                                <div class="text-xs text-blue-200 leading-tight">Rating</div>
                             </div>
                             @endif
+                        </div>
+                        @endif
+                        @if($user->languages->count())
+                        <div class="flex flex-wrap justify-center gap-1.5 mt-2">
                             @foreach($user->languages as $lang)
-                            <span class="bg-white/10 border border-white/20 text-white text-xs font-medium px-2.5 py-1.5 rounded-full">{{ $lang->name }}</span>
+                            <span class="bg-white/10 border border-white/20 text-white text-xs font-medium px-2.5 py-1 rounded-full">{{ $lang->name }}</span>
                             @endforeach
                         </div>
                         @endif
