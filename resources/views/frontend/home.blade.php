@@ -33,8 +33,12 @@
 @section('content')
 
 {{-- ═══ HERO ═══ --}}
-<section class="pt-28 pb-14 px-4 sm:px-6 bg-white">
+<section class="pt-28 pb-14 px-4 sm:px-6 bg-gradient-to-b from-blue-50/60 via-white to-white">
     <div class="max-w-3xl mx-auto text-center">
+
+        <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-wide">
+            <i class="fa-solid fa-shield-halved text-blue-500 text-xs"></i> Trusted by 10,000+ verified professionals
+        </div>
 
         <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-slate-900 leading-[1.05] tracking-tight mb-5">
             Discover &amp; Hire<br>
@@ -89,23 +93,44 @@
             @endforeach
         </div>
 
+        <p class="mt-6 text-sm text-slate-400">
+            Are you a professional?
+            <a href="{{ route('user.register', 'seller') }}" class="text-blue-600 font-semibold hover:underline">List your business free →</a>
+        </p>
+
     </div>
 </section>
 
+{{-- ═══ TRUST STRIP ═══ --}}
+<div class="bg-slate-900 py-3.5 px-4">
+    <div class="max-w-3xl mx-auto flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
+        @foreach([
+            ['icon'=>'fa-star','color'=>'text-amber-400','text'=>'4.9 avg rating'],
+            ['icon'=>'fa-circle-check','color'=>'text-emerald-400','text'=>'All pros verified'],
+            ['icon'=>'fa-lock','color'=>'text-blue-400','text'=>'Secure booking'],
+            ['icon'=>'fa-tag','color'=>'text-violet-400','text'=>'No subscription fees'],
+        ] as $t)
+        <span class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+            <i class="fa-solid {{ $t['icon'] }} {{ $t['color'] }} text-xs"></i> {{ $t['text'] }}
+        </span>
+        @endforeach
+    </div>
+</div>
+
 {{-- ═══ STATS BAR ═══ --}}
-<div class="border-y border-slate-100 bg-slate-50">
-    <div class="max-w-3xl mx-auto px-4 py-5 grid grid-cols-3 divide-x divide-slate-200 text-center">
-        <div class="px-4">
-            <div class="text-xl sm:text-2xl font-black text-slate-900">10,000+</div>
-            <div class="text-xs text-slate-500 font-medium mt-0.5">Verified Pros</div>
+<div class="bg-white border-b border-slate-100">
+    <div class="max-w-3xl mx-auto px-4 py-8 grid grid-cols-3 gap-4 text-center">
+        <div>
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">10,000+</div>
+            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
         </div>
-        <div class="px-4">
-            <div class="text-xl sm:text-2xl font-black text-slate-900">50,000+</div>
-            <div class="text-xs text-slate-500 font-medium mt-0.5">Happy Clients</div>
+        <div class="border-x border-slate-100">
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">50,000+</div>
+            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Happy Clients</div>
         </div>
-        <div class="px-4">
-            <div class="text-xl sm:text-2xl font-black text-slate-900">500+</div>
-            <div class="text-xs text-slate-500 font-medium mt-0.5">Cities Covered</div>
+        <div>
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">500+</div>
+            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
         </div>
     </div>
 </div>
@@ -145,8 +170,8 @@
                     </div>
                     @endif
                     @if($user->status)
-                    <span class="absolute bottom-3 left-3 bg-slate-900 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest uppercase">
-                        Verified
+                    <span class="absolute bottom-3 left-3 bg-emerald-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full tracking-widest uppercase flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-[8px]"></i> Verified
                     </span>
                     @endif
                 </div>
@@ -161,19 +186,22 @@
                             {{ $user->title ?? $user->designation ?? ($user->category?->title ?? 'Professional') }}
                             @if($user->city) · {{ $user->city }}@endif
                         </p>
+                        @php $rCount = $user->reviews->count(); $rAvg = $rCount ? round($user->reviews->avg('rating'),1) : null; @endphp
+                        @if($rAvg)
                         <div class="flex items-center gap-1 mt-2">
-                            @for($i=0;$i<5;$i++)<i class="fa-solid fa-star text-amber-400 text-[9px]"></i>@endfor
-                            <span class="text-xs font-semibold text-slate-600 ml-1">4.9</span>
+                            @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star text-amber-400 text-[9px]{{ $i > $rAvg ? ' opacity-30' : '' }}"></i>@endfor
+                            <span class="text-xs font-semibold text-slate-600 ml-1">{{ $rAvg }} ({{ $rCount }})</span>
                         </div>
+                        @endif
                     </div>
                     <div class="flex items-center gap-3 mt-4">
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-full transition" style="min-height:unset;">
+                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2 rounded-full transition shadow-sm shadow-blue-200" style="min-height:unset;">
                             Hire Expert
                         </a>
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="text-sm text-slate-500 hover:text-blue-600 font-medium transition" style="min-height:unset;">
-                            View Portfolio
+                           class="text-sm text-slate-400 hover:text-blue-600 font-semibold transition" style="min-height:unset;">
+                            View Profile →
                         </a>
                     </div>
                 </div>
@@ -191,7 +219,8 @@
 </section>
 
 {{-- ═══ FOR PROS CTA ═══ --}}
-<section class="pt-14 pb-0 px-4 sm:px-6 bg-slate-950">
+<div class="h-20 bg-gradient-to-b from-white to-slate-950"></div>
+<section class="pb-0 px-4 sm:px-6 bg-slate-950">
     <div class="max-w-4xl mx-auto">
         <div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl overflow-hidden relative shadow-2xl">
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08),transparent_60%)] pointer-events-none"></div>

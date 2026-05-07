@@ -102,7 +102,7 @@ class HomeController extends Controller
         $meta_title = 'Zonely - Discover & Hire Local Experts Near Me';
         $meta_description = 'Find trusted local experts near you with Zonely. Compare lawyers, consultants, and more professionals. Read reviews and contact verified pros instantly';
         $meta_keywords = 'Lawyers near me; Insurance agents near me; Consultants near me; Real estate agents near me; Local health professionals near me;';
-        $users = User::activeSellers()->latest()->take(8)->get();
+        $users = User::activeSellers()->with('reviews')->latest()->take(8)->get();
         return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords'));
     }
     function service_all()
