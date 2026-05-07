@@ -192,33 +192,33 @@
 
 {{-- ═══ FOR PROS CTA ═══ --}}
 <section class="pt-14 pb-0 px-4 sm:px-6 bg-slate-950">
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 rounded-3xl overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="relative p-8 sm:p-12 flex flex-col sm:flex-row items-start gap-10">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl overflow-hidden relative shadow-2xl">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08),transparent_60%)] pointer-events-none"></div>
+            <div class="relative px-8 sm:px-14 py-12 flex flex-col sm:flex-row items-center gap-10">
                 <div class="flex-1">
-                    <span class="inline-block text-[11px] font-black text-blue-400 uppercase tracking-widest mb-4">For Professionals</span>
+                    <span class="inline-block text-[11px] font-black text-blue-200 uppercase tracking-widest mb-4">For Professionals</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-snug">
                         Get qualified leads.<br>Pay only per call.
                     </h2>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-7 max-w-xs">
+                    <p class="text-blue-100 text-sm leading-relaxed mb-8 max-w-sm opacity-85">
                         Customers in your area are searching right now. Your verified profile shows up first. No subscription. No ads.
                     </p>
                     <a href="{{ route('user.register', 'seller') }}"
-                       class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition shadow-lg shadow-blue-900/50" style="min-height:unset;">
+                       class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-yellow-300 font-bold px-7 py-3.5 rounded-xl text-sm transition shadow-lg" style="min-height:unset;">
                         Create free profile →
                     </a>
                 </div>
-                <div class="shrink-0 w-full sm:w-52 space-y-2.5">
+                <div class="shrink-0 grid grid-cols-1 gap-3 w-full sm:w-56">
                     @foreach([
                         ['icon'=>'fa-circle-check','text'=>'Free to join'],
                         ['icon'=>'fa-circle-check','text'=>'Pay per verified lead only'],
                         ['icon'=>'fa-circle-check','text'=>'Real-time call forwarding'],
                         ['icon'=>'fa-circle-check','text'=>'Avg. $2,400/month in leads'],
                     ] as $f)
-                    <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                        <i class="fa-solid {{ $f['icon'] }} text-emerald-400 shrink-0 text-sm"></i>
-                        <span class="text-sm font-semibold text-slate-200">{{ $f['text'] }}</span>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid {{ $f['icon'] }} text-emerald-300 shrink-0"></i>
+                        <span class="text-sm font-semibold text-white">{{ $f['text'] }}</span>
                     </div>
                     @endforeach
                 </div>
