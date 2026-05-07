@@ -105,7 +105,7 @@
         <div class="absolute top-4 right-4 badge-verified text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1.5">
             <i class="fas fa-circle-check text-xs"></i> VERIFIED
         </div>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 md:py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-14">
             <div class="flex flex-col md:flex-row items-center gap-10 md:gap-14">
 
                 {{-- Profile card — LEFT --}}
@@ -127,38 +127,29 @@
                             </p>
                         </div>
                         @php $statCount = ($yearsExp ? 1 : 0) + ($reviewCount ? 1 : 0) + ($avgRating ? 1 : 0); @endphp
-                        @if($statCount)
-                        <div class="grid grid-cols-{{ $statCount }} gap-2 mt-5">
+                        @if($statCount || $user->languages->count())
+                        <div class="flex flex-wrap items-center justify-center gap-2 mt-4">
                             @if($yearsExp)
-                            <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-2xl font-bold text-yellow-300">{{ $yearsExp }}+</div>
-                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Years<br>Exp.</div>
+                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
+                                <span class="text-base font-bold text-yellow-300">{{ $yearsExp }}+</span>
+                                <span class="text-xs text-blue-200">Yrs Exp.</span>
                             </div>
                             @endif
                             @if($reviewCount)
-                            <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-2xl font-bold text-yellow-300">{{ $reviewCount }}</div>
-                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Client<br>Reviews</div>
+                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
+                                <span class="text-base font-bold text-yellow-300">{{ $reviewCount }}</span>
+                                <span class="text-xs text-blue-200">Reviews</span>
                             </div>
                             @endif
                             @if($avgRating)
-                            <div class="bg-white/10 rounded-xl py-3 px-2 text-center">
-                                <div class="text-2xl font-bold text-yellow-300">{{ $avgRating }}★</div>
-                                <div class="text-sm text-blue-200 mt-0.5 leading-tight">Avg.<br>Rating</div>
+                            <div class="bg-white/10 rounded-xl py-2 px-3 flex items-center gap-1.5">
+                                <span class="text-base font-bold text-yellow-300">{{ $avgRating }}★</span>
+                                <span class="text-xs text-blue-200">Rating</span>
                             </div>
                             @endif
-                        </div>
-                        @endif
-                        @if($user->languages->count())
-                        <div class="mt-4 pt-4 border-t border-white/10">
-                            <p class="text-sm text-blue-300 mb-2 font-semibold uppercase tracking-wide">Speaks</p>
-                            <div class="flex flex-wrap justify-center gap-1.5">
-                                @foreach($user->languages as $lang)
-                                <span class="bg-white/10 border border-white/20 text-white text-sm font-medium px-3 py-1.5 rounded-full">
-                                    {{ $lang->name }}
-                                </span>
-                                @endforeach
-                            </div>
+                            @foreach($user->languages as $lang)
+                            <span class="bg-white/10 border border-white/20 text-white text-xs font-medium px-2.5 py-1.5 rounded-full">{{ $lang->name }}</span>
+                            @endforeach
                         </div>
                         @endif
                     </div>
