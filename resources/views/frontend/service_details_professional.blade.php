@@ -179,10 +179,10 @@
                         </a>
                         @endif
                         @if($waNumber)
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" target="_blank"
-                           class="flex items-center justify-center gap-3 bg-green-500 hover:bg-green-400 text-white px-8 py-4 rounded-full font-bold text-base shadow-xl transition">
+                        <button onclick="trackWa('{{ route('service.wa.click', $user->slug) }}')"
+                           class="flex items-center justify-center gap-3 bg-green-500 hover:bg-green-400 text-white px-8 py-4 rounded-full font-bold text-base shadow-xl transition cursor-pointer">
                             <i class="fab fa-whatsapp text-xl"></i> WhatsApp
-                        </a>
+                        </button>
                         @endif
                         <a href="#contact"
                            class="flex items-center justify-center gap-3 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-4 rounded-full font-bold text-base transition">
@@ -570,9 +570,9 @@
                     </a>
                     @endif
                     @if($waNumber)
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" class="flex items-center gap-1.5 hover:text-white transition">
+                    <button onclick="trackWa('{{ route('service.wa.click', $user->slug) }}')" class="flex items-center gap-1.5 hover:text-white transition cursor-pointer bg-transparent border-0 text-inherit p-0">
                         <i class="fab fa-whatsapp text-emerald-400 text-xs"></i> WhatsApp
-                    </a>
+                    </button>
                     @endif
                 </div>
             </div>
@@ -589,10 +589,10 @@
     </a>
     @endif
     @if($waNumber)
-    <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $waNumber) }}" target="_blank"
-       class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold text-base transition">
+    <button onclick="trackWa('{{ route('service.wa.click', $user->slug) }}')"
+       class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold text-base transition cursor-pointer">
         <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
+    </button>
     @endif
     @if(!$callNumber && !$waNumber)
     <a href="#contact"
@@ -636,5 +636,15 @@
     @if(session('inquiry_success'))
         document.getElementById('bookingBody').scrollIntoView({ behavior: 'smooth', block: 'center' });
     @endif
+
+    function trackWa(url) {
+        fetch(url, {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => window.open(data.url, '_blank'))
+        .catch(() => window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $waNumber ?? '') }}', '_blank'));
+    }
 </script>
 @endsection

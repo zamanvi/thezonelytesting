@@ -373,6 +373,34 @@ class HomeController extends Controller
 
         return back()->with('inquiry_success', 'Your request has been sent! ' . $seller->name . ' will contact you shortly.');
     }
+
+    function waClick(Request $request, $slug)
+    {
+        $seller = User::activeSellers()->where('slug', $slug)->firstOrFail();
+
+        $waNumber = $seller->contacts()->where('type', 'whatsapp')->value('value')
+            ?? $seller->whatsapp;
+
+        $lead = Lead::create([
+            'seller_id' => $seller->id,
+            'name'      => 'WhatsApp Lead',
+            'phone'     => '',
+            'email'     => '',
+            'service'   => 'WhatsApp Click',
+            'message'   => 'Client clicked WhatsApp from Zonely profile.',
+            'status'    => 'new',
+            'fee'       => 68,
+        ]);
+
+        if ($seller->twilio_enabled && $seller->phone) {
+            $msg = "💬 New WhatsApp Lead!\nClient clicked your WhatsApp button on Zonely.\nView: " . route('seller.dashboard');
+            (new SmsService())->send($seller->phone, $msg);
+        }
+
+        $clean = preg_replace('/[^0-9]/', '', $waNumber ?? '');
+        return response()->json(['url' => 'https://wa.me/' . $clean]);
+    }
+
     function termsAgree()
     {
         if (auth()->user()?->agreed_terms_at) {

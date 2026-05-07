@@ -90,6 +90,7 @@ Route::post('user/login', [HomeController::class, 'user_submit_login'])->name('u
 Route::post('user/register', [HomeController::class, 'user_submit_register'])->name('user.submit.register');
 
 Route::post('/service/{slug}/inquiry', [HomeController::class, 'serviceInquiry'])->name('service.inquiry');
+Route::post('/service/{slug}/wa-click', [HomeController::class, 'waClick'])->name('service.wa.click');
 
 // Twilio webhooks — no auth, verified by Twilio signature
 Route::post('/webhook/twilio/voice',  [TwilioWebhookController::class, 'voice'])->name('twilio.webhook.voice');
