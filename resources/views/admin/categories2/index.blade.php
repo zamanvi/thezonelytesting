@@ -104,7 +104,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                         <li>
                                             <button class="dropdown-item" type="button"
-                                                    onclick="openEditModal({{ $cat->id }}, '{{ addslashes($cat->title) }}', '{{ $cat->slug }}', {{ $cat->is_active ? 1 : 0 }}, null)">
+                                                    data-update-url="{{ route('admin.categories.update', $cat->id) }}"
+                                                    onclick="openEditModal({{ $cat->id }}, this.dataset.updateUrl, '{{ addslashes($cat->title) }}', '{{ $cat->slug }}', {{ $cat->is_active ? 1 : 0 }}, null)">
                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                             </button>
                                         </li>
@@ -168,7 +169,8 @@
                                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                         <li>
                                                             <button class="dropdown-item small" type="button"
-                                                                    onclick="openEditModal({{ $sub->id }}, '{{ addslashes($sub->title) }}', '{{ $sub->slug }}', {{ $sub->is_active ? 1 : 0 }}, {{ $cat->id }})">
+                                                                    data-update-url="{{ route('admin.categories.update', $sub->id) }}"
+                                                                    onclick="openEditModal({{ $sub->id }}, this.dataset.updateUrl, '{{ addslashes($sub->title) }}', '{{ $sub->slug }}', {{ $sub->is_active ? 1 : 0 }}, {{ $cat->id }})">
                                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                                             </button>
                                                         </li>
@@ -357,8 +359,8 @@ document.querySelectorAll('.toggle-subs').forEach(btn => {
     });
 });
 
-function openEditModal(id, title, slug, isActive, parentId) {
-    document.getElementById('editCategoryForm').action = `/admin/categories/${id}`;
+function openEditModal(id, url, title, slug, isActive, parentId) {
+    document.getElementById('editCategoryForm').action = url;
     document.getElementById('editTitle').value    = title;
     document.getElementById('editSlug').value     = slug;
     document.getElementById('editIsActive').value = isActive;

@@ -68,7 +68,7 @@
 
                                                 <li>
                                                     <form action="{{ route('admin.blogs.destroy', $blog->id) }}"
-                                                        method="POST" onsubmit="return confirm('Delete this blog?');">
+                                                        method="POST" onsubmit="return confirm('Delete blog: {{ addslashes($blog->name) }}?');">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger">

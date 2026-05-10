@@ -49,7 +49,7 @@
                             <tbody>
                                 @foreach ($users as $index => $user)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ ($users->currentPage()-1)*$users->perPage()+$index+1 }}</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 @if($user->profile_photo)
@@ -146,7 +146,7 @@
 
                                                         <li>
                                                             <form action="{{ route('admin.profiles.destroy', $user->id) }}"
-                                                                method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                method="POST" onsubmit="return confirm('Delete user: {{ addslashes($user->name) }}?');">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item text-danger">

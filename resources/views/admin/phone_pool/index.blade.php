@@ -147,12 +147,13 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#assignModal"
                                             data-number-id="{{ $num->id }}"
-                                            data-number="{{ $num->number }}">
+                                            data-number="{{ $num->number }}"
+                                            data-assign-url="{{ route('admin.phone-pool.assign', $num->id) }}">
                                         <i class="fas fa-user-plus me-1"></i>Assign
                                     </button>
                                     @endif
                                     <form method="POST" action="{{ route('admin.phone-pool.destroy', $num->id) }}"
-                                          onsubmit="return confirm('Delete this number from pool?')">
+                                          onsubmit="return confirm('Delete {{ $num->number }} from pool?')">
                                         @csrf @method('DELETE')
                                         <button class="btn btn-sm btn-outline-danger">
                                             <i class="fas fa-trash"></i>
@@ -214,11 +215,9 @@
 
 <script>
 document.getElementById('assignModal').addEventListener('show.bs.modal', function(e) {
-    const btn      = e.relatedTarget;
-    const numberId = btn.dataset.numberId;
-    const number   = btn.dataset.number;
-    document.getElementById('modalNumber').textContent = number;
-    document.getElementById('assignForm').action = `/admin/phone-pool/${numberId}/assign`;
+    const btn = e.relatedTarget;
+    document.getElementById('modalNumber').textContent = btn.dataset.number;
+    document.getElementById('assignForm').action = btn.dataset.assignUrl;
 });
 </script>
 @endsection

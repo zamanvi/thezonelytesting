@@ -243,7 +243,7 @@
                     @endphp
                     <div class="row g-3">
                         @foreach($hier as $role => $info)
-                        @php $cnt = \App\Models\StaffProfile::where('role',$role)->count(); @endphp
+                        @php $cnt = $staffRoleCounts[$role] ?? 0; @endphp
                         <div class="col-6">
                             <a href="{{ route('admin.hierarchy',['role'=>$role]) }}"
                                class="d-flex align-items-center gap-3 p-3 rounded border text-decoration-none"

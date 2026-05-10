@@ -200,7 +200,8 @@
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                         <li>
                                             <button class="dropdown-item" type="button"
-                                                    onclick="openEditModal({{ $s->id }}, {{ json_encode($s) }})">
+                                                    data-update-url="{{ route('admin.hierarchy.update', $s->id) }}"
+                                                    onclick="openEditModal({{ $s->id }}, this.dataset.updateUrl, {{ json_encode(['assigned_area'=>$s->assigned_area,'assigned_state'=>$s->assigned_state,'base_salary'=>$s->base_salary,'commission_rate'=>$s->commission_rate,'joined_at'=>$s->joined_at,'sellers_onboarded'=>$s->sellers_onboarded,'active_sellers'=>$s->active_sellers,'dispute_rate'=>$s->dispute_rate,'revenue_generated'=>$s->revenue_generated,'notes'=>$s->notes,'parent_id'=>$s->parent_id]) }})">
                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                             </button>
                                         </li>
@@ -491,9 +492,9 @@ function filterStaff(q) {
     });
 }
 
-function openEditModal(id, data) {
+function openEditModal(id, url, data) {
     const form = document.getElementById('editStaffForm');
-    form.action = `/admin/hierarchy/${id}`;
+    form.action = url;
 
     document.getElementById('edit_assigned_area').value    = data.assigned_area    || '';
     document.getElementById('edit_assigned_state').value   = data.assigned_state   || '';
@@ -529,7 +530,7 @@ function updateParentOptions(role) {
     }
     wrapper.style.display = '';
 
-    fetch(`/admin/hierarchy/parents?role=${parentRole}`, {
+    fetch(`{{ route('admin.hierarchy.parents') }}?role=${parentRole}`, {
         headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'}
     })
     .then(r => r.json())

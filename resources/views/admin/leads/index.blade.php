@@ -174,7 +174,7 @@
                                         @endif
                                         <li>
                                             <form method="POST" action="{{ route('admin.leads.destroy',$lead->id) }}"
-                                                  onsubmit="return confirm('Delete this lead?')">
+                                                  onsubmit="return confirm('Delete lead from {{ addslashes($lead->name) }}?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete

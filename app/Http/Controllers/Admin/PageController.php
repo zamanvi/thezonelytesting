@@ -77,13 +77,17 @@ class PageController extends Controller
             'lost'    => Lead::where('status','lost')->count(),
         ];
 
+        // Per-role staff counts (single query, avoid N+1 in view)
+        $staffRoleCounts = StaffProfile::selectRaw('role, count(*) as cnt')
+            ->groupBy('role')->pluck('cnt', 'role');
+
         return view('admin.index2', compact(
             'sellers', 'buyers', 'unverified', 'staffCount',
             'totalLeads', 'newLeads', 'wonLeads', 'revenue', 'pendingRev',
             'pendingComm', 'paidComm', 'blogCount', 'catCount', 'cityCount',
             'leadMonths', 'leadCounts', 'userMonths', 'userCounts',
             'recentSellers', 'pendingVerify', 'recentLeads', 'recentCommissions',
-            'leadStatusData'
+            'leadStatusData', 'staffRoleCounts'
         ));
     }
     public function profiles_index(Request $request)
