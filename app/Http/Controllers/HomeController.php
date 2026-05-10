@@ -184,7 +184,7 @@ class HomeController extends Controller
     {
         $user = User::activeSellers()
             ->where('slug', $slug)
-            ->with(['services', 'category'])
+            ->with(['services', 'category', 'reviews'])
             ->firstOrFail();
 
         $W = 1200; $H = 630;
@@ -217,7 +217,9 @@ class HomeController extends Controller
         $photoLoaded = false;
 
         if ($user->profile_photo) {
+            // Try filesystem first, then URL fallback (handles Railway storage symlink issues)
             $path = public_path($user->profile_photo);
+            $src  = false;
             if (file_exists($path)) {
                 $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
                 $src = match($ext) {
@@ -226,21 +228,26 @@ class HomeController extends Controller
                     'webp'       => @imagecreatefromwebp($path),
                     default      => false,
                 };
-                if ($src) {
-                    $sw = imagesx($src); $sh = imagesy($src);
-                    $targetRatio = $photoW / $H;
-                    $srcRatio    = $sw / $sh;
-                    if ($srcRatio > $targetRatio) {
-                        $cropH = $sh; $cropW = (int)($sh * $targetRatio);
-                        $srcX  = (int)(($sw - $cropW) / 2); $srcY = 0;
-                    } else {
-                        $cropW = $sw; $cropH = (int)($sw / $targetRatio);
-                        $srcX  = 0;   $srcY  = 0;
-                    }
-                    imagecopyresampled($img, $src, 0, 0, $srcX, $srcY, $photoW, $H, $cropW, $cropH);
-                    imagedestroy($src);
-                    $photoLoaded = true;
+            }
+            if (!$src) {
+                $photoUrl  = url($user->profile_photo);
+                $photoData = @file_get_contents($photoUrl);
+                if ($photoData) $src = @imagecreatefromstring($photoData);
+            }
+            if ($src) {
+                $sw = imagesx($src); $sh = imagesy($src);
+                $targetRatio = $photoW / $H;
+                $srcRatio    = $sw / $sh;
+                if ($srcRatio > $targetRatio) {
+                    $cropH = $sh; $cropW = (int)($sh * $targetRatio);
+                    $srcX  = (int)(($sw - $cropW) / 2); $srcY = 0;
+                } else {
+                    $cropW = $sw; $cropH = (int)($sw / $targetRatio);
+                    $srcX  = 0;   $srcY  = 0;
                 }
+                imagecopyresampled($img, $src, 0, 0, $srcX, $srcY, $photoW, $H, $cropW, $cropH);
+                imagedestroy($src);
+                $photoLoaded = true;
             }
         }
 
@@ -323,7 +330,12 @@ class HomeController extends Controller
         }
 
         // Stars
-        if ($ttf) imagettftext($img, 16, 0, $cx, $cy, $cAmber, $fontB, '★★★★★  4.9');
+        $rCount = $user->reviews->count();
+        $rAvg   = $rCount ? round($user->reviews->avg('rating'), 1) : null;
+        if ($ttf && $rAvg) {
+            $stars = str_repeat('★', (int)round($rAvg)) . str_repeat('☆', 5 - (int)round($rAvg));
+            imagettftext($img, 16, 0, $cx, $cy, $cAmber, $fontB, $stars . '  ' . $rAvg . ' (' . $rCount . ' reviews)');
+        }
 
         // Domain
         $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
