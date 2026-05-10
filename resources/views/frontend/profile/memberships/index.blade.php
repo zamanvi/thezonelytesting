@@ -51,7 +51,7 @@
                     <i class="fa-solid fa-pen text-xs"></i>
                 </a>
                 <form action="{{ route('user.memberships.destroy', $item->id) }}" method="POST"
-                      onsubmit="return confirm('Delete this?')">
+                      onsubmit="return confirm('Delete: {{ addslashes($item->name) }}?')">
                     @csrf @method('DELETE')
                     <button type="submit"
                         class="w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-500 rounded-xl transition">

@@ -41,10 +41,10 @@
                         <i class="fa-solid fa-pen text-[10px]"></i>
                     </a>
                     <form action="{{ route('user.languages.destroy', $item->id) }}" method="POST"
-                          onsubmit="return confirm('Delete?')">
+                          onsubmit="return confirm('Delete language: {{ addslashes($item->name) }}?')">
                         @csrf @method('DELETE')
-                        <button type="submit" class="w-6 h-6 flex items-center justify-center text-slate-400 hover:text-red-500 transition">
-                            <i class="fa-solid fa-times text-[10px]"></i>
+                        <button type="submit" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                            <i class="fa-solid fa-trash text-xs"></i>
                         </button>
                     </form>
                 </div>

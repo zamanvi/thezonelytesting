@@ -28,8 +28,8 @@
         <div class="ml-auto flex items-center pl-4 shrink-0">
             <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}"
                target="_blank"
-               class="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline">
-                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> View Public Page
+               class="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline" title="Opens in new tab">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> View Public Page <i class="fa-solid fa-external-link text-[9px] opacity-60"></i>
             </a>
         </div>
     </div>
@@ -42,7 +42,7 @@
        class="flex flex-col items-center gap-0.5 flex-1 py-2 rounded-xl text-center transition
               {{ $cr === $item['name'] ? 'text-blue-600' : 'text-slate-400 hover:text-blue-600' }}">
         <i class="fa-solid {{ $item['icon'] }} text-[15px]"></i>
-        <span class="text-[9px] font-bold leading-none mt-0.5">{{ $item['label'] }}</span>
+        <span class="text-[10px] font-bold leading-none mt-0.5">{{ $item['label'] }}</span>
     </a>
     @endforeach
 </nav>

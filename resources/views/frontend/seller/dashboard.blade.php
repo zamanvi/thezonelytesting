@@ -397,63 +397,17 @@
             </div>
         </div>
         @empty
-        {{-- Demo leads when no real data --}}
-        @foreach([
-            ['id'=>null,'phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','msg'=>'I need help filing my taxes for this year.','time'=>'Apr 20 · 11:32 AM','status'=>'won','paid'=>true,'fee'=>65,'note'=>'Interested in full tax filing.'],
-            ['id'=>null,'phone'=>'+1 (718) 555-3344','service'=>'Small Business Accounting','msg'=>'Need monthly bookkeeping services.','time'=>'Apr 19 · 3:14 PM','status'=>'won','paid'=>true,'fee'=>75,'note'=>'Monthly bookkeeping — $350/mo retainer agreed.'],
-            ['id'=>null,'phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','msg'=>'I received an IRS notice last week.','time'=>'Apr 18 · 9:05 AM','status'=>'pending','paid'=>false,'fee'=>120,'note'=>'Awaiting documents. Call back Monday AM.'],
-            ['id'=>null,'phone'=>'+1 (646) 555-4421','service'=>'Personal Tax Return','msg'=>'Looking for personal tax filing help.','time'=>'Apr 15 · 2:30 PM','status'=>'lost','paid'=>true,'fee'=>0,'note'=>'Went with H&R Block.'],
-        ] as $d)
-        @php
-            $dStatus = $d['status'];
-            $dBorder = $dStatus==='pending' ? 'border-amber-100' : 'border-slate-100';
-            $dIcon   = $dStatus==='won' ? 'bg-emerald-100 text-emerald-600' : ($dStatus==='lost' ? 'bg-red-100 text-red-400' : 'bg-amber-100 text-amber-600');
-            $dFee    = $dStatus==='won' ? 'bg-emerald-100 text-emerald-700' : ($dStatus==='lost' ? 'bg-slate-100 text-slate-400' : 'bg-amber-100 text-amber-700');
-            $dWon  = $dStatus==='won'     ? 'won-active'     : 'bg-slate-100 text-slate-500 hover:bg-emerald-100 hover:text-emerald-700 transition';
-            $dPend = $dStatus==='pending' ? 'pending-active' : 'bg-slate-100 text-slate-500 hover:bg-amber-100 hover:text-amber-700 transition';
-            $dLost = $dStatus==='lost'    ? 'lost-active'    : 'bg-slate-100 text-slate-500 hover:bg-red-100 hover:text-red-600 transition';
-        @endphp
-        <div class="lead-card bg-white rounded-3xl p-5 border {{ $dBorder }} shadow-sm {{ $dStatus==='lost' ? 'opacity-60' : '' }}"
-             data-status="{{ $dStatus }}">
-            <div class="flex items-start justify-between gap-3">
-                <div class="flex items-start gap-3 flex-1 min-w-0">
-                    <div class="w-11 h-11 {{ $dIcon }} rounded-2xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-phone {{ explode(' ', $dIcon)[1] }}"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="font-bold text-slate-900">{{ $d['phone'] }}</p>
-                        <p class="text-sm text-slate-500">{{ $d['service'] }}</p>
-                        <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
-                            <span class="text-[11px] text-slate-400">{{ $d['time'] }}</span>
-                            <span class="text-[11px] {{ $d['paid'] ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' }} px-2 py-0.5 rounded-full font-semibold">
-                                {{ $d['paid'] ? 'Paid' : 'Unpaid' }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col items-end gap-2 shrink-0">
-                    @if($d['fee'] > 0)
-                    <span class="{{ $dFee }} font-bold px-3 py-1 rounded-xl text-sm">${{ $d['fee'] }}</span>
-                    @endif
-                    <span class="pill {{ $dStatus==='won' ? 'bg-emerald-50 text-emerald-700' : ($dStatus==='lost' ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-700') }}">
-                        <i class="fa-solid {{ $dStatus==='won' ? 'fa-circle-check' : ($dStatus==='lost' ? 'fa-circle-xmark' : 'fa-clock') }} text-xs"></i>
-                        {{ ucfirst($dStatus) }}
-                    </span>
-                </div>
+        <div class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center">
+            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-inbox text-blue-400 text-2xl"></i>
             </div>
-            <p class="mt-3 text-xs text-slate-500 bg-slate-50 rounded-xl px-4 py-2">"{{ $d['msg'] }}"</p>
-            <input type="text" placeholder="Add a note..." value="{{ $d['note'] }}"
-                   class="mt-3 w-full text-sm bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 focus:border-blue-300 focus:bg-white transition">
-            <div class="grid grid-cols-4 gap-2 mt-3">
-                <button onclick="setStatus(this,'won')"     class="action-btn {{ $dWon }}  py-2 rounded-xl text-xs font-bold">Won</button>
-                <button onclick="setStatus(this,'pending')" class="action-btn {{ $dPend }} py-2 rounded-xl text-xs font-bold">Pending</button>
-                <button onclick="setStatus(this,'lost')"    class="action-btn {{ $dLost }} py-2 rounded-xl text-xs font-bold">Lost</button>
-                <a href="tel:{{ $d['phone'] }}" class="py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
-                    <i class="fa-solid fa-phone mr-1"></i>Call
-                </a>
-            </div>
+            <p class="font-bold text-slate-700 text-base mb-1">No leads yet</p>
+            <p class="text-sm text-slate-400 mb-5 max-w-xs mx-auto">When clients call, message, or fill your booking form — leads appear here.</p>
+            <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}" target="_blank"
+               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> View Your Public Page
+            </a>
         </div>
-        @endforeach
         @endforelse
 
     </div>
@@ -539,12 +493,19 @@
                     @endif
                     @if($lPaid)
                     <div class="flex gap-2 pt-1">
-                        <input type="text" placeholder="Reply via WhatsApp / SMS..."
-                               class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
-                        <button onclick="showToast('Message sent via Twilio!')"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
+                        @if($lead->phone)
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/','', $lead->phone) }}"
+                           target="_blank"
+                           class="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                            <i class="fab fa-whatsapp text-sm"></i> Reply on WhatsApp
+                        </a>
+                        <a href="tel:{{ $lead->phone }}"
+                           class="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-bold px-4 py-2.5 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-phone text-xs"></i> Call
+                        </a>
+                        @else
+                        <p class="text-xs text-slate-400 italic pt-1">No phone number available for this lead.</p>
+                        @endif
                     </div>
                     @else
                     <div class="flex gap-2 pt-1 opacity-40 pointer-events-none select-none">
@@ -727,7 +688,7 @@ function setStatus(btn, newStatus) {
     const leadId = card.dataset.id;
     card.dataset.status = newStatus;
     const active  = { won:'won-active', pending:'pending-active', lost:'lost-active' };
-    const defClass= 'bg-slate-100 text-slate-500 hover:bg-gray-200 transition';
+    const defClass= 'bg-slate-100 text-slate-500 hover:bg-slate-200 transition';
     card.querySelectorAll('.action-btn').forEach(b => {
         const s = b.getAttribute('onclick').match(/'(\w+)'/)[1];
         b.className = `action-btn py-2 rounded-xl text-xs font-bold ${s === newStatus ? active[s] : defClass}`;

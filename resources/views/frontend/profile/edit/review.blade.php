@@ -11,8 +11,8 @@
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
-            <h1 class="text-xl font-bold text-gray-900">Review & Confirm</h1>
-            <p class="text-xs text-gray-500 mt-0.5">Check your details before going live</p>
+            <h1 class="text-xl font-bold text-slate-900">Review & Confirm</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Check your details before going live</p>
         </div>
     </div>
 
@@ -95,11 +95,12 @@
     <form method="POST" action="{{ route('save.seller.profile', ['type' => $type, 'setup' => 'review']) }}">
         @csrf
         <label class="flex items-start gap-3 mb-5 cursor-pointer">
-            <input type="checkbox" required class="mt-0.5 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500">
+            <input type="checkbox" id="goLiveCheck" required class="mt-0.5 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+                   onchange="document.getElementById('goLiveBtn').disabled=!this.checked;document.getElementById('goLiveBtn').classList.toggle('opacity-50',!this.checked);">
             <span class="text-sm text-slate-600">All information above is correct and I'm ready to go live on Zonely</span>
         </label>
-        <button type="submit"
-            class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2">
+        <button type="submit" id="goLiveBtn" disabled
+            class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2 opacity-50">
             <i class="fa-solid fa-rocket"></i> Confirm & Go Live
         </button>
     </form>
