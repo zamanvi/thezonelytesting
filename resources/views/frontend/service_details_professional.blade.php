@@ -123,8 +123,12 @@
                             <h3 class="text-xl font-bold">{{ $user->name }}</h3>
                             <p class="text-blue-200 text-base mt-0.5">
                                 {{ $user->title ?? $user->designation ?? $user->category?->title }}
-                                @if($cityName) · {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                             </p>
+                            @if($cityName)
+                            <p class="text-blue-300 text-sm mt-0.5">
+                                <i class="fas fa-map-marker-alt text-xs mr-1"></i>{{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}
+                            </p>
+                            @endif
                         </div>
                         @php $statCount = ($yearsExp ? 1 : 0) + ($reviewCount ? 1 : 0) + ($avgRating ? 1 : 0); @endphp
                         @if($statCount)
@@ -246,10 +250,18 @@
                         <i class="fas fa-quote-left text-blue-300 text-lg"></i>
                         <span class="text-xs font-bold text-blue-500 uppercase tracking-wider">About</span>
                     </div>
-                    <p class="text-base text-slate-700 leading-relaxed text-justify">
-                        <strong class="font-bold text-slate-900">{{ $user->name }}</strong>{{ $user->title ? ', '.$user->title : '' }} —
-                        {{ $user->about ?? $user->bio }}
+                    @php $bioText = $user->about ?? $user->bio; $bioLong = strlen($bioText) > 400; @endphp
+                    <p class="text-base text-slate-700 leading-relaxed text-justify" id="bioText">
+                        @if($user->title)<strong class="font-bold text-slate-900">{{ $user->title }}</strong><br>@endif
+                        <span id="bioShort">{{ $bioLong ? Str::limit($bioText, 400) : $bioText }}</span>
+                        @if($bioLong)
+                        <span id="bioFull" class="hidden">{{ $bioText }}</span>
+                        @endif
                     </p>
+                    @if($bioLong)
+                    <button onclick="document.getElementById('bioShort').classList.toggle('hidden');document.getElementById('bioFull').classList.toggle('hidden');this.textContent=this.textContent.trim()==='Read more'?'Read less':'Read more';"
+                        class="mt-3 text-xs font-bold text-blue-600 hover:underline">Read more</button>
+                    @endif
                 </div>
             </div>
             @endif
@@ -259,14 +271,21 @@
             <div>
                 <div class="mb-6">
                     <h3 class="font-bold text-2xl sm:text-3xl sh">Services &amp; Pricing</h3>
+                    @if($activeServices->where('price', '>', 0)->count())
                     <p class="text-slate-500 mt-4 text-sm font-medium">No hidden fees · Click to see details</p>
+                    @endif
                 </div>
+                @php
+                $svcIcons = ['fa-briefcase','fa-file-alt','fa-handshake','fa-chart-line','fa-calculator','fa-gavel','fa-wrench','fa-star','fa-shield-alt','fa-lightbulb'];
+                $svcIdx = 0;
+                @endphp
                 <div class="space-y-4">
                     @foreach($activeServices as $svc)
                     @php
                         $ptLabel  = $ptMap[$svc->pricing_type ?? 'starting_at'] ?? 'Starting at';
                         $features = array_filter(array_map('trim', explode("\n", $svc->features ?? '')));
                         $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
+                        $svcIcon  = $svcIcons[$svcIdx % count($svcIcons)]; $svcIdx++;
                     @endphp
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md hover:border-blue-100 transition-all duration-200">
                         <div class="h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
@@ -274,7 +293,7 @@
                             class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-blue-50/30 transition-colors">
                             <div class="flex items-center gap-6 min-w-0">
                                 <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
-                                    <i class="fas fa-briefcase text-blue-600 text-base"></i>
+                                    <i class="fas {{ $svcIcon }} text-blue-600 text-base"></i>
                                 </div>
                                 <div class="min-w-0">
                                     <p class="font-bold text-base text-slate-900 leading-snug truncate">{{ $svc->title }}</p>

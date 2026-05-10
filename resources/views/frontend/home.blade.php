@@ -37,12 +37,12 @@
     <div class="max-w-3xl mx-auto text-center">
 
         <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-wide">
-            <i class="fa-solid fa-shield-halved text-blue-500 text-xs"></i> Trusted by 10,000+ verified professionals
+            <i class="fa-solid fa-shield-halved text-blue-500 text-xs"></i> Verified local professionals near you
         </div>
 
         <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-slate-900 leading-[1.05] tracking-tight mb-5">
             Discover &amp; Hire<br>
-            <em class="italic text-blue-600 not-italic" style="font-style:italic;">Local Experts</em> Near Me
+            <em class="text-blue-600" style="font-style:italic;">Local Experts</em> Near Me
         </h1>
         <p class="text-slate-500 text-base sm:text-lg mb-10 max-w-lg mx-auto leading-relaxed">
             Access the top 1% of verified professionals in your area. Fast, secure, and expert-led.
@@ -121,15 +121,15 @@
 <div class="bg-white border-b border-slate-100">
     <div class="max-w-3xl mx-auto px-4 py-8 grid grid-cols-3 gap-4 text-center">
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">10,000+</div>
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['pros'] > 0 ? $stats['pros'].'+' : 'Growing' }}</div>
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
         </div>
         <div class="border-x border-slate-100">
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">50,000+</div>
-            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Happy Clients</div>
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['reviews'] > 0 ? $stats['reviews'].'+' : '5★' }}</div>
+            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Client Reviews</div>
         </div>
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">500+</div>
+            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['cities'] > 0 ? $stats['cities'].'+' : 'USA' }}</div>
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
         </div>
     </div>
@@ -151,7 +151,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 gap-4">
-            @forelse(($users ?? collect())->take(4) as $user)
+            @forelse(($users ?? collect())->take(8) as $user)
             @php $initials = strtoupper(substr($user->name, 0, 2)); @endphp
             <div class="pro-card bg-white border border-slate-100 rounded-2xl overflow-hidden flex shadow-sm">
 
@@ -243,7 +243,7 @@
                         ['icon'=>'fa-circle-check','text'=>'Free to join'],
                         ['icon'=>'fa-circle-check','text'=>'Pay per verified lead only'],
                         ['icon'=>'fa-circle-check','text'=>'Real-time call forwarding'],
-                        ['icon'=>'fa-circle-check','text'=>'Avg. $2,400/month in leads'],
+                        ['icon'=>'fa-circle-check','text'=>'Dashboard to track all leads'],
                     ] as $f)
                     <div class="flex items-center gap-3">
                         <i class="fa-solid {{ $f['icon'] }} text-emerald-300 shrink-0"></i>
@@ -267,6 +267,47 @@
         'photo' => $u->profile_photo ?? null,
     ])->values()->toJson();
 @endphp
+{{-- ═══ FOOTER ═══ --}}
+<footer class="bg-slate-950 border-t border-slate-800 pt-12 pb-8 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+            <div class="col-span-2 sm:col-span-1">
+                <span class="text-white font-extrabold text-xl tracking-tight">Zonely<span class="text-blue-500">.</span></span>
+                <p class="text-slate-400 text-xs mt-3 leading-relaxed max-w-xs">Find verified local professionals near you. Fast, trusted, and transparent.</p>
+            </div>
+            <div>
+                <p class="text-slate-300 font-bold text-xs uppercase tracking-widest mb-4">Explore</p>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="{{ route('frontend.service.all') }}" class="hover:text-white transition">All Professionals</a></li>
+                    <li><a href="{{ route('frontend.service.search') }}?q=Lawyer" class="hover:text-white transition">Lawyers</a></li>
+                    <li><a href="{{ route('frontend.service.search') }}?q=Plumber" class="hover:text-white transition">Plumbers</a></li>
+                    <li><a href="{{ route('frontend.service.search') }}?q=Tax+Expert" class="hover:text-white transition">Tax Experts</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-slate-300 font-bold text-xs uppercase tracking-widest mb-4">For Pros</p>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="{{ route('user.register', 'seller') }}" class="hover:text-white transition">Join Free</a></li>
+                    <li><a href="{{ route('user.login') }}" class="hover:text-white transition">Sign In</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-slate-300 font-bold text-xs uppercase tracking-widest mb-4">Company</p>
+                <ul class="space-y-2 text-sm text-slate-400">
+                    <li><a href="{{ route('frontend.about-us') }}" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="{{ route('frontend.contact') }}" class="hover:text-white transition">Contact</a></li>
+                    <li><a href="{{ route('frontend.privacy-policy') }}" class="hover:text-white transition">Privacy Policy</a></li>
+                    <li><a href="{{ route('frontend.terms-and-condition') }}" class="hover:text-white transition">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="text-xs text-slate-500">&copy; {{ date('Y') }} Zonely. All rights reserved.</p>
+            <p class="text-xs text-slate-600">Connecting clients with verified local professionals across the USA.</p>
+        </div>
+    </div>
+</footer>
+
 @section('scripts')
 <script>
 (function() {
@@ -279,8 +320,9 @@
 
     function avatar(u) {
         const i = (u.name || 'ZZ').substring(0,2).toUpperCase();
-        return u.photo
-            ? `<img src="/storage/${u.photo}" onerror="this.style.display='none'" class="w-10 h-10 rounded-xl object-cover shrink-0">`
+        const src = u.photo ? (u.photo.startsWith('storage/') || u.photo.startsWith('/storage/') ? '/'+u.photo.replace(/^\//,'') : '/storage/'+u.photo) : null;
+        return src
+            ? `<img src="${src}" onerror="this.style.display='none'" class="w-10 h-10 rounded-xl object-cover shrink-0">`
             : `<div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">${i}</div>`;
     }
 
