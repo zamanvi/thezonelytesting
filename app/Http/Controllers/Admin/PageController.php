@@ -308,6 +308,15 @@ class PageController extends Controller
         return back()->with('success', 'All cache cleared successfully.');
     }
 
+    public function storage_link()
+    {
+        if (file_exists(public_path('storage'))) {
+            return back()->with('success', 'Storage already linked. Images should be visible now.');
+        }
+        Artisan::call('storage:link');
+        return back()->with('success', 'Storage linked! Existing uploaded images are now accessible.');
+    }
+
     public function hierarchy(Request $request)
     {
         $role = $request->query('role', 'area_manager');

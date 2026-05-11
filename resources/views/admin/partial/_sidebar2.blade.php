@@ -144,6 +144,13 @@
                 <span class="nav-text ms-2">Clear Cache</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.storage.link') }}"
+               onclick="return confirm('Link storage? This restores access to uploaded images.')">
+                <i class="fas fa-link"></i>
+                <span class="nav-text ms-2">Link Storage</span>
+            </a>
+        </li>
         @endif
 
         <li class="nav-item {{ $isAdmin ? '' : 'mt-4 border-top pt-3' }}">

@@ -232,6 +232,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
         Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
+        Route::get('storage-link', [PageController::class, 'storage_link'])->name('storage.link');
 
         // Profiles module
         Route::middleware('manager.module:profiles')->prefix('profiles')->name('profiles.')->group(function () {
