@@ -3,38 +3,18 @@
 
 @section('content')
 @php
-    $cat = strtolower($user->category?->title ?? '');
-    $isPro    = str_contains($cat, 'professional');
-    $isHealth = str_contains($cat, 'health');
-    $isHome   = str_contains($cat, 'home');
-    $isBeauty = str_contains($cat, 'beauty');
-
     $done = [
         'basics'      => filled($user->business_name) || filled($user->title),
         'bio'         => filled($user->bio),
-        'location'    => filled($user->city) || filled($user->zip_code),
         'contact'     => filled($user->whatsapp) || $user->contacts()->count() > 0,
-        'services'    => $user->services->count() > 0,
-        'education'   => $user->educations->count() > 0,
-        'memberships' => $user->memberships->count() > 0,
-        'languages'   => $user->languages->count() > 0,
         'faqs'        => $user->faqs->count() > 0,
+        'loc_services'=> (filled($user->city) || filled($user->zip_code)) && $user->services->count() > 0,
+        'credentials' => $user->educations->count() > 0 || $user->memberships->count() > 0,
     ];
 
-    $showEducation   = $isPro || $isHealth || $isHome;
-    $showMemberships = $isPro || $isHealth;
-    $showLanguages   = $isPro || $isHealth;
-
-    $total = 6 + ($showEducation ? 1 : 0) + ($showMemberships ? 1 : 0) + ($showLanguages ? 1 : 0);
-    $completed = collect($done)->only(
-        array_filter([
-            'basics', 'bio', 'location', 'contact', 'services', 'faqs',
-            $showEducation   ? 'education'   : null,
-            $showMemberships ? 'memberships' : null,
-            $showLanguages   ? 'languages'   : null,
-        ])
-    )->filter()->count();
-    $pct = $total > 0 ? round($completed / $total * 100) : 0;
+    $total     = 6;
+    $completed = collect($done)->filter()->count();
+    $pct       = round($completed / $total * 100);
 @endphp
 
 <div class="pb-12 max-w-4xl mx-auto">
@@ -102,7 +82,7 @@
     {{-- Section Cards --}}
     <div class="grid sm:grid-cols-2 gap-4">
 
-        {{-- 1. Business Basics --}}
+        {{-- 1. Your Business Identity --}}
         @php $isDone = $done['basics']; @endphp
         <a href="{{ route('type.profile', ['seller', 'account']) }}"
            class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
@@ -112,15 +92,13 @@
                         <i class="fa-solid fa-building {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-900 text-sm">Business Basics</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Your name, business & phone number</p>
+                        <p class="font-bold text-slate-900 text-sm">Your Business Identity</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Business name, your name & phone</p>
                     </div>
                 </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
-                @endif
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-red-50 text-red-500' }}">
+                    {{ $isDone ? 'Complete' : 'Required' }}
+                </span>
             </div>
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
@@ -129,7 +107,7 @@
                     @if($user->phone)<p><span class="font-semibold">Phone:</span> {{ $user->phone }}</p>@endif
                 </div>
             @else
-                <p class="text-xs text-slate-400">Business name, owner name, phone number</p>
+                <p class="text-xs text-slate-400">Your business name, owner name, professional title & phone number</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
                 <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
@@ -139,32 +117,30 @@
             </div>
         </a>
 
-        {{-- 2. Profile & Bio --}}
+        {{-- 2. Profile Photo & Bio --}}
         @php $isDone = $done['bio']; @endphp
         <a href="{{ route('type.profile', ['seller', 'profile']) }}"
            class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user-circle {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
+                        <i class="fa-solid fa-camera {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-900 text-sm">Profile & Bio</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Photo, title, bio & about description</p>
+                        <p class="font-bold text-slate-900 text-sm">Profile Photo & Bio</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Your photo, story & experience summary</p>
                     </div>
                 </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
-                @endif
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-red-50 text-red-500' }}">
+                    {{ $isDone ? 'Complete' : 'Required' }}
+                </span>
             </div>
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
                     <p class="line-clamp-2 leading-relaxed">{{ $user->bio }}</p>
                 </div>
             @else
-                <p class="text-xs text-slate-400">Photo, professional title, years of experience, about you</p>
+                <p class="text-xs text-slate-400">Professional photo, years of experience, about you — clients trust profiles with photos 3× more</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
                 <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
@@ -174,48 +150,7 @@
             </div>
         </a>
 
-        {{-- 3. Service Location --}}
-        @php $isDone = $done['location']; @endphp
-        <a href="{{ route('type.profile', ['seller', 'service_location']) }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
-            <div class="flex items-start justify-between gap-3 mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-location-dot {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-900 text-sm">Service Location</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Your city, state & service area</p>
-                    </div>
-                </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
-                @endif
-            </div>
-            @if($isDone)
-                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
-                    @php
-                        $oc = $user->city    ? (is_numeric($user->city)  ? (\App\Models\City::find($user->city)?->title  ?? $user->city)  : $user->city)  : null;
-                        $os = $user->state   ? (is_numeric($user->state) ? (\App\Models\State::find($user->state)?->title ?? $user->state) : $user->state) : null;
-                    @endphp
-                    @if($oc || $os)<p><span class="font-semibold">Area:</span> {{ collect([$oc, $os])->filter()->implode(', ') }}</p>@endif
-                    @if($user->zip_code)<p><span class="font-semibold">ZIP:</span> {{ $user->zip_code }}</p>@endif
-                    @if($user->service_radius)<p><span class="font-semibold">Radius:</span> {{ $user->service_radius }} miles</p>@endif
-                </div>
-            @else
-                <p class="text-xs text-slate-400">City, state, zip code, service area radius</p>
-            @endif
-            <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
-                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
-                    {{ $isDone ? 'Edit' : 'Add Now' }}
-                </span>
-            </div>
-        </a>
-
-        {{-- 4. Contact Info --}}
+        {{-- 3. How Clients Contact You --}}
         @php $isDone = $done['contact']; @endphp
         <a href="{{ route('type.profile', ['seller', 'contact']) }}"
            class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
@@ -225,23 +160,22 @@
                         <i class="fa-solid fa-address-card {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-900 text-sm">Contact Info</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Phone, WhatsApp & contact details</p>
+                        <p class="font-bold text-slate-900 text-sm">How Clients Contact You</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Phone, WhatsApp, website & social links</p>
                     </div>
                 </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
-                @endif
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-red-50 text-red-500' }}">
+                    {{ $isDone ? 'Complete' : 'Required' }}
+                </span>
             </div>
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
                     @if($user->whatsapp)<p><i class="fab fa-whatsapp text-emerald-500 mr-1"></i>{{ $user->whatsapp }}</p>@endif
+                    @if($user->phone)<p><i class="fa-solid fa-phone text-teal-600 mr-1"></i>{{ $user->phone }}</p>@endif
                     @if($user->website)<p><i class="fa-solid fa-globe text-teal-600 mr-1"></i>{{ $user->website }}</p>@endif
                 </div>
             @else
-                <p class="text-xs text-slate-400">WhatsApp, website, social media links</p>
+                <p class="text-xs text-slate-400">WhatsApp number, phone, website, Facebook or Instagram — make it easy for clients to reach you</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
                 <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
@@ -251,174 +185,7 @@
             </div>
         </a>
 
-        {{-- 5. Services & Pricing --}}
-        @php $isDone = $done['services']; @endphp
-        <a href="{{ route('user.services.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
-            <div class="flex items-start justify-between gap-3 mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-list-check {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-900 text-sm">Services & Pricing</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ List your services & set prices</p>
-                    </div>
-                </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-red-50 text-red-500 rounded-lg">Required</span>
-                @endif
-            </div>
-            @if($isDone)
-                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
-                    <p class="font-semibold mb-1">{{ $user->services->count() }} service{{ $user->services->count() > 1 ? 's' : '' }} listed</p>
-                    <div class="flex flex-wrap gap-1">
-                        @foreach($user->services->take(3) as $svc)
-                            <span class="px-2 py-0.5 bg-white border border-slate-200 rounded-lg text-slate-500">{{ $svc->title }}</span>
-                        @endforeach
-                        @if($user->services->count() > 3)
-                            <span class="px-2 py-0.5 text-slate-400">+{{ $user->services->count() - 3 }} more</span>
-                        @endif
-                    </div>
-                </div>
-            @else
-                <p class="text-xs text-slate-400">List the services you offer with pricing details</p>
-            @endif
-            <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
-                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
-                    {{ $isDone ? 'Manage' : 'Add Now' }}
-                </span>
-            </div>
-        </a>
-
-        {{-- 6. Education & Certifications --}}
-        @if($showEducation)
-        @php $isDone = $done['education']; $eduTitle = $isHome ? 'Licenses & Certifications' : 'Education & Certifications'; @endphp
-        <a href="{{ route('user.educations.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
-            <div class="flex items-start justify-between gap-3 mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-graduation-cap {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-900 text-sm">{{ $eduTitle }}</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Professional Background</p>
-                    </div>
-                </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
-                @endif
-            </div>
-            @if($isDone)
-                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
-                    <p class="font-semibold mb-1">{{ $user->educations->count() }} {{ $isHome ? 'license' : 'credential' }}{{ $user->educations->count() > 1 ? 's' : '' }} added</p>
-                    @if($user->educations->first())
-                        <p class="text-slate-500 truncate">{{ $user->educations->first()->degree ?? $user->educations->first()->institution ?? '' }}</p>
-                    @endif
-                </div>
-            @else
-                <p class="text-xs text-slate-400">{{ $isHome ? 'Trade licenses, insurance, bonding certificates' : 'Degrees, certifications, professional qualifications' }}</p>
-            @endif
-            <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
-                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
-                    {{ $isDone ? 'Manage' : 'Add Now' }}
-                </span>
-            </div>
-        </a>
-        @endif
-
-        {{-- 7. Memberships & Associations --}}
-        @if($showMemberships)
-        @php $isDone = $done['memberships']; @endphp
-        <a href="{{ route('user.memberships.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
-            <div class="flex items-start justify-between gap-3 mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-id-badge {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-900 text-sm">Memberships & Associations</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Professional Background</p>
-                    </div>
-                </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
-                @endif
-            </div>
-            @if($isDone)
-                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
-                    <p class="font-semibold mb-1">{{ $user->memberships->count() }} membership{{ $user->memberships->count() > 1 ? 's' : '' }} added</p>
-                    @if($user->memberships->first())
-                        <p class="text-slate-500 truncate">{{ $user->memberships->first()->name ?? $user->memberships->first()->organization ?? '' }}</p>
-                    @endif
-                </div>
-            @else
-                <p class="text-xs text-slate-400">Bar associations, medical boards, professional organizations</p>
-            @endif
-            <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
-                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
-                    {{ $isDone ? 'Manage' : 'Add Now' }}
-                </span>
-            </div>
-        </a>
-        @endif
-
-        {{-- 8. Languages --}}
-        @if($showLanguages)
-        @php $isDone = $done['languages']; @endphp
-        <a href="{{ route('user.languages.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
-            <div class="flex items-start justify-between gap-3 mb-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-language {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="font-bold text-slate-900 text-sm">Languages Spoken</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Profile Section</p>
-                    </div>
-                </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
-                @endif
-            </div>
-            @if($isDone)
-                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
-                    <div class="flex flex-wrap gap-1">
-                        @foreach($user->languages->take(4) as $lang)
-                            <span class="px-2 py-0.5 bg-white border border-slate-200 rounded-lg text-slate-500">{{ $lang->language ?? $lang->name ?? $lang }}</span>
-                        @endforeach
-                        @if($user->languages->count() > 4)
-                            <span class="text-slate-400">+{{ $user->languages->count() - 4 }} more</span>
-                        @endif
-                    </div>
-                </div>
-            @else
-                <p class="text-xs text-slate-400">Languages you can serve clients in</p>
-            @endif
-            <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
-                    <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
-                    {{ $isDone ? 'Manage' : 'Add Now' }}
-                </span>
-            </div>
-        </a>
-        @endif
-
-        {{-- 9. Q & A --}}
+        {{-- 4. Client FAQs & Questions --}}
         @php $isDone = $done['faqs']; @endphp
         <a href="{{ route('user.faqs.index') }}"
            class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
@@ -428,15 +195,13 @@
                         <i class="fa-solid fa-circle-question {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-900 text-sm">Q & A</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Answer common questions from clients</p>
+                        <p class="font-bold text-slate-900 text-sm">Client FAQs & Questions</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Answer questions before clients even ask</p>
                     </div>
                 </div>
-                @if($isDone)
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg">Complete</span>
-                @else
-                    <span class="shrink-0 text-[10px] font-bold px-2 py-1 bg-slate-100 text-slate-500 rounded-lg">Optional</span>
-                @endif
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500' }}">
+                    {{ $isDone ? 'Complete' : 'Optional' }}
+                </span>
             </div>
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600">
@@ -446,7 +211,7 @@
                     @endif
                 </div>
             @else
-                <p class="text-xs text-slate-400">Common questions clients ask — builds trust before they contact you</p>
+                <p class="text-xs text-slate-400">Add pricing FAQs, turnaround times, service area questions — builds trust and reduces back-and-forth</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
                 <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
@@ -455,6 +220,143 @@
                 </span>
             </div>
         </a>
+
+        {{-- 5. Location, Services & Pricing (MERGED) --}}
+        @php
+            $locDone = filled($user->city) || filled($user->zip_code);
+            $svcDone = $user->services->count() > 0;
+            $isDone  = $done['loc_services'];
+            $oc = $user->city  ? (is_numeric($user->city)  ? (\App\Models\City::find($user->city)?->title  ?? $user->city)  : $user->city)  : null;
+            $os = $user->state ? (is_numeric($user->state) ? (\App\Models\State::find($user->state)?->title ?? $user->state) : $user->state) : null;
+        @endphp
+        <div class="bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-map-location-dot {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Location, Services & Pricing</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Where you work & what you charge</p>
+                    </div>
+                </div>
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-red-50 text-red-500' }}">
+                    {{ $isDone ? 'Complete' : 'Required' }}
+                </span>
+            </div>
+
+            <div class="space-y-2 mb-3">
+                {{-- Location sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-location-dot {{ $locDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Service Area</p>
+                            @if($locDone)
+                                <p class="text-slate-500 truncate">
+                                    {{ collect([$oc, $os])->filter()->implode(', ') }}
+                                    @if($user->zip_code) · ZIP {{ $user->zip_code }}@endif
+                                </p>
+                            @else
+                                <p class="text-slate-400">City, state, zip code not set</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('type.profile', ['seller', 'service_location']) }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $locDone ? 'Edit' : 'Add' }}
+                    </a>
+                </div>
+
+                {{-- Services sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-list-check {{ $svcDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Services & Pricing</p>
+                            @if($svcDone)
+                                <p class="text-slate-500">{{ $user->services->count() }} service{{ $user->services->count() > 1 ? 's' : '' }}:
+                                    {{ $user->services->take(2)->pluck('title')->implode(', ') }}{{ $user->services->count() > 2 ? '...' : '' }}
+                                </p>
+                            @else
+                                <p class="text-slate-400">No services listed yet</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('user.services.index') }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $svcDone ? 'Manage' : 'Add' }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- 6. Credentials & Trust (MERGED — always shown) --}}
+        @php
+            $eduDone = $user->educations->count() > 0;
+            $memDone = $user->memberships->count() > 0;
+            $isDone  = $done['credentials'];
+        @endphp
+        <div class="bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200' }} shadow-sm p-5 transition-all hover:shadow-md">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-award {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-slate-900 text-sm">Credentials & Trust</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Degrees, licenses & associations</p>
+                    </div>
+                </div>
+                <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500' }}">
+                    {{ $isDone ? 'Complete' : 'Optional' }}
+                </span>
+            </div>
+
+            <div class="space-y-2 mb-3">
+                {{-- Education sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-graduation-cap {{ $eduDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Education & Certifications</p>
+                            @if($eduDone)
+                                <p class="text-slate-500 truncate">{{ $user->educations->count() }} credential{{ $user->educations->count() > 1 ? 's' : '' }}:
+                                    {{ $user->educations->first()->degree ?? $user->educations->first()->institution ?? '' }}
+                                </p>
+                            @else
+                                <p class="text-slate-400">Degrees, licenses, certifications</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('user.educations.index') }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $eduDone ? 'Manage' : 'Add' }}
+                    </a>
+                </div>
+
+                {{-- Memberships sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-id-badge {{ $memDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Memberships & Associations</p>
+                            @if($memDone)
+                                <p class="text-slate-500 truncate">{{ $user->memberships->count() }} membership{{ $user->memberships->count() > 1 ? 's' : '' }}:
+                                    {{ $user->memberships->first()->name ?? $user->memberships->first()->organization ?? '' }}
+                                </p>
+                            @else
+                                <p class="text-slate-400">Bar associations, boards, professional orgs</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('user.memberships.index') }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $memDone ? 'Manage' : 'Add' }}
+                    </a>
+                </div>
+            </div>
+        </div>
 
     </div>
 
