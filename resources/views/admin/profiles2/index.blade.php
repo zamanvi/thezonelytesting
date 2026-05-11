@@ -49,7 +49,7 @@
                             <tbody>
                                 @foreach ($users as $index => $user)
                                     <tr>
-                                        <td>{{ ($users->currentPage()-1)*$users->perPage()+$index+1 }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 @if($user->profile_photo)
