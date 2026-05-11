@@ -108,7 +108,13 @@ class HomeController extends Controller
             'cities' => User::activeSellers()->whereNotNull('city')->distinct('city')->count('city'),
             'reviews'=> \App\Models\Review::count(),
         ];
-        return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords', 'stats'));
+        $categories = Category::where('is_active', true)->whereNull('parent_id')->withCount('children')->take(8)->get();
+        $featuredReviews = \App\Models\Review::with('reviewer:id,name,profile_photo', 'seller:id,name,slug,title,designation')
+            ->where('rating', '>=', 4)
+            ->latest()
+            ->take(6)
+            ->get();
+        return view('frontend.home', compact('users', 'meta_title', 'meta_description', 'meta_keywords', 'stats', 'categories', 'featuredReviews'));
     }
     function service_all()
     {

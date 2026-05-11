@@ -26,7 +26,13 @@
 <style>
     .pro-card { transition: box-shadow .2s ease, transform .2s ease; }
     .pro-card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -12px rgba(0,0,0,0.12); }
-    .search-pill:focus-within { box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .search-pill:focus-within { box-shadow: 0 0 0 3px rgba(15,118,110,0.18); }
+    .cat-card { transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; }
+    .cat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px -8px rgba(15,118,110,0.18); border-color: #0F766E; }
+    .review-card { transition: box-shadow .2s ease; }
+    .review-card:hover { box-shadow: 0 12px 32px -8px rgba(0,0,0,0.10); }
+    @keyframes countup { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .stat-num { animation: countup .6s ease both; }
 </style>
 @endsection
 
@@ -121,19 +127,87 @@
 <div class="bg-white border-b border-slate-100">
     <div class="max-w-3xl mx-auto px-4 py-8 grid grid-cols-3 gap-4 text-center">
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['pros'] > 0 ? $stats['pros'].'+' : 'Growing' }}</div>
+            @if($stats['pros'] > 0)
+            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['pros'] }}" data-suffix="+">{{ $stats['pros'] }}+</div>
+            @else
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">Growing</div>
+            @endif
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
         </div>
         <div class="border-x border-slate-100">
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['reviews'] > 0 ? $stats['reviews'].'+' : '5★' }}</div>
+            @if($stats['reviews'] > 0)
+            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['reviews'] }}" data-suffix="+">{{ $stats['reviews'] }}+</div>
+            @else
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">5★</div>
+            @endif
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Client Reviews</div>
         </div>
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['cities'] > 0 ? $stats['cities'].'+' : 'USA' }}</div>
+            @if($stats['cities'] > 0)
+            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['cities'] }}" data-suffix="+">{{ $stats['cities'] }}+</div>
+            @else
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">USA</div>
+            @endif
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
         </div>
     </div>
 </div>
+
+{{-- ═══ HOW IT WORKS ═══ --}}
+<section class="py-16 px-4 sm:px-6 bg-white border-b border-slate-100">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <p class="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-2">Simple Process</p>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">How Zonely Works</h2>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-6 sm:gap-10 relative">
+            {{-- connector line desktop --}}
+            <div class="hidden sm:block absolute top-8 left-1/3 right-1/3 h-px bg-slate-200 -translate-y-px z-0"></div>
+            @foreach([
+                ['step'=>'1','icon'=>'fa-magnifying-glass','title'=>'Search & Discover','body'=>'Type what you need — plumber, lawyer, tax expert. Filter by city or ZIP. See real profiles with reviews.'],
+                ['step'=>'2','icon'=>'fa-address-card','title'=>'Review & Compare','body'=>'Read verified client reviews, check credentials, see service areas, and compare pros side by side.'],
+                ['step'=>'3','icon'=>'fa-handshake','title'=>'Connect & Hire','body'=>'Call, WhatsApp, or send a booking request directly. No middlemen. No waiting. Pay the pro directly.'],
+            ] as $s)
+            <div class="flex flex-col items-center text-center relative z-10">
+                <div class="w-16 h-16 rounded-2xl bg-teal-50 border-2 border-teal-100 flex items-center justify-center mb-4 relative">
+                    <i class="fa-solid {{ $s['icon'] }} text-teal-700 text-xl"></i>
+                    <span class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-amber-500 text-slate-900 text-[10px] font-black flex items-center justify-center">{{ $s['step'] }}</span>
+                </div>
+                <h3 class="font-bold text-slate-900 mb-2">{{ $s['title'] }}</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">{{ $s['body'] }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ═══ CATEGORIES ═══ --}}
+@if($categories->count())
+<section class="py-14 px-4 sm:px-6 bg-slate-50 border-b border-slate-100">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Browse By Category</p>
+                <h2 class="text-xl font-extrabold text-slate-900">What do you need help with?</h2>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            @foreach($categories->take(8) as $cat)
+            <a href="{{ route('frontend.service.search') }}?q={{ urlencode($cat->title) }}"
+               class="cat-card bg-white border border-slate-200 rounded-2xl p-5 flex flex-col items-center gap-3 text-center">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center">
+                    <i class="fa-solid fa-briefcase text-teal-700 text-lg"></i>
+                </div>
+                <span class="text-sm font-bold text-slate-800">{{ $cat->title }}</span>
+                @if($cat->children_count ?? false)
+                <span class="text-[10px] text-slate-400 font-semibold">{{ $cat->children_count }} specialties</span>
+                @endif
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- ═══ FEATURED EXPERTS ═══ --}}
 <section class="py-14 px-4 sm:px-6 bg-white">
@@ -217,6 +291,39 @@
 
     </div>
 </section>
+
+{{-- ═══ REVIEWS ═══ --}}
+@if($featuredReviews->count())
+<section class="py-14 px-4 sm:px-6 bg-slate-50 border-t border-slate-100">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <p class="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-2">Client Reviews</p>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">What Clients Are Saying</h2>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($featuredReviews as $review)
+            <div class="review-card bg-white rounded-2xl border border-slate-100 p-5 flex flex-col gap-3">
+                <div class="flex items-center gap-1">
+                    @for($i=1;$i<=5;$i++)<i class="fa-solid fa-star text-amber-400 text-xs{{ $i > $review->rating ? ' opacity-25' : '' }}"></i>@endfor
+                </div>
+                <p class="text-sm text-slate-600 leading-relaxed flex-1">"{{ Str::limit($review->review ?? 'Excellent service!', 120) }}"</p>
+                <div class="flex items-center gap-2 pt-2 border-t border-slate-50">
+                    <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-black text-xs shrink-0">
+                        {{ strtoupper(substr($review->reviewer?->name ?? $review->reviewer_name ?? 'C', 0, 1)) }}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs font-bold text-slate-800 truncate">{{ $review->reviewer?->name ?? $review->reviewer_name ?? 'Client' }}</p>
+                        @if($review->seller)
+                        <p class="text-[10px] text-slate-400 truncate">for <a href="{{ route('frontend.service.show', $review->seller->slug ?? $review->seller->id) }}" class="hover:text-teal-700 transition">{{ $review->seller->name }}</a></p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 {{-- ═══ FOR PROS CTA ═══ --}}
 <div class="h-20 bg-gradient-to-b from-white to-slate-950"></div>
@@ -310,6 +417,33 @@
 
 @section('scripts')
 <script>
+// Stats counter animation on scroll
+(function() {
+    const stats = document.querySelectorAll('.stat-num[data-target]');
+    if (!stats.length) return;
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            if (isNaN(target)) return;
+            let start = 0;
+            const duration = 1200;
+            const step = timestamp => {
+                if (!start) start = timestamp;
+                const p = Math.min((timestamp - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(ease * target) + suffix;
+                if (p < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+            io.unobserve(el);
+        });
+    }, { threshold: 0.5 });
+    stats.forEach(el => io.observe(el));
+})();
+
 (function() {
     const allUsers = {!! $searchUsersJson !!};
     const input    = document.getElementById('searchQ');
