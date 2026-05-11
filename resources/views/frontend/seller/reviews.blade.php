@@ -51,6 +51,29 @@
             </button>
         </div>
 
+        {{-- Pending Review Requests --}}
+        @if(isset($pendingRequests) && $pendingRequests->count())
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-5">
+            <p class="text-xs font-bold text-amber-700 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-clock"></i> Awaiting Response ({{ $pendingRequests->count() }})
+            </p>
+            <div class="space-y-2">
+                @foreach($pendingRequests as $req)
+                <div class="flex items-center justify-between gap-3 bg-white rounded-xl p-3">
+                    <div>
+                        <p class="text-sm font-semibold text-slate-800">{{ $req->reviewer_name }}</p>
+                        <p class="text-xs text-slate-400">{{ $req->created_at?->diffForHumans() }}</p>
+                    </div>
+                    <button onclick="copyReviewLink('{{ url('/r/'.$req->review_token) }}', this)"
+                        class="shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 text-xs font-bold rounded-lg transition">
+                        <i class="fa-solid fa-copy mr-1"></i> Copy Link
+                    </button>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <div class="space-y-3" id="reviewList">
             @forelse($reviews ?? [] as $review)
             <div class="review-card bg-white rounded-2xl border border-slate-100 shadow-sm p-5"
@@ -118,6 +141,23 @@
 </div>
 
 <script>
+function copyReviewLink(url, btn) {
+    const copy = () => {
+        btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Copied!';
+        setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copy Link', 2000);
+    };
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(copy).catch(() => {
+            const el = document.createElement('textarea');
+            el.value = url; document.body.appendChild(el); el.select();
+            document.execCommand('copy'); document.body.removeChild(el); copy();
+        });
+    } else {
+        const el = document.createElement('textarea');
+        el.value = url; document.body.appendChild(el); el.select();
+        document.execCommand('copy'); document.body.removeChild(el); copy();
+    }
+}
 function filterReviews(btn, val) {
     document.querySelectorAll('.rev-tab').forEach(b => {
         b.className = 'rev-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition';

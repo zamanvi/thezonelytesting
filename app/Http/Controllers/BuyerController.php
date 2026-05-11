@@ -21,16 +21,33 @@ class BuyerController extends Controller
             ->latest()
             ->get();
 
-        $activeLeads    = $myLeads->whereIn('status', ['new', 'pending']);
-        $resolvedLeads  = $myLeads->whereIn('status', ['won', 'lost', 'closed']);
+        $activeLeads   = $myLeads->whereIn('status', ['new', 'pending']);
+        $resolvedLeads = $myLeads->whereIn('status', ['won', 'lost', 'closed']);
+
+        // Leads marked won that don't yet have a submitted review
+        $reviewedLeadIds = Review::where('reviewer_id', $user->id)
+            ->whereNotNull('token_used_at')
+            ->pluck('lead_id')
+            ->merge(
+                Review::where('reviewer_email', $user->email)
+                    ->whereNotNull('token_used_at')
+                    ->pluck('lead_id')
+            )->unique();
+
+        $pendingReviews = Review::with('seller')
+            ->where(function ($q) use ($user) {
+                $q->where('reviewer_id', $user->id)
+                  ->orWhere('reviewer_email', $user->email);
+            })
+            ->whereNull('token_used_at')
+            ->whereNotNull('review_token')
+            ->get();
 
         $stats = [
-            'bookings'  => $myLeads->count(),
-            'active'    => $activeLeads->count(),
-            'resolved'  => $resolvedLeads->count(),
+            'bookings' => $myLeads->count(),
+            'active'   => $activeLeads->count(),
+            'resolved' => $resolvedLeads->count(),
         ];
-
-        $pendingReviews = collect();
 
         return view('frontend.buyer.dashboard', compact(
             'stats', 'pendingReviews', 'activeLeads', 'resolvedLeads'
@@ -39,12 +56,23 @@ class BuyerController extends Controller
 
     public function bookings()
     {
-        $bookings = collect();
+        $user     = Auth::user();
+        $bookings = Lead::where('email', $user->email)
+            ->with('seller')
+            ->latest()
+            ->paginate(20);
+
         return view('frontend.buyer.bookings', compact('bookings'));
     }
 
     public function cancelBooking(Request $request, $id)
     {
+        $lead = Lead::where('id', $id)
+            ->where('email', Auth::user()->email)
+            ->whereIn('status', ['new', 'pending'])
+            ->firstOrFail();
+
+        $lead->update(['status' => 'lost']);
         return response()->json(['success' => true]);
     }
 
@@ -67,26 +95,40 @@ class BuyerController extends Controller
     {
         $data = $request->validate([
             'seller_id'     => 'required|exists:users,id',
-            'selected_date' => 'required|date',
-            'selected_slot' => 'required|string',
+            'selected_date' => 'required|date|after_or_equal:today',
+            'selected_slot' => 'required|string|max:50',
             'name'          => 'required|string|max:255',
             'phone'         => 'required|string|max:50',
-            'email'         => 'nullable|email',
+            'email'         => 'nullable|email|max:150',
             'message'       => 'nullable|string|max:1000',
         ]);
 
-        return redirect()->route('buyer.bookings')->with('success', 'Booking confirmed!');
+        $seller = User::findOrFail($data['seller_id']);
+
+        $lead = Lead::create([
+            'seller_id' => $data['seller_id'],
+            'name'      => $data['name'],
+            'phone'     => $data['phone'],
+            'email'     => $data['email'] ?? (Auth::user()?->email),
+            'service'   => 'Booking: ' . $data['selected_date'] . ' @ ' . $data['selected_slot'],
+            'message'   => $data['message'],
+            'status'    => 'new',
+            'fee'       => 0,
+        ]);
+
+        return redirect()->route('buyer.booking.confirmation', $lead->id)
+            ->with('success', 'Booking confirmed!');
     }
 
     public function review($sellerId)
     {
         $seller  = User::where('id', $sellerId)->where('type', 'seller')->firstOrFail();
         $booking = (object)[
-            'id'       => $sellerId,
-            'date'     => now(),
-            'slot_time'=> null,
-            'service'  => $seller->title ?? 'Service',
-            'seller'   => $seller,
+            'id'        => $sellerId,
+            'date'      => now(),
+            'slot_time' => null,
+            'service'   => $seller->title ?? 'Service',
+            'seller'    => $seller,
         ];
         return view('frontend.buyer.review', compact('booking'));
     }
@@ -96,21 +138,22 @@ class BuyerController extends Controller
         $seller = User::where('id', $sellerId)->where('type', 'seller')->firstOrFail();
 
         $data = $request->validate([
-            'rating'  => 'required|integer|min:1|max:5',
-            'review'  => 'required|string|min:10|max:1000',
-            'tags'    => 'nullable|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'required|string|min:10|max:1000',
+            'tags'   => 'nullable|string|max:255',
         ]);
 
         $user = Auth::user();
 
-        // Prevent duplicate reviews
         Review::updateOrCreate(
             ['seller_id' => $seller->id, 'reviewer_id' => $user->id],
             [
-                'reviewer_name' => $user->name,
-                'rating'        => $data['rating'],
-                'review'        => $data['review'],
-                'tags'          => $data['tags'] ?? null,
+                'reviewer_name'  => $user->name,
+                'reviewer_email' => $user->email,
+                'rating'         => $data['rating'],
+                'review'         => $data['review'],
+                'tags'           => $data['tags'] ?? null,
+                'token_used_at'  => now(),
             ]
         );
 
@@ -167,14 +210,15 @@ class BuyerController extends Controller
 
     public function bookingConfirmation($id)
     {
-        $booking = (object)[
-            'id'       => $id,
-            'date'     => now()->addDays(4),
-            'slot_time'=> '10:00 AM',
-            'service'  => 'Service',
-            'seller'   => (object)['id' => 0, 'name' => 'Professional', 'phone' => null],
-        ];
-        return view('frontend.buyer.booking_confirmation', compact('booking'));
+        $lead = Lead::with('seller')->findOrFail($id);
+
+        // Only allow buyer who made the booking to see confirmation
+        $user = Auth::user();
+        if ($lead->email && $lead->email !== $user->email) {
+            abort(403);
+        }
+
+        return view('frontend.buyer.booking_confirmation', compact('lead'));
     }
 
     public function affiliate()

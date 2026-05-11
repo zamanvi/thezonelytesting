@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PhonePoolController;
 use App\Http\Controllers\TwilioWebhookController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\BuyerController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqController;
@@ -91,6 +92,10 @@ Route::post('user/register', [HomeController::class, 'user_submit_register'])->n
 
 Route::post('/service/{slug}/inquiry', [HomeController::class, 'serviceInquiry'])->name('service.inquiry');
 Route::post('/service/{slug}/wa-click', [HomeController::class, 'waClick'])->name('service.wa.click');
+
+// Public review link — no login required (seller sends token link to buyer)
+Route::get('/r/{token}', [ReviewController::class, 'show'])->name('review.show');
+Route::post('/r/{token}', [ReviewController::class, 'store'])->name('review.store');
 
 // Twilio webhooks — no auth, verified by Twilio signature
 Route::post('/webhook/twilio/voice',  [TwilioWebhookController::class, 'voice'])->name('twilio.webhook.voice');
@@ -185,6 +190,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('leads/{id}', [SellerController::class, 'leadDetail'])->name('lead.detail');
         Route::post('leads/{id}/status', [SellerController::class, 'leadStatus'])->name('lead.status');
         Route::post('leads/{id}/notes', [SellerController::class, 'leadNotes'])->name('lead.notes');
+        Route::post('leads/{id}/review-request', [SellerController::class, 'reviewRequest'])->name('lead.review-request');
     });
 
     /*

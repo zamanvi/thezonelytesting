@@ -21,11 +21,11 @@
 
             <div class="flex items-center gap-4 mb-5 pb-5 border-b border-slate-100">
                 <div class="w-14 h-14 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shrink-0">
-                    {{ strtoupper(substr($booking->seller->name ?? 'PR', 0, 2)) }}
+                    {{ strtoupper(substr($lead->seller?->name ?? 'PR', 0, 2)) }}
                 </div>
                 <div>
-                    <p class="font-bold text-slate-900">{{ $booking->seller->name ?? 'Professional' }}</p>
-                    <p class="text-xs text-slate-500 mt-0.5">{{ $booking->service ?? 'Service' }}</p>
+                    <p class="font-bold text-slate-900">{{ $lead->seller?->name ?? 'Professional' }}</p>
+                    <p class="text-xs text-slate-500 mt-0.5">{{ $lead->service ?? 'Service' }}</p>
                 </div>
             </div>
 
@@ -35,29 +35,36 @@
                         <i class="fa-solid fa-calendar text-teal-700 text-xs"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Inquiry Date</p>
                         <p class="text-sm font-bold text-slate-900">
-                            {{ \Carbon\Carbon::parse($booking->date ?? now())->format('l, F j, Y') }}
+                            {{ $lead->created_at?->format('l, F j, Y') }}
                         </p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-clock text-teal-700 text-xs"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Time</p>
-                        <p class="text-sm font-bold text-slate-900">{{ $booking->slot_time ?? '—' }}</p>
-                    </div>
-                </div>
-                @if($booking->seller->phone ?? false)
+                @if($lead->seller?->phone)
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-phone text-teal-700 text-xs"></i>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact</p>
-                        <p class="text-sm font-bold text-slate-900">{{ $booking->seller->phone }}</p>
+                        <a href="tel:{{ $lead->seller->phone }}" class="text-sm font-bold text-teal-700 hover:underline">
+                            {{ $lead->seller->phone }}
+                        </a>
+                    </div>
+                </div>
+                @endif
+                @if($lead->seller?->whatsapp)
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-brands fa-whatsapp text-emerald-600 text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">WhatsApp</p>
+                        <a href="https://wa.me/{{ preg_replace('/\D/','',$lead->seller->whatsapp) }}"
+                           target="_blank" class="text-sm font-bold text-emerald-600 hover:underline">
+                            Message Now
+                        </a>
                     </div>
                 </div>
                 @endif
@@ -65,8 +72,8 @@
 
             {{-- Reference Number --}}
             <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                <p class="text-xs text-slate-400">Booking Ref</p>
-                <p class="text-xs font-black text-slate-700 tracking-widest">#BK{{ str_pad($booking->id ?? rand(1000,9999), 6, '0', STR_PAD_LEFT) }}</p>
+                <p class="text-xs text-slate-400">Inquiry Ref</p>
+                <p class="text-xs font-black text-slate-700 tracking-widest">#ZN{{ str_pad($lead->id, 6, '0', STR_PAD_LEFT) }}</p>
             </div>
         </div>
 

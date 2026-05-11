@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class SellerController extends Controller
 {
@@ -137,22 +138,34 @@ class SellerController extends Controller
 
     public function reviews()
     {
-        $user    = Auth::user();
-        $reviews = Review::where('seller_id', $user->id)->latest()->get();
+        $user = Auth::user();
+
+        // Only submitted reviews (have a rating)
+        $reviews = Review::where('seller_id', $user->id)
+            ->whereNotNull('rating')
+            ->latest()
+            ->get();
+
+        // Pending review requests (sent but not yet submitted)
+        $pendingRequests = Review::where('seller_id', $user->id)
+            ->whereNull('rating')
+            ->whereNotNull('review_token')
+            ->latest()
+            ->get();
 
         $avgRating = $reviews->count() ? round($reviews->avg('rating'), 1) : 0;
 
         $ratingBreakdown = [];
         for ($i = 5; $i >= 1; $i--) {
             $count = $reviews->where('rating', $i)->count();
-            $ratingBreakdown[$i] = [
-                'count' => $count,
-                'pct'   => $reviews->count() ? round($count / $reviews->count() * 100) : 0,
-            ];
+            $ratingBreakdown[$i] = $reviews->count()
+                ? round($count / $reviews->count() * 100)
+                : 0;
         }
 
         return view('frontend.seller.reviews', [
             'reviews'         => $reviews,
+            'pendingRequests' => $pendingRequests,
             'avgRating'       => $avgRating,
             'totalReviews'    => $reviews->count(),
             'ratingBreakdown' => $ratingBreakdown,
@@ -203,5 +216,39 @@ class SellerController extends Controller
         $request->validate(['notes' => 'nullable|string|max:1000']);
         Lead::where('id', $id)->where('seller_id', Auth::id())->update(['notes' => $request->notes]);
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Seller sends a review request link to the buyer of a lead.
+     * Creates (or reuses) a pending Review row with a unique token.
+     * The buyer opens /r/{token} — no login required.
+     */
+    public function reviewRequest(Request $request, $id)
+    {
+        $lead = Lead::where('id', $id)->where('seller_id', Auth::id())->firstOrFail();
+
+        // Reuse existing token if already sent and not yet submitted
+        $existing = Review::where('seller_id', Auth::id())
+            ->where('lead_id', $lead->id)
+            ->whereNull('token_used_at')
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'link' => url('/r/' . $existing->review_token),
+            ]);
+        }
+
+        $review = Review::create([
+            'seller_id'     => Auth::id(),
+            'lead_id'       => $lead->id,
+            'reviewer_name' => $lead->name ?? 'Guest',
+            'reviewer_email'=> $lead->email,
+            'review_token'  => Str::random(48),
+        ]);
+
+        return response()->json([
+            'link' => url('/r/' . $review->review_token),
+        ]);
     }
 }

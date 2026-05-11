@@ -132,6 +132,55 @@
         </div>
         @endif
 
+        {{-- Request Review — show for any lead that has buyer contact info --}}
+        @if($lead->phone || $lead->email)
+        @php
+            $existingReview = \App\Models\Review::where('seller_id', auth()->id())
+                ->where('lead_id', $lead->id)->first();
+        @endphp
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
+            <h2 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-star text-amber-400 text-sm"></i> Get a Review
+            </h2>
+            @if($existingReview && $existingReview->isSubmitted())
+            <p class="text-xs text-slate-400 mb-3">Review received from this client.</p>
+            <div class="flex gap-0.5 mb-1">
+                @for($i=1;$i<=5;$i++)
+                <i class="fa-solid fa-star text-sm {{ $i <= $existingReview->rating ? 'text-amber-400' : 'text-slate-200' }}"></i>
+                @endfor
+            </div>
+            <p class="text-sm text-slate-600 italic">"{{ $existingReview->review }}"</p>
+            <p class="text-xs text-slate-400 mt-1">— {{ $existingReview->reviewer_name }}</p>
+            @elseif($existingReview && !$existingReview->isSubmitted())
+            <p class="text-xs text-slate-400 mb-4">Review request sent. Waiting for client to respond.</p>
+            <div class="flex gap-2">
+                <input type="text" readonly id="reviewLinkBox"
+                       value="{{ url('/r/' . $existingReview->review_token) }}"
+                       class="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-mono focus:outline-none truncate">
+                <button onclick="copyReviewLink()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition shrink-0">
+                    <i class="fa-solid fa-copy"></i> Copy
+                </button>
+            </div>
+            @else
+            <p class="text-xs text-slate-400 mb-4">Send a review link to your client. No account needed — they just click and rate.</p>
+            <button onclick="requestReview(this)"
+                class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-link text-xs"></i> Generate Review Link
+            </button>
+            <div id="reviewLinkWrap" class="hidden mt-3">
+                <p class="text-xs text-slate-500 mb-2">Share this link with your client:</p>
+                <div class="flex gap-2">
+                    <input type="text" readonly id="reviewLinkBox"
+                           class="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-mono focus:outline-none truncate">
+                    <button onclick="copyReviewLink()" class="px-4 py-2.5 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold rounded-xl transition shrink-0">
+                        <i class="fa-solid fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+            @endif
+        </div>
+        @endif
+
         @if(!$lead->paid_at)
         <div class="bg-red-50 border border-red-100 rounded-2xl p-5">
             <p class="font-bold text-red-700 mb-1 flex items-center gap-2">
@@ -156,6 +205,36 @@ function setStatus(status) {
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '' },
         body: JSON.stringify({ status })
     }).then(() => location.reload());
+}
+function requestReview(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Generating...';
+    fetch('{{ route('seller.lead.review-request', $lead->id) }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '' },
+    })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('reviewLinkBox').value = data.link;
+        document.getElementById('reviewLinkWrap').classList.remove('hidden');
+        btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Link Generated';
+        btn.className = btn.className.replace('bg-amber-500 hover:bg-amber-400','bg-emerald-100 text-emerald-700');
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-link text-xs"></i> Generate Review Link';
+    });
+}
+function copyReviewLink() {
+    const box = document.getElementById('reviewLinkBox');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(box.value).then(() => {
+            box.select();
+        });
+    } else {
+        box.select();
+        document.execCommand('copy');
+    }
 }
 function saveNotes(btn) {
     const notes = document.getElementById('notesArea').value;
