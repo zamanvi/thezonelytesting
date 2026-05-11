@@ -174,7 +174,7 @@
                                         @endif
                                         <li>
                                             <form method="POST" action="{{ route('admin.leads.destroy',$lead->id) }}"
-                                                  onsubmit="return confirm('Delete lead from {{ addslashes($lead->name) }}?')">
+                                                  onsubmit="return confirm('Delete lead from ' + {{ @json($lead->name) }} + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete
@@ -244,10 +244,9 @@
 <script>
 function filterLeads(q) {
     q = q.toLowerCase();
-    document.querySelectorAll('#leadsTable tbody tr:not(.d-none)').forEach(row => {
-        if (!row.querySelector('.modal')) {
-            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
-        }
+    document.querySelectorAll('#leadsTable tbody tr:not([id^="msgModal"])').forEach(row => {
+        if (row.closest('.modal')) return;
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
 }
 </script>

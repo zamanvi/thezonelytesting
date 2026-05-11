@@ -67,7 +67,7 @@
                 <a href="{{ route('user.dashboard') }}" class="text-slate-500 font-semibold text-sm py-2">
                     ← Back
                 </a>
-                <button class="w-full sm:w-auto bg-slate-900 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl font-bold hover:bg-teal-700 transition text-sm">
+                <button class="w-full sm:w-auto bg-teal-700 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl font-bold hover:bg-teal-800 transition text-sm">
                     Update Profile
                 </button>
             </div>

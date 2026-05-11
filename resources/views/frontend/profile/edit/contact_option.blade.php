@@ -44,7 +44,7 @@
                                 <div class="flex items-center gap-6 mb-6">
                                     <div
                                         class="w-16 h-16 bg-teal-100 rounded-3xl flex items-center justify-center text-teal-700 text-3xl">
-                                        📞</div>
+                                        <i class="fa-solid fa-phone text-2xl"></i></div>
                                     <div>
                                         <h3 class="text-2xl font-bold">Direct Phone Call</h3>
                                         <p class="text-base text-slate-500">Show your phone for instant calls</p>
@@ -71,7 +71,7 @@
                                 <div class="flex items-center gap-6 mb-6">
                                     <div
                                         class="w-16 h-16 bg-emerald-100 rounded-3xl flex items-center justify-center text-emerald-600 text-3xl">
-                                        💬</div>
+                                        <i class="fa-brands fa-whatsapp text-2xl"></i></div>
                                     <div>
                                         <h3 class="text-2xl font-bold">WhatsApp Consultation</h3>
                                         <p class="text-base text-slate-500">Fastest growing messaging channel</p>
@@ -100,7 +100,7 @@
                                     <div class="flex items-center gap-6 mb-6">
                                         <div
                                             class="w-16 h-16 bg-indigo-100 rounded-3xl flex items-center justify-center text-indigo-600 text-3xl">
-                                            📅</div>
+                                            <i class="fa-solid fa-calendar-check text-2xl"></i></div>
                                         <div>
                                             <h3 class="text-2xl font-bold">Zonely Built-in Booking</h3>
                                             <p class="text-base text-slate-500">Fully integrated appointment scheduling

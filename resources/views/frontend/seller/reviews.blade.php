@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex-1 space-y-1.5">
                     @foreach([5,4,3,2,1] as $star)
-                    @php $pct = $ratingBreakdown[$star] ?? [5=>78,4=>16,3=>4,2=>2,1=>0][$star]; @endphp
+                    @php $pct = $ratingBreakdown[$star] ?? 0; @endphp
                     <div class="flex items-center gap-2">
                         <span class="text-[10px] font-bold text-slate-400 w-4 text-right">{{ $star }}</span>
                         <i class="fa-solid fa-star text-[10px] text-amber-400"></i>
@@ -100,46 +100,17 @@
                 @endif
             </div>
             @empty
-            {{-- Demo reviews --}}
-            @foreach([
-                ['init'=>'MR','name'=>'Maria Rodriguez','date'=>'Apr 18, 2026','rating'=>5,'text'=>'Absolutely fantastic service. Very professional, explained everything clearly and got the job done perfectly. Highly recommend!','tags'=>'Professional,Great communication,Would recommend'],
-                ['init'=>'JT','name'=>'James Thompson','date'=>'Apr 15, 2026','rating'=>5,'text'=>'Showed up on time, very knowledgeable, and solved our problem quickly. Will definitely use again.','tags'=>'Punctual,Highly skilled,Fast service'],
-                ['init'=>'SA','name'=>'Sarah Ahmed','date'=>'Apr 10, 2026','rating'=>4,'text'=>'Good experience overall. A bit hard to reach at first but once we connected the service was great.','tags'=>'Professional,Good value'],
-                ['init'=>'DK','name'=>'David Kim','date'=>'Apr 5, 2026','rating'=>5,'text'=>'The best in the area. No question. Worth every penny.','tags'=>'Highly skilled,Would recommend,Friendly'],
-            ] as $r)
-            <div class="review-card bg-white rounded-2xl border border-slate-100 shadow-sm p-5" data-stars="{{ $r['rating'] }}">
-                <div class="flex items-start justify-between gap-3 mb-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center font-bold text-teal-700 text-sm shrink-0">{{ $r['init'] }}</div>
-                        <div>
-                            <p class="font-bold text-sm text-slate-900">{{ $r['name'] }}</p>
-                            <p class="text-xs text-slate-400">{{ $r['date'] }}</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-0.5 shrink-0">
-                        @for($i = 1; $i <= 5; $i++)
-                        <i class="fa-solid fa-star text-xs {{ $i <= $r['rating'] ? 'text-amber-400' : 'text-slate-200' }}"></i>
-                        @endfor
-                    </div>
+            <div class="bg-white rounded-2xl border-2 border-dashed border-slate-200 p-12 text-center">
+                <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-star text-amber-400 text-2xl"></i>
                 </div>
-                <p class="text-base text-slate-700 leading-relaxed">"{{ $r['text'] }}"</p>
-                <div class="flex flex-wrap gap-1.5 mt-3">
-                    @foreach(explode(',', $r['tags']) as $tag)
-                    <span class="px-2.5 py-1 bg-teal-50 text-teal-800 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>
-                    @endforeach
-                </div>
-                <button onclick="toggleReply(this, 0)" class="mt-3 text-xs font-bold text-teal-700 hover:underline">
-                    <i class="fa-solid fa-reply mr-1"></i> Reply
-                </button>
-                <div class="reply-box hidden mt-3">
-                    <textarea rows="2" placeholder="Write a professional, friendly reply..."
-                        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-teal-400 resize-none"></textarea>
-                    <button class="mt-2 px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold rounded-xl transition">
-                        Post Reply
-                    </button>
-                </div>
+                <p class="font-bold text-slate-700 mb-1">No reviews yet</p>
+                <p class="text-sm text-slate-400 mb-5">Ask satisfied clients to leave a review on your public profile. Reviews build trust and increase leads.</p>
+                <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->id()) }}" target="_blank"
+                   class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> View Your Public Page
+                </a>
             </div>
-            @endforeach
             @endforelse
         </div>
 

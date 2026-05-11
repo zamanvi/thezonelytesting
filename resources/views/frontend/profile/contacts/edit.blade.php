@@ -38,13 +38,13 @@
                 class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
         <div class="flex items-center justify-between">
-            <button type="submit" form="deleteForm" onclick="return confirm('Delete this contact?')"
-                class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
-                <i class="fa-solid fa-trash text-xs"></i> Delete
-            </button>
             <button type="submit"
                 class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
+            </button>
+            <button type="submit" form="deleteForm" onclick="return confirm('Delete this contact?')"
+                class="flex items-center gap-2 px-5 py-3 bg-red-50 hover:bg-red-500 hover:text-white text-red-500 font-bold rounded-2xl text-sm transition">
+                <i class="fa-solid fa-trash text-xs"></i> Delete
             </button>
         </div>
     </form>

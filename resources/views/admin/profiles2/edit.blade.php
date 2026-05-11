@@ -43,7 +43,7 @@
                     @endif
                     <h5 class="mb-1 fw-bold">{{ $user->name }}</h5>
                     <div class="mb-2">
-                        <span class="badge {{ $user->type==='seller'?'bg-primary':($user->type==='admin'?'bg-dark':($user->type==='staf'?'bg-warning text-dark':'bg-secondary')) }}">
+                        <span class="badge {{ $user->type==='seller'?'bg-primary':($user->type==='admin'?'bg-dark':($user->type==='staff'?'bg-warning text-dark':'bg-secondary')) }}">
                             {{ ucfirst($user->type==='user'?'buyer':$user->type) }}
                         </span>
                         <span class="badge {{ $user->status?'bg-success':'bg-warning text-dark' }} ms-1">
@@ -72,7 +72,7 @@
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Account Type</label>
                             <select name="type" class="form-select">
-                                @foreach(['seller'=>'Seller','user'=>'Buyer','staf'=>'Staff','admin'=>'Admin'] as $val=>$lbl)
+                                @foreach(['seller'=>'Seller','user'=>'Buyer','staff'=>'Staff','admin'=>'Admin'] as $val=>$lbl)
                                 <option value="{{ $val }}" {{ old('type',$user->type)===$val?'selected':'' }}>{{ $lbl }}</option>
                                 @endforeach
                             </select>
@@ -175,7 +175,7 @@
                     <div class="card-body p-3">
                         <p class="small text-muted mb-3">Permanently deletes the user and all their data. Cannot be undone.</p>
                         <form method="POST" action="{{ route('admin.profiles.destroy', $user->id) }}"
-                              onsubmit="return confirm('Permanently delete {{ addslashes($user->name) }}? This cannot be undone.')">
+                              onsubmit="return confirm('Permanently delete ' + {{ @json($user->name) }} + '? This cannot be undone.')">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm w-100">
                                 <i class="fas fa-trash me-1"></i> Delete User

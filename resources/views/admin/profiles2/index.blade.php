@@ -146,7 +146,7 @@
 
                                                         <li>
                                                             <form action="{{ route('admin.profiles.destroy', $user->id) }}"
-                                                                method="POST" onsubmit="return confirm('Delete user: {{ addslashes($user->name) }}?');">
+                                                                method="POST" onsubmit="return confirm('Delete user: ' + {{ @json($user->name) }} + '?')">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item text-danger">

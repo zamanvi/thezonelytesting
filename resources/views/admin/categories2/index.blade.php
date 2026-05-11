@@ -105,13 +105,13 @@
                                         <li>
                                             <button class="dropdown-item" type="button"
                                                     data-update-url="{{ route('admin.categories.update', $cat->id) }}"
-                                                    onclick="openEditModal({{ $cat->id }}, this.dataset.updateUrl, '{{ addslashes($cat->title) }}', '{{ $cat->slug }}', {{ $cat->is_active ? 1 : 0 }}, null)">
+                                                    onclick="openEditModal({{ $cat->id }}, this.dataset.updateUrl, {{ @json($cat->title) }}, '{{ $cat->slug }}', {{ $cat->is_active ? 1 : 0 }}, null)">
                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                             </button>
                                         </li>
                                         <li>
                                             <button class="dropdown-item" type="button"
-                                                    onclick="openAddSubModal({{ $cat->id }}, '{{ addslashes($cat->title) }}')">
+                                                    onclick="openAddSubModal({{ $cat->id }}, {{ @json($cat->title) }})">
                                                 <i class="fas fa-plus me-2 text-success"></i> Add Sub-cat
                                             </button>
                                         </li>
@@ -125,7 +125,7 @@
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form action="{{ route('admin.categories.destroy', $cat->id) }}" method="POST"
-                                                  onsubmit="return confirm('Delete \'{{ addslashes($cat->title) }}\' and all sub-categories?')">
+                                                  onsubmit="return confirm('Delete ' + {{ @json($cat->title) }} + ' and all sub-categories?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete
@@ -170,14 +170,14 @@
                                                         <li>
                                                             <button class="dropdown-item small" type="button"
                                                                     data-update-url="{{ route('admin.categories.update', $sub->id) }}"
-                                                                    onclick="openEditModal({{ $sub->id }}, this.dataset.updateUrl, '{{ addslashes($sub->title) }}', '{{ $sub->slug }}', {{ $sub->is_active ? 1 : 0 }}, {{ $cat->id }})">
+                                                                    onclick="openEditModal({{ $sub->id }}, this.dataset.updateUrl, {{ @json($sub->title) }}, '{{ $sub->slug }}', {{ $sub->is_active ? 1 : 0 }}, {{ $cat->id }})">
                                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                                             </button>
                                                         </li>
                                                         <li><hr class="dropdown-divider"></li>
                                                         <li>
                                                             <form action="{{ route('admin.categories.destroy', $sub->id) }}" method="POST"
-                                                                  onsubmit="return confirm('Delete \'{{ addslashes($sub->title) }}\'?')">
+                                                                  onsubmit="return confirm('Delete ' + {{ @json($sub->title) }} + '?')">
                                                                 @csrf @method('DELETE')
                                                                 <button type="submit" class="dropdown-item text-danger small">
                                                                     <i class="fas fa-trash me-2"></i> Delete

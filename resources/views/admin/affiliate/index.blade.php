@@ -147,7 +147,8 @@
                                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                 @if($c->status === 'pending')
                                                 <li>
-                                                    <form method="POST" action="{{ route('admin.affiliate.commission.pay',$c->id) }}">
+                                                    <form method="POST" action="{{ route('admin.affiliate.commission.pay',$c->id) }}"
+                                                          onsubmit="return confirm('Mark ${{ number_format($c->amount,2) }} commission to ' + {{ @json($c->referrer?->name ?? 'this referrer') }} + ' as paid?')">
                                                         @csrf
                                                         <button type="submit" class="dropdown-item text-success">
                                                             <i class="fas fa-check me-2"></i> Mark Paid
@@ -211,12 +212,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($topReferrers->merge(
-                            \App\Models\User::where('type','seller')
-                                ->withCount('referrals')
-                                ->having('referrals_count',0)
-                                ->get()
-                        ) as $i => $seller)
+                        @foreach($allSellers as $i => $seller)
                         @php $refLink = url('/user/register/seller?ref='.($seller->slug ?: $seller->id)); @endphp
                         <tr>
                             <td class="text-muted small">{{ $i+1 }}</td>
@@ -271,7 +267,7 @@
                         <label class="form-label fw-semibold">Referrer (Seller who referred)</label>
                         <select name="referrer_id" class="form-select" required>
                             <option value="">-- Select Referrer --</option>
-                            @foreach(\App\Models\User::where('type','seller')->orderBy('name')->get() as $s)
+                            @foreach($allSellers->sortBy('name') as $s)
                             <option value="{{ $s->id }}">{{ $s->name }} ({{ $s->email }})</option>
                             @endforeach
                         </select>
@@ -280,7 +276,7 @@
                         <label class="form-label fw-semibold">Referred User (New seller they brought)</label>
                         <select name="referred_user_id" class="form-select" required>
                             <option value="">-- Select Referred User --</option>
-                            @foreach(\App\Models\User::where('type','seller')->orderBy('name')->get() as $s)
+                            @foreach($allSellers->sortBy('name') as $s)
                             <option value="{{ $s->id }}">{{ $s->name }} ({{ $s->email }})</option>
                             @endforeach
                         </select>
@@ -306,10 +302,24 @@
 @section('scripts')
 <script>
 function copyLink(btn, url) {
-    navigator.clipboard.writeText(url).then(() => {
-        btn.innerHTML = '<i class="fas fa-check text-success"></i>';
-        setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i>', 2000);
-    });
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            btn.innerHTML = '<i class="fas fa-check text-success"></i>';
+            setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i>', 2000);
+        }).catch(() => fallbackCopy(btn, url));
+    } else {
+        fallbackCopy(btn, url);
+    }
+}
+function fallbackCopy(btn, url) {
+    const el = document.createElement('textarea');
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    btn.innerHTML = '<i class="fas fa-check text-success"></i>';
+    setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i>', 2000);
 }
 function filterTable(q) {
     q = q.toLowerCase();

@@ -112,14 +112,14 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                         <li>
-                                            <button class="dropdown-item" onclick="openInlineEdit('country',{{ $c->id }},'{{ addslashes($c->title) }}','{{ $c->slug }}',{{ $c->status }})">
+                                            <button class="dropdown-item" onclick="openInlineEdit('country',{{ $c->id }},{{ @json($c->title) }},'{{ $c->slug }}',{{ $c->status }})">
                                                 <i class="fas fa-edit me-2 text-primary"></i> Edit
                                             </button>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form method="POST" action="{{ route('admin.countries.destroy',$c->id) }}"
-                                                  onsubmit="return confirm('Delete {{ addslashes($c->title) }}?')">
+                                                  onsubmit="return confirm('Delete ' + {{ @json($c->title) }} + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete
@@ -220,7 +220,7 @@
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form method="POST" action="{{ route('admin.countries.states.destroy', [$s->country_id, $s->id]) }}"
-                                                  onsubmit="return confirm('Delete {{ addslashes($s->title) }}?')">
+                                                  onsubmit="return confirm('Delete ' + {{ @json($s->title) }} + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete
@@ -320,7 +320,7 @@
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form method="POST" action="{{ route('admin.states.cities.destroy', [$city->state_id, $city->id]) }}"
-                                                  onsubmit="return confirm('Delete {{ addslashes($city->title) }}?')">
+                                                  onsubmit="return confirm('Delete ' + {{ @json($city->title) }} + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete
@@ -416,7 +416,7 @@
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form method="POST" action="{{ route('admin.cities.postal-codes.destroy', [$zip->city_id, $zip->id]) }}"
-                                                  onsubmit="return confirm('Delete ZIP {{ addslashes($zip->title) }}?')">
+                                                  onsubmit="return confirm('Delete ZIP ' + {{ @json($zip->title) }} + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete

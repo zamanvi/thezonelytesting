@@ -136,7 +136,7 @@
                                             <li>
                                                 <form action="{{ route('admin.categories.destroy', $child->id) }}"
                                                       method="POST"
-                                                      onsubmit="return confirm('Delete \'{{ addslashes($child->title) }}\'?');">
+                                                      onsubmit="return confirm('Delete ' + {{ @json($child->title) }} + '?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger">

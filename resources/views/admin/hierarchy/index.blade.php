@@ -206,11 +206,13 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <form method="POST" action="{{ route('admin.hierarchy.status', $s->id) }}">
+                                            @php $toggleAction = $s->status === 'active' ? 'Deactivate' : 'Activate'; @endphp
+                                            <form method="POST" action="{{ route('admin.hierarchy.status', $s->id) }}"
+                                                  onsubmit="return confirm('{{ $toggleAction }} {{ e($s->user?->name ?? 'this staff member') }}?')">
                                                 @csrf
                                                 <button type="submit" class="dropdown-item text-warning">
                                                     <i class="fas fa-toggle-on me-2"></i>
-                                                    Toggle Status ({{ $s->status === 'active' ? 'Deactivate' : 'Activate' }})
+                                                    {{ $s->status === 'active' ? 'Deactivate' : 'Activate' }}
                                                 </button>
                                             </form>
                                         </li>
@@ -488,6 +490,7 @@
 function filterStaff(q) {
     q = q.toLowerCase();
     document.querySelectorAll('#staffTable tbody tr').forEach(row => {
+        if (row.closest('.modal')) return;
         row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
 }
@@ -543,7 +546,10 @@ function updateParentOptions(role) {
             select.appendChild(opt);
         });
     })
-    .catch(() => {});
+    .catch(err => {
+        console.error('Failed to load parent managers:', err);
+        select.innerHTML = '<option value="">-- Error loading managers --</option>';
+    });
 }
 
 // Pre-select role tab on modal open

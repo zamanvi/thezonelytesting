@@ -68,27 +68,11 @@
                     </div>
                 </div>
                 @empty
-                {{-- Demo rows --}}
-                @foreach([
-                    ['init'=>'IR','phone'=>'+1 (929) 555-7812','service'=>'IRS Audit Assistance','date'=>'Apr 18, 2026','fee'=>120],
-                    ['init'=>'LC','phone'=>'+1 (914) 555-9900','service'=>'LLC Formation + Taxes','date'=>'Apr 17, 2026','fee'=>200],
-                    ['init'=>'PD','phone'=>'+1 (212) 555-6631','service'=>'Payroll Setup','date'=>'Apr 16, 2026','fee'=>68],
-                    ['init'=>'BF','phone'=>'+1 (718) 555-1190','service'=>'Business Formation','date'=>'Apr 15, 2026','fee'=>68],
-                ] as $demo)
-                <div class="px-5 py-4 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center font-black text-sm text-amber-600">{{ $demo['init'] }}</div>
-                        <div>
-                            <p class="font-bold text-sm text-slate-900">{{ $demo['phone'] }}</p>
-                            <p class="text-xs text-slate-500">{{ $demo['service'] }} · {{ $demo['date'] }}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 shrink-0">
-                        <p class="font-bold text-slate-900">${{ $demo['fee'] }}</p>
-                        <button onclick="payLead(0, this)" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pay Now</button>
-                    </div>
+                <div class="px-5 py-10 text-center text-slate-400">
+                    <i class="fa-solid fa-circle-check text-4xl text-emerald-300 mb-3 block"></i>
+                    <p class="font-bold text-slate-700">No unpaid fees</p>
+                    <p class="text-xs mt-1">You're all caught up. New leads will appear here when they arrive.</p>
                 </div>
-                @endforeach
                 @endforelse
             </div>
         </div>
@@ -116,25 +100,11 @@
                     </div>
                 </div>
                 @empty
-                @foreach([
-                    ['init'=>'TK','phone'=>'+1 (347) 555-1289','service'=>'Tax Preparation','date'=>'Apr 20, 2026','fee'=>68],
-                    ['init'=>'MB','phone'=>'+1 (718) 555-3344','service'=>'Small Business Accounting','date'=>'Apr 19, 2026','fee'=>68],
-                    ['init'=>'JR','phone'=>'+1 (646) 555-4421','service'=>'Personal Tax Return','date'=>'Apr 15, 2026','fee'=>68],
-                ] as $demo)
-                <div class="px-5 py-4 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center font-black text-sm text-emerald-600">{{ $demo['init'] }}</div>
-                        <div>
-                            <p class="font-bold text-sm text-slate-900">{{ $demo['phone'] }}</p>
-                            <p class="text-xs text-slate-500">{{ $demo['service'] }} · {{ $demo['date'] }}</p>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <p class="font-bold text-emerald-600">-${{ $demo['fee'] }}</p>
-                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Paid</span>
-                    </div>
+                <div class="px-5 py-10 text-center text-slate-400">
+                    <i class="fa-solid fa-receipt text-4xl text-slate-200 mb-3 block"></i>
+                    <p class="font-bold text-slate-700">No payment history yet</p>
+                    <p class="text-xs mt-1">Paid lead fees will appear here.</p>
                 </div>
-                @endforeach
                 @endforelse
             </div>
         </div>

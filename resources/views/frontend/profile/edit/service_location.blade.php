@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(() => loadSelect('/states/' + OLD.country, ss, OLD.state, 'Select State'))
         .then(() => OLD.state ? loadSelect('/cities/' + OLD.state, cy, OLD.city, 'Select City') : null)
         .then(() => OLD.city ? loadSelect('/postal-codes/' + OLD.city, zs, OLD.zip, 'Select ZIP Code') : null)
-        .catch(() => {});
+        .catch(err => console.error('Location pre-populate failed:', err));
 });
 
 // Also pre-populate countries on load even without old value

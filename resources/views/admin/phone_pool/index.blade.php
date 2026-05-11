@@ -216,8 +216,13 @@
 <script>
 document.getElementById('assignModal').addEventListener('show.bs.modal', function(e) {
     const btn = e.relatedTarget;
-    document.getElementById('modalNumber').textContent = btn.dataset.number;
-    document.getElementById('assignForm').action = btn.dataset.assignUrl;
+    if (!btn) return;
+    document.getElementById('modalNumber').textContent = btn.dataset.number || '';
+    document.getElementById('assignForm').action = btn.dataset.assignUrl || '';
+});
+document.getElementById('assignForm').addEventListener('submit', function(e) {
+    const num = document.getElementById('modalNumber').textContent;
+    if (!confirm('Assign ' + num + ' to this seller?')) e.preventDefault();
 });
 </script>
 @endsection

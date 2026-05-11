@@ -226,7 +226,12 @@ class PageController extends Controller
             ->orderByDesc('referrals_count')
             ->get();
 
-        return view('admin.affiliate.index', compact('stats', 'commissions', 'topReferrers'));
+        $allSellers = User::where('type', 'seller')
+            ->withCount('referrals')
+            ->orderByDesc('referrals_count')
+            ->get();
+
+        return view('admin.affiliate.index', compact('stats', 'commissions', 'topReferrers', 'allSellers'));
     }
 
     public function affiliateCommissionPay($id)

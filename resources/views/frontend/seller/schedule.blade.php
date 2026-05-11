@@ -243,6 +243,7 @@ function removePeriod(btn) {
         alert('Need at least one time period.');
         return;
     }
+    if (!confirm('Remove this time period?')) return;
     block.remove();
     updatePreview();
 }

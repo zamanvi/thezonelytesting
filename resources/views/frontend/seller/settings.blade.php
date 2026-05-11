@@ -25,7 +25,7 @@
                     <div class="relative shrink-0">
                         @if(auth()->user()->profile_photo)
                             <img src="{{ asset(auth()->user()->profile_photo) }}"
-                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=80&background=3b82f6&color=fff'"
+                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=80&background=0D9488&color=fff'"
                                  class="w-20 h-20 rounded-2xl object-cover shadow">
                         @else
                             <div class="w-20 h-20 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-2xl shadow">

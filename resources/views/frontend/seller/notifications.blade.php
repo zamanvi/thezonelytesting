@@ -44,34 +44,13 @@
                 @endif
             </div>
             @empty
-            {{-- Demo notifications --}}
-            @foreach([
-                ['type'=>'lead','title'=>'New Lead Received','msg'=>'Someone is looking for Tax Preparation services in your area. View and respond now.','time'=>'5 minutes ago','unread'=>true],
-                ['type'=>'lead','title'=>'New Lead Received','msg'=>'New inquiry for LLC Formation. Lead fee: $68. Contact details available.','time'=>'1 hour ago','unread'=>true],
-                ['type'=>'review','title'=>'New 5-Star Review','msg'=>'Maria Rodriguez left you a 5-star review. "Absolutely fantastic service — highly recommend!"','time'=>'3 hours ago','unread'=>true],
-                ['type'=>'booking','title'=>'Booking Request','msg'=>'John D. wants to book an appointment for Apr 28 at 11:00 AM. Confirm or decline.','time'=>'1 day ago','unread'=>false],
-                ['type'=>'payment','title'=>'Payment Reminder','msg'=>'You have $320 in unpaid lead fees. Pay now to keep receiving new leads.','time'=>'2 days ago','unread'=>false],
-                ['type'=>'lead','title'=>'Lead Won','msg'=>'You marked the lead from +1 (646) 555-4421 as won. Great work!','time'=>'3 days ago','unread'=>false],
-            ] as $n)
-            <div class="notif-item bg-white rounded-2xl border {{ $n['unread'] ? 'border-teal-100' : 'border-slate-100' }} shadow-sm p-4 flex items-start gap-4"
-                 data-type="{{ $n['type'] }}">
-                @php
-                    $iconMap2 = ['lead'=>'fa-user-plus text-emerald-600','booking'=>'fa-calendar text-teal-700','review'=>'fa-star text-amber-500','payment'=>'fa-credit-card text-purple-600'];
-                    $bgMap2   = ['lead'=>'bg-emerald-100','booking'=>'bg-teal-100','review'=>'bg-amber-100','payment'=>'bg-purple-100'];
-                @endphp
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 {{ $bgMap2[$n['type']] ?? 'bg-slate-100' }}">
-                    <i class="fa-solid {{ $iconMap2[$n['type']] ?? 'fa-bell text-slate-500' }} text-sm"></i>
+            <div class="bg-white rounded-2xl border-2 border-dashed border-slate-200 p-12 text-center">
+                <div class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-bell text-teal-400 text-2xl"></i>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-bold text-slate-900">{{ $n['title'] }}</p>
-                    <p class="text-sm text-slate-500 mt-0.5 leading-relaxed">{{ $n['msg'] }}</p>
-                    <p class="text-xs text-slate-400 mt-1.5">{{ $n['time'] }}</p>
-                </div>
-                @if($n['unread'])
-                <div class="w-2 h-2 bg-teal-700 rounded-full shrink-0 mt-1.5"></div>
-                @endif
+                <p class="font-bold text-slate-700 mb-1">No notifications yet</p>
+                <p class="text-sm text-slate-400">You'll be notified here when you receive new leads, bookings, reviews, or payments.</p>
             </div>
-            @endforeach
             @endforelse
         </div>
 
