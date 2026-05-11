@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('seller.onboarding') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -37,19 +37,19 @@
             $childCat  = $user->category;
         @endphp
         @if($parentCat)
-        <div class="flex items-center gap-4 p-4 bg-blue-50 border border-blue-100 rounded-2xl">
-            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-600 text-white shrink-0">
+        <div class="flex items-center gap-4 p-4 bg-teal-50 border border-teal-100 rounded-2xl">
+            <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-teal-700 text-white shrink-0">
                 <i class="fa-solid fa-layer-group text-sm"></i>
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-[10px] font-bold text-blue-400 uppercase tracking-wide mb-0.5">Your Industry</p>
+                <p class="text-[10px] font-bold text-teal-400 uppercase tracking-wide mb-0.5">Your Industry</p>
                 <p class="text-sm font-bold text-slate-800 truncate">{{ $parentCat->title }}</p>
                 @if($childCat && $childCat->id !== $parentCat->id)
                 <p class="text-xs text-slate-500 mt-0.5">Category: <span class="font-semibold text-slate-700">{{ $childCat->title }}</span></p>
                 @endif
             </div>
             <a href="{{ route('user.register.category') }}"
-               class="shrink-0 text-xs font-bold text-blue-600 hover:text-blue-800 border border-blue-200 hover:border-blue-400 px-3 py-1.5 rounded-lg transition">
+               class="shrink-0 text-xs font-bold text-teal-700 hover:text-teal-800 border border-teal-200 hover:border-teal-400 px-3 py-1.5 rounded-lg transition">
                 Change
             </a>
         </div>
@@ -68,7 +68,7 @@
             </div>
             @else
             <select name="category_id" required
-                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                 <option value="">Select your service category</option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}" {{ $user->category_id == $category->id ? 'selected' : '' }}>
@@ -89,14 +89,14 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Country <span class="text-red-500">*</span></label>
                         <select name="country" required
-                            class="country-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="country-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                             <option value="">Select Country</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1.5">State / Province <span class="text-red-500">*</span></label>
                         <select name="state" required
-                            class="state-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition"
+                            class="state-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition"
                             disabled>
                             <option value="">Select State</option>
                         </select>
@@ -104,7 +104,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1.5">City <span class="text-red-500">*</span></label>
                         <select name="city" required
-                            class="city-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition"
+                            class="city-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition"
                             disabled>
                             <option value="">Select City</option>
                         </select>
@@ -112,7 +112,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1.5">ZIP / Postal Code <span class="text-red-500">*</span></label>
                         <select name="zip_code" required
-                            class="zip-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition"
+                            class="zip-select w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition"
                             disabled>
                             <option value="">Select ZIP Code</option>
                         </select>
@@ -122,7 +122,7 @@
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Additional Details <span class="text-slate-400 font-normal">(optional)</span></label>
                     <input type="text" name="additional_details" value="{{ $user->additional_details ?? '' }}"
                         placeholder="Neighborhood, suite number, or service notes..."
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                 </div>
             </div>
         </div>
@@ -135,7 +135,7 @@
 
         <div class="flex justify-end pt-2">
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Location
             </button>
         </div>

@@ -13,7 +13,7 @@
 
         {{-- Booking Reference --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-6 flex items-center gap-4">
-            <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0">
+            <div class="w-14 h-14 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shrink-0">
                 {{ strtoupper(substr($booking->seller->name ?? 'PR', 0, 2)) }}
             </div>
             <div>
@@ -59,7 +59,7 @@
                 <p class="text-xs text-slate-400 mb-4">Share your experience to help others</p>
                 <textarea name="review" id="reviewText" rows="5" required minlength="10" maxlength="1000"
                     placeholder="Describe your experience — was the professional helpful, punctual, professional? What did you like most?"
-                    class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('review') }}</textarea>
+                    class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('review') }}</textarea>
                 <div class="flex justify-between mt-1.5">
                     <p class="text-xs text-red-500 hidden" id="reviewError">Please write at least 10 characters.</p>
                     <p class="text-xs text-slate-400 ml-auto"><span id="charCount">0</span>/1000</p>
@@ -73,7 +73,7 @@
                 <div class="flex flex-wrap gap-2" id="tagCloud">
                     @foreach(['Punctual','Professional','Great communication','Good value','Highly skilled','Friendly','Fast service','Would recommend'] as $tag)
                     <button type="button" onclick="toggleTag(this, '{{ $tag }}')"
-                        class="tag-btn px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 text-slate-500 bg-white hover:border-blue-300 hover:text-blue-600 transition"
+                        class="tag-btn px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 text-slate-500 bg-white hover:border-teal-300 hover:text-teal-700 transition"
                         data-tag="{{ $tag }}">
                         {{ $tag }}
                     </button>
@@ -129,12 +129,12 @@ function setRating(n) {
 function toggleTag(btn, tag) {
     if (selectedTags.has(tag)) {
         selectedTags.delete(tag);
-        btn.classList.remove('border-blue-500','text-blue-600','bg-blue-50');
+        btn.classList.remove('border-teal-600','text-teal-700','bg-teal-50');
         btn.classList.add('border-slate-200','text-slate-500','bg-white');
     } else {
         selectedTags.add(tag);
         btn.classList.remove('border-slate-200','text-slate-500','bg-white');
-        btn.classList.add('border-blue-500','text-blue-600','bg-blue-50');
+        btn.classList.add('border-teal-600','text-teal-700','bg-teal-50');
     }
     document.getElementById('tagsInput').value = [...selectedTags].join(',');
 }
@@ -148,7 +148,7 @@ function updateSubmit() {
     const ready = selectedRating > 0 && document.getElementById('reviewText').value.trim().length >= 10;
     const btn = document.getElementById('submitBtn');
     btn.disabled = !ready;
-    btn.className = `w-full font-bold py-4 rounded-2xl text-sm transition ${ready ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`;
+    btn.className = `w-full font-bold py-4 rounded-2xl text-sm transition ${ready ? 'bg-teal-700 hover:bg-teal-800 text-white cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`;
 }
 
 function validateReview() {

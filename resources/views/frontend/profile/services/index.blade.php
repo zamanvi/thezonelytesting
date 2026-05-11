@@ -14,7 +14,7 @@
     <div class="flex items-center justify-between mb-6 gap-3">
         <div class="flex items-center gap-3">
             <a href="{{ route('seller.onboarding') }}"
-               class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition shrink-0">
+               class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition shrink-0">
                 <i class="fa-solid fa-arrow-left text-sm"></i>
             </a>
             <div>
@@ -23,7 +23,7 @@
             </div>
         </div>
         <a href="{{ route('user.services.create') }}"
-           class="shrink-0 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-2xl text-sm transition">
+           class="shrink-0 flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-2.5 rounded-2xl text-sm transition">
             <i class="fa-solid fa-plus"></i> Add
         </a>
     </div>
@@ -38,8 +38,8 @@
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
             <div class="flex items-center justify-between px-5 py-4 gap-4">
                 <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-briefcase text-blue-600 text-sm"></i>
+                    <div class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-briefcase text-teal-700 text-sm"></i>
                     </div>
                     <div class="min-w-0">
                         <p class="font-bold text-slate-900 text-sm truncate">{{ $service->title }}</p>
@@ -51,7 +51,7 @@
                 <div class="flex items-center gap-4 shrink-0">
                     <div class="text-right">
                         @if($service->price)
-                        <p class="text-xl font-black text-blue-700">${{ $service->price }}</p>
+                        <p class="text-xl font-black text-teal-800">${{ $service->price }}</p>
                         <p class="text-xs text-slate-400">{{ $ptLabel }}</p>
                         @else
                         <p class="text-sm font-bold text-slate-400">Contact</p>
@@ -62,7 +62,7 @@
                     </span>
                     <div class="flex gap-2">
                         <a href="{{ route('user.services.edit', $service->id) }}"
-                           class="w-9 h-9 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 rounded-xl flex items-center justify-center transition">
+                           class="w-9 h-9 bg-slate-100 hover:bg-teal-700 hover:text-white text-slate-600 rounded-xl flex items-center justify-center transition">
                             <i class="fa-solid fa-pen text-xs"></i>
                         </a>
                         <form action="{{ route('user.services.destroy', $service->id) }}" method="POST"
@@ -92,7 +92,7 @@
             <p class="font-bold text-slate-400">No services yet</p>
             <p class="text-sm text-slate-400 mt-1 mb-4">Add your first service to show pricing on your page</p>
             <a href="{{ route('user.services.create') }}"
-               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-2xl text-sm transition">
+               class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-3 rounded-2xl text-sm transition">
                 <i class="fa-solid fa-plus"></i> Add First Service
             </a>
         </div>

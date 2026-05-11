@@ -14,13 +14,13 @@
         }
 
         .step-active {
-            background-color: #2563eb;
+            background-color: #0F766E;
             color: white;
         }
 
         .menu-active {
-            background-color: #dbeafe;
-            color: #1e40af;
+            background-color: #CCFBF1;
+            color: #0F766E;
             font-weight: 600;
         }
 
@@ -50,7 +50,7 @@
         <!-- Top Navigation -->
         <div class="flex items-center justify-between mb-6 bg-white shadow-sm rounded-3xl px-4 sm:px-8 py-4 sm:py-5">
             <div class="flex items-center gap-2 sm:gap-3">
-                <a href="{{ route('frontend.home') }}" class="w-10 h-10 sm:w-11 sm:h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shrink-0">Z</a>
+                <a href="{{ route('frontend.home') }}" class="w-10 h-10 sm:w-11 sm:h-11 bg-teal-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl sm:text-3xl shrink-0">Z</a>
                 <span class="text-lg sm:text-2xl font-semibold text-gray-900">Zonely</span>
             </div>
             <h1 class="hidden sm:block text-xl font-semibold text-gray-800">@yield('page-title', 'Dashboard')</h1>
@@ -59,7 +59,7 @@
             @php $cr = Route::currentRouteName(); @endphp
             <div class="relative" id="moreMenuWrap">
                 <button onclick="toggleMenu()"
-                    class="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-2xl hover:border-blue-300 transition-all text-sm font-medium">
+                    class="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-white border border-gray-200 rounded-2xl hover:border-teal-300 transition-all text-sm font-medium">
                     <span class="hidden sm:inline">More</span>
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
@@ -79,7 +79,7 @@
                     @endphp
                     @foreach($menuItems as $m)
                     <a href="{{ route($m['route']) }}"
-                       class="flex items-center gap-3 px-5 sm:px-6 py-3 transition {{ $cr === $m['route'] ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-gray-50 text-gray-700' }}">
+                       class="flex items-center gap-3 px-5 sm:px-6 py-3 transition {{ $cr === $m['route'] ? 'bg-teal-50 text-teal-800 font-semibold' : 'hover:bg-gray-50 text-gray-700' }}">
                         <i class="fas {{ $m['icon'] }} w-4 text-center"></i> {{ $m['label'] }}
                     </a>
                     @endforeach
@@ -112,18 +112,18 @@
 
         function selectTitle(btn) {
             document.querySelectorAll('.title-btn').forEach(b => {
-                b.classList.remove('bg-blue-600', 'text-white');
+                b.classList.remove('bg-teal-700', 'text-white');
                 b.classList.add('bg-gray-100');
             });
-            btn.classList.add('bg-blue-600', 'text-white');
+            btn.classList.add('bg-teal-700', 'text-white');
         }
 
         function toggleLanguage(btn) {
-            if (btn.classList.contains('bg-blue-100')) {
-                btn.classList.remove('bg-blue-100', 'text-blue-700', 'border-blue-500');
+            if (btn.classList.contains('bg-teal-100')) {
+                btn.classList.remove('bg-teal-100', 'text-teal-800', 'border-teal-600');
                 btn.classList.add('bg-gray-100');
             } else {
-                btn.classList.add('bg-blue-100', 'text-blue-700', 'border-blue-500');
+                btn.classList.add('bg-teal-100', 'text-teal-800', 'border-teal-600');
             }
         }
 

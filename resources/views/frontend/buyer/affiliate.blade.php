@@ -12,7 +12,7 @@
             <p class="text-sm text-slate-500 mt-0.5">Refer local businesses — earn cash when they get leads</p>
         </div>
         <a href="{{ route('buyer.dashboard') }}"
-           class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-blue-300 hover:text-blue-600 transition">
+           class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-teal-300 hover:text-teal-700 transition">
             ← Dashboard
         </a>
     </div>
@@ -23,7 +23,7 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Referrals</p>
             <p class="text-3xl font-black text-slate-900">{{ $stats['referrals'] }}</p>
         </div>
-        <div class="bg-blue-600 rounded-2xl p-4 text-white text-center shadow-sm">
+        <div class="bg-teal-700 rounded-2xl p-4 text-white text-center shadow-sm">
             <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Total Earned</p>
             <p class="text-3xl font-black">${{ number_format($stats['earned'], 2) }}</p>
         </div>
@@ -38,29 +38,29 @@
     </div>
 
     {{-- How it works --}}
-    <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 mb-6 text-white">
+    <div class="bg-gradient-to-br from-teal-700 to-teal-800 rounded-3xl p-6 mb-6 text-white">
         <h2 class="font-bold text-lg mb-4">How it works</h2>
         <div class="grid grid-cols-3 gap-4 text-center">
             <div>
                 <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
                     <i class="fa-solid fa-link text-white"></i>
                 </div>
-                <p class="text-xs font-bold text-blue-100">1. Share your link</p>
-                <p class="text-[10px] text-blue-200 mt-0.5">Send to any local business owner</p>
+                <p class="text-xs font-bold text-teal-100">1. Share your link</p>
+                <p class="text-[10px] text-teal-200 mt-0.5">Send to any local business owner</p>
             </div>
             <div>
                 <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
                     <i class="fa-solid fa-user-plus text-white"></i>
                 </div>
-                <p class="text-xs font-bold text-blue-100">2. They sign up</p>
-                <p class="text-[10px] text-blue-200 mt-0.5">Business joins Zonely as seller</p>
+                <p class="text-xs font-bold text-teal-100">2. They sign up</p>
+                <p class="text-[10px] text-teal-200 mt-0.5">Business joins Zonely as seller</p>
             </div>
             <div>
                 <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
                     <i class="fa-solid fa-dollar-sign text-white"></i>
                 </div>
-                <p class="text-xs font-bold text-blue-100">3. You earn $10</p>
-                <p class="text-[10px] text-blue-200 mt-0.5">When they receive first lead</p>
+                <p class="text-xs font-bold text-teal-100">3. You earn $10</p>
+                <p class="text-[10px] text-teal-200 mt-0.5">When they receive first lead</p>
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@
         <h2 class="font-bold text-slate-900 mb-1">Your Referral Link</h2>
         <p class="text-xs text-slate-500 mb-4">
             Share this link with business owners. Earn
-            <strong class="text-blue-600">$10</strong>
+            <strong class="text-teal-700">$10</strong>
             for every business that joins and receives their first lead.
         </p>
         <div class="flex gap-2">
@@ -79,7 +79,7 @@
                    readonly
                    class="flex-1 text-sm bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none text-slate-600 font-mono">
             <button onclick="copyRef()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-2xl text-sm transition shrink-0">
+                    class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-3 rounded-2xl text-sm transition shrink-0">
                 <i class="fa-solid fa-copy mr-1"></i> Copy
             </button>
         </div>
@@ -94,7 +94,7 @@
             </a>
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($refUrl) }}"
                target="_blank"
-               class="flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 px-4 py-2.5 rounded-xl hover:bg-blue-100 transition">
+               class="flex items-center gap-2 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-4 py-2.5 rounded-xl hover:bg-teal-100 transition">
                 <i class="fab fa-facebook"></i> Facebook
             </a>
             <a href="mailto:?subject={{ urlencode('Grow your local business with Zonely') }}&body={{ urlencode('Hi! I found this platform that sends customers directly to local businesses. Check it out: ' . $refUrl) }}"
@@ -159,10 +159,10 @@ function copyRef() {
     navigator.clipboard.writeText(input.value).then(() => {
         const btn = event.currentTarget;
         btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Copied!';
-        btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+        btn.classList.replace('bg-teal-700', 'bg-emerald-600');
         setTimeout(() => {
             btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copy';
-            btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+            btn.classList.replace('bg-emerald-600', 'bg-teal-700');
         }, 2000);
     });
 }

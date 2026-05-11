@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #3b82f6 100%);
+            background: linear-gradient(135deg, #134E4A 0%, #115E59 60%, #0D9488 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -26,7 +26,7 @@
             box-shadow: 0 32px 80px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.1);
         }
         .card-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #3b82f6 100%);
+            background: linear-gradient(135deg, #134E4A 0%, #115E59 60%, #0D9488 100%);
             padding: 32px 28px 28px;
             text-align: center;
             position: relative;
@@ -119,7 +119,7 @@
         .bullet {
             width: 7px;
             height: 7px;
-            background: #2563eb;
+            background: #0F766E;
             border-radius: 999px;
             flex-shrink: 0;
             margin-top: 5px;
@@ -127,7 +127,7 @@
         .cta {
             display: block;
             width: 100%;
-            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            background: linear-gradient(135deg, #115E59, #0F766E);
             color: #fff;
             font-size: 0.95rem;
             font-weight: 800;

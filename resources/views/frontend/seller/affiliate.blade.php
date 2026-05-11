@@ -16,7 +16,7 @@
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Referrals</p>
                 <p class="text-3xl font-black text-slate-900">{{ $stats['referrals'] ?? 0 }}</p>
             </div>
-            <div class="bg-blue-600 rounded-2xl p-5 text-white text-center shadow-sm">
+            <div class="bg-teal-700 rounded-2xl p-5 text-white text-center shadow-sm">
                 <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Earned</p>
                 <p class="text-3xl font-black">${{ number_format($stats['earned'] ?? 0, 2) }}</p>
             </div>
@@ -33,13 +33,13 @@
         {{-- Referral Link --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-6">
             <h2 class="font-bold text-slate-900 mb-1">Your Referral Link</h2>
-            <p class="text-xs text-slate-500 mb-4">Share this link. Earn <strong class="text-blue-600">$20</strong> for every business that signs up and receives their first lead.</p>
+            <p class="text-xs text-slate-500 mb-4">Share this link. Earn <strong class="text-teal-700">$20</strong> for every business that signs up and receives their first lead.</p>
             <div class="flex gap-2">
                 <input type="text" id="refLink"
                     value="{{ url('/user/register/seller?ref=' . (auth()->user()->slug ?? auth()->user()->id)) }}"
                     readonly
                     class="flex-1 text-sm bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 focus:outline-none text-slate-600 font-mono">
-                <button onclick="copyRef()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-2xl text-sm transition shrink-0">
+                <button onclick="copyRef()" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-3 rounded-2xl text-sm transition shrink-0">
                     <i class="fa-solid fa-copy mr-1"></i> Copy
                 </button>
             </div>
@@ -52,7 +52,7 @@
                 </a>
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($refUrl) }}"
                    target="_blank"
-                   class="flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 px-4 py-2.5 rounded-xl hover:bg-blue-100 transition">
+                   class="flex items-center gap-2 text-xs font-bold text-teal-700 bg-teal-50 border border-teal-100 px-4 py-2.5 rounded-xl hover:bg-teal-100 transition">
                     <i class="fab fa-facebook text-base"></i> Share on Facebook
                 </a>
             </div>
@@ -63,7 +63,7 @@
             <h2 class="font-bold text-slate-900 mb-4">How It Works</h2>
             <div class="space-y-4">
                 @foreach([
-                    ['icon'=>'fa-share-nodes','color'=>'bg-blue-100 text-blue-600','step'=>'1','title'=>'Share your link','desc'=>'Send your unique referral link to local businesses in your area.'],
+                    ['icon'=>'fa-share-nodes','color'=>'bg-teal-100 text-teal-700','step'=>'1','title'=>'Share your link','desc'=>'Send your unique referral link to local businesses in your area.'],
                     ['icon'=>'fa-user-plus','color'=>'bg-purple-100 text-purple-600','step'=>'2','title'=>'They sign up','desc'=>'The business registers on Zonely and sets up their free landing page.'],
                     ['icon'=>'fa-phone','color'=>'bg-emerald-100 text-emerald-600','step'=>'3','title'=>'They receive a lead','desc'=>'As soon as their first verified lead is delivered, your commission is locked.'],
                     ['icon'=>'fa-dollar-sign','color'=>'bg-amber-100 text-amber-600','step'=>'4','title'=>'You earn $20','desc'=>'Your commission is credited within 7 days and paid out monthly.'],
@@ -127,10 +127,10 @@ function copyRef() {
     navigator.clipboard.writeText(input.value).then(() => {
         const btn = event.target.closest('button');
         btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Copied!';
-        btn.classList.replace('bg-blue-600','bg-emerald-500');
+        btn.classList.replace('bg-teal-700','bg-emerald-500');
         setTimeout(() => {
             btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> Copy';
-            btn.classList.replace('bg-emerald-500','bg-blue-600');
+            btn.classList.replace('bg-emerald-500','bg-teal-700');
         }, 2000);
     });
 }

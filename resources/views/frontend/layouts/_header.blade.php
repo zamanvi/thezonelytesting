@@ -6,14 +6,14 @@
             {{-- LOGO --}}
             <a href="{{ route('frontend.home') }}" class="flex items-center gap-2.5 shrink-0" style="min-height:unset;min-width:unset;">
                 <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg" alt="Zonely">
-                <span class="text-base font-extrabold text-slate-900 tracking-tight hidden sm:inline">ZONELY<span class="text-blue-600">.</span></span>
+                <span class="text-base font-extrabold text-slate-900 tracking-tight hidden sm:inline">ZONELY<span class="text-teal-700">.</span></span>
             </a>
 
             {{-- DESKTOP MENU --}}
             <div class="hidden lg:flex gap-5 xl:gap-7 text-[13px] font-semibold tracking-wide text-slate-600">
                 @foreach ($allMenuCategories ?? [] as $category)
                 <div class="relative group">
-                    <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-blue-600 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
+                    <a href="{{ route('frontend.category', $category->slug) }}" class="hover:text-teal-700 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
                         {{ $category->title }}
                         @if ($category->children->count())
                         <svg class="w-3 h-3 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -24,7 +24,7 @@
                     @if ($category->children->count())
                     <div class="absolute left-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         @foreach ($category->children as $child)
-                        <a href="{{ route('frontend.category', $child->slug) }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">
+                        <a href="{{ route('frontend.category', $child->slug) }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition" style="min-height:unset;">
                             {{ $child->title }}
                         </a>
                         @endforeach
@@ -35,16 +35,16 @@
 
                 {{-- Others dropdown --}}
                 <div class="relative group">
-                    <a href="#" class="hover:text-blue-600 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
+                    <a href="#" class="hover:text-teal-700 transition flex items-center gap-1.5 py-2 whitespace-nowrap" style="min-height:unset;">
                         Others
                         <svg class="w-3 h-3 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </a>
                     <div class="absolute left-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <a href="{{ route('frontend.tools') }}"  class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">Tools</a>
-                        <a href="{{ route('frontend.blog') }}"   class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">Blog</a>
-                        <a href="{{ route('frontend.help') }}"   class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition" style="min-height:unset;">Help</a>
+                        <a href="{{ route('frontend.tools') }}"  class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition" style="min-height:unset;">Tools</a>
+                        <a href="{{ route('frontend.blog') }}"   class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition" style="min-height:unset;">Blog</a>
+                        <a href="{{ route('frontend.help') }}"   class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-700 transition" style="min-height:unset;">Help</a>
                     </div>
                 </div>
             </div>
@@ -56,15 +56,15 @@
                     Dashboard
                 </a>
                 @else
-                <a href="{{ route('user.login') }}"    class="text-xs font-bold text-slate-600 hover:text-blue-600 px-3 py-2 transition" style="min-height:unset;">Log in</a>
-                <a href="{{ route('user.register1') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition" style="min-height:unset;">Get Started</a>
+                <a href="{{ route('user.login') }}"    class="text-xs font-bold text-slate-600 hover:text-teal-700 px-3 py-2 transition" style="min-height:unset;">Log in</a>
+                <a href="{{ route('user.register1') }}" class="bg-teal-700 hover:bg-teal-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition" style="min-height:unset;">Get Started</a>
                 @endauth
             </div>
 
             {{-- MOBILE RIGHT SIDE --}}
             <div class="flex lg:hidden items-center gap-2">
                 @auth
-                <a href="{{ route('dashboard') }}" class="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0" style="min-height:unset;min-width:unset;">
+                <a href="{{ route('dashboard') }}" class="w-9 h-9 bg-teal-700 text-white rounded-full flex items-center justify-center font-bold text-xs shrink-0" style="min-height:unset;min-width:unset;">
                     {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                 </a>
                 @endauth
@@ -90,11 +90,11 @@
                     </svg>
                 </button>
                 <div class="mobile-submenu hidden pl-4 pb-1 space-y-0.5">
-                    <a href="{{ route('frontend.category', $category->slug) }}" class="block px-3 py-2.5 text-sm font-semibold text-blue-600 rounded-xl hover:bg-slate-50 transition">
+                    <a href="{{ route('frontend.category', $category->slug) }}" class="block px-3 py-2.5 text-sm font-semibold text-teal-700 rounded-xl hover:bg-slate-50 transition">
                         All {{ $category->title }}
                     </a>
                     @foreach ($category->children as $child)
-                    <a href="{{ route('frontend.category', $child->slug) }}" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">
+                    <a href="{{ route('frontend.category', $child->slug) }}" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-teal-700 rounded-xl hover:bg-slate-50 transition">
                         {{ $child->title }}
                     </a>
                     @endforeach
@@ -116,9 +116,9 @@
                     </svg>
                 </button>
                 <div class="mobile-submenu hidden pl-4 pb-1 space-y-0.5">
-                    <a href="{{ route('frontend.tools') }}" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">Tools</a>
-                    <a href="{{ route('frontend.blog') }}"  class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">Blog</a>
-                    <a href="{{ route('frontend.help') }}"  class="block px-3 py-2.5 text-sm text-slate-600 hover:text-blue-600 rounded-xl hover:bg-slate-50 transition">Help</a>
+                    <a href="{{ route('frontend.tools') }}" class="block px-3 py-2.5 text-sm text-slate-600 hover:text-teal-700 rounded-xl hover:bg-slate-50 transition">Tools</a>
+                    <a href="{{ route('frontend.blog') }}"  class="block px-3 py-2.5 text-sm text-slate-600 hover:text-teal-700 rounded-xl hover:bg-slate-50 transition">Blog</a>
+                    <a href="{{ route('frontend.help') }}"  class="block px-3 py-2.5 text-sm text-slate-600 hover:text-teal-700 rounded-xl hover:bg-slate-50 transition">Help</a>
                 </div>
             </div>
 
@@ -130,7 +130,7 @@
                 </a>
                 @else
                 <a href="{{ route('user.login') }}"     class="flex-1 py-3 border border-slate-200 text-slate-700 text-center text-sm font-bold rounded-2xl hover:bg-slate-50 transition">Log in</a>
-                <a href="{{ route('user.register1') }}" class="flex-1 py-3 bg-blue-600 text-white text-center text-sm font-bold rounded-2xl hover:bg-blue-700 transition">Get Started</a>
+                <a href="{{ route('user.register1') }}" class="flex-1 py-3 bg-teal-700 text-white text-center text-sm font-bold rounded-2xl hover:bg-teal-800 transition">Get Started</a>
                 @endauth
             </div>
 

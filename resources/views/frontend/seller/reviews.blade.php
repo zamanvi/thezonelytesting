@@ -39,7 +39,7 @@
 
         {{-- Filter --}}
         <div class="flex gap-2 mb-5 overflow-x-auto pb-1">
-            <button onclick="filterReviews(this,'all')" class="rev-tab active-rtab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap">All</button>
+            <button onclick="filterReviews(this,'all')" class="rev-tab active-rtab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white whitespace-nowrap">All</button>
             <button onclick="filterReviews(this,'5')" class="rev-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition">
                 <i class="fa-solid fa-star text-amber-400"></i> 5 stars
             </button>
@@ -57,7 +57,7 @@
                  data-stars="{{ $review->rating }}">
                 <div class="flex items-start justify-between gap-3 mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-sm shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center font-bold text-teal-700 text-sm shrink-0">
                             {{ strtoupper(substr($review->buyer->name ?? 'AN', 0, 2)) }}
                         </div>
                         <div>
@@ -75,7 +75,7 @@
                 @if($review->tags)
                 <div class="flex flex-wrap gap-1.5 mt-3">
                     @foreach(explode(',', $review->tags) as $tag)
-                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>
+                    <span class="px-2.5 py-1 bg-teal-50 text-teal-800 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>
                     @endforeach
                 </div>
                 @endif
@@ -86,14 +86,14 @@
                 </div>
                 @else
                 <button onclick="toggleReply(this, {{ $review->id }})"
-                    class="mt-3 text-xs font-bold text-blue-600 hover:underline">
+                    class="mt-3 text-xs font-bold text-teal-700 hover:underline">
                     <i class="fa-solid fa-reply mr-1"></i> Reply
                 </button>
                 <div class="reply-box hidden mt-3">
                     <textarea rows="2" placeholder="Write a professional, friendly reply..."
-                        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-400 resize-none"></textarea>
+                        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-teal-400 resize-none"></textarea>
                     <button onclick="submitReply(this, {{ $review->id }})"
-                        class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition">
+                        class="mt-2 px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold rounded-xl transition">
                         Post Reply
                     </button>
                 </div>
@@ -110,7 +110,7 @@
             <div class="review-card bg-white rounded-2xl border border-slate-100 shadow-sm p-5" data-stars="{{ $r['rating'] }}">
                 <div class="flex items-start justify-between gap-3 mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-sm shrink-0">{{ $r['init'] }}</div>
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center font-bold text-teal-700 text-sm shrink-0">{{ $r['init'] }}</div>
                         <div>
                             <p class="font-bold text-sm text-slate-900">{{ $r['name'] }}</p>
                             <p class="text-xs text-slate-400">{{ $r['date'] }}</p>
@@ -125,16 +125,16 @@
                 <p class="text-base text-slate-700 leading-relaxed">"{{ $r['text'] }}"</p>
                 <div class="flex flex-wrap gap-1.5 mt-3">
                     @foreach(explode(',', $r['tags']) as $tag)
-                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>
+                    <span class="px-2.5 py-1 bg-teal-50 text-teal-800 text-[10px] font-bold rounded-lg">{{ trim($tag) }}</span>
                     @endforeach
                 </div>
-                <button onclick="toggleReply(this, 0)" class="mt-3 text-xs font-bold text-blue-600 hover:underline">
+                <button onclick="toggleReply(this, 0)" class="mt-3 text-xs font-bold text-teal-700 hover:underline">
                     <i class="fa-solid fa-reply mr-1"></i> Reply
                 </button>
                 <div class="reply-box hidden mt-3">
                     <textarea rows="2" placeholder="Write a professional, friendly reply..."
-                        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-400 resize-none"></textarea>
-                    <button class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition">
+                        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-teal-400 resize-none"></textarea>
+                    <button class="mt-2 px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold rounded-xl transition">
                         Post Reply
                     </button>
                 </div>
@@ -152,7 +152,7 @@ function filterReviews(btn, val) {
         b.className = 'rev-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition';
         if (b.querySelector('i')) b.className += '';
     });
-    btn.className = 'rev-tab active-rtab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap';
+    btn.className = 'rev-tab active-rtab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white whitespace-nowrap';
     document.querySelectorAll('.review-card').forEach(card => {
         const s = parseInt(card.dataset.stars);
         let show = false;

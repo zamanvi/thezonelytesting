@@ -17,7 +17,7 @@
         {{-- Profile Info --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-user text-blue-600 text-sm"></i> Profile Information
+                <i class="fa-solid fa-user text-teal-700 text-sm"></i> Profile Information
             </h2>
             <form action="{{ route('seller.settings.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf @method('PUT')
@@ -28,14 +28,14 @@
                                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=80&background=3b82f6&color=fff'"
                                  class="w-20 h-20 rounded-2xl object-cover shadow">
                         @else
-                            <div class="w-20 h-20 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-2xl shadow">
+                            <div class="w-20 h-20 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-2xl shadow">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                             </div>
                         @endif
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Profile Photo</p>
-                        <label class="mt-1.5 inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 cursor-pointer hover:underline">
+                        <label class="mt-1.5 inline-flex items-center gap-1.5 text-sm font-bold text-teal-700 cursor-pointer hover:underline">
                             <i class="fa-solid fa-camera"></i> Change Photo
                             <input type="file" name="profile_photo" accept="image/*" class="hidden" onchange="this.form.submit()">
                         </label>
@@ -46,35 +46,35 @@
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
                         <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Business Name</label>
                         <input type="text" name="business_name" value="{{ old('business_name', auth()->user()->business_name) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
                         <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone</label>
                         <input type="text" name="phone" value="{{ old('phone', auth()->user()->phone) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">WhatsApp</label>
                         <input type="text" name="whatsapp" value="{{ old('whatsapp', auth()->user()->whatsapp) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Professional Title</label>
                         <input type="text" name="title" value="{{ old('title', auth()->user()->title) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                 </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3 rounded-2xl text-base transition">
+                <button type="submit" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-8 py-3 rounded-2xl text-base transition">
                     <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
                 </button>
             </form>
@@ -83,26 +83,26 @@
         {{-- Change Password --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-lock text-blue-600 text-sm"></i> Change Password
+                <i class="fa-solid fa-lock text-teal-700 text-sm"></i> Change Password
             </h2>
             <form action="{{ route('seller.settings.update') }}" method="POST" class="space-y-4">
                 @csrf @method('PUT')
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-1.5">Current Password</label>
                     <input type="password" name="current_password"
-                        class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                        class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     @error('current_password', 'updatePassword')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">New Password</label>
                         <input type="password" name="password"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Confirm Password</label>
                         <input type="password" name="password_confirmation"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                 </div>
                 <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-2xl text-base transition">
@@ -114,7 +114,7 @@
         {{-- Notifications --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-bell text-blue-600 text-sm"></i> Notifications
+                <i class="fa-solid fa-bell text-teal-700 text-sm"></i> Notifications
             </h2>
             <div class="space-y-4">
                 @foreach([
@@ -130,7 +130,7 @@
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" name="{{ $n['key'] }}" {{ auth()->user()->{$n['key']} ?? true ? 'checked' : '' }} class="sr-only peer" onchange="saveNotification('{{ $n['key'] }}', this.checked)">
-                        <div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                        <div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:bg-teal-700 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
                     </label>
                 </div>
                 @endforeach
@@ -140,7 +140,7 @@
         {{-- Public Page Link --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-link text-blue-600 text-sm"></i> Your Public Page
+                <i class="fa-solid fa-link text-teal-700 text-sm"></i> Your Public Page
             </h2>
             <p class="text-xs text-slate-500 mb-3">Share this link with clients and on Google Business Profile</p>
             <div class="flex gap-2">
@@ -148,7 +148,7 @@
                     value="{{ url('/service/' . (auth()->user()->slug ?? auth()->user()->id)) }}"
                     class="flex-1 text-sm bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-slate-600 font-mono focus:outline-none">
                 <a href="{{ url('/service/' . (auth()->user()->slug ?? auth()->user()->id)) }}" target="_blank"
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-2xl text-sm transition shrink-0">
+                   class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-3 rounded-2xl text-sm transition shrink-0">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
             </div>
@@ -157,13 +157,13 @@
         {{-- Business Category --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-briefcase text-blue-600 text-sm"></i> Business Category
+                <i class="fa-solid fa-briefcase text-teal-700 text-sm"></i> Business Category
             </h2>
             <p class="text-xs text-slate-500 mb-4">Your current category determines which profile fields and lead forms appear on your page.</p>
             <div class="flex items-center justify-between gap-4 p-4 bg-slate-50 rounded-2xl">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-tag text-blue-600 text-sm"></i>
+                    <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-tag text-teal-700 text-sm"></i>
                     </div>
                     <div>
                         <p class="font-semibold text-sm text-slate-900">{{ auth()->user()->category?->title ?? 'No category selected' }}</p>
@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <a href="{{ route('user.register.category') }}"
-                   class="shrink-0 px-4 py-2.5 bg-white border border-slate-200 hover:border-blue-400 hover:text-blue-600 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                   class="shrink-0 px-4 py-2.5 bg-white border border-slate-200 hover:border-teal-400 hover:text-teal-700 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
                     <i class="fa-solid fa-pen text-[11px]"></i> Change
                 </a>
             </div>

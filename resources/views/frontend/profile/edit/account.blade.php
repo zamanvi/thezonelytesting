@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('seller.onboarding') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -39,7 +39,7 @@
             <p class="text-xs text-slate-400 mb-3">Your full name as the owner or licensed professional</p>
             <input type="text" name="name" value="{{ old('name', $user->name) }}" required
                 placeholder="e.g. John Smith"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
 
         {{-- Business Name --}}
@@ -48,7 +48,7 @@
             <p class="text-xs text-slate-400 mb-3">The official name of your firm or practice (e.g. "A K Azad CPA PLLC")</p>
             <input type="text" name="business_name" value="{{ old('business_name', $user->business_name) }}"
                 placeholder="e.g. Smith & Associates LLC"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
 
         {{-- Phone --}}
@@ -57,12 +57,12 @@
             <p class="text-xs text-slate-400 mb-3">Primary number for your account — visibility controlled in Contact Info</p>
             <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}"
                 placeholder="+1 (917) 000-0000"
-                class="w-full sm:w-64 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full sm:w-64 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
 
         <div class="flex justify-end pt-2">
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save & Continue
             </button>
         </div>

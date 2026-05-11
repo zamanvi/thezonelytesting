@@ -7,7 +7,7 @@
 
     {{-- Header --}}
     <div class="text-center mb-8">
-        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div class="w-16 h-16 bg-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <i class="fa-solid fa-file-contract text-white text-2xl"></i>
         </div>
         <h1 class="text-2xl font-black text-slate-900">Terms & Conditions</h1>
@@ -28,7 +28,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">1</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">1</span>
                     Platform Overview
                 </h3>
                 <p>Zonely is a lead generation and local business discovery platform that connects buyers (people seeking services) with sellers (local professionals and businesses). Zonely charges sellers a fee per verified lead received.</p>
@@ -36,7 +36,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">2</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">2</span>
                     Account Registration
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -49,7 +49,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">3</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">3</span>
                     For Sellers — Lead Fees & Payment
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -63,7 +63,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">4</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">4</span>
                     For Sellers — Listing Rules
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -77,7 +77,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">5</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">5</span>
                     For Buyers — Using the Platform
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -90,7 +90,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">6</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">6</span>
                     Affiliate & Referral Program
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -103,7 +103,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">7</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">7</span>
                     Communications & SMS
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
@@ -116,11 +116,11 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">8</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">8</span>
                     Privacy & Data
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-slate-600">
-                    <li>By using Zonely, you agree to our <a href="{{ route('frontend.privacy-policy') }}" class="text-blue-600 underline" target="_blank">Privacy Policy</a>.</li>
+                    <li>By using Zonely, you agree to our <a href="{{ route('frontend.privacy-policy') }}" class="text-teal-700 underline" target="_blank">Privacy Policy</a>.</li>
                     <li>We collect information necessary to operate the platform and do not sell personal data to third parties.</li>
                     <li>Call recordings (if any) are subject to applicable wiretapping and consent laws in your jurisdiction.</li>
                 </ul>
@@ -128,7 +128,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">9</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">9</span>
                     Termination
                 </h3>
                 <p>Zonely reserves the right to suspend or terminate any account that violates these terms, engages in fraudulent activity, or causes harm to the platform or other users. Upon termination, outstanding lead fees remain payable.</p>
@@ -136,7 +136,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">10</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">10</span>
                     Limitation of Liability
                 </h3>
                 <p>Zonely is a technology platform and does not guarantee the quality, legality, or accuracy of services provided by sellers. To the maximum extent permitted by law, Zonely's total liability for any claim shall not exceed the fees paid by you in the 3 months preceding the claim.</p>
@@ -144,7 +144,7 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">11</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">11</span>
                     Governing Law
                 </h3>
                 <p>These Terms are governed by the laws of the State of New York, USA, without regard to conflict of law principles. Disputes shall be resolved through binding arbitration or the courts of New York County.</p>
@@ -152,14 +152,14 @@
 
             <div>
                 <h3 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-black shrink-0">12</span>
+                    <span class="w-6 h-6 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-xs font-black shrink-0">12</span>
                     Changes to These Terms
                 </h3>
                 <p>Zonely may update these Terms at any time. Continued use of the platform after changes constitutes acceptance. We will notify registered users of material changes via email.</p>
             </div>
 
             <div class="pt-2">
-                <p class="text-xs text-slate-400">Questions? Contact us at <a href="mailto:support@zonely.com" class="text-blue-600 hover:underline">support@zonely.com</a></p>
+                <p class="text-xs text-slate-400">Questions? Contact us at <a href="mailto:support@zonely.com" class="text-teal-700 hover:underline">support@zonely.com</a></p>
             </div>
 
         </div>
@@ -183,7 +183,7 @@
 
                 <label class="flex items-start gap-3 cursor-pointer group mb-6" for="agreeCheck">
                     <input type="checkbox" name="agree" id="agreeCheck" value="1"
-                           class="mt-0.5 w-5 h-5 rounded border-slate-300 text-blue-600 accent-blue-600 shrink-0 cursor-pointer"
+                           class="mt-0.5 w-5 h-5 rounded border-slate-300 text-teal-700 accent-teal-700 shrink-0 cursor-pointer"
                            onchange="toggleSubmit(this)">
                     <span class="text-sm text-slate-700 leading-relaxed">
                         I have read and agree to Zonely's <strong class="text-slate-900">Terms & Conditions</strong>, including the lead fee policy ($68/lead for sellers), the affiliate program rules, and the privacy policy. I understand that submitting false information may result in account suspension.
@@ -191,9 +191,9 @@
                 </label>
 
                 <button type="submit" id="submitBtn" disabled
-                        class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-2xl text-sm transition
+                        class="w-full bg-teal-700 text-white font-bold py-3.5 rounded-2xl text-sm transition
                                disabled:opacity-40 disabled:cursor-not-allowed
-                               hover:bg-blue-700 disabled:hover:bg-blue-600">
+                               hover:bg-teal-800 disabled:hover:bg-teal-700">
                     <i class="fa-solid fa-check mr-2"></i> I Agree — Continue to Zonely
                 </button>
 

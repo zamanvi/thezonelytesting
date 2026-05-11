@@ -31,7 +31,7 @@
 <div class="mt-16 sm:mt-20 max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-16">
 
     {{-- Back --}}
-    <a href="{{ route('frontend.blog') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-blue-600 mb-6 transition" style="min-height:unset;">
+    <a href="{{ route('frontend.blog') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-teal-700 mb-6 transition" style="min-height:unset;">
         <i class="fa-solid fa-arrow-left"></i> Back to Blog
     </a>
 
@@ -62,7 +62,7 @@
     {{-- Content --}}
     <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base
                 prose-headings:font-bold prose-headings:text-slate-900
-                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                prose-a:text-teal-700 prose-a:no-underline hover:prose-a:underline
                 prose-img:rounded-2xl prose-img:mx-auto">
         {!! $blog->description !!}
     </div>
@@ -71,7 +71,7 @@
     <div class="mt-10 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-3">
         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Share:</span>
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" rel="noopener"
-           class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-xs font-bold hover:bg-blue-100 transition" style="min-height:unset;">
+           class="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-800 rounded-xl text-xs font-bold hover:bg-teal-100 transition" style="min-height:unset;">
             <i class="fab fa-facebook"></i> Facebook
         </a>
         <a href="https://wa.me/?text={{ urlencode($blog->name . ' ' . url()->current()) }}" target="_blank" rel="noopener"

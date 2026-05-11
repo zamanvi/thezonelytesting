@@ -99,7 +99,7 @@
                         <label class="block text-lg font-semibold text-slate-800 mb-3">Choose Your Service Category
                             <span class="text-red-500">*</span></label>
                         <select required id="primaryCategory"
-                            class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                            class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none"
                             name="seller_service_type">
 
                             <option value="">Select your service type</option>
@@ -116,7 +116,7 @@
                 <!-- Next Button -->
                 <div class="mt-12 flex justify-center">
                     <button
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-14 py-5 rounded-2xl text-lg font-semibold flex items-center gap-3 shadow-lg">
+                        class="bg-teal-700 hover:bg-teal-800 text-white px-14 py-5 rounded-2xl text-lg font-semibold flex items-center gap-3 shadow-lg">
                         Continue to Next Step
                         <i class="fas fa-arrow-right"></i>
                     </button>
@@ -140,11 +140,11 @@
         <!-- Progress -->
         <div class="bg-white rounded-3xl p-6 mb-8 shadow-sm">
             <div class="flex justify-between mb-3">
-                <div class="text-lg font-semibold">Profile Completion: <span class="text-blue-600">65%</span></div>
+                <div class="text-lg font-semibold">Profile Completion: <span class="text-teal-700">65%</span></div>
                 <div class="text-sm text-gray-500">4 steps remaining to receive leads</div>
             </div>
             <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
-                <div class="h-3 bg-blue-600 rounded-full w-[65%]"></div>
+                <div class="h-3 bg-teal-700 rounded-full w-[65%]"></div>
             </div>
         </div>
 
@@ -181,25 +181,25 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Business Name <span
                                         class="text-red-500">*</span></label>
                                 <input name="business_name" type="text" value="{{ $user->business_name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Owner Name <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="name" value="{{ $user->name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Professional Title <span class="text-red-500">*</span></label>
                                 <input type="text" name="title" value="{{ $user->title }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             {{-- <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Languages Spoken <span
                                         class="text-red-500">*</span></label>
                                 <div class="flex flex-wrap gap-3">
                                     <button
-                                        class="lang-btn px-6 py-3 bg-blue-100 text-blue-700 rounded-2xl font-medium border-2 border-blue-500">English</button>
+                                        class="lang-btn px-6 py-3 bg-teal-100 text-teal-800 rounded-2xl font-medium border-2 border-teal-600">English</button>
                                     <button
                                         class="lang-btn px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-2xl font-medium">Spanish</button>
                                     <button
@@ -217,17 +217,17 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                 <input type="text" name="email" readonly value="{{ $user->email }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                                 <input type="text" name="phone" value="{{ $user->phone }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">WhatsApp</label>
                                 <input type="text" name="whatsapp" value="{{ $user->whatsapp }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                         </div>
                     @elseif ($_next === 'personal_info')
@@ -236,22 +236,22 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Designation</label>
                                 <input type="text" name="designation" value="{{ $user->designation }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Work Address</label>
                                 <input type="text" name="work_address" value="{{ $user->work_address }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">About</label>
                                 <input type="text" name="about" value="{{ $user->about }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Experience</label>
                                 <input type="text" name="experience" value="{{ $user->experience }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                         </div>
                     @elseif ($_next === 'about_bio')
@@ -260,17 +260,17 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Business Name </label>
                                 <input name="business_name" type="text" value="{{ $user->business_name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Owner Name </label>
                                 <input type="text" name="name" value="{{ $user->name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Professional Title</label>
                                 <input type="text" name="title" value="{{ $user->title }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                         </div>
                     @elseif ($_next === 'review')
@@ -279,38 +279,38 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
                                 <input name="business_name" type="text" value="{{ $user->business_name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Owner Name</label>
                                 <input type="text" name="name" value="{{ $user->name }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Professional Title</label>
                                 <input type="text" name="title" value="{{ $user->title }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Phone</label>
                                 <input type="text" name="phone" value="{{ $user->phone }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Email</label>
                                 <input type="text" name="email" value="{{ $user->email }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-3">Work Address</label>
                                 <input type="text" name="work_address" value="{{ $user->work_address }}"
-                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-blue-500 text-lg">
+                                    class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:border-teal-600 text-lg">
                             </div>
                         </div>
                     @endif
                     <div class="mt-12 flex gap-4">
                         <button type="submit"
-                            class="flex-1 py-5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all">
+                            class="flex-1 py-5 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-2xl transition-all">
                             Save & Next →
                         </button>
                     </div>
@@ -326,7 +326,7 @@
 
                     <div class="landing-preview border border-gray-200 shadow-inner bg-white">
                         <!-- Hero Header -->
-                        <div class="bg-gradient-to-r from-blue-700 to-indigo-700 p-8 text-white">
+                        <div class="bg-gradient-to-r from-teal-800 to-indigo-700 p-8 text-white">
                             <div class="flex items-center gap-5">
                                 <div
                                     class="w-24 h-24 bg-white rounded-2xl overflow-hidden border-4 border-white flex-shrink-0">
@@ -339,7 +339,7 @@
                                         <i class="fas fa-check-circle"></i> VERIFIED
                                     </span>
                                     <h1 class="text-3xl font-bold mt-4 leading-tight"></h1>
-                                    <p class="text-blue-100 mt-2">Tax, Accounting & Legal Services</p>
+                                    <p class="text-teal-100 mt-2">Tax, Accounting & Legal Services</p>
                                 </div>
                             </div>
                         </div>
@@ -347,14 +347,14 @@
                         <div class="p-8 border-b">
                             <h3 class="font-semibold mb-4 text-gray-800">Our Services</h3>
                             <div class="flex flex-wrap gap-2">
-                                <span class="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-sm">Tax Preparation &
+                                <span class="bg-teal-50 text-teal-800 px-5 py-2.5 rounded-2xl text-sm">Tax Preparation &
                                     Filing</span>
-                                <span class="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-sm">Small Business
+                                <span class="bg-teal-50 text-teal-800 px-5 py-2.5 rounded-2xl text-sm">Small Business
                                     Accounting</span>
-                                <span class="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-sm">Bookkeeping</span>
-                                <span class="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-sm">IRS Audit
+                                <span class="bg-teal-50 text-teal-800 px-5 py-2.5 rounded-2xl text-sm">Bookkeeping</span>
+                                <span class="bg-teal-50 text-teal-800 px-5 py-2.5 rounded-2xl text-sm">IRS Audit
                                     Support</span>
-                                <span class="bg-blue-50 text-blue-700 px-5 py-2.5 rounded-2xl text-sm">Financial
+                                <span class="bg-teal-50 text-teal-800 px-5 py-2.5 rounded-2xl text-sm">Financial
                                     Consulting</span>
                             </div>
                         </div>
@@ -365,7 +365,7 @@
                                 <div class="text-xs text-gray-500">Years Experience</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-blue-600">98%</div>
+                                <div class="text-3xl font-bold text-teal-700">98%</div>
                                 <div class="text-xs text-gray-500">Success Rate</div>
                             </div>
                             <div class="text-center">
@@ -387,12 +387,12 @@
                             <h3 class="font-semibold mb-5">Get In Touch</h3>
                             <div class="space-y-4">
                                 <button
-                                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-blue-500 py-5 rounded-2xl font-medium transition-all">
-                                    <i class="fas fa-phone text-xl text-blue-600"></i>
+                                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-teal-600 py-5 rounded-2xl font-medium transition-all">
+                                    <i class="fas fa-phone text-xl text-teal-700"></i>
                                     Call Now: (917) 561-0271
                                 </button>
                                 <button
-                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl font-semibold transition-all">
+                                    class="w-full bg-teal-700 hover:bg-teal-800 text-white py-5 rounded-2xl font-semibold transition-all">
                                     Submit Your Case Now
                                 </button>
                             </div>
@@ -402,7 +402,7 @@
                     <!-- Action Buttons -->
                     <div class="mt-6 flex gap-4">
                         <button
-                            class="flex-1 py-4 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all">
+                            class="flex-1 py-4 bg-teal-700 text-white font-semibold rounded-2xl hover:bg-teal-800 transition-all">
                             ✅ Use This Design
                         </button>
                         <button class="flex-1 py-4 bg-gray-100 hover:bg-gray-200 font-semibold rounded-2xl transition-all">

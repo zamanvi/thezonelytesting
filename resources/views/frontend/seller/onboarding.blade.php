@@ -55,7 +55,7 @@
             <span class="text-sm text-white font-mono truncate">thezonely.com/{{ $user->slug }}</span>
         </div>
         <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
-           class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition">
+           class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-teal-400 hover:text-teal-300 transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> Preview
         </a>
     </div>
@@ -63,7 +63,7 @@
     {{-- Progress Header --}}
     <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-6">
         <div class="flex items-center gap-4 mb-5">
-            <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center shrink-0 overflow-hidden shadow">
+            <div class="w-14 h-14 rounded-2xl bg-teal-700 flex items-center justify-center shrink-0 overflow-hidden shadow">
                 @if($user->profile_photo)
                     <img src="{{ asset($user->profile_photo) }}" class="w-full h-full object-cover">
                 @else
@@ -75,7 +75,7 @@
                 <p class="text-sm text-slate-500 mt-0.5 flex items-center gap-2">
                     <span>{{ $user->category?->title ?? 'No category' }}</span>
                     @if(!$user->category)
-                        · <a href="{{ route('user.register.category') }}" class="text-blue-600 hover:underline">Select category</a>
+                        · <a href="{{ route('user.register.category') }}" class="text-teal-700 hover:underline">Select category</a>
                     @endif
                 </p>
             </div>
@@ -88,10 +88,10 @@
 
         <div class="flex justify-between items-center mb-2">
             <span class="text-sm font-bold text-slate-700">Page Completion</span>
-            <span class="text-sm font-black {{ $pct >= 80 ? 'text-emerald-600' : 'text-blue-600' }}">{{ $pct }}%</span>
+            <span class="text-sm font-black {{ $pct >= 80 ? 'text-emerald-600' : 'text-teal-700' }}">{{ $pct }}%</span>
         </div>
         <div class="w-full bg-slate-100 rounded-full h-2.5 mb-2">
-            <div class="h-2.5 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-emerald-500' : 'bg-blue-600' }}"
+            <div class="h-2.5 rounded-full transition-all duration-500 {{ $pct >= 80 ? 'bg-emerald-500' : 'bg-teal-700' }}"
                  style="width: {{ $pct }}%"></div>
         </div>
         <p class="text-xs text-slate-400">{{ $completed }} of {{ $total }} sections complete
@@ -105,11 +105,11 @@
         {{-- 1. Business Basics --}}
         @php $isDone = $done['basics']; @endphp
         <a href="{{ route('type.profile', ['seller', 'account']) }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-building {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-building {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Business Basics</p>
@@ -132,7 +132,7 @@
                 <p class="text-xs text-slate-400">Business name, owner name, phone number</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Edit' : 'Add Now' }}
                 </span>
@@ -142,11 +142,11 @@
         {{-- 2. Profile & Bio --}}
         @php $isDone = $done['bio']; @endphp
         <a href="{{ route('type.profile', ['seller', 'profile']) }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-user-circle {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-user-circle {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Profile & Bio</p>
@@ -167,7 +167,7 @@
                 <p class="text-xs text-slate-400">Photo, professional title, years of experience, about you</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Edit' : 'Add Now' }}
                 </span>
@@ -177,11 +177,11 @@
         {{-- 3. Service Location --}}
         @php $isDone = $done['location']; @endphp
         <a href="{{ route('type.profile', ['seller', 'service_location']) }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-location-dot {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-location-dot {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Service Location</p>
@@ -208,7 +208,7 @@
                 <p class="text-xs text-slate-400">City, state, zip code, service area radius</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Edit' : 'Add Now' }}
                 </span>
@@ -218,11 +218,11 @@
         {{-- 4. Contact Info --}}
         @php $isDone = $done['contact']; @endphp
         <a href="{{ route('type.profile', ['seller', 'contact']) }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-address-card {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-address-card {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Contact Info</p>
@@ -238,13 +238,13 @@
             @if($isDone)
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs text-slate-600 space-y-0.5">
                     @if($user->whatsapp)<p><i class="fab fa-whatsapp text-emerald-500 mr-1"></i>{{ $user->whatsapp }}</p>@endif
-                    @if($user->website)<p><i class="fa-solid fa-globe text-blue-500 mr-1"></i>{{ $user->website }}</p>@endif
+                    @if($user->website)<p><i class="fa-solid fa-globe text-teal-600 mr-1"></i>{{ $user->website }}</p>@endif
                 </div>
             @else
                 <p class="text-xs text-slate-400">WhatsApp, website, social media links</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Edit' : 'Add Now' }}
                 </span>
@@ -254,11 +254,11 @@
         {{-- 5. Services & Pricing --}}
         @php $isDone = $done['services']; @endphp
         <a href="{{ route('user.services.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-list-check {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-list-check {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Services & Pricing</p>
@@ -287,7 +287,7 @@
                 <p class="text-xs text-slate-400">List the services you offer with pricing details</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Manage' : 'Add Now' }}
                 </span>
@@ -298,11 +298,11 @@
         @if($showEducation)
         @php $isDone = $done['education']; $eduTitle = $isHome ? 'Licenses & Certifications' : 'Education & Certifications'; @endphp
         <a href="{{ route('user.educations.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-graduation-cap {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-graduation-cap {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">{{ $eduTitle }}</p>
@@ -326,7 +326,7 @@
                 <p class="text-xs text-slate-400">{{ $isHome ? 'Trade licenses, insurance, bonding certificates' : 'Degrees, certifications, professional qualifications' }}</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Manage' : 'Add Now' }}
                 </span>
@@ -338,11 +338,11 @@
         @if($showMemberships)
         @php $isDone = $done['memberships']; @endphp
         <a href="{{ route('user.memberships.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-id-badge {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-id-badge {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Memberships & Associations</p>
@@ -366,7 +366,7 @@
                 <p class="text-xs text-slate-400">Bar associations, medical boards, professional organizations</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Manage' : 'Add Now' }}
                 </span>
@@ -378,11 +378,11 @@
         @if($showLanguages)
         @php $isDone = $done['languages']; @endphp
         <a href="{{ route('user.languages.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-language {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-language {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Languages Spoken</p>
@@ -410,7 +410,7 @@
                 <p class="text-xs text-slate-400">Languages you can serve clients in</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Manage' : 'Add Now' }}
                 </span>
@@ -421,11 +421,11 @@
         {{-- 9. Q & A --}}
         @php $isDone = $done['faqs']; @endphp
         <a href="{{ route('user.faqs.index') }}"
-           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-blue-300' }} shadow-sm p-5 transition-all hover:shadow-md">
+           class="group block bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200 hover:border-teal-300' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-blue-50' }} rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-circle-question {{ $isDone ? 'text-emerald-600' : 'text-blue-500' }} text-sm"></i>
+                    <div class="w-10 h-10 {{ $isDone ? 'bg-emerald-100' : 'bg-teal-50' }} rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-circle-question {{ $isDone ? 'text-emerald-600' : 'text-teal-600' }} text-sm"></i>
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Q & A</p>
@@ -449,7 +449,7 @@
                 <p class="text-xs text-slate-400">Common questions clients ask — builds trust before they contact you</p>
             @endif
             <div class="mt-3 flex items-center justify-end">
-                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-blue-600' : 'text-blue-600' }} flex items-center gap-1 transition">
+                <span class="text-xs font-bold {{ $isDone ? 'text-slate-400 group-hover:text-teal-700' : 'text-teal-700' }} flex items-center gap-1 transition">
                     <i class="fa-solid {{ $isDone ? 'fa-pen' : 'fa-plus' }} text-[10px]"></i>
                     {{ $isDone ? 'Manage' : 'Add Now' }}
                 </span>
@@ -470,7 +470,7 @@
             @endif
         </div>
         <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
-           class="shrink-0 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold flex items-center gap-2 transition">
+           class="shrink-0 px-6 py-3 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold flex items-center gap-2 transition">
             <i class="fa-solid fa-eye"></i> Preview My Page
         </a>
     </div>

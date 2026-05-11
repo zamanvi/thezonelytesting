@@ -11,7 +11,7 @@
     <header class="mt-20 max-w-5xl mx-auto pt-14 pb-10 px-4 text-center">
         <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl leading-tight mb-6">
             NYC Car Insurance <br class="hidden sm:block">
-            <span class="text-blue-600 italic font-normal">Calculator</span>
+            <span class="text-teal-700 italic font-normal">Calculator</span>
         </h1>
 
         <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto">
@@ -35,14 +35,14 @@
                     <div>
                         <label class="text-sm font-semibold">Age</label>
                         <input id="age" type="number" min="16"
-                               class="w-full mt-2 px-4 py-3 rounded-xl border outline-none focus:border-blue-500"
+                               class="w-full mt-2 px-4 py-3 rounded-xl border outline-none focus:border-teal-600"
                                placeholder="Your age" required>
                     </div>
 
                     <div>
                         <label class="text-sm font-semibold">Car Value (USD)</label>
                         <input id="carValue" type="number" min="0"
-                               class="w-full mt-2 px-4 py-3 rounded-xl border outline-none focus:border-blue-500"
+                               class="w-full mt-2 px-4 py-3 rounded-xl border outline-none focus:border-teal-600"
                                placeholder="Example: 20000" required>
                     </div>
 
@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="flex gap-3 pt-4">
-                        <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">
+                        <button class="bg-teal-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-800 transition">
                             Calculate Insurance
                         </button>
 

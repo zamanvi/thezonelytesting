@@ -23,7 +23,7 @@
                      onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($seller->name) }}&size=80&background=3b82f6&color=fff'"
                      class="w-14 h-14 rounded-2xl object-cover shrink-0">
             @else
-                <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0">
+                <div class="w-14 h-14 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shrink-0">
                     {{ strtoupper(substr($seller->name, 0, 2)) }}
                 </div>
             @endif
@@ -45,7 +45,7 @@
             {{-- Step 1: Pick Date --}}
             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
                 <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black">1</span>
+                    <span class="w-6 h-6 bg-teal-700 text-white rounded-lg flex items-center justify-center text-xs font-black">1</span>
                     Pick a Date
                 </h2>
 
@@ -71,7 +71,7 @@
                 <div class="grid grid-cols-7 gap-1" id="calGrid"></div>
 
                 <p class="text-xs text-slate-400 mt-3">
-                    <span class="inline-block w-3 h-3 rounded bg-blue-600 mr-1 align-middle"></span>Available &nbsp;
+                    <span class="inline-block w-3 h-3 rounded bg-teal-700 mr-1 align-middle"></span>Available &nbsp;
                     <span class="inline-block w-3 h-3 rounded bg-slate-100 border border-slate-200 mr-1 align-middle"></span>Unavailable
                 </p>
             </div>
@@ -79,7 +79,7 @@
             {{-- Step 2: Pick Time Slot --}}
             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4" id="slotSection">
                 <h2 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black">2</span>
+                    <span class="w-6 h-6 bg-teal-700 text-white rounded-lg flex items-center justify-center text-xs font-black">2</span>
                     Pick a Time Slot
                 </h2>
                 <p class="text-xs text-slate-400 mb-4" id="slotDateLabel">Select a date first</p>
@@ -92,7 +92,7 @@
             {{-- Step 3: Your Details --}}
             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
                 <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black">3</span>
+                    <span class="w-6 h-6 bg-teal-700 text-white rounded-lg flex items-center justify-center text-xs font-black">3</span>
                     Your Details
                 </h2>
                 <div class="space-y-4">
@@ -100,32 +100,32 @@
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
                             <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" required
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone <span class="text-red-500">*</span></label>
                             <input type="tel" name="phone" value="{{ old('phone', auth()->user()->phone) }}" required
                                 placeholder="+1 555 000 0000"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
                         <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Message / Notes</label>
                         <textarea name="message" rows="3" placeholder="Describe what you need help with..."
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('message') }}</textarea>
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('message') }}</textarea>
                     </div>
                 </div>
             </div>
 
             {{-- Booking Summary --}}
-            <div id="bookingSummary" class="hidden bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-4">
-                <h3 class="font-bold text-blue-900 text-sm mb-2">Booking Summary</h3>
-                <div class="space-y-1.5 text-sm text-blue-800">
+            <div id="bookingSummary" class="hidden bg-teal-50 border border-teal-100 rounded-2xl p-4 mb-4">
+                <h3 class="font-bold text-teal-900 text-sm mb-2">Booking Summary</h3>
+                <div class="space-y-1.5 text-sm text-teal-800">
                     <p><span class="font-semibold">Professional:</span> {{ $seller->name }}</p>
                     <p><span class="font-semibold">Date:</span> <span id="summaryDate">—</span></p>
                     <p><span class="font-semibold">Time:</span> <span id="summarySlot">—</span></p>
@@ -183,9 +183,9 @@ function renderCalendar() {
         if (isPast || !isWorking) {
             cls += 'text-slate-300 cursor-default';
         } else if (isSelected) {
-            cls += 'bg-blue-600 text-white';
+            cls += 'bg-teal-700 text-white';
         } else {
-            cls += 'text-slate-700 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-200';
+            cls += 'text-slate-700 hover:bg-teal-50 hover:text-teal-700 border border-transparent hover:border-teal-200';
         }
 
         grid.insertAdjacentHTML('beforeend',
@@ -224,7 +224,7 @@ function renderSlots(dateStr, label) {
                 html += `<span class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-300 border border-slate-200 line-through cursor-not-allowed">${slot.label}</span>`;
             } else {
                 html += `<button type="button" onclick="selectSlot('${slot.value}','${slot.label}',this)"
-                    class="slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">${slot.label}</button>`;
+                    class="slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-teal-50 text-teal-800 border border-teal-100 hover:bg-teal-700 hover:text-white hover:border-teal-700 transition">${slot.label}</button>`;
             }
         });
 
@@ -253,9 +253,9 @@ function generateSlots(from, to, dur) {
 
 function selectSlot(value, label, btn) {
     document.querySelectorAll('.slot-btn').forEach(b => {
-        b.className = 'slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition';
+        b.className = 'slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-teal-50 text-teal-800 border border-teal-100 hover:bg-teal-700 hover:text-white hover:border-teal-700 transition';
     });
-    btn.className = 'slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white border border-blue-600';
+    btn.className = 'slot-btn px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white border border-teal-700';
     selectedSlot = value;
     document.getElementById('selectedSlot').value = value;
     document.getElementById('summaryDate').textContent = document.getElementById('slotDateLabel').textContent;
@@ -268,7 +268,7 @@ function updateSubmitBtn() {
     const btn = document.getElementById('submitBtn');
     const ready = selectedDate && selectedSlot;
     btn.disabled = !ready;
-    btn.className = `w-full font-bold py-4 rounded-2xl text-sm transition ${ready ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`;
+    btn.className = `w-full font-bold py-4 rounded-2xl text-sm transition ${ready ? 'bg-teal-700 hover:bg-teal-800 text-white cursor-pointer' : 'bg-slate-300 text-slate-500 cursor-not-allowed'}`;
 }
 
 function validateBooking() {

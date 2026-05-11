@@ -25,16 +25,16 @@
     <header class="pt-10 pb-10 sm:pt-14 sm:pb-14">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-8 sm:pb-12">
             <div class="max-w-2xl">
-                <span class="text-blue-600 text-[11px] font-black uppercase tracking-widest mb-3 block">Neighborhood Pulse</span>
+                <span class="text-teal-700 text-[11px] font-black uppercase tracking-widest mb-3 block">Neighborhood Pulse</span>
                 <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl leading-tight text-slate-900">
                     Local <span class="italic text-slate-400">Trends</span> &amp; Expert Guides.
                 </h1>
             </div>
             <div class="flex flex-wrap gap-2">
                 <span class="text-xs font-bold text-slate-400 self-center mr-1">Browse by:</span>
-                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-blue-600 hover:text-white transition">City Guides</button>
-                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-blue-600 hover:text-white transition">State Laws</button>
-                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-blue-600 hover:text-white transition">Market News</button>
+                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-teal-700 hover:text-white transition">City Guides</button>
+                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-teal-700 hover:text-white transition">State Laws</button>
+                <button class="px-4 py-2 rounded-full border border-slate-200 text-xs font-bold hover:bg-teal-700 hover:text-white transition">Market News</button>
             </div>
         </div>
     </header>
@@ -64,13 +64,13 @@
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                          alt="{{ $featuredBlog->name }}" loading="eager">
                     <div class="absolute bottom-5 left-5 bg-white/90 backdrop-blur px-4 py-2 rounded-xl shadow-lg">
-                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Top Rated Guide</p>
+                        <p class="text-[10px] font-black text-teal-700 uppercase tracking-widest">Top Rated Guide</p>
                     </div>
                 </div>
                 <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">
                     {{ $featuredBlog->created_at?->format('M Y') }}
                 </div>
-                <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl mb-3 group-hover:text-blue-600 transition leading-snug">
+                <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl mb-3 group-hover:text-teal-700 transition leading-snug">
                     {{ $featuredBlog->name }}
                 </h2>
                 <p class="text-slate-500 text-sm sm:text-base leading-relaxed line-clamp-3">
@@ -93,7 +93,7 @@
                 </div>
                 <div class="min-w-0">
                     <a href="{{ route('frontend.blog') }}/{{ $blog->slug ?? '' }}"
-                       class="font-serif text-base leading-snug group-hover:text-blue-600 transition line-clamp-3 block"
+                       class="font-serif text-base leading-snug group-hover:text-teal-700 transition line-clamp-3 block"
                        style="min-height:unset;">
                         {{ $blog->name }}
                     </a>
@@ -110,17 +110,17 @@
     @endif
 
     {{-- CTA --}}
-    <section class="bg-blue-600 rounded-3xl p-8 sm:p-12 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
+    <section class="bg-teal-700 rounded-3xl p-8 sm:p-12 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="max-w-xl text-white text-center md:text-left">
             <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl mb-3 leading-tight">
-                Find a trusted <span class="italic text-blue-200">Local Expert</span> today.
+                Find a trusted <span class="italic text-teal-200">Local Expert</span> today.
             </h2>
-            <p class="text-blue-100 text-sm sm:text-base opacity-90">
+            <p class="text-teal-100 text-sm sm:text-base opacity-90">
                 Stop searching globally for local problems. Connect with verified professionals in your zip code.
             </p>
         </div>
         <a href="{{ route('frontend.home') }}"
-           class="shrink-0 bg-white text-blue-700 font-black px-6 py-3.5 rounded-2xl hover:shadow-2xl hover:-translate-y-1 transition-all text-sm whitespace-nowrap"
+           class="shrink-0 bg-white text-teal-800 font-black px-6 py-3.5 rounded-2xl hover:shadow-2xl hover:-translate-y-1 transition-all text-sm whitespace-nowrap"
            style="min-height:unset;">
             Search Experts Near Me →
         </a>

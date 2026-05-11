@@ -13,7 +13,7 @@
 
         {{-- Filter Tabs --}}
         <div class="flex gap-2 mb-5 overflow-x-auto pb-1 scroll-hide">
-            <button onclick="filterBookings(this,'all')" class="book-tab active-tab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap">All</button>
+            <button onclick="filterBookings(this,'all')" class="book-tab active-tab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white whitespace-nowrap">All</button>
             <button onclick="filterBookings(this,'upcoming')" class="book-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition">Upcoming</button>
             <button onclick="filterBookings(this,'completed')" class="book-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition">Completed</button>
             <button onclick="filterBookings(this,'cancelled')" class="book-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition">Cancelled</button>
@@ -26,7 +26,7 @@
                  data-status="{{ $booking->status }}">
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-start gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center shrink-0 font-bold text-blue-600">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 flex items-center justify-center shrink-0 font-bold text-teal-700">
                             {{ strtoupper(substr($booking->seller->name ?? 'PR', 0, 2)) }}
                         </div>
                         <div>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <span class="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0
-                        {{ $booking->status === 'upcoming' ? 'bg-blue-100 text-blue-700' : ($booking->status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-500') }}">
+                        {{ $booking->status === 'upcoming' ? 'bg-teal-100 text-teal-800' : ($booking->status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-500') }}">
                         {{ ucfirst($booking->status) }}
                     </span>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="flex gap-2 mt-4">
                     @if($booking->status === 'upcoming')
                     <a href="tel:{{ $booking->seller->phone ?? '' }}"
-                       class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
+                       class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 transition text-center">
                         <i class="fa-solid fa-phone mr-1"></i> Call
                     </a>
                     <button onclick="cancelBooking({{ $booking->id }})"
@@ -88,7 +88,7 @@
             <div class="booking-card bg-white rounded-2xl border border-slate-100 shadow-sm p-5" data-status="{{ $b['status'] }}">
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex items-start gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center shrink-0 font-bold text-blue-600">{{ $b['init'] }}</div>
+                        <div class="w-12 h-12 rounded-2xl bg-teal-100 flex items-center justify-center shrink-0 font-bold text-teal-700">{{ $b['init'] }}</div>
                         <div>
                             <p class="font-bold text-slate-900">{{ $b['name'] }}</p>
                             <p class="text-xs text-slate-500 mt-0.5">{{ $b['service'] }}</p>
@@ -96,13 +96,13 @@
                         </div>
                     </div>
                     <span class="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0
-                        {{ $b['status']==='upcoming' ? 'bg-blue-100 text-blue-700' : ($b['status']==='completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-500') }}">
+                        {{ $b['status']==='upcoming' ? 'bg-teal-100 text-teal-800' : ($b['status']==='completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-500') }}">
                         {{ ucfirst($b['status']) }}
                     </span>
                 </div>
                 <div class="flex gap-2 mt-4">
                     @if($b['status']==='upcoming')
-                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
+                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 transition text-center">
                         <i class="fa-solid fa-phone mr-1"></i> Call
                     </button>
                     <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-red-50 text-red-500 hover:bg-red-100 transition">Cancel</button>
@@ -135,7 +135,7 @@ function filterBookings(btn, status) {
     document.querySelectorAll('.book-tab').forEach(b => {
         b.className = 'book-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 whitespace-nowrap transition';
     });
-    btn.className = 'book-tab active-tab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white whitespace-nowrap';
+    btn.className = 'book-tab active-tab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white whitespace-nowrap';
     document.querySelectorAll('.booking-card').forEach(card => {
         card.style.display = (status === 'all' || card.dataset.status === status) ? '' : 'none';
     });

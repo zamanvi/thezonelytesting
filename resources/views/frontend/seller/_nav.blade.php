@@ -19,7 +19,7 @@
         <a href="{{ $item['route'] }}"
            class="flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-all
                   {{ $cr === $item['name']
-                      ? 'border-blue-600 text-blue-600'
+                      ? 'border-teal-700 text-teal-700'
                       : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300' }}">
             <i class="fa-solid {{ $item['icon'] }} text-[13px]"></i>
             {{ $item['label'] }}
@@ -28,7 +28,7 @@
         <div class="ml-auto flex items-center pl-4 shrink-0">
             <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}"
                target="_blank"
-               class="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:underline" title="Opens in new tab">
+               class="flex items-center gap-1.5 text-xs font-bold text-teal-700 hover:underline" title="Opens in new tab">
                 <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i> View Public Page <i class="fa-solid fa-external-link text-[9px] opacity-60"></i>
             </a>
         </div>
@@ -40,7 +40,7 @@
     @foreach($navItems as $item)
     <a href="{{ $item['route'] }}"
        class="flex flex-col items-center gap-0.5 flex-1 py-2 rounded-xl text-center transition
-              {{ $cr === $item['name'] ? 'text-blue-600' : 'text-slate-400 hover:text-blue-600' }}">
+              {{ $cr === $item['name'] ? 'text-teal-700' : 'text-slate-400 hover:text-teal-700' }}">
         <i class="fa-solid {{ $item['icon'] }} text-[15px]"></i>
         <span class="text-[10px] font-bold leading-none mt-0.5">{{ $item['label'] }}</span>
     </a>

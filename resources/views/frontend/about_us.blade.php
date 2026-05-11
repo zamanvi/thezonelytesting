@@ -5,7 +5,7 @@
 <!-- HERO -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16 text-center">
     <h1 class="font-serif text-4xl md:text-6xl mb-6 leading-tight">
-        About <span class="italic text-blue-600">Zonely</span>
+        About <span class="italic text-teal-700">Zonely</span>
     </h1>
     <p class="text-slate-500 text-lg max-w-3xl mx-auto">
         <strong>Build Your Brand. Grow Your Sales.</strong><br>
@@ -17,12 +17,12 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
-            <h2 class="text-blue-600 text-xs font-black uppercase tracking-[0.2em] mb-4">
+            <h2 class="text-teal-700 text-xs font-black uppercase tracking-[0.2em] mb-4">
                 Our Mission
             </h2>
 
             <h3 class="font-serif text-3xl md:text-5xl mb-8 leading-tight">
-                Empowering <span class="italic text-blue-600 font-normal">SMBs</span><br>
+                Empowering <span class="italic text-teal-700 font-normal">SMBs</span><br>
                 to go <span class="italic">Digital.</span>
             </h3>
 
@@ -54,7 +54,7 @@
         </div>
 
         <div class="relative">
-            <div class="absolute -inset-4 bg-blue-100 rounded-[3rem] -z-10 transform rotate-3"></div>
+            <div class="absolute -inset-4 bg-teal-100 rounded-[3rem] -z-10 transform rotate-3"></div>
             <img
                 src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=900"
                 class="rounded-[2.5rem] shadow-2xl object-cover h-[500px] w-full"
@@ -68,7 +68,7 @@
 <section class="bg-slate-50 py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <h2 class="font-serif text-3xl md:text-5xl text-center mb-12">
-            What We <span class="italic text-blue-600">Offer</span>
+            What We <span class="italic text-teal-700">Offer</span>
         </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -106,7 +106,7 @@
 <!-- VISION -->
 <section class="max-w-5xl mx-auto px-4 sm:px-6 py-20 text-center">
     <h2 class="font-serif text-3xl md:text-5xl mb-6">
-        Our <span class="italic text-blue-600">Vision</span>
+        Our <span class="italic text-teal-700">Vision</span>
     </h2>
     <p class="text-slate-500 text-lg leading-relaxed">
         We’re building the <strong>Shopify for service-based SMBs</strong> — a platform where local
@@ -131,11 +131,11 @@
 <!-- CONTACT -->
 <section class="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
     <h2 class="font-serif text-3xl md:text-5xl mb-6">
-        Get in <span class="italic text-blue-600">Touch</span>
+        Get in <span class="italic text-teal-700">Touch</span>
     </h2>
     <p class="text-slate-500 text-lg">
-        📧 <a href="mailto:support@thezonely.com" class="text-blue-600 font-semibold">support@thezonely.com</a><br>
-        📱 <a href="https://wa.me/8801826192179" target="_blank" class="text-blue-600 font-semibold">+8801826192179</a><br>
+        📧 <a href="mailto:support@thezonely.com" class="text-teal-700 font-semibold">support@thezonely.com</a><br>
+        📱 <a href="https://wa.me/8801826192179" target="_blank" class="text-teal-700 font-semibold">+8801826192179</a><br>
         📍 Dhaka, Bangladesh
     </p>
 </section>
@@ -147,7 +147,7 @@
                 <div class="w-full lg:w-1/3">
                     <div class="relative group mx-auto max-w-sm">
                         <div
-                            class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-violet-600 rounded-[2.5rem] blur opacity-30">
+                            class="absolute -inset-1 bg-gradient-to-r from-teal-700 to-violet-600 rounded-[2.5rem] blur opacity-30">
                         </div>
 
                         <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-4 border-slate-800">
@@ -161,7 +161,7 @@
 
                 <!-- CONTENT -->
                 <div class="flex-1 text-center lg:text-left">
-                    <h2 class="text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-4">
+                    <h2 class="text-teal-400 text-xs font-black uppercase tracking-[0.2em] mb-4">
                         Message from the Founder
                     </h2>
 
@@ -184,7 +184,7 @@
                     <!-- SIGNATURE -->
                     <div class="mt-5">
                         <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
-                        <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-teal-400 text-sm font-bold uppercase tracking-widest">
                             Founder & CEO
                         </p>
                     </div> --}}
@@ -207,7 +207,7 @@
                         <!-- SIGNATURE -->
                         <div class="mt-12">
                             <p class="font-serif text-3xl lg:text-4xl text-white tracking-wide">Md. Norozzaman</p>
-                            <p class="text-blue-400 text-sm lg:text-base font-bold uppercase tracking-widest mt-1">
+                            <p class="text-teal-400 text-sm lg:text-base font-bold uppercase tracking-widest mt-1">
                                 Founder &amp; CEO
                             </p>
                         </div>
@@ -218,7 +218,7 @@
 
                         <!-- LinkedIn -->
                         <a href="https://www.linkedin.com/in/md-norozzaman-207418169" target="_blank" aria-label="LinkedIn"
-                            class="group p-3 rounded-full bg-slate-800 hover:bg-blue-600 transition">
+                            class="group p-3 rounded-full bg-slate-800 hover:bg-teal-700 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
@@ -228,7 +228,7 @@
 
                         <!-- Facebook -->
                         <a href="https://www.facebook.com/md.norozzaman.334957" target="_blank" aria-label="Facebook"
-                            class="group p-3 rounded-full bg-slate-800 hover:bg-blue-500 transition">
+                            class="group p-3 rounded-full bg-slate-800 hover:bg-teal-600 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path

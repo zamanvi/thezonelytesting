@@ -13,7 +13,7 @@
                 <div class="w-full lg:w-1/3">
                     <div class="relative group mx-auto max-w-sm">
                         <div
-                            class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-violet-600 rounded-[2.5rem] blur opacity-30">
+                            class="absolute -inset-1 bg-gradient-to-r from-teal-700 to-violet-600 rounded-[2.5rem] blur opacity-30">
                         </div>
 
                         <div class="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border-4 border-slate-800">
@@ -27,7 +27,7 @@
 
                 <!-- CONTENT -->
                 <div class="flex-1 text-center lg:text-left">
-                    <h2 class="text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-4">
+                    <h2 class="text-teal-400 text-xs font-black uppercase tracking-[0.2em] mb-4">
                         Message from the Founder
                     </h2>
 
@@ -50,7 +50,7 @@
                     <!-- SIGNATURE -->
                     <div class="mt-5">
                         <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
-                        <p class="text-blue-400 text-sm font-bold uppercase tracking-widest">
+                        <p class="text-teal-400 text-sm font-bold uppercase tracking-widest">
                             Founder & CEO
                         </p>
                     </div>
@@ -60,7 +60,7 @@
 
                         <!-- LinkedIn -->
                         <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn"
-                            class="group p-3 rounded-full bg-slate-800 hover:bg-blue-600 transition">
+                            class="group p-3 rounded-full bg-slate-800 hover:bg-teal-700 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path
@@ -70,7 +70,7 @@
 
                         <!-- Facebook -->
                         <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook"
-                            class="group p-3 rounded-full bg-slate-800 hover:bg-blue-500 transition">
+                            class="group p-3 rounded-full bg-slate-800 hover:bg-teal-600 transition">
                             <svg class="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor"
                                 viewBox="0 0 24 24">
                                 <path

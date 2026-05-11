@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('user.services.index') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -38,7 +38,7 @@
                 Service Title <span class="text-red-500">*</span>
             </label>
             <input type="text" name="title" value="{{ old('title', $service->title) }}" required
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
 
         {{-- Price + Pricing Type --}}
@@ -50,14 +50,14 @@
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">$</span>
                         <input type="number" name="price" value="{{ old('price', $service->price) }}" min="0" step="0.01"
-                            class="w-full pl-7 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full pl-7 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <p class="text-xs text-slate-400 mt-1">Leave blank → shows "Contact us"</p>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1.5">Pricing Type</label>
                     <select name="pricing_type"
-                        class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-white">
+                        class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition bg-white">
                         @php $currentPt = old('pricing_type', $service->pricing_type ?? 'starting_at'); @endphp
                         <option value="starting_at" {{ $currentPt=='starting_at' ? 'selected' : '' }}>starting at</option>
                         <option value="per_month"   {{ $currentPt=='per_month'   ? 'selected' : '' }}>per month</option>
@@ -73,10 +73,10 @@
             <div class="mt-4 flex items-center justify-between px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
                 <span class="text-sm font-semibold text-slate-500" id="previewTitle">{{ $service->title }}</span>
                 <div class="text-right">
-                    <div class="text-xl font-black text-blue-700" id="previewPrice">
+                    <div class="text-xl font-black text-teal-800" id="previewPrice">
                         {{ $service->price ? '$'.number_format($service->price, 0) : '—' }}
                     </div>
-                    <div class="text-xs text-blue-500 font-semibold" id="previewType">
+                    <div class="text-xs text-teal-600 font-semibold" id="previewType">
                         {{ ['starting_at'=>'starting at','per_month'=>'per month','per_hour'=>'per hour','flat_rate'=>'flat rate','free'=>'free','contact'=>'contact us'][$service->pricing_type ?? 'starting_at'] ?? 'starting at' }}
                     </div>
                 </div>
@@ -93,7 +93,7 @@
             </p>
             <textarea name="features" rows="5"
                 placeholder="Federal & New York State Return&#10;Itemized deductions & credits&#10;EITC & Child Tax Credit optimization"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none font-mono">{{ old('features', $service->features) }}</textarea>
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none font-mono">{{ old('features', $service->features) }}</textarea>
 
             {{-- Live feature preview --}}
             @php $existingFeatures = array_filter(array_map('trim', explode("\n", $service->features ?? ''))); @endphp
@@ -114,7 +114,7 @@
                 Description <span class="text-slate-400 font-normal">(optional)</span>
             </label>
             <textarea name="description" rows="3"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('description', $service->description) }}</textarea>
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('description', $service->description) }}</textarea>
         </div>
 
         {{-- Visibility toggle --}}
@@ -126,7 +126,7 @@
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" name="is_active" value="1"
                     {{ old('is_active', $service->is_active) ? 'checked' : '' }} class="sr-only peer">
-                <div class="w-11 h-6 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-all
+                <div class="w-11 h-6 bg-slate-200 peer-checked:bg-teal-700 rounded-full transition-all
                             after:content-[''] after:absolute after:top-0.5 after:left-0.5
                             after:bg-white after:rounded-full after:h-5 after:w-5
                             after:transition-all peer-checked:after:translate-x-5"></div>
@@ -140,7 +140,7 @@
                 <i class="fa-solid fa-trash text-xs"></i> Delete
             </button>
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Changes
             </button>
         </div>

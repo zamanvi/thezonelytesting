@@ -14,7 +14,7 @@
 
                 <div class="space-y-10">
                     <!-- In-App Messaging -->
-                    <div class="bg-gradient-to-r from-slate-900 to-blue-900 p-10 rounded-3xl text-white shadow-lg">
+                    <div class="bg-gradient-to-r from-slate-900 to-teal-900 p-10 rounded-3xl text-white shadow-lg">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <h3 class="text-2xl font-bold mb-4">Zonely Secure Messaging (Recommended)</h3>
@@ -30,7 +30,7 @@
                             <label class="relative inline-flex items-center cursor-pointer ml-8">
                                 <input type="checkbox" checked class="sr-only peer">
                                 <div
-                                    class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-blue-500">
+                                    class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-teal-600">
                                 </div>
                             </label>
                         </div>
@@ -38,12 +38,12 @@
 
                     <!-- Phone -->
                     <div
-                        class="bg-white border-2 border-slate-200 rounded-3xl p-10 hover:border-blue-600 transition-all shadow-sm">
+                        class="bg-white border-2 border-slate-200 rounded-3xl p-10 hover:border-teal-700 transition-all shadow-sm">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <div class="flex items-center gap-6 mb-6">
                                     <div
-                                        class="w-16 h-16 bg-blue-100 rounded-3xl flex items-center justify-center text-blue-600 text-3xl">
+                                        class="w-16 h-16 bg-teal-100 rounded-3xl flex items-center justify-center text-teal-700 text-3xl">
                                         📞</div>
                                     <div>
                                         <h3 class="text-2xl font-bold">Direct Phone Call</h3>
@@ -51,13 +51,13 @@
                                     </div>
                                 </div>
                                 <input type="tel" placeholder="Public phone number (optional)"
-                                    class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                                    class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none transition">
                                 <p class="text-sm text-slate-500 mt-4">Tracked calls = high-intent paid leads</p>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer ml-8">
                                 <input type="checkbox" checked class="sr-only peer">
                                 <div
-                                    class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-blue-500">
+                                    class="w-16 h-9 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-teal-600">
                                 </div>
                             </label>
                         </div>
@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
                                 <input type="tel" placeholder="WhatsApp number (e.g. +1 555 123 4567)"
-                                    class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                                    class="w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none transition">
                                 <p class="text-sm text-emerald-600 font-medium mt-4">Converts 3x faster than forms
                                 </p>
                             </div>
@@ -218,7 +218,7 @@
                     <button type="button" class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
                         Back</button>
                     <button type="button"
-                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
+                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-teal-700 transition shadow-lg">Next
                         →</button>
                 </div>
             </div>
@@ -284,7 +284,7 @@
 
                                 newDiv.innerHTML = `<label class="block text-lg font-semibold text-slate-800 mb-3"> Sub Category </label>
                                     <select name="category_id[]"
-                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none">
                                         ${options}
                                     </select>
                                 `;

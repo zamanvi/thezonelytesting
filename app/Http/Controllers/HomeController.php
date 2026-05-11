@@ -192,7 +192,7 @@ class HomeController extends Controller
 
         // Colors
         $cBg     = imagecolorallocate($img, 10,  17,  35);
-        $cBlue   = imagecolorallocate($img, 59,  130, 246);
+        $cTeal   = imagecolorallocate($img, 15,  118, 110); // teal-700 #0F766E
         $cWhite  = imagecolorallocate($img, 255, 255, 255);
         $cSlate4 = imagecolorallocate($img, 148, 163, 184);
         $cSlate5 = imagecolorallocate($img, 100, 116, 139);
@@ -202,15 +202,15 @@ class HomeController extends Controller
         // Background
         imagefilledrectangle($img, 0, 0, $W, $H, $cBg);
 
-        // Subtle top-right blue glow
+        // Subtle top-right teal glow
         for ($r = 280; $r >= 0; $r -= 2) {
             $a = (int)(127 - ($r / 280) * 100);
-            $c = imagecolorallocatealpha($img, 37, 99, 235, $a);
+            $c = imagecolorallocatealpha($img, 15, 118, 110, $a);
             imagefilledellipse($img, $W, 0, $r * 2, $r * 2, $c);
         }
 
-        // Blue left accent bar
-        imagefilledrectangle($img, 0, 0, 6, $H, $cBlue);
+        // Teal left accent bar
+        imagefilledrectangle($img, 0, 0, 6, $H, $cTeal);
 
         // --- PHOTO (left 420px) ---
         $photoW = 420;
@@ -252,7 +252,7 @@ class HomeController extends Controller
         }
 
         if (!$photoLoaded) {
-            imagefilledrectangle($img, 0, 0, $photoW, $H, $cBlue);
+            imagefilledrectangle($img, 0, 0, $photoW, $H, $cTeal);
             $ini = strtoupper(substr($user->name, 0, 2));
             imagestring($img, 5, (int)($photoW/2 - 20), (int)($H/2 - 10), $ini, $cWhite);
         }
@@ -284,7 +284,7 @@ class HomeController extends Controller
         $cx = 460; $cy = 72;
 
         // Brand
-        if ($ttf) imagettftext($img, 13, 0, $cx, $cy, $cBlue, $fontB, 'ZONELY.');
+        if ($ttf) imagettftext($img, 13, 0, $cx, $cy, $cTeal, $fontB, 'ZONELY.');
         $cy += 58;
 
         // Name

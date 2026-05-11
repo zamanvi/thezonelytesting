@@ -39,12 +39,12 @@
         {{-- Contact Info --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-user text-blue-600 text-sm"></i> Contact Information
+                <i class="fa-solid fa-user text-teal-700 text-sm"></i> Contact Information
             </h2>
 
             <div class="space-y-4">
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-blue-600 text-xl shrink-0">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-100 flex items-center justify-center font-bold text-teal-700 text-xl shrink-0">
                         {{ $lead->name ? strtoupper(substr($lead->name, 0, 2)) : strtoupper(substr($lead->phone ?? '??', -2)) }}
                     </div>
                     <div>
@@ -55,7 +55,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <a href="tel:{{ $lead->phone ?? '' }}"
-                       class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition">
+                       class="flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm transition">
                         <i class="fa-solid fa-phone"></i> Call Now
                     </a>
                     <a href="https://wa.me/{{ preg_replace('/\D/','',$lead->phone ?? '') }}" target="_blank"
@@ -69,7 +69,7 @@
         {{-- Request Details --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-file-lines text-blue-600 text-sm"></i> What They Need
+                <i class="fa-solid fa-file-lines text-teal-700 text-sm"></i> What They Need
             </h2>
             <div class="space-y-3">
                 <div class="flex gap-3">
@@ -105,10 +105,10 @@
         {{-- Notes --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
             <h2 class="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-note-sticky text-blue-600 text-sm"></i> My Notes
+                <i class="fa-solid fa-note-sticky text-teal-700 text-sm"></i> My Notes
             </h2>
             <textarea id="notesArea" rows="3" placeholder="Add private notes about this lead (only you can see these)..."
-                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ $lead->notes ?? '' }}</textarea>
+                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ $lead->notes ?? '' }}</textarea>
             <button onclick="saveNotes()" class="mt-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
                 Save Notes
             </button>

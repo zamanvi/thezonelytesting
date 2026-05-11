@@ -9,19 +9,19 @@
             @if (auth()->user()->type === 'seller')
                 <div class="flex flex-wrap gap-2">
                     <a href="{{ route('type.profile', ['seller', 'account']) }}"
-                        class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-blue-500">
+                        class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-teal-600">
                         Account
                     </a>
                     <a href="{{ route('type.profile', ['seller', 'service_location']) }}"
-                        class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-blue-500">
+                        class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-teal-600">
                         Service Location
                     </a>
                     <a href="{{ route('type.profile', ['seller', 'contact']) }}"
-                        class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-blue-500">
+                        class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-teal-600">
                         Contact
                     </a>
                     <a href="{{ route('type.profile', ['seller', 'review']) }}"
-                        class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-blue-500">
+                        class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:bg-teal-600">
                         Review
                     </a>
                 </div>
@@ -37,26 +37,26 @@
                 <div>
                     <label class="block text-sm font-semibold mb-1.5">Name *</label>
                     <input @readonly(true) name="name" value="{{ $user->name }}"
-                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-blue-100 text-sm">
+                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-teal-100 text-sm">
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold mb-1.5">Email *</label>
                     <input @readonly(true) name="email" value="{{ $user->email }}"
-                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-blue-100 text-sm">
+                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-teal-100 text-sm">
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold mb-1.5">Phone</label>
                     <input type="text" name="phone" value="{{ $user->phone }}"
-                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-blue-100 text-sm">
+                        class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-teal-100 text-sm">
                 </div>
 
                 @if ($user->type === 'seller')
                     <div>
                         <label class="block text-sm font-semibold mb-1.5">WhatsApp</label>
                         <input type="text" name="whatsapp" value="{{ $user->whatsapp }}"
-                            class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-blue-100 text-sm">
+                            class="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border focus:ring-4 focus:ring-teal-100 text-sm">
                     </div>
                 @endif
 
@@ -67,7 +67,7 @@
                 <a href="{{ route('user.dashboard') }}" class="text-slate-500 font-semibold text-sm py-2">
                     ← Back
                 </a>
-                <button class="w-full sm:w-auto bg-slate-900 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl font-bold hover:bg-blue-600 transition text-sm">
+                <button class="w-full sm:w-auto bg-slate-900 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl font-bold hover:bg-teal-700 transition text-sm">
                     Update Profile
                 </button>
             </div>

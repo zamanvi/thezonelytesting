@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('seller.onboarding') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -44,15 +44,15 @@
                          class="w-20 h-20 rounded-2xl object-cover border-2 border-slate-200">
                     @else
                     <div id="photoPreviewPlaceholder"
-                         class="w-20 h-20 rounded-2xl bg-blue-50 border-2 border-dashed border-blue-200 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-blue-300 text-2xl"></i>
+                         class="w-20 h-20 rounded-2xl bg-teal-50 border-2 border-dashed border-teal-200 flex items-center justify-center">
+                        <i class="fa-solid fa-user text-teal-300 text-2xl"></i>
                     </div>
                     <img id="photoPreview" src="" class="w-20 h-20 rounded-2xl object-cover border-2 border-slate-200 hidden">
                     @endif
                 </div>
                 <div class="flex-1">
                     <label for="photoInput"
-                           class="inline-flex items-center gap-2 cursor-pointer px-4 py-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-slate-700 hover:text-blue-700 font-semibold text-sm rounded-xl transition">
+                           class="inline-flex items-center gap-2 cursor-pointer px-4 py-2.5 bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-300 text-slate-700 hover:text-teal-800 font-semibold text-sm rounded-xl transition">
                         <i class="fa-solid fa-upload text-xs"></i>
                         {{ $user->profile_photo ? 'Change Photo' : 'Upload Photo' }}
                     </label>
@@ -69,7 +69,7 @@
             <p class="text-xs text-slate-400 mb-3">Shown under your name — e.g. "Certified Public Accountant" or "Licensed Plumber"</p>
             <input type="text" name="title" value="{{ old('title', $user->title ?? $user->designation) }}"
                 placeholder="e.g. Certified Public Accountant"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
 
         {{-- Bio --}}
@@ -78,7 +78,7 @@
             <p class="text-xs text-slate-400 mb-3">2–3 sentences about your expertise and what you offer clients</p>
             <textarea name="bio" rows="4" required
                 placeholder="e.g. Certified public accountant with 14 years of experience helping small businesses with tax planning, bookkeeping, and financial strategy..."
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('bio', $user->bio) }}</textarea>
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('bio', $user->bio) }}</textarea>
             <p class="text-xs text-slate-400 mt-2 text-right" id="bioCount">{{ strlen($user->bio ?? '') }} / 2000</p>
         </div>
 
@@ -88,7 +88,7 @@
             <p class="text-xs text-slate-400 mb-3">Detailed description shown in the About section of your public page</p>
             <textarea name="about" rows="6"
                 placeholder="e.g. A. K. Azad, CPA, PLLC is a public accounting firm based in the Bronx. We are dedicated to delivering value-added professional services..."
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition resize-none">{{ old('about', $user->about) }}</textarea>
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('about', $user->about) }}</textarea>
             <p class="text-xs text-slate-400 mt-2 text-right" id="aboutCount">{{ strlen($user->about ?? '') }} / 3000</p>
         </div>
 
@@ -98,13 +98,13 @@
             <p class="text-xs text-slate-400 mb-3">Shown as a stat on your public page hero card</p>
             <input type="number" name="experience" value="{{ old('experience', $user->experience) }}"
                 min="0" max="99" placeholder="e.g. 14"
-                class="w-28 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition text-center">
+                class="w-28 px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition text-center">
             <span class="text-sm text-slate-400 ml-2">years</span>
         </div>
 
         <div class="flex justify-end pt-2">
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save & Continue
             </button>
         </div>

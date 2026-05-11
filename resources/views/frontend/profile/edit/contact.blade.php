@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('seller.onboarding') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -34,8 +34,8 @@
         {{-- Phone --}}
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                    <i class="fa-solid fa-phone text-blue-600 text-sm"></i>
+                <div class="w-9 h-9 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-phone text-teal-700 text-sm"></i>
                 </div>
                 <div>
                     <p class="font-bold text-slate-800 text-sm">Phone Number</p>
@@ -44,12 +44,12 @@
             </div>
             <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}"
                 placeholder="+1 (917) 000-0000"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
             <label class="flex items-center gap-2.5 mt-3 cursor-pointer select-none">
                 <div class="relative">
                     <input type="checkbox" name="show_phone" value="1" id="showPhoneToggle"
                         class="sr-only peer" {{ $user->show_phone ? 'checked' : '' }}>
-                    <div class="w-10 h-5 bg-slate-200 peer-checked:bg-blue-600 rounded-full transition-colors"></div>
+                    <div class="w-10 h-5 bg-slate-200 peer-checked:bg-teal-700 rounded-full transition-colors"></div>
                     <div class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
                 </div>
                 <span class="text-sm text-slate-600">Show phone number publicly</span>
@@ -81,17 +81,17 @@
         </div>
 
         {{-- Booking info --}}
-        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+        <div class="bg-teal-50 border border-teal-100 rounded-2xl p-5">
             <div class="flex items-center gap-3 mb-2">
-                <div class="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
-                    <i class="fa-solid fa-calendar-check text-blue-600 text-sm"></i>
+                <div class="w-9 h-9 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-calendar-check text-teal-700 text-sm"></i>
                 </div>
                 <div>
-                    <p class="font-bold text-blue-800 text-sm">Booking Form</p>
-                    <p class="text-xs text-blue-500">Always active — customers fill a form to contact you</p>
+                    <p class="font-bold text-teal-800 text-sm">Booking Form</p>
+                    <p class="text-xs text-teal-600">Always active — customers fill a form to contact you</p>
                 </div>
             </div>
-            <p class="text-xs text-blue-600 leading-relaxed ml-12">
+            <p class="text-xs text-teal-700 leading-relaxed ml-12">
                 The inquiry / booking form is automatically shown on your public page.
                 Leads from the form appear in your <a href="{{ route('seller.dashboard') }}" class="font-bold underline">Dashboard</a>.
             </p>
@@ -99,7 +99,7 @@
 
         <div class="flex justify-end pt-2">
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save Contact Info
             </button>
         </div>

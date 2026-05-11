@@ -21,15 +21,15 @@
 
                 {{-- Seller option --}}
                 <a href="{{ route('user.register', 'seller') }}"
-                   class="flex items-center gap-4 p-5 rounded-2xl border-2 border-blue-100 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 transition group">
-                    <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                   class="flex items-center gap-4 p-5 rounded-2xl border-2 border-teal-100 bg-teal-50 hover:border-teal-600 hover:bg-teal-100 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-teal-700 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-briefcase text-white text-base"></i>
                     </div>
                     <div class="flex-1 text-left">
                         <p class="font-black text-slate-900 text-sm">I'm a Service Provider</p>
                         <p class="text-xs text-slate-500 mt-0.5">Get leads, grow your business</p>
                     </div>
-                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-600 transition text-sm shrink-0"></i>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-teal-700 transition text-sm shrink-0"></i>
                 </a>
 
                 {{-- Buyer option --}}
@@ -49,7 +49,7 @@
 
             <p class="text-center text-sm text-slate-500 mt-6">
                 Already have an account?
-                <a href="{{ route('user.login') }}" class="text-blue-600 font-bold hover:underline">Sign in</a>
+                <a href="{{ route('user.login') }}" class="text-teal-700 font-bold hover:underline">Sign in</a>
             </p>
 
         </div>

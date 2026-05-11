@@ -12,7 +12,7 @@
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
             @if(isset($category))
-            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">
+            <p class="text-xs font-bold text-teal-700 uppercase tracking-widest mb-1">
                 @if($category->parent) {{ $category->parent->title }} · @endif Browse
             </p>
             @endif
@@ -21,7 +21,7 @@
             </h1>
             <p class="text-slate-500 text-sm sm:text-base italic">
                 Showing verified experts
-                @if(isset($city)) in <span class="text-blue-600 font-bold">{{ $city }}</span>@endif
+                @if(isset($city)) in <span class="text-teal-700 font-bold">{{ $city }}</span>@endif
             </p>
             @if(isset($category) && $category->children->count())
             <div class="flex flex-wrap gap-2 mt-3">
@@ -29,7 +29,7 @@
                    class="px-3 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-bold">All</a>
                 @foreach($category->children as $child)
                 <a href="{{ route('frontend.category', $child->slug) }}"
-                   class="px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-600 rounded-xl text-xs font-semibold transition">
+                   class="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 rounded-xl text-xs font-semibold transition">
                     {{ $child->title }}
                 </a>
                 @endforeach
@@ -41,11 +41,11 @@
         <form action="{{ route('frontend.service.search') }}" method="GET"
               class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <input type="text" name="q" value="{{ request('q') }}" placeholder="Service..."
-                class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 sm:w-36">
+                class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-50 sm:w-36">
             <input type="text" name="city" value="{{ request('city') }}" placeholder="City or ZIP"
-                class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 sm:w-32">
+                class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-50 sm:w-32">
             <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition shrink-0">
+                class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition shrink-0">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </form>
@@ -75,7 +75,7 @@
             $specialty = Str::limit(trim($specialty), 40);
             $initials  = strtoupper(substr($user->name, 0, 2));
         @endphp
-        <div class="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-lg hover:border-blue-100 transition-all duration-300 flex flex-col">
+        <div class="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-lg hover:border-teal-100 transition-all duration-300 flex flex-col">
 
             {{-- Photo --}}
             <div class="relative h-44 sm:h-52 bg-slate-100 overflow-hidden">
@@ -84,17 +84,17 @@
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
                      class="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition duration-500"
                      alt="{{ $user->name }}" loading="lazy">
-                <div class="hidden w-full h-full bg-blue-600 items-center justify-center text-white font-black text-3xl">
+                <div class="hidden w-full h-full bg-teal-700 items-center justify-center text-white font-black text-3xl">
                     {{ $initials }}
                 </div>
                 @else
-                <div class="w-full h-full bg-blue-600 flex items-center justify-center text-white font-black text-3xl">
+                <div class="w-full h-full bg-teal-700 flex items-center justify-center text-white font-black text-3xl">
                     {{ $initials }}
                 </div>
                 @endif
 
                 @if($user->status)
-                <span class="absolute top-3 left-3 bg-white text-blue-600 text-[9px] font-black px-2.5 py-1 rounded-full shadow-sm tracking-widest uppercase">
+                <span class="absolute top-3 left-3 bg-white text-teal-700 text-[9px] font-black px-2.5 py-1 rounded-full shadow-sm tracking-widest uppercase">
                     ✓ Verified
                 </span>
                 @endif
@@ -109,7 +109,7 @@
                     <p class="text-xs text-slate-500 mt-0.5 truncate">{{ $specialty }}</p>
                     @if($user->city)
                     <p class="text-xs text-slate-400 mt-1.5 flex items-center gap-1">
-                        <i class="fa-solid fa-location-dot text-[10px] text-blue-400"></i>
+                        <i class="fa-solid fa-location-dot text-[10px] text-teal-400"></i>
                         {{ $user->city }}@if($user->state), {{ $user->state }}@endif
                     </p>
                     @endif
@@ -121,14 +121,14 @@
 
                 <div class="flex items-center gap-2 mt-4">
                     <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                       class="flex-1 text-center bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                       class="flex-1 text-center bg-slate-900 hover:bg-teal-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition"
                        style="min-height:unset;">
                         View Profile
                     </a>
                     @auth
                     @if(auth()->user()->type === 'user')
                     <a href="{{ route('buyer.book', $user->slug ?? $user->id) }}"
-                       class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-2.5 rounded-xl text-xs font-bold transition shrink-0"
+                       class="bg-teal-50 hover:bg-teal-100 text-teal-700 px-3 py-2.5 rounded-xl text-xs font-bold transition shrink-0"
                        style="min-height:unset;" title="Book">
                         <i class="fa-solid fa-calendar-plus"></i>
                     </a>
@@ -146,7 +146,7 @@
         <p class="font-bold text-slate-400 text-lg">No professionals found</p>
         <p class="text-slate-400 text-sm mt-1">Try a different search term</p>
         <a href="{{ route('frontend.service.all') }}"
-           class="inline-block mt-5 bg-blue-600 text-white font-bold px-6 py-3 rounded-2xl text-sm hover:bg-blue-700 transition"
+           class="inline-block mt-5 bg-teal-700 text-white font-bold px-6 py-3 rounded-2xl text-sm hover:bg-teal-800 transition"
            style="min-height:unset;">
             Browse All
         </a>

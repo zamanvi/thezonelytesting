@@ -12,7 +12,7 @@
             <p class="text-sm text-slate-500 mt-0.5">Find and contact local experts near you</p>
         </div>
         <a href="{{ route('buyer.profile') }}"
-           class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+           class="w-10 h-10 rounded-full bg-teal-700 text-white flex items-center justify-center font-bold text-sm shrink-0">
             {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
         </a>
     </div>
@@ -23,13 +23,13 @@
         <input type="text" placeholder="Search for a service or professional..."
                class="flex-1 text-sm focus:outline-none text-slate-700 placeholder-slate-400 min-w-0"
                onkeydown="if(event.key==='Enter') window.location='{{ route('frontend.service.search') }}?q='+this.value">
-        <a href="{{ route('frontend.service.all') }}" class="text-xs font-bold text-blue-600 whitespace-nowrap shrink-0">Browse all →</a>
+        <a href="{{ route('frontend.service.all') }}" class="text-xs font-bold text-teal-700 whitespace-nowrap shrink-0">Browse all →</a>
     </div>
 
     {{-- ── STATS ── --}}
     <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
         <div class="bg-white rounded-2xl border border-slate-100 p-3 sm:p-4 shadow-sm text-center">
-            <p class="text-xl sm:text-2xl font-black text-blue-600">{{ $stats['bookings'] }}</p>
+            <p class="text-xl sm:text-2xl font-black text-teal-700">{{ $stats['bookings'] }}</p>
             <p class="text-[10px] sm:text-xs text-slate-500 font-semibold mt-0.5">Total Inquiries</p>
         </div>
         <div class="bg-white rounded-2xl border border-slate-100 p-3 sm:p-4 shadow-sm text-center">
@@ -55,7 +55,7 @@
         @forelse($activeLeads as $lead)
         @php
             $statusColor = match($lead->status) {
-                'new'     => 'bg-blue-100 text-blue-700',
+                'new'     => 'bg-teal-100 text-teal-800',
                 'pending' => 'bg-amber-100 text-amber-700',
                 default   => 'bg-slate-100 text-slate-600',
             };
@@ -75,7 +75,7 @@
                 </span>
                 @if($lead->seller?->slug)
                 <a href="{{ route('frontend.service.show', $lead->seller->slug) }}"
-                   class="block text-[10px] font-bold text-blue-600 hover:underline">
+                   class="block text-[10px] font-bold text-teal-700 hover:underline">
                     View seller →
                 </a>
                 @endif
@@ -86,7 +86,7 @@
             <i class="fa-solid fa-bolt text-4xl text-slate-200 mb-3"></i>
             <p class="text-sm font-semibold text-slate-400">No active inquiries</p>
             <a href="{{ route('frontend.service.all') }}"
-               class="inline-block mt-3 bg-blue-600 text-white font-bold px-5 py-2.5 rounded-2xl text-sm hover:bg-blue-700 transition">
+               class="inline-block mt-3 bg-teal-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm hover:bg-teal-800 transition">
                 Find a Professional
             </a>
         </div>
@@ -161,14 +161,14 @@
 
     {{-- ── AFFILIATE BANNER ── --}}
     <a href="{{ route('buyer.affiliate') }}"
-       class="mb-3 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-4 flex items-center justify-between text-white hover:from-blue-700 hover:to-blue-800 transition shadow-sm block">
+       class="mb-3 bg-gradient-to-r from-teal-700 to-teal-800 rounded-2xl p-4 flex items-center justify-between text-white hover:from-teal-800 hover:to-teal-800 transition shadow-sm block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-share-nodes text-white text-sm"></i>
             </div>
             <div>
                 <p class="font-bold text-sm">Earn $10 per referral</p>
-                <p class="text-xs text-blue-200">Refer a business → they join → you earn</p>
+                <p class="text-xs text-teal-200">Refer a business → they join → you earn</p>
             </div>
         </div>
         <span class="text-xs font-bold bg-white/20 px-3 py-1.5 rounded-xl whitespace-nowrap shrink-0">Refer Now →</span>
@@ -177,9 +177,9 @@
     {{-- ── QUICK LINKS ── --}}
     <div class="grid grid-cols-2 gap-3">
         <a href="{{ route('frontend.service.all') }}"
-           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-blue-200 transition">
-            <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-magnifying-glass text-blue-600 text-sm"></i>
+           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-teal-200 transition">
+            <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-magnifying-glass text-teal-700 text-sm"></i>
             </div>
             <div class="min-w-0">
                 <p class="font-bold text-sm text-slate-900">Find Experts</p>
@@ -187,7 +187,7 @@
             </div>
         </a>
         <a href="{{ route('buyer.profile') }}"
-           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-blue-200 transition">
+           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-teal-200 transition">
             <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-user text-purple-600 text-sm"></i>
             </div>
@@ -197,7 +197,7 @@
             </div>
         </a>
         <a href="{{ route('buyer.notifications') }}"
-           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-blue-200 transition">
+           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-teal-200 transition">
             <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-bell text-emerald-600 text-sm"></i>
             </div>
@@ -207,7 +207,7 @@
             </div>
         </a>
         <a href="{{ route('frontend.help') }}"
-           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-blue-200 transition">
+           class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex items-center gap-3 hover:border-teal-200 transition">
             <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center shrink-0">
                 <i class="fa-solid fa-circle-question text-slate-500 text-sm"></i>
             </div>

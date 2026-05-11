@@ -33,11 +33,11 @@
                      onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=80&background=3b82f6&color=fff'"
                      class="w-20 h-20 rounded-2xl object-cover">
                 @else
-                <div class="w-20 h-20 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-2xl">
+                <div class="w-20 h-20 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-2xl">
                     {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                 </div>
                 @endif
-                <label for="photoUpload" class="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 text-white rounded-xl flex items-center justify-center cursor-pointer hover:bg-blue-700 transition shadow">
+                <label for="photoUpload" class="absolute -bottom-2 -right-2 w-8 h-8 bg-teal-700 text-white rounded-xl flex items-center justify-center cursor-pointer hover:bg-teal-800 transition shadow">
                     <i class="fa-solid fa-camera text-xs"></i>
                 </label>
             </div>
@@ -57,7 +57,7 @@
 
             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
                 <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black">1</span>
+                    <span class="w-6 h-6 bg-teal-700 text-white rounded-lg flex items-center justify-center text-xs font-black">1</span>
                     Personal Info
                 </h2>
                 <div class="space-y-4">
@@ -65,37 +65,37 @@
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
                             <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" required
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone</label>
                             <input type="tel" name="phone" value="{{ old('phone', auth()->user()->phone) }}"
                                 placeholder="+1 555 000 0000"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
                         <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" required
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">City</label>
                             <input type="text" name="city" value="{{ old('city', auth()->user()->city) }}"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">State / Province</label>
                             <input type="text" name="state" value="{{ old('state', auth()->user()->state) }}"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                     </div>
                 </div>
             </div>
 
             <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm transition mb-4">
+                class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-4 rounded-2xl text-sm transition mb-4">
                 Save Changes
             </button>
         </form>
@@ -106,25 +106,25 @@
 
             <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-4">
                 <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                    <span class="w-6 h-6 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-black">2</span>
+                    <span class="w-6 h-6 bg-teal-700 text-white rounded-lg flex items-center justify-center text-xs font-black">2</span>
                     Change Password
                 </h2>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Current Password</label>
                         <input type="password" name="current_password"
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                     </div>
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">New Password</label>
                             <input type="password" name="password"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1.5">Confirm Password</label>
                             <input type="password" name="password_confirmation"
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
                         </div>
                     </div>
                 </div>

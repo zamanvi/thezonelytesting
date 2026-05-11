@@ -33,16 +33,16 @@
 @section('content')
 
 {{-- ═══ HERO ═══ --}}
-<section class="pt-28 pb-14 px-4 sm:px-6 bg-gradient-to-b from-blue-50/60 via-white to-white">
+<section class="pt-28 pb-14 px-4 sm:px-6 bg-gradient-to-b from-teal-50/60 via-white to-white">
     <div class="max-w-3xl mx-auto text-center">
 
-        <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-wide">
-            <i class="fa-solid fa-shield-halved text-blue-500 text-xs"></i> Verified local professionals near you
+        <div class="inline-flex items-center gap-2 bg-teal-100 text-teal-800 text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-wide">
+            <i class="fa-solid fa-shield-halved text-teal-600 text-xs"></i> Verified local professionals near you
         </div>
 
         <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-slate-900 leading-[1.05] tracking-tight mb-5">
             Discover &amp; Hire<br>
-            <em class="text-blue-600" style="font-style:italic;">Local Experts</em> Near Me
+            <em class="text-teal-700" style="font-style:italic;">Local Experts</em> Near Me
         </h1>
         <p class="text-slate-500 text-base sm:text-lg mb-10 max-w-lg mx-auto leading-relaxed">
             Access the top 1% of verified professionals in your area. Fast, secure, and expert-led.
@@ -57,7 +57,7 @@
                            placeholder="Who are you looking for?"
                            class="flex-1 text-sm text-slate-800 placeholder-slate-400 bg-transparent py-3 font-medium focus:outline-none">
                     <button type="submit"
-                            class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-6 py-2.5 rounded-full transition" style="min-height:unset;">
+                            class="shrink-0 bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold px-6 py-2.5 rounded-full transition" style="min-height:unset;">
                         Search
                     </button>
                 </div>
@@ -67,7 +67,7 @@
             <div id="liveResults" class="hidden absolute left-0 right-0 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden mt-2">
                 <div id="liveResultsList"></div>
                 <a id="liveResultsMore" href="#"
-                   class="block text-center text-xs font-bold text-blue-600 py-3 border-t border-slate-100 hover:bg-slate-50 transition">
+                   class="block text-center text-xs font-bold text-teal-700 py-3 border-t border-slate-100 hover:bg-slate-50 transition">
                     See all results →
                 </a>
             </div>
@@ -86,8 +86,8 @@
                 ['q'=>'Cleaning','icon'=>'fa-broom'],
             ] as $s)
             <a href="{{ route('frontend.service.search') }}?q={{ urlencode($s['q']) }}"
-               class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition" style="min-height:unset;">
-                <i class="fa-solid {{ $s['icon'] }} text-blue-500 text-xs"></i>
+               class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-800 px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition" style="min-height:unset;">
+                <i class="fa-solid {{ $s['icon'] }} text-teal-600 text-xs"></i>
                 {{ $s['q'] }}
             </a>
             @endforeach
@@ -95,7 +95,7 @@
 
         <p class="mt-6 text-sm text-slate-400">
             Are you a professional?
-            <a href="{{ route('user.register', 'seller') }}" class="text-blue-600 font-semibold hover:underline">List your business free →</a>
+            <a href="{{ route('user.register', 'seller') }}" class="text-teal-700 font-semibold hover:underline">List your business free →</a>
         </p>
 
     </div>
@@ -107,7 +107,7 @@
         @foreach([
             ['icon'=>'fa-star','color'=>'text-amber-400','text'=>'4.9 avg rating'],
             ['icon'=>'fa-circle-check','color'=>'text-emerald-400','text'=>'All pros verified'],
-            ['icon'=>'fa-lock','color'=>'text-blue-400','text'=>'Secure booking'],
+            ['icon'=>'fa-lock','color'=>'text-teal-400','text'=>'Secure booking'],
             ['icon'=>'fa-tag','color'=>'text-violet-400','text'=>'No subscription fees'],
         ] as $t)
         <span class="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -121,15 +121,15 @@
 <div class="bg-white border-b border-slate-100">
     <div class="max-w-3xl mx-auto px-4 py-8 grid grid-cols-3 gap-4 text-center">
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['pros'] > 0 ? $stats['pros'].'+' : 'Growing' }}</div>
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['pros'] > 0 ? $stats['pros'].'+' : 'Growing' }}</div>
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
         </div>
         <div class="border-x border-slate-100">
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['reviews'] > 0 ? $stats['reviews'].'+' : '5★' }}</div>
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['reviews'] > 0 ? $stats['reviews'].'+' : '5★' }}</div>
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Client Reviews</div>
         </div>
         <div>
-            <div class="text-3xl sm:text-4xl font-black text-blue-600">{{ $stats['cities'] > 0 ? $stats['cities'].'+' : 'USA' }}</div>
+            <div class="text-3xl sm:text-4xl font-black text-teal-700">{{ $stats['cities'] > 0 ? $stats['cities'].'+' : 'USA' }}</div>
             <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
         </div>
     </div>
@@ -145,7 +145,7 @@
                 <div class="w-10 h-0.5 bg-slate-900 rounded-full"></div>
             </div>
             <a href="{{ route('frontend.service.all') }}"
-               class="text-sm font-semibold text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 px-4 py-2 rounded-full transition" style="min-height:unset;">
+               class="text-sm font-semibold text-slate-600 hover:text-teal-700 border border-slate-200 hover:border-teal-300 px-4 py-2 rounded-full transition" style="min-height:unset;">
                 See All
             </a>
         </div>
@@ -161,11 +161,11 @@
                     <img src="{{ asset($user->profile_photo) }}"
                          onerror="this.src='';this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');"
                          class="w-full h-full object-cover min-h-[160px]">
-                    <div class="hidden w-full min-h-[160px] bg-blue-600 items-center justify-center text-white font-black text-2xl">
+                    <div class="hidden w-full min-h-[160px] bg-teal-700 items-center justify-center text-white font-black text-2xl">
                         {{ $initials }}
                     </div>
                     @else
-                    <div class="w-full min-h-[160px] bg-blue-600 flex items-center justify-center text-white font-black text-2xl">
+                    <div class="w-full min-h-[160px] bg-teal-700 flex items-center justify-center text-white font-black text-2xl">
                         {{ $initials }}
                     </div>
                     @endif
@@ -196,11 +196,11 @@
                     </div>
                     <div class="flex items-center gap-3 mt-4">
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2 rounded-full transition shadow-sm shadow-blue-200" style="min-height:unset;">
+                           class="bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold px-5 py-2 rounded-full transition shadow-sm shadow-teal-200" style="min-height:unset;">
                             Hire Expert
                         </a>
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="text-sm text-slate-400 hover:text-blue-600 font-semibold transition" style="min-height:unset;">
+                           class="text-sm text-slate-400 hover:text-teal-700 font-semibold transition" style="min-height:unset;">
                             View Profile →
                         </a>
                     </div>
@@ -222,19 +222,19 @@
 <div class="h-20 bg-gradient-to-b from-white to-slate-950"></div>
 <section class="pb-0 px-4 sm:px-6 bg-slate-950">
     <div class="max-w-4xl mx-auto">
-        <div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-3xl overflow-hidden relative shadow-2xl">
+        <div class="bg-gradient-to-r from-teal-800 to-indigo-700 rounded-3xl overflow-hidden relative shadow-2xl">
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08),transparent_60%)] pointer-events-none"></div>
             <div class="relative px-8 sm:px-14 py-12 flex flex-col sm:flex-row items-center gap-10">
                 <div class="flex-1">
-                    <span class="inline-block text-[11px] font-black text-blue-200 uppercase tracking-widest mb-4">For Professionals</span>
+                    <span class="inline-block text-[11px] font-black text-teal-200 uppercase tracking-widest mb-4">For Professionals</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-snug">
                         Get qualified leads.<br>Pay only per call.
                     </h2>
-                    <p class="text-blue-100 text-sm leading-relaxed mb-8 max-w-sm opacity-85">
+                    <p class="text-teal-100 text-sm leading-relaxed mb-8 max-w-sm opacity-85">
                         Customers in your area are searching right now. Your verified profile shows up first. No subscription. No ads.
                     </p>
                     <a href="{{ route('user.register', 'seller') }}"
-                       class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-yellow-300 font-bold px-7 py-3.5 rounded-xl text-sm transition shadow-lg" style="min-height:unset;">
+                       class="inline-flex items-center gap-2 bg-white text-teal-800 hover:bg-yellow-300 font-bold px-7 py-3.5 rounded-xl text-sm transition shadow-lg" style="min-height:unset;">
                         Create free profile →
                     </a>
                 </div>
@@ -272,7 +272,7 @@
     <div class="max-w-5xl mx-auto">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
             <div class="col-span-2 sm:col-span-1">
-                <span class="text-white font-extrabold text-xl tracking-tight">Zonely<span class="text-blue-500">.</span></span>
+                <span class="text-white font-extrabold text-xl tracking-tight">Zonely<span class="text-teal-600">.</span></span>
                 <p class="text-slate-400 text-xs mt-3 leading-relaxed max-w-xs">Find verified local professionals near you. Fast, trusted, and transparent.</p>
             </div>
             <div>
@@ -323,7 +323,7 @@
         const src = u.photo ? (u.photo.startsWith('storage/') || u.photo.startsWith('/storage/') ? '/'+u.photo.replace(/^\//,'') : '/storage/'+u.photo) : null;
         return src
             ? `<img src="${src}" onerror="this.style.display='none'" class="w-10 h-10 rounded-xl object-cover shrink-0">`
-            : `<div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">${i}</div>`;
+            : `<div class="w-10 h-10 bg-teal-700 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0">${i}</div>`;
     }
 
     input.addEventListener('input', function () {

@@ -17,7 +17,7 @@
             <div>
                 <h2 class="text-xl font-bold mb-2">Email</h2>
                 <p class="text-slate-600 leading-relaxed">
-                    <a href="support@thezonely.com" class="text-blue-600 hover:underline">
+                    <a href="support@thezonely.com" class="text-teal-700 hover:underline">
                         support@thezonely.com
                     </a>
                 </p>

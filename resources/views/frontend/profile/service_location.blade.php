@@ -16,7 +16,7 @@
                                 Category
                                 <span class="text-red-500">*</span></label>
                             <select required id="primaryCategory"
-                                class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none"
                                 name="category_id[]">
 
                                 <option value="">Select your main category</option>
@@ -36,13 +36,13 @@
                         <p class="text-sm text-slate-500 mb-6">Add precise areas you serve.</p>
                         <div id="locationsContainer" class="space-y-8">
                             <div
-                                class="location-block p-8 bg-gradient-to-r from-slate-50 to-blue-50 rounded-3xl border border-slate-200 shadow-sm">
+                                class="location-block p-8 bg-gradient-to-r from-slate-50 to-teal-50 rounded-3xl border border-slate-200 shadow-sm">
                                 <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6">
                                     <div>
                                         <label class="block text-sm font-bold text-slate-600 mb-2">Country
                                             <span class="text-red-500">*</span></label>
                                         <select required name="country"
-                                            class="country-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+                                            class="country-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none">
                                             <option value="">Select Country</option>
                                         </select>
                                     </div>
@@ -51,7 +51,7 @@
                                             Province
                                             <span class="text-red-500">*</span></label>
                                         <select required name="state"
-                                            class="state-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                            class="state-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none"
                                             disabled>
                                             <option value="">Select State</option>
                                         </select>
@@ -60,7 +60,7 @@
                                         <label class="block text-sm font-bold text-slate-600 mb-2">City <span
                                                 class="text-red-500">*</span></label>
                                         <select required name="city"
-                                            class="city-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                            class="city-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none"
                                             disabled>
                                             <option value="">Select City</option>
                                         </select>
@@ -69,7 +69,7 @@
                                         <label class="block text-sm font-bold text-slate-600 mb-2">ZIP / Postal
                                             Code <span class="text-red-500">*</span></label>
                                         <select required name="zip_code"
-                                            class="zip-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none"
+                                            class="zip-select w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none"
                                             disabled>
                                             <option value="">Select ZIP Code</option>
                                         </select>
@@ -80,7 +80,7 @@
                                         Details
                                         (optional)</label>
                                     <input type="text" placeholder="Neighborhood or notes" name="additional_details"
-                                        class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition">
+                                        class="address-notes w-full px-6 py-5 rounded-2xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none transition">
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                     <button type="button" class="prev-step text-slate-600 font-bold hover:text-slate-900 transition">←
                         Back</button>
                     <button type="button"
-                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-blue-600 transition shadow-lg">Next
+                        class="next-step bg-slate-900 text-white px-10 py-5 rounded-3xl font-bold hover:bg-teal-700 transition shadow-lg">Next
                         →</button>
                 </div>
             </div>
@@ -132,7 +132,7 @@
 
                                 newDiv.innerHTML = `<label class="block text-lg font-semibold text-slate-800 mb-3"> Sub Category </label>
                                     <select name="category_id[]"
-                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none">
+                                        class="category-select w-full px-6 py-5 rounded-3xl border border-slate-300 focus:border-teal-700 focus:ring-4 focus:ring-teal-100 outline-none">
                                         ${options}
                                     </select>
                                 `;

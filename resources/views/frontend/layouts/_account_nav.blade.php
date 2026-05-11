@@ -7,7 +7,7 @@
         @if($type === 'seller')
             {{-- ── SELLER NAV ── --}}
             <a href="{{ route('seller.dashboard') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('seller.dashboard') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('seller.dashboard') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-gauge-high text-sm"></i>
                 </div>
@@ -15,7 +15,7 @@
             </a>
 
             <a href="{{ route('seller.dashboard') }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('seller.lead.*') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('seller.lead.*') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center relative">
                     <i class="fa-solid fa-users text-sm"></i>
                 </div>
@@ -23,7 +23,7 @@
             </a>
 
             <a href="{{ route('seller.reviews') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('seller.reviews') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('seller.reviews') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-star text-sm"></i>
                 </div>
@@ -31,7 +31,7 @@
             </a>
 
             <a href="{{ route('seller.notifications') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('seller.notifications') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('seller.notifications') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center relative">
                     <i class="fa-solid fa-bell text-sm"></i>
                     {{-- unread badge --}}
@@ -45,7 +45,7 @@
             </a>
 
             <a href="{{ route('seller.settings') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('seller.settings') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('seller.settings') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-gear text-sm"></i>
                 </div>
@@ -55,7 +55,7 @@
         @else
             {{-- ── BUYER NAV ── --}}
             <a href="{{ route('buyer.dashboard') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('buyer.dashboard') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('buyer.dashboard') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-house text-sm"></i>
                 </div>
@@ -63,7 +63,7 @@
             </a>
 
             <a href="{{ route('frontend.service.all') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('frontend.service.all') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('frontend.service.all') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-magnifying-glass text-sm"></i>
                 </div>
@@ -71,7 +71,7 @@
             </a>
 
             <a href="{{ route('buyer.bookings') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('buyer.bookings*') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('buyer.bookings*') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-calendar-check text-sm"></i>
                 </div>
@@ -79,7 +79,7 @@
             </a>
 
             <a href="{{ route('buyer.notifications') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('buyer.notifications') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('buyer.notifications') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center relative">
                     <i class="fa-solid fa-bell text-sm"></i>
                     @if(($unreadNotifCount ?? 0) > 0)
@@ -92,7 +92,7 @@
             </a>
 
             <a href="{{ route('buyer.profile') ?? '#' }}"
-               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-blue-600 {{ request()->routeIs('buyer.profile') ? 'active' : '' }}">
+               class="bnav-item flex-1 flex flex-col items-center gap-1 py-1 text-slate-400 hover:text-teal-700 {{ request()->routeIs('buyer.profile') ? 'active' : '' }}">
                 <div class="bnav-icon w-8 h-8 rounded-xl flex items-center justify-center">
                     <i class="fa-solid fa-user text-sm"></i>
                 </div>

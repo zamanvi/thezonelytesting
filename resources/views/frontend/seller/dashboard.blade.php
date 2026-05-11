@@ -13,7 +13,7 @@
     .won-active     { background:#059669!important; color:#fff!important; }
     .pending-active { background:#d97706!important; color:#fff!important; }
     .lost-active    { background:#dc2626!important; color:#fff!important; }
-    audio { accent-color:#3b82f6; }
+    audio { accent-color:#0D9488; }
     .lead-card { transition:transform .2s ease,box-shadow .2s ease; }
     .lead-card:hover { transform:translateY(-1px); box-shadow:0 8px 20px -4px rgba(0,0,0,.08); }
 </style>
@@ -68,10 +68,10 @@
             </p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('seller.schedule') }}" class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-blue-300 hover:text-blue-600 transition">
+            <a href="{{ route('seller.schedule') }}" class="text-xs font-bold text-slate-500 border border-slate-200 bg-white px-3 py-2 rounded-xl hover:border-teal-300 hover:text-teal-700 transition">
                 <i class="fa-solid fa-calendar-days mr-1"></i> Schedule
             </a>
-            <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+            <div class="w-9 h-9 rounded-full bg-teal-700 text-white flex items-center justify-center font-bold text-sm shrink-0">
                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
         </div>
@@ -99,7 +99,7 @@
     <div class="mb-6">
         <h2 class="text-xl font-bold text-slate-900">Welcome back, {{ $user->name }}!</h2>
         <p class="text-sm text-slate-500 mt-0.5">
-            <span class="font-semibold text-blue-600">{{ $stats['total'] }} leads this month</span>
+            <span class="font-semibold text-teal-700">{{ $stats['total'] }} leads this month</span>
             &nbsp;&bull;&nbsp; {{ $user->title ?? 'Your page' }} is live
             @if($unpaidCount > 0)
             &nbsp;&bull;&nbsp; <a href="{{ route('seller.billing') }}" class="text-red-500 font-semibold">{{ $unpaidCount }} unpaid →</a>
@@ -112,7 +112,7 @@
     {{-- ── STATS ── --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-7">
         <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
-            <p class="text-3xl font-black text-blue-600">{{ $stats['total'] }}</p>
+            <p class="text-3xl font-black text-teal-700">{{ $stats['total'] }}</p>
             <p class="text-xs text-slate-500 mt-1 font-medium">Total Leads</p>
         </div>
         <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm text-center">
@@ -131,13 +131,13 @@
 
     {{-- ── MY PAGE CARD ── --}}
     <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-7">
-        <div class="bg-blue-600 text-white px-5 py-4 flex items-center gap-4">
-            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-blue-600 text-base shrink-0">
+        <div class="bg-teal-700 text-white px-5 py-4 flex items-center gap-4">
+            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center font-black text-teal-700 text-base shrink-0">
                 {{ strtoupper(substr($user->name, 0, 2)) }}
             </div>
             <div class="flex-1 min-w-0">
                 <p class="font-bold leading-tight">{{ $user->title ?? $user->name }}</p>
-                <p class="text-blue-200 text-sm mt-0.5 truncate">thezonely.com/{{ $user->slug }}</p>
+                <p class="text-teal-200 text-sm mt-0.5 truncate">thezonely.com/{{ $user->slug }}</p>
             </div>
             <div class="flex flex-col items-end gap-1.5 shrink-0">
                 <span class="text-xs bg-white/20 px-3 py-1 rounded-lg font-bold">LIVE</span>
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
-               class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 transition">
+               class="text-sm font-semibold text-teal-700 hover:text-teal-800 flex items-center gap-1.5 transition">
                 View Page <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
             </a>
         </div>
@@ -167,7 +167,7 @@
 
     {{-- ── ANALYTICS ── --}}
     <h3 class="font-bold text-base mb-4 flex items-center gap-2">
-        <i class="fa-solid fa-chart-simple text-blue-600"></i> Analytics
+        <i class="fa-solid fa-chart-simple text-teal-700"></i> Analytics
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
 
@@ -180,7 +180,7 @@
                 @php $pct = $maxCount > 0 ? round($count / $maxCount * 100) : 5; $pct = max($pct, 5); @endphp
                 <div class="flex-1 flex flex-col items-center gap-1">
                     <span class="text-[9px] text-slate-400 font-semibold">{{ $count }}</span>
-                    <div class="bar w-full {{ $count === $maxCount && $count > 0 ? 'bg-emerald-500' : 'bg-blue-300' }} rounded-t-md" style="height:{{ $pct }}%"></div>
+                    <div class="bar w-full {{ $count === $maxCount && $count > 0 ? 'bg-emerald-500' : 'bg-teal-300' }} rounded-t-md" style="height:{{ $pct }}%"></div>
                 </div>
                 @endforeach
             </div>
@@ -200,7 +200,7 @@
                         <span class="font-bold text-slate-800">58%</span>
                     </div>
                     <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400" style="width:58%"></div>
+                        <div class="h-full rounded-full bg-gradient-to-r from-teal-600 to-teal-400" style="width:58%"></div>
                     </div>
                 </div>
                 <div>
@@ -236,13 +236,13 @@
             <div class="space-y-2">
                 <div class="flex items-center gap-3">
                     <span class="text-xs text-slate-500 w-20 text-right shrink-0">{{ $stats['total'] }} calls</span>
-                    <div class="flex-1 h-8 bg-blue-600 rounded-xl flex items-center px-3">
+                    <div class="flex-1 h-8 bg-teal-700 rounded-xl flex items-center px-3">
                         <span class="text-white text-xs font-bold">Leads Received</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-xs text-slate-500 w-20 text-right shrink-0">{{ $contacted }} replied</span>
-                    <div class="h-8 bg-blue-400 rounded-xl flex items-center px-3" style="flex:0 0 {{ max($contactedPct, 30) }}%">
+                    <div class="h-8 bg-teal-400 rounded-xl flex items-center px-3" style="flex:0 0 {{ max($contactedPct, 30) }}%">
                         <span class="text-white text-xs font-bold">Contacted</span>
                     </div>
                 </div>
@@ -260,7 +260,7 @@
             <div class="relative w-24 h-24 shrink-0">
                 <svg viewBox="0 0 36 36" class="w-24 h-24 -rotate-90">
                     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f1f5f9" stroke-width="3.5"/>
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="3.5"
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0D9488" stroke-width="3.5"
                         stroke-dasharray="{{ $wonArc }} {{ $circ - $wonArc }}" stroke-dashoffset="{{ $wonOffset }}" stroke-linecap="round"/>
                     <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3.5"
                         stroke-dasharray="{{ $pendArc }} {{ $circ - $pendArc }}" stroke-dashoffset="{{ $pendOffset }}" stroke-linecap="round"/>
@@ -274,7 +274,7 @@
             </div>
             <div class="space-y-2">
                 <div class="flex items-center gap-2">
-                    <div class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-teal-600 shrink-0"></div>
                     <span class="text-xs text-slate-600">Won — {{ $wonArc > 0 ? round($wonArc/$circ*100) : 0 }}%</span>
                 </div>
                 <div class="flex items-center gap-2">
@@ -293,7 +293,7 @@
     {{-- ── LEAD MANAGEMENT ── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h3 class="font-bold text-base flex items-center gap-2">
-            <i class="fa-solid fa-list-check text-blue-600"></i>
+            <i class="fa-solid fa-list-check text-teal-700"></i>
             Lead Management
             <span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">Twilio Synced</span>
         </h3>
@@ -301,12 +301,12 @@
             <div class="relative">
                 <input id="searchInput" type="text" placeholder="Search leads..."
                        oninput="searchLeads()"
-                       class="pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm w-44 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                       class="pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm w-44 focus:border-teal-400 focus:ring-2 focus:ring-teal-50 transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm pointer-events-none"></i>
             </div>
             <button onclick="exportLeads()"
                     class="bg-white border border-slate-200 hover:bg-slate-50 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
-                <i class="fa-solid fa-download text-blue-600"></i> CSV
+                <i class="fa-solid fa-download text-teal-700"></i> CSV
             </button>
         </div>
     </div>
@@ -314,7 +314,7 @@
     {{-- Filter Tabs --}}
     <div class="flex gap-2 mb-5 overflow-x-auto scroll-hide pb-1">
         <button onclick="filterLeads(this,'all')"
-                class="filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-blue-600 text-white">
+                class="filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-teal-700 text-white">
             All ({{ $stats['total'] }})
         </button>
         <button onclick="filterLeads(this,'pending')"
@@ -385,26 +385,26 @@
 
             <input type="text" placeholder="Add a note..." value="{{ $lead->notes ?? '' }}"
                    onblur="saveNote(this, {{ $lead->id }})"
-                   class="mt-3 w-full text-sm bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 focus:border-blue-300 focus:bg-white transition">
+                   class="mt-3 w-full text-sm bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 focus:border-teal-300 focus:bg-white transition">
 
             <div class="grid grid-cols-4 gap-2 mt-3">
                 <button onclick="setStatus(this,'won')"     class="action-btn {{ $wonBtn }}  py-2 rounded-xl text-xs font-bold">Won</button>
                 <button onclick="setStatus(this,'pending')" class="action-btn {{ $pendBtn }} py-2 rounded-xl text-xs font-bold">Pending</button>
                 <button onclick="setStatus(this,'lost')"    class="action-btn {{ $lostBtn }} py-2 rounded-xl text-xs font-bold">Lost</button>
-                <a href="tel:{{ $lead->phone }}" class="py-2 rounded-xl text-xs font-bold bg-blue-50 text-blue-600 hover:bg-blue-100 transition text-center">
+                <a href="tel:{{ $lead->phone }}" class="py-2 rounded-xl text-xs font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 transition text-center">
                     <i class="fa-solid fa-phone mr-1"></i>Call
                 </a>
             </div>
         </div>
         @empty
         <div class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center">
-            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-inbox text-blue-400 text-2xl"></i>
+            <div class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-inbox text-teal-400 text-2xl"></i>
             </div>
             <p class="font-bold text-slate-700 text-base mb-1">No leads yet</p>
             <p class="text-sm text-slate-400 mb-5 max-w-xs mx-auto">When clients call, message, or fill your booking form — leads appear here.</p>
             <a href="{{ route('frontend.service.show', auth()->user()->slug ?? auth()->user()->id) }}" target="_blank"
-               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
+               class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition">
                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> View Your Public Page
             </a>
         </div>
@@ -415,7 +415,7 @@
     {{-- ── LEAD CONVERSATIONS ── --}}
     <div class="mb-8" id="chatSection">
         <h3 class="font-bold text-base mb-1 flex items-center gap-2">
-            <i class="fa-solid fa-comments text-blue-600"></i> Lead Conversations
+            <i class="fa-solid fa-comments text-teal-700"></i> Lead Conversations
             @if($unpaidCount > 0)
             <span class="bg-amber-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{ $unpaidCount }} unpaid</span>
             @endif
@@ -423,7 +423,7 @@
         <p class="text-xs text-slate-400 mb-4">Messages from leads via Twilio / WhatsApp</p>
 
         <div class="flex gap-2 mb-3 overflow-x-auto scroll-hide pb-1">
-            <button onclick="filterChat(this,'recent')" class="chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-blue-600 text-white">Recent</button>
+            <button onclick="filterChat(this,'recent')" class="chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-teal-700 text-white">Recent</button>
             <button onclick="filterChat(this,'week')"   class="chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">This Week</button>
             <button onclick="filterChat(this,'paid')"   class="chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
                 <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Paid
@@ -500,7 +500,7 @@
                             <i class="fab fa-whatsapp text-sm"></i> Reply on WhatsApp
                         </a>
                         <a href="tel:{{ $lead->phone }}"
-                           class="flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-bold px-4 py-2.5 rounded-xl text-xs transition">
+                           class="flex items-center justify-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold px-4 py-2.5 rounded-xl text-xs transition">
                             <i class="fa-solid fa-phone text-xs"></i> Call
                         </a>
                         @else
@@ -569,8 +569,8 @@
                     @endif
                     @foreach($chat['msgs'] as $msg)
                     <div class="flex {{ $msg['side']==='you' ? 'justify-end' : 'justify-start' }}">
-                        <div class="{{ $msg['side']==='you' ? 'bg-blue-600 rounded-2xl rounded-tr-sm' : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm' }} px-4 py-2.5 max-w-[80%]">
-                            <p class="text-xs {{ $msg['side']==='you' ? 'text-blue-200' : 'text-slate-500' }} font-semibold mb-1">{{ $msg['side']==='you' ? 'You' : 'Lead' }} · {{ $msg['time'] }}</p>
+                        <div class="{{ $msg['side']==='you' ? 'bg-teal-700 rounded-2xl rounded-tr-sm' : 'bg-white border border-slate-200 rounded-2xl rounded-tl-sm' }} px-4 py-2.5 max-w-[80%]">
+                            <p class="text-xs {{ $msg['side']==='you' ? 'text-teal-200' : 'text-slate-500' }} font-semibold mb-1">{{ $msg['side']==='you' ? 'You' : 'Lead' }} · {{ $msg['time'] }}</p>
                             <p class="text-sm {{ $msg['side']==='you' ? 'text-white' : 'text-slate-800' }}">{{ $msg['text'] }}</p>
                         </div>
                     </div>
@@ -578,9 +578,9 @@
                     @if($chat['paid'])
                     <div class="flex gap-2 pt-1">
                         <input type="text" placeholder="Reply via WhatsApp / SMS..."
-                               class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                               class="flex-1 text-sm bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:border-teal-400 focus:ring-2 focus:ring-teal-50 transition">
                         <button onclick="showToast('Message sent via Twilio!')"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
+                                class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shrink-0">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -612,14 +612,14 @@
                     <i class="fa-solid fa-phone text-slate-400 mr-1"></i> Call Number
                 </label>
                 <input type="tel" name="phone" value="{{ $user->phone }}"
-                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-teal-400 focus:ring-2 focus:ring-teal-50 transition">
             </div>
             <div>
                 <label class="text-xs text-slate-500 font-semibold mb-2 block">
                     <i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> WhatsApp Number
                 </label>
                 <input type="tel" name="whatsapp" value="{{ $user->whatsapp }}"
-                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition">
+                       class="w-full px-4 py-3.5 border border-slate-200 rounded-2xl text-sm font-semibold focus:border-teal-400 focus:ring-2 focus:ring-teal-50 transition">
             </div>
         </div>
         <button type="submit" class="mt-5 w-full bg-slate-900 hover:bg-slate-800 text-white py-4 rounded-2xl font-bold transition">
@@ -677,7 +677,7 @@ function filterLeads(btn, status) {
     document.querySelectorAll('.filter-btn').forEach(b => {
         b.className = 'filter-btn px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
     });
-    btn.className = 'filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-blue-600 text-white';
+    btn.className = 'filter-btn active px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap bg-teal-700 text-white';
     document.querySelectorAll('#leadsList .lead-card').forEach(card => {
         card.style.display = (status === 'all' || card.dataset.status === status) ? 'block' : 'none';
     });
@@ -747,7 +747,7 @@ function filterChat(btn, filter) {
     document.querySelectorAll('.chat-tab').forEach(b => {
         b.className = 'chat-tab px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
     });
-    btn.className = 'chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-blue-600 text-white';
+    btn.className = 'chat-tab active-chat-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-teal-700 text-white';
     document.getElementById('chatPayNote').classList.toggle('hidden', filter !== 'unpaid');
     document.querySelectorAll('#chatList .chat-item').forEach(item => {
         const filters = (item.dataset.chatFilter || '').split(' ');

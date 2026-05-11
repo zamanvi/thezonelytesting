@@ -38,7 +38,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email address</label>
                         <input type="email" name="email" value="{{ old('email') }}" required autofocus
-                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-slate-50"
+                            class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition bg-slate-50"
                             placeholder="you@example.com">
                     </div>
 
@@ -46,12 +46,12 @@
                         <div class="flex justify-between items-center mb-1.5">
                             <label class="text-sm font-semibold text-slate-700">Password</label>
                             @if(Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-xs text-blue-600 hover:underline">Forgot password?</a>
+                            <a href="{{ route('password.request') }}" class="text-xs text-teal-700 hover:underline">Forgot password?</a>
                             @endif
                         </div>
                         <div class="relative">
                             <input type="password" name="password" id="pwField" required
-                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-slate-50 pr-12"
+                                class="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition bg-slate-50 pr-12"
                                 placeholder="••••••••">
                             <button type="button" onclick="togglePw()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                                 <i class="fa-solid fa-eye text-sm" id="pwEyeIcon"></i>
@@ -61,20 +61,20 @@
 
                     <div class="flex items-center gap-2">
                         <input type="checkbox" name="remember" id="remember"
-                            class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                            class="w-4 h-4 rounded border-slate-300 text-teal-700 focus:ring-teal-600">
                         <label for="remember" class="text-sm text-slate-600">Remember me</label>
                     </div>
                 </div>
 
                 <button type="submit"
-                    class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-sm transition">
+                    class="mt-6 w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3.5 rounded-2xl text-sm transition">
                     Sign In
                 </button>
             </form>
 
             <p class="text-center text-sm text-slate-500 mt-6">
                 Don't have an account?
-                <a href="{{ route('user.register1') }}" class="text-blue-600 font-bold hover:underline">Get started free</a>
+                <a href="{{ route('user.register1') }}" class="text-teal-700 font-bold hover:underline">Get started free</a>
             </p>
 
         </div>
@@ -82,7 +82,7 @@
         {{-- Trust badges --}}
         <div class="flex items-center justify-center gap-6 mt-6 text-xs text-slate-400">
             <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Secure login</span>
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-blue-400"></i> SSL encrypted</span>
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-teal-400"></i> SSL encrypted</span>
         </div>
 
     </div>

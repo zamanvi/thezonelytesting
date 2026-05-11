@@ -6,7 +6,7 @@
 <div class="pb-10 max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('user.contacts.index') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -26,7 +26,7 @@
         <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
             <label class="block text-sm font-bold text-slate-700 mb-2">Type <span class="text-red-500">*</span></label>
             <select name="type" required
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition bg-white">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition bg-white">
                 <option value="">Select type</option>
                 <option value="email"    {{ old('type')=='email'    ? 'selected' : '' }}>Email</option>
                 <option value="phone"    {{ old('type')=='phone'    ? 'selected' : '' }}>Phone</option>
@@ -38,11 +38,11 @@
             <label class="block text-sm font-bold text-slate-700 mb-2">Value <span class="text-red-500">*</span></label>
             <input type="text" name="value" value="{{ old('value') }}" required
                 placeholder="e.g. +1 212 555 0100"
-                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50 transition">
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition">
         </div>
         <div class="flex justify-end">
             <button type="submit"
-                class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition">
+                class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save
             </button>
         </div>

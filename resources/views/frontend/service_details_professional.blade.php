@@ -70,9 +70,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
     .pro-page { font-family: 'Playfair Display', Georgia, serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
-    .hero-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #3b82f6 100%); }
+    .hero-bg { background: linear-gradient(135deg, #134E4A 0%, #0F766E 60%, #0D9488 100%); }
     .sh { position: relative; display: inline-block; }
-    .sh::after { content: ''; position: absolute; width: 48px; height: 3px; background: #2563eb; bottom: -8px; left: 0; border-radius: 9999px; }
+    .sh::after { content: ''; position: absolute; width: 48px; height: 3px; background: #5EEAD4; bottom: -8px; left: 0; border-radius: 9999px; }
     .sh-center::after { left: 50%; transform: translateX(-50%); }
     .map-container { border-radius: 16px; overflow: hidden; }
     .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
@@ -85,10 +85,10 @@
     .lift:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.13); }
     .pro-glass { background: rgba(255,255,255,0.12); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.22); }
     .badge-verified { background: linear-gradient(135deg, #059669, #10b981); }
-    .service-icon { width: 52px; height: 52px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-    .bg-icon { width: 44px; height: 44px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .testimonial-card { background: linear-gradient(135deg, #f8faff, #ffffff); border: 1px solid #e3ecff; }
-    .price-num { font-size: 2rem; font-weight: 800; color: #1e40af; line-height: 1; }
+    .service-icon { width: 52px; height: 52px; background: linear-gradient(135deg, #F0FDFA, #CCFBF1); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+    .bg-icon { width: 44px; height: 44px; background: #F0FDFA; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .testimonial-card { background: linear-gradient(135deg, #F0FDFA, #ffffff); border: 1px solid #CCFBF1; }
+    .price-num { font-size: 2rem; font-weight: 800; color: #0F766E; line-height: 1; }
     @media (max-width: 767px) { .pro-page { padding-bottom: 80px; } }
     .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
@@ -115,17 +115,17 @@
                             <img src="{{ $user->profile_photo }}" alt="{{ $user->name }}"
                                  class="w-48 h-60 object-cover rounded-2xl border-4 border-white/30 shadow-xl mx-auto"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-48 h-60 bg-blue-500/40 border-4 border-white/30 rounded-2xl mx-auto items-center justify-center text-white font-black text-4xl shadow-xl">
+                            <div style="display:none;" class="w-48 h-60 bg-teal-600/40 border-4 border-white/30 rounded-2xl mx-auto items-center justify-center text-white font-black text-4xl shadow-xl">
                                 {{ strtoupper(substr($user->name, 0, 2)) }}
                             </div>
                         </div>
                         <div class="mt-4">
                             <h3 class="text-xl font-bold">{{ $user->name }}</h3>
-                            <p class="text-blue-200 text-base mt-0.5">
+                            <p class="text-teal-200 text-base mt-0.5">
                                 {{ $user->title ?? $user->designation ?? $user->category?->title }}
                             </p>
                             @if($cityName)
-                            <p class="text-blue-300 text-sm mt-0.5">
+                            <p class="text-teal-300 text-sm mt-0.5">
                                 <i class="fas fa-map-marker-alt text-xs mr-1"></i>{{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}
                             </p>
                             @endif
@@ -136,19 +136,19 @@
                             @if($yearsExp)
                             <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
                                 <div class="text-lg font-bold text-yellow-300">{{ $yearsExp }}+</div>
-                                <div class="text-xs text-blue-200 leading-tight">Yrs Exp.</div>
+                                <div class="text-xs text-teal-200 leading-tight">Yrs Exp.</div>
                             </div>
                             @endif
                             @if($reviewCount)
                             <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
                                 <div class="text-lg font-bold text-yellow-300">{{ $reviewCount }}</div>
-                                <div class="text-xs text-blue-200 leading-tight">Reviews</div>
+                                <div class="text-xs text-teal-200 leading-tight">Reviews</div>
                             </div>
                             @endif
                             @if($avgRating)
                             <div class="bg-white/10 rounded-xl py-2 px-2 text-center">
                                 <div class="text-lg font-bold text-yellow-300">{{ $avgRating }}★</div>
-                                <div class="text-xs text-blue-200 leading-tight">Rating</div>
+                                <div class="text-xs text-teal-200 leading-tight">Rating</div>
                             </div>
                             @endif
                         </div>
@@ -170,14 +170,14 @@
                         @if($cityName) in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </h1>
                     @if($user->bio || $user->about)
-                    <p class="mt-6 text-blue-100 text-base md:text-lg leading-relaxed">
+                    <p class="mt-6 text-teal-100 text-base md:text-lg leading-relaxed">
                         {{ Str::limit($user->bio ?? $user->about, 160) }}
                     </p>
                     @endif
                     <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start flex-wrap">
                         @if($callNumber)
                         <a href="tel:{{ $callNumber }}"
-                           class="flex items-center justify-center gap-3 bg-white text-blue-700 hover:bg-yellow-300 px-8 py-4 rounded-full font-bold text-base shadow-xl transition">
+                           class="flex items-center justify-center gap-3 bg-white text-teal-800 hover:bg-yellow-300 px-8 py-4 rounded-full font-bold text-base shadow-xl transition">
                             <i class="fas fa-phone"></i>
                             @if($trackingNumber) Call Now @else {{ $callNumber }} @endif
                         </a>
@@ -213,7 +213,7 @@
     @php
         $trustItems = collect();
         foreach($user->memberships as $m) $trustItems->push(['icon'=>'fas fa-certificate text-yellow-400', 'text'=>$m->name]);
-        foreach($user->educations as $edu) $trustItems->push(['icon'=>'fas fa-graduation-cap text-blue-400', 'text'=>$edu->degree.($edu->institution ? ' — '.$edu->institution : '')]);
+        foreach($user->educations as $edu) $trustItems->push(['icon'=>'fas fa-graduation-cap text-teal-400', 'text'=>$edu->degree.($edu->institution ? ' — '.$edu->institution : '')]);
         if($trustItems->isEmpty()) $trustItems->push(['icon'=>'fas fa-shield-alt text-emerald-400','text'=>'Verified on Zonely']);
     @endphp
     <div class="bg-slate-800 overflow-hidden py-3.5">
@@ -245,10 +245,10 @@
             {{-- LEFT: Bio --}}
             @if($hasBio)
             <div class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden h-full">
-                <div class="border-l-4 border-blue-500 p-6 h-full">
+                <div class="border-l-4 border-teal-600 p-6 h-full">
                     <div class="flex items-center gap-2 mb-3">
-                        <i class="fas fa-quote-left text-blue-300 text-lg"></i>
-                        <span class="text-xs font-bold text-blue-500 uppercase tracking-wider">About</span>
+                        <i class="fas fa-quote-left text-teal-300 text-lg"></i>
+                        <span class="text-xs font-bold text-teal-600 uppercase tracking-wider">About</span>
                     </div>
                     @php $bioText = $user->about ?? $user->bio; $bioLong = strlen($bioText) > 400; @endphp
                     <p class="text-base text-slate-700 leading-relaxed text-justify" id="bioText">
@@ -260,7 +260,7 @@
                     </p>
                     @if($bioLong)
                     <button onclick="document.getElementById('bioShort').classList.toggle('hidden');document.getElementById('bioFull').classList.toggle('hidden');this.textContent=this.textContent.trim()==='Read more'?'Read less':'Read more';"
-                        class="mt-3 text-xs font-bold text-blue-600 hover:underline">Read more</button>
+                        class="mt-3 text-xs font-bold text-teal-700 hover:underline">Read more</button>
                     @endif
                 </div>
             </div>
@@ -287,13 +287,13 @@
                         $hasPrice = $svc->price && !in_array($svc->pricing_type, ['free','contact']);
                         $svcIcon  = $svcIcons[$svcIdx % count($svcIcons)]; $svcIdx++;
                     @endphp
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md hover:border-blue-100 transition-all duration-200">
-                        <div class="h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md hover:border-teal-100 transition-all duration-200">
+                        <div class="h-1 bg-gradient-to-r from-teal-600 to-indigo-500"></div>
                         <button onclick="toggleAccordion(this)"
-                            class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-blue-50/30 transition-colors">
+                            class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-teal-50/30 transition-colors">
                             <div class="flex items-center gap-6 min-w-0">
-                                <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
-                                    <i class="fas {{ $svcIcon }} text-blue-600 text-base"></i>
+                                <div class="w-11 h-11 bg-teal-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-teal-100 transition-colors">
+                                    <i class="fas {{ $svcIcon }} text-teal-700 text-base"></i>
                                 </div>
                                 <div class="min-w-0">
                                     <p class="font-bold text-base text-slate-900 leading-snug truncate">{{ $svc->title }}</p>
@@ -307,15 +307,15 @@
                             <div class="flex items-center gap-3 flex-shrink-0 ml-3">
                                 <div class="text-right">
                                     @if($hasPrice)
-                                        <div class="text-2xl font-black text-blue-700 leading-none">${{ number_format($svc->price, 0) }}</div>
-                                        <div class="text-xs text-blue-400 font-semibold mt-0.5">{{ $ptLabel }}</div>
+                                        <div class="text-2xl font-black text-teal-800 leading-none">${{ number_format($svc->price, 0) }}</div>
+                                        <div class="text-xs text-teal-400 font-semibold mt-0.5">{{ $ptLabel }}</div>
                                     @elseif($svc->pricing_type === 'free')
                                         <div class="text-xl font-black text-emerald-600">Free</div>
                                     @else
                                         <div class="text-sm font-bold text-slate-400">Contact us</div>
                                     @endif
                                 </div>
-                                <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center transition-colors flex-shrink-0">
+                                <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-teal-100 flex items-center justify-center transition-colors flex-shrink-0">
                                     <i class="fas fa-chevron-down text-slate-400 text-xs accordion-icon transition-transform duration-300"></i>
                                 </div>
                             </div>
@@ -338,12 +338,12 @@
                             @endif
                             <div class="px-5 pb-4 pt-3 flex items-center gap-3 border-t border-slate-100 bg-slate-50/50">
                                 <a href="#contact"
-                                   class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                                   class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
                                     <i class="fas fa-paper-plane text-xs"></i> Get a Quote
                                 </a>
                                 @if($callNumber)
                                 <a href="tel:{{ $callNumber }}"
-                                   class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-sm transition">
+                                   class="inline-flex items-center gap-2 text-teal-700 hover:text-teal-800 font-semibold text-sm transition">
                                     <i class="fas fa-phone text-xs"></i> Call Now
                                 </a>
                                 @endif
@@ -360,8 +360,8 @@
                 </div>
                 <div class="flex flex-wrap gap-3">
                     @foreach($tags as $tag)
-                    <span class="flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 font-semibold px-5 py-3 rounded-2xl text-sm">
-                        <i class="fas fa-circle-check text-blue-400 text-xs"></i> {{ ucfirst($tag) }}
+                    <span class="flex items-center gap-2 bg-teal-50 border border-teal-100 text-teal-800 font-semibold px-5 py-3 rounded-2xl text-sm">
+                        <i class="fas fa-circle-check text-teal-400 text-xs"></i> {{ ucfirst($tag) }}
                     </span>
                     @endforeach
                 </div>
@@ -388,7 +388,7 @@
                     </div>
                     <p class="text-base text-slate-600 leading-relaxed">"{{ Str::limit($review->review ?? '', 120) }}"</p>
                     <div class="mt-5 flex items-center gap-3">
-                        <div class="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm flex-shrink-0">
+                        <div class="w-9 h-9 bg-teal-100 rounded-full flex items-center justify-center text-teal-800 font-bold text-sm flex-shrink-0">
                             {{ strtoupper(substr($review->reviewer?->name ?? 'C', 0, 1)) }}
                         </div>
                         <div>
@@ -436,7 +436,7 @@
             {{-- RIGHT: Memberships --}}
             @if($hasMemberships)
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 flex items-center gap-3">
+                <div class="bg-gradient-to-r from-teal-700 to-indigo-600 px-6 py-4 flex items-center gap-3">
                     <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-id-badge text-white text-base"></i>
                     </div>
@@ -446,13 +446,13 @@
                     @foreach($user->memberships as $m)
                     <div class="flex gap-4 items-start">
                         <div class="flex flex-col items-center pt-1.5">
-                            <div class="w-3 h-3 {{ $loop->first ? 'bg-blue-600 ring-4 ring-blue-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
+                            <div class="w-3 h-3 {{ $loop->first ? 'bg-teal-700 ring-4 ring-teal-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
                             @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[36px]"></div>@endif
                         </div>
                         <div class="pb-4 min-w-0">
                             <p class="font-semibold text-base text-slate-800">{{ $m->name }}</p>
                             @if($m->start || $m->end)
-                            <p class="text-sm text-blue-600 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
+                            <p class="text-sm text-teal-700 font-medium mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
                             @endif
                             @if($m->address)<p class="text-sm text-slate-500 mt-1">{{ $m->address }}</p>@endif
                         </div>
@@ -473,10 +473,10 @@
             </div>
             <div class="space-y-3">
                 @foreach($user->faqs as $faq)
-                <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:border-blue-100 hover:shadow-md transition-all duration-200 group">
-                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-blue-50/20 transition">
+                <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:border-teal-100 hover:shadow-md transition-all duration-200 group">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-teal-50/20 transition">
                         <span class="font-semibold text-base pr-4 text-slate-800">{{ $faq->question }}</span>
-                        <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-teal-100 flex items-center justify-center flex-shrink-0 transition-colors">
                             <i class="fas fa-chevron-down text-slate-400 text-xs faq-icon transition-transform duration-300"></i>
                         </div>
                     </button>
@@ -492,17 +492,17 @@
     </div>
 
     {{-- ── CONTACT / BOOKING ────────────────────────────────────────── --}}
-    <div id="contact" class="bg-gradient-to-br from-blue-700 via-blue-700 to-indigo-700 text-white py-12 md:py-16">
+    <div id="contact" class="bg-gradient-to-br from-teal-800 via-teal-800 to-indigo-700 text-white py-12 md:py-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
 
             {{-- 2-col header: text left, button right --}}
             <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
                 <div class="text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-100 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                    <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-teal-100 text-sm font-semibold px-4 py-2 rounded-full mb-4">
                         <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
                     </div>
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-snug">Book a Free Consultation with {{ $user->business_name ?? $user->name }}</h2>
-                    <p class="text-blue-200 mt-2 text-base">We will respond within 24 hours</p>
+                    <p class="text-teal-200 mt-2 text-base">We will respond within 24 hours</p>
                 </div>
                 <div class="flex-shrink-0 flex flex-col items-center gap-4">
                     @if(session('inquiry_success'))
@@ -511,7 +511,7 @@
                     </div>
                     @endif
                     <button id="bookingToggleBtn" onclick="toggleBooking()"
-                            class="flex items-center gap-3 bg-white text-blue-700 hover:bg-yellow-300 px-10 py-4 rounded-2xl font-bold text-base transition shadow-xl whitespace-nowrap">
+                            class="flex items-center gap-3 bg-white text-teal-800 hover:bg-yellow-300 px-10 py-4 rounded-2xl font-bold text-base transition shadow-xl whitespace-nowrap">
                         <i class="fas fa-calendar-plus" id="bookingIcon"></i>
                         <span id="bookingBtnText">Open Booking Form</span>
                     </button>
@@ -530,18 +530,18 @@
                             <div>
                                 <label class="block text-base mb-2 font-medium">Full Name *</label>
                                 <input type="text" name="name" required value="{{ old('name') }}" placeholder="John Smith"
-                                       class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
+                                       class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-teal-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
                             </div>
                             <div>
                                 <label class="block text-base mb-2 font-medium">Phone Number *</label>
                                 <input type="tel" name="phone" required value="{{ old('phone') }}" placeholder="(917) 000-0000"
-                                       class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
+                                       class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-teal-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
                             </div>
                         </div>
                         <div class="mt-5">
                             <label class="block text-sm mb-2 font-medium">Email Address *</label>
                             <input type="email" name="email" required value="{{ old('email') }}" placeholder="john@email.com"
-                                   class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
+                                   class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-teal-200 focus:outline-none focus:border-white focus:bg-white/25 transition">
                         </div>
                         @if($activeServices->count())
                         <div class="mt-5">
@@ -560,10 +560,10 @@
                         <div class="mt-5">
                             <label class="block text-sm mb-2 font-medium">Message / Details</label>
                             <textarea name="message" rows="4" placeholder="Tell us about your needs..."
-                                      class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-blue-200 focus:outline-none focus:border-white focus:bg-white/25 transition resize-none">{{ old('message') }}</textarea>
+                                      class="w-full px-5 py-3.5 bg-white/20 border border-white/30 rounded-2xl text-white placeholder:text-teal-200 focus:outline-none focus:border-white focus:bg-white/25 transition resize-none">{{ old('message') }}</textarea>
                         </div>
                         <button type="submit"
-                                class="w-full mt-6 bg-white text-blue-700 hover:bg-yellow-300 py-4 rounded-3xl font-semibold text-xl flex items-center justify-center gap-2 transition shadow-xl">
+                                class="w-full mt-6 bg-white text-teal-800 hover:bg-yellow-300 py-4 rounded-3xl font-semibold text-xl flex items-center justify-center gap-2 transition shadow-xl">
                             <i class="fas fa-paper-plane"></i> Send Booking Request
                         </button>
                     </form>
@@ -579,13 +579,13 @@
         <div class="max-w-5xl mx-auto px-6">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-700">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
+                    <div class="w-8 h-8 bg-teal-700 rounded-xl flex items-center justify-center text-white font-bold text-sm">Z</div>
                     <span class="text-white font-bold text-lg">Zonely</span>
                 </div>
                 <div class="flex items-center gap-5 text-sm">
                     @if($callNumber)
                     <a href="tel:{{ $callNumber }}" class="flex items-center gap-1.5 hover:text-white transition">
-                        <i class="fas fa-phone text-blue-400 text-xs"></i> {{ $callNumber }}
+                        <i class="fas fa-phone text-teal-400 text-xs"></i> {{ $callNumber }}
                     </a>
                     @endif
                     @if($waNumber)
@@ -603,7 +603,7 @@
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-2xl px-4 py-3 flex gap-3">
     @if($callNumber)
     <a href="tel:{{ $callNumber }}"
-       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold text-base transition">
+       class="flex-1 flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white py-3 rounded-2xl font-semibold text-base transition">
         <i class="fas fa-phone"></i> Call Now
     </a>
     @endif
@@ -615,7 +615,7 @@
     @endif
     @if(!$callNumber && !$waNumber)
     <a href="#contact"
-       class="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-2xl font-semibold text-base">
+       class="flex-1 flex items-center justify-center gap-2 bg-teal-700 text-white py-3 rounded-2xl font-semibold text-base">
         <i class="fas fa-envelope"></i> Contact
     </a>
     @endif

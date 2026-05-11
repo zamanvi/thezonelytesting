@@ -62,7 +62,7 @@
                     <div class="flex items-center gap-3 shrink-0">
                         <p class="font-bold text-slate-900">${{ number_format($lead->fee ?? 0, 2) }}</p>
                         <button data-lead-id="{{ $lead->id }}" onclick="payLead(this.dataset.leadId, this)"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+                            class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
                             Pay Now
                         </button>
                     </div>
@@ -85,7 +85,7 @@
                     </div>
                     <div class="flex items-center gap-3 shrink-0">
                         <p class="font-bold text-slate-900">${{ $demo['fee'] }}</p>
-                        <button onclick="payLead(0, this)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pay Now</button>
+                        <button onclick="payLead(0, this)" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pay Now</button>
                     </div>
                 </div>
                 @endforeach

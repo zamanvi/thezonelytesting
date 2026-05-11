@@ -12,7 +12,7 @@
                 <h1 class="text-xl font-bold text-slate-900">Notifications</h1>
             </div>
             @if(isset($notifications) && $notifications->count())
-            <button onclick="markAllRead()" class="text-xs font-bold text-blue-600 hover:underline">
+            <button onclick="markAllRead()" class="text-xs font-bold text-teal-700 hover:underline">
                 Mark all as read
             </button>
             @endif
@@ -20,7 +20,7 @@
 
         {{-- Filter Tabs --}}
         <div class="flex gap-2 mb-5">
-            <button onclick="filterNotifs(this,'all')" class="notif-tab active-ntab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">All</button>
+            <button onclick="filterNotifs(this,'all')" class="notif-tab active-ntab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white">All</button>
             <button onclick="filterNotifs(this,'booking')" class="notif-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Bookings</button>
             <button onclick="filterNotifs(this,'review')" class="notif-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Reviews</button>
             <button onclick="filterNotifs(this,'system')" class="notif-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition">Updates</button>
@@ -28,12 +28,12 @@
 
         <div class="space-y-2" id="notifList">
             @forelse($notifications ?? [] as $notif)
-            <div class="notif-item bg-white rounded-2xl border {{ $notif->read_at ? 'border-slate-100' : 'border-blue-100 bg-blue-50/30' }} shadow-sm p-4 flex items-start gap-4"
+            <div class="notif-item bg-white rounded-2xl border {{ $notif->read_at ? 'border-slate-100' : 'border-teal-100 bg-teal-50/30' }} shadow-sm p-4 flex items-start gap-4"
                  data-type="{{ $notif->type ?? 'system' }}">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0
-                    {{ $notif->type === 'booking' ? 'bg-blue-100' : ($notif->type === 'review' ? 'bg-amber-100' : 'bg-slate-100') }}">
+                    {{ $notif->type === 'booking' ? 'bg-teal-100' : ($notif->type === 'review' ? 'bg-amber-100' : 'bg-slate-100') }}">
                     <i class="text-sm
-                        {{ $notif->type === 'booking' ? 'fa-solid fa-calendar text-blue-600' : ($notif->type === 'review' ? 'fa-solid fa-star text-amber-500' : 'fa-solid fa-bell text-slate-500') }}"></i>
+                        {{ $notif->type === 'booking' ? 'fa-solid fa-calendar text-teal-700' : ($notif->type === 'review' ? 'fa-solid fa-star text-amber-500' : 'fa-solid fa-bell text-slate-500') }}"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-bold text-slate-900">{{ $notif->title ?? 'Notification' }}</p>
@@ -41,7 +41,7 @@
                     <p class="text-[10px] text-slate-400 mt-1.5">{{ $notif->created_at?->diffForHumans() }}</p>
                 </div>
                 @if(!$notif->read_at)
-                <div class="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5"></div>
+                <div class="w-2 h-2 bg-teal-700 rounded-full shrink-0 mt-1.5"></div>
                 @endif
             </div>
             @empty
@@ -52,11 +52,11 @@
                 ['type'=>'review','title'=>'Leave a Review','msg'=>'Your session with AllPro Plumbing is complete. Share your experience to help others.','time'=>'3 days ago','unread'=>false],
                 ['type'=>'system','title'=>'Welcome to Zonely!','msg'=>'Your account is set up and ready. Find and book top professionals near you.','time'=>'1 week ago','unread'=>false],
             ] as $n)
-            <div class="notif-item bg-white rounded-2xl border {{ $n['unread'] ? 'border-blue-100' : 'border-slate-100' }} shadow-sm p-4 flex items-start gap-4"
+            <div class="notif-item bg-white rounded-2xl border {{ $n['unread'] ? 'border-teal-100' : 'border-slate-100' }} shadow-sm p-4 flex items-start gap-4"
                  data-type="{{ $n['type'] }}">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0
-                    {{ $n['type']==='booking' ? 'bg-blue-100' : ($n['type']==='review' ? 'bg-amber-100' : 'bg-slate-100') }}">
-                    <i class="text-sm {{ $n['type']==='booking' ? 'fa-solid fa-calendar text-blue-600' : ($n['type']==='review' ? 'fa-solid fa-star text-amber-500' : 'fa-solid fa-bell text-slate-500') }}"></i>
+                    {{ $n['type']==='booking' ? 'bg-teal-100' : ($n['type']==='review' ? 'bg-amber-100' : 'bg-slate-100') }}">
+                    <i class="text-sm {{ $n['type']==='booking' ? 'fa-solid fa-calendar text-teal-700' : ($n['type']==='review' ? 'fa-solid fa-star text-amber-500' : 'fa-solid fa-bell text-slate-500') }}"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-bold text-slate-900">{{ $n['title'] }}</p>
@@ -64,7 +64,7 @@
                     <p class="text-[10px] text-slate-400 mt-1.5">{{ $n['time'] }}</p>
                 </div>
                 @if($n['unread'])
-                <div class="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5"></div>
+                <div class="w-2 h-2 bg-teal-700 rounded-full shrink-0 mt-1.5"></div>
                 @endif
             </div>
             @endforeach
@@ -79,13 +79,13 @@ function filterNotifs(btn, type) {
     document.querySelectorAll('.notif-tab').forEach(b => {
         b.className = 'notif-tab shrink-0 px-4 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition';
     });
-    btn.className = 'notif-tab active-ntab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white';
+    btn.className = 'notif-tab active-ntab shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-teal-700 text-white';
     document.querySelectorAll('.notif-item').forEach(el => {
         el.style.display = (type === 'all' || el.dataset.type === type) ? '' : 'none';
     });
 }
 function markAllRead() {
-    document.querySelectorAll('.w-2.h-2.bg-blue-600').forEach(dot => dot.remove());
+    document.querySelectorAll('.w-2.h-2.bg-teal-700').forEach(dot => dot.remove());
     fetch('/buyer/notifications/read-all', {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')?.content || '' }

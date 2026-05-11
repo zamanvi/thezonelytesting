@@ -13,10 +13,10 @@
                 </div>
                 <span class="text-xs font-bold text-green-600 hidden sm:inline">Account Created</span>
             </div>
-            <div class="w-8 h-px bg-blue-300 mx-1"></div>
+            <div class="w-8 h-px bg-teal-300 mx-1"></div>
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black">2</div>
-                <span class="text-xs font-bold text-blue-600 hidden sm:inline">Business Type</span>
+                <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center text-white text-xs font-black">2</div>
+                <span class="text-xs font-bold text-teal-700 hidden sm:inline">Business Type</span>
             </div>
             <div class="w-8 h-px bg-slate-200 mx-1"></div>
             <div class="flex items-center gap-2">
@@ -45,15 +45,15 @@
             <div class="category-card border-2 border-transparent bg-white rounded-3xl p-6 cursor-pointer shadow-sm hover:shadow-md transition-all"
                  data-id="{{ $cat->id }}"
                  onclick="selectCategory(this)">
-                <div class="cat-icon w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-4">
-                    <i class="fa-solid fa-briefcase text-blue-600 text-lg"></i>
+                <div class="cat-icon w-12 h-12 bg-teal-50 rounded-2xl flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-briefcase text-teal-700 text-lg"></i>
                 </div>
                 <h4 class="font-bold text-slate-800 text-base leading-snug mb-3">{{ $cat->title }}</h4>
                 @if($cat->children->count())
                     <ul class="space-y-1">
                         @foreach($cat->children as $child)
                             <li class="text-xs text-slate-500 flex items-center gap-1.5">
-                                <span class="w-1 h-1 rounded-full bg-blue-400 shrink-0"></span>
+                                <span class="w-1 h-1 rounded-full bg-teal-400 shrink-0"></span>
                                 {{ $child->title }}
                             </li>
                         @endforeach
@@ -83,7 +83,7 @@
         {{-- Continue button --}}
         <div class="mt-10 flex flex-col items-center gap-3">
             <button onclick="proceed()"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-2xl text-base font-bold flex items-center gap-2 shadow-lg transition">
+                    class="bg-teal-700 hover:bg-teal-800 text-white px-12 py-4 rounded-2xl text-base font-bold flex items-center gap-2 shadow-lg transition">
                 Continue to Profile Setup
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
@@ -92,7 +92,7 @@
 
         {{-- Skip --}}
         <p class="text-center text-xs text-slate-400 mt-4">
-            <a href="{{ route('profile.edit') }}" class="hover:text-blue-600 underline">Skip for now → Set up later in profile</a>
+            <a href="{{ route('profile.edit') }}" class="hover:text-teal-700 underline">Skip for now → Set up later in profile</a>
         </p>
 
     </div>
@@ -100,9 +100,9 @@
 
 <style>
     .category-card { transition: all 0.2s ease; }
-    .category-card.selected { border-color: #2563eb; background-color: #eff6ff; }
-    .category-card.selected .cat-icon { background-color: #dbeafe; }
-    .category-card.selected .cat-icon i { color: #2563eb; }
+    .category-card.selected { border-color: #0F766E; background-color: #F0FDFA; }
+    .category-card.selected .cat-icon { background-color: #CCFBF1; }
+    .category-card.selected .cat-icon i { color: #0F766E; }
 </style>
 @endsection
 

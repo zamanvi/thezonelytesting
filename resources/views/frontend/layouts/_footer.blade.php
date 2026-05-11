@@ -6,19 +6,19 @@
         {{-- Brand --}}
         <div class="col-span-2 lg:col-span-1">
             <a href="{{ route('frontend.home') }}"
-               class="inline-block text-2xl font-black mb-4 hover:text-blue-400 transition tracking-tight" style="min-height:unset;min-width:unset;">
-                ZONELY<span class="text-blue-500">.</span>
+               class="inline-block text-2xl font-black mb-4 hover:text-teal-400 transition tracking-tight" style="min-height:unset;min-width:unset;">
+                ZONELY<span class="text-teal-600">.</span>
             </a>
             <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-xs">
                 Find verified local experts near you. Plumbers, lawyers, tax professionals, and more — all in one place.
             </p>
             <div class="flex gap-2.5">
                 <a href="https://www.facebook.com/profile.php?id=61581047693543" target="_blank" rel="noopener"
-                   class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-blue-600 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
+                   class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-teal-700 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
                     <i class="fab fa-facebook text-sm"></i>
                 </a>
                 <a href="https://www.linkedin.com/company/102732925/admin/dashboard" target="_blank" rel="noopener"
-                   class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-blue-600 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
+                   class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-teal-700 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
                     <i class="fab fa-linkedin text-sm"></i>
                 </a>
                 <a href="https://www.youtube.com/@thezonely" target="_blank" rel="noopener"
@@ -57,7 +57,7 @@
                 Get qualified leads in your area. Free to join. Pay per verified lead only.
             </p>
             <a href="{{ route('user.register', 'seller') }}"
-               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-blue-900/30" style="min-height:unset;">
+               class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-600 text-white text-sm font-bold px-5 py-3 rounded-xl transition shadow-lg shadow-teal-900/30" style="min-height:unset;">
                 <i class="fa-solid fa-briefcase text-xs"></i>
                 List Your Business — It's Free
             </a>

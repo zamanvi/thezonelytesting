@@ -7,7 +7,7 @@
 
     <div class="mb-6 flex items-center gap-3">
         <a href="{{ route('seller.onboarding') }}"
-           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-300 transition">
+           class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-teal-700 hover:border-teal-300 transition">
             <i class="fa-solid fa-arrow-left text-sm"></i>
         </a>
         <div>
@@ -22,7 +22,7 @@
             @if($user->profile_photo)
             <img src="{{ asset($user->profile_photo) }}" class="w-16 h-16 rounded-2xl object-cover border border-slate-200 shrink-0">
             @else
-            <div class="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shrink-0">
+            <div class="w-16 h-16 rounded-2xl bg-teal-700 flex items-center justify-center text-white font-black text-xl shrink-0">
                 {{ strtoupper(substr($user->name, 0, 2)) }}
             </div>
             @endif
@@ -32,7 +32,7 @@
                 <p class="text-sm text-slate-500 truncate">{{ $user->business_name }}</p>
                 @endif
                 @if($user->title)
-                <p class="text-xs text-blue-600 font-semibold mt-0.5">{{ $user->title }}</p>
+                <p class="text-xs text-teal-700 font-semibold mt-0.5">{{ $user->title }}</p>
                 @endif
             </div>
         </div>
@@ -80,13 +80,13 @@
 
     {{-- Public page link --}}
     @if($user->slug)
-    <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-5 flex items-center justify-between gap-3">
+    <div class="bg-teal-50 border border-teal-100 rounded-2xl p-4 mb-5 flex items-center justify-between gap-3">
         <div class="min-w-0">
-            <p class="text-xs font-bold text-blue-500 mb-0.5">Your live public page</p>
+            <p class="text-xs font-bold text-teal-600 mb-0.5">Your live public page</p>
             <p class="text-sm font-mono text-slate-700 truncate">thezonely.com/{{ $user->slug }}</p>
         </div>
         <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
-           class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1.5 rounded-lg transition">
+           class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-teal-700 hover:text-teal-800 border border-teal-200 px-3 py-1.5 rounded-lg transition">
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Preview
         </a>
     </div>
@@ -95,12 +95,12 @@
     <form method="POST" action="{{ route('save.seller.profile', ['type' => $type, 'setup' => 'review']) }}">
         @csrf
         <label class="flex items-start gap-3 mb-5 cursor-pointer">
-            <input type="checkbox" id="goLiveCheck" required class="mt-0.5 w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500"
+            <input type="checkbox" id="goLiveCheck" required class="mt-0.5 w-4 h-4 rounded text-teal-700 border-slate-300 focus:ring-teal-600"
                    onchange="document.getElementById('goLiveBtn').disabled=!this.checked;document.getElementById('goLiveBtn').classList.toggle('opacity-50',!this.checked);">
             <span class="text-sm text-slate-600">All information above is correct and I'm ready to go live on Zonely</span>
         </label>
         <button type="submit" id="goLiveBtn" disabled
-            class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2 opacity-50">
+            class="w-full py-3.5 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2 opacity-50">
             <i class="fa-solid fa-rocket"></i> Confirm & Go Live
         </button>
     </form>

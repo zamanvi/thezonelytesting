@@ -16,11 +16,11 @@
         {{-- Booking Summary Card --}}
         <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 mb-5">
             <h2 class="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-calendar-check text-blue-600"></i> Booking Details
+                <i class="fa-solid fa-calendar-check text-teal-700"></i> Booking Details
             </h2>
 
             <div class="flex items-center gap-4 mb-5 pb-5 border-b border-slate-100">
-                <div class="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0">
+                <div class="w-14 h-14 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shrink-0">
                     {{ strtoupper(substr($booking->seller->name ?? 'PR', 0, 2)) }}
                 </div>
                 <div>
@@ -31,8 +31,8 @@
 
             <div class="space-y-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-calendar text-blue-600 text-xs"></i>
+                    <div class="w-8 h-8 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-calendar text-teal-700 text-xs"></i>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date</p>
@@ -42,8 +42,8 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-clock text-blue-600 text-xs"></i>
+                    <div class="w-8 h-8 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-clock text-teal-700 text-xs"></i>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Time</p>
@@ -52,8 +52,8 @@
                 </div>
                 @if($booking->seller->phone ?? false)
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-phone text-blue-600 text-xs"></i>
+                    <div class="w-8 h-8 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-phone text-teal-700 text-xs"></i>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact</p>
@@ -71,22 +71,22 @@
         </div>
 
         {{-- What Happens Next --}}
-        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-6">
-            <h3 class="font-bold text-blue-900 text-sm mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-circle-info text-blue-500"></i> What happens next?
+        <div class="bg-teal-50 border border-teal-100 rounded-2xl p-5 mb-6">
+            <h3 class="font-bold text-teal-900 text-sm mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-teal-600"></i> What happens next?
             </h3>
             <div class="space-y-2.5">
                 <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">1</div>
-                    <p class="text-xs text-blue-800">The professional will review your booking and confirm it.</p>
+                    <div class="w-5 h-5 bg-teal-700 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">1</div>
+                    <p class="text-xs text-teal-800">The professional will review your booking and confirm it.</p>
                 </div>
                 <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">2</div>
-                    <p class="text-xs text-blue-800">You'll receive a reminder before your appointment time.</p>
+                    <div class="w-5 h-5 bg-teal-700 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">2</div>
+                    <p class="text-xs text-teal-800">You'll receive a reminder before your appointment time.</p>
                 </div>
                 <div class="flex items-start gap-3">
-                    <div class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">3</div>
-                    <p class="text-xs text-blue-800">After your session, you can leave a review to help others.</p>
+                    <div class="w-5 h-5 bg-teal-700 text-white rounded-full flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">3</div>
+                    <p class="text-xs text-teal-800">After your session, you can leave a review to help others.</p>
                 </div>
             </div>
         </div>
@@ -94,7 +94,7 @@
         {{-- Action Buttons --}}
         <div class="space-y-3">
             <a href="{{ route('buyer.bookings') ?? '#' }}"
-               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm text-center block transition">
+               class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-4 rounded-2xl text-sm text-center block transition">
                 View My Bookings
             </a>
             <a href="{{ route('frontend.service.all') ?? '#' }}"
