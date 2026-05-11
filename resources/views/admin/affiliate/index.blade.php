@@ -1,4 +1,4 @@
-@extends('layouts.admin2')
+﻿@extends('layouts.admin2')
 @section('title', 'Affiliate Dashboard')
 
 @section('content')
@@ -148,7 +148,7 @@
                                                 @if($c->status === 'pending')
                                                 <li>
                                                     <form method="POST" action="{{ route('admin.affiliate.commission.pay',$c->id) }}"
-                                                          onsubmit="return confirm('Mark ${{ number_format($c->amount,2) }} commission to ' + {{ @json($c->referrer?->name ?? 'this referrer') }} + ' as paid?')">
+                                                          onsubmit="return confirm('Mark ${{ number_format($c->amount,2) }} commission to ' + @json($c->referrer?->name ?? 'this referrer') + ' as paid?')">
                                                         @csrf
                                                         <button type="submit" class="dropdown-item text-success">
                                                             <i class="fas fa-check me-2"></i> Mark Paid

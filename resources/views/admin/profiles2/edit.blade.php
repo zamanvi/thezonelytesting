@@ -1,4 +1,4 @@
-@extends('layouts.admin2')
+﻿@extends('layouts.admin2')
 @section('title', 'Edit User — ' . $user->name)
 
 @section('content')
@@ -175,7 +175,7 @@
                     <div class="card-body p-3">
                         <p class="small text-muted mb-3">Permanently deletes the user and all their data. Cannot be undone.</p>
                         <form method="POST" action="{{ route('admin.profiles.destroy', $user->id) }}"
-                              onsubmit="return confirm('Permanently delete ' + {{ @json($user->name) }} + '? This cannot be undone.')">
+                              onsubmit="return confirm('Permanently delete ' + @json($user->name) + '? This cannot be undone.')">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm w-100">
                                 <i class="fas fa-trash me-1"></i> Delete User

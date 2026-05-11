@@ -1,4 +1,4 @@
-@extends('layouts.admin2')
+﻿@extends('layouts.admin2')
 @section('title', 'Twilio — Seller Notifications')
 
 @section('content')
@@ -122,7 +122,7 @@
                                 {{-- Test SMS --}}
                                 @if($seller->twilio_enabled && $seller->phone && $configured)
                                 <form method="POST" action="{{ route('admin.twilio.test', $seller->id) }}"
-                                      onsubmit="return confirm('Send test SMS to ' + {{ @json($seller->phone) }} + '?')">
+                                      onsubmit="return confirm('Send test SMS to ' + @json($seller->phone) + '?')">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-outline-primary" title="Send test SMS">
                                         <i class="fas fa-paper-plane me-1"></i>Test SMS

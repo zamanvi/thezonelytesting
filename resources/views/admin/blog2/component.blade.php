@@ -1,4 +1,4 @@
-<div class="col-lg-6">
+﻿<div class="col-lg-6">
     <div class="section-card">
 
         <div class="card-header bg-dark text-white p-4">
@@ -68,7 +68,7 @@
 
                                                 <li>
                                                     <form action="{{ route('admin.blogs.destroy', $blog->id) }}"
-                                                        method="POST" onsubmit="return confirm('Delete blog: ' + {{ @json($blog->name) }} + '?')">
+                                                        method="POST" onsubmit="return confirm('Delete blog: ' + @json($blog->name) + '?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger">

@@ -1,4 +1,4 @@
-@extends('layouts.admin2')
+﻿@extends('layouts.admin2')
 @section('title', 'Panel Managers')
 
 @section('content')
@@ -83,7 +83,7 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form method="POST" action="{{ route('admin.managers.destroy', $manager->id) }}"
-                                          onsubmit="return confirm('Delete manager ' + {{ @json($manager->name) }} + '? Their account will be deleted.')">
+                                          onsubmit="return confirm('Delete manager ' + @json($manager->name) + '? Their account will be deleted.')">
                                         @csrf @method('DELETE')
                                         <button class="btn btn-sm btn-outline-danger">
                                             <i class="fas fa-trash"></i>

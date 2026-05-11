@@ -1,4 +1,4 @@
-@extends('layouts.admin2')
+﻿@extends('layouts.admin2')
 @section('title', 'Lead Dashboard')
 
 @section('content')
@@ -174,7 +174,7 @@
                                         @endif
                                         <li>
                                             <form method="POST" action="{{ route('admin.leads.destroy',$lead->id) }}"
-                                                  onsubmit="return confirm('Delete lead from ' + {{ @json($lead->name) }} + '?')">
+                                                  onsubmit="return confirm('Delete lead from ' + @json($lead->name) + '?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     <i class="fas fa-trash me-2"></i> Delete

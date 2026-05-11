@@ -1,4 +1,4 @@
-<div class="col-lg-6">
+﻿<div class="col-lg-6">
     <div class="section-card">
 
         <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
@@ -72,7 +72,7 @@
                                         <li>
                                             <form action="{{ route('admin.categories.destroy', $cat->id) }}"
                                                   method="POST"
-                                                  onsubmit="return confirm('Delete ' + {{ @json($cat->title) }} + ' and all its sub-categories?')">
+                                                  onsubmit="return confirm('Delete ' + @json($cat->title) + ' and all its sub-categories?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item text-danger">
