@@ -38,7 +38,7 @@
     {{-- Hero image --}}
     @if($blog->image_path ?? false)
     <div class="w-full aspect-video rounded-3xl overflow-hidden mb-8 bg-slate-100">
-        <img src="{{ asset($blog->image_path) }}"
+        <img src="{{ get_file($blog->image_path, 'blog') }}"
              class="w-full h-full object-cover"
              alt="{{ $blog->name }}" loading="eager">
     </div>

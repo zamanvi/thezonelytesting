@@ -59,7 +59,7 @@
         <article class="lg:col-span-8 group cursor-pointer">
             <a href="{{ route('frontend.blog') }}/{{ $featuredBlog->slug ?? '' }}" class="block" style="min-height:unset;">
                 <div class="rounded-3xl overflow-hidden aspect-video mb-6 bg-slate-100 relative">
-                    <img src="{{ asset($featuredBlog->image_path ?? '') }}"
+                    <img src="{{ get_file($featuredBlog->image_path, 'blog') }}"
                          onerror="this.style.display='none'"
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                          alt="{{ $featuredBlog->name }}" loading="eager">
@@ -86,7 +86,7 @@
             @forelse($blogs as $blog)
             <article class="group flex gap-4 items-start">
                 <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-slate-100">
-                    <img src="{{ asset($blog->image_path ?? '') }}"
+                    <img src="{{ get_file($blog->image_path, 'blog') }}"
                          onerror="this.style.display='none'"
                          class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
                          alt="{{ $blog->name }}" loading="lazy">

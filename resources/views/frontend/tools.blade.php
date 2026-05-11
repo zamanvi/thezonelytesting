@@ -1,9 +1,9 @@
 @extends('frontend.layouts._app')
 @section('title', 'NYC Car Insurance Calculator')
 @php
-    $meta_title = $meta_title;
-    $meta_description = $meta_description;
-    $meta_keywords = $meta_keywords;
+    $meta_title       = 'Free NYC Car Insurance Calculator | Zonely Tools';
+    $meta_description = 'Instantly estimate your monthly and yearly auto insurance costs in New York City. Free, fast & no signup required.';
+    $meta_keywords    = 'NYC car insurance calculator, auto insurance estimate, New York car insurance';
 @endphp
 @section('content')
 
@@ -102,7 +102,7 @@
 
                 <div class="mt-6 flex gap-3">
                     <button onclick="savePDF()"
-                            class="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold">
+                            class="bg-teal-700 hover:bg-teal-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition">
                         Save as PDF
                     </button>
 
