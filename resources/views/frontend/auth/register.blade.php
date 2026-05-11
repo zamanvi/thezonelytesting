@@ -177,7 +177,7 @@
                 </div>
 
                 <button type="submit"
-                        class="w-full mt-6 bg-teal-700 hover:bg-teal-800 text-white py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 shadow-lg transition">
+                        class="w-full mt-6 bg-amber-500 hover:bg-amber-400 text-slate-900 py-4 rounded-2xl font-black text-base flex items-center justify-center gap-2 shadow-lg transition">
                     {{ $type === 'seller' ? 'Create My Free Account' : 'Get Started' }}
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>

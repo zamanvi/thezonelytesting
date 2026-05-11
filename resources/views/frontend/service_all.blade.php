@@ -45,7 +45,7 @@
             <input type="text" name="city" value="{{ request('city') }}" placeholder="City or ZIP"
                 class="px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-50 sm:w-32">
             <button type="submit"
-                class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition shrink-0">
+                class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2.5 rounded-xl text-sm font-bold transition shrink-0">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </form>
@@ -121,7 +121,7 @@
 
                 <div class="flex items-center gap-2 mt-4">
                     <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                       class="flex-1 text-center bg-slate-900 hover:bg-teal-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition"
+                       class="flex-1 text-center bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold px-4 py-2.5 rounded-xl transition"
                        style="min-height:unset;">
                         View Profile
                     </a>

@@ -67,7 +67,7 @@
                 </div>
 
                 <button type="submit"
-                    class="mt-6 w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3.5 rounded-2xl text-sm transition">
+                    class="mt-6 w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3.5 rounded-2xl text-sm transition">
                     Sign In
                 </button>
             </form>

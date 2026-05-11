@@ -189,7 +189,7 @@
                         </button>
                         @endif
                         <a href="#contact"
-                           class="flex items-center justify-center gap-3 bg-white/15 hover:bg-white/25 border border-white/30 text-white px-8 py-4 rounded-full font-bold text-base transition">
+                           class="flex items-center justify-center gap-3 bg-amber-400 hover:bg-amber-300 text-slate-900 px-8 py-4 rounded-full font-bold text-base transition shadow-xl">
                             <i class="fas fa-calendar-check"></i> Book Now
                         </a>
                     </div>
@@ -338,7 +338,7 @@
                             @endif
                             <div class="px-5 pb-4 pt-3 flex items-center gap-3 border-t border-slate-100 bg-slate-50/50">
                                 <a href="#contact"
-                                   class="inline-flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                                   class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
                                     <i class="fas fa-paper-plane text-xs"></i> Get a Quote
                                 </a>
                                 @if($callNumber)
@@ -603,7 +603,7 @@
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-2xl px-4 py-3 flex gap-3">
     @if($callNumber)
     <a href="tel:{{ $callNumber }}"
-       class="flex-1 flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white py-3 rounded-2xl font-semibold text-base transition">
+       class="flex-1 flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 py-3 rounded-2xl font-semibold text-base transition">
         <i class="fas fa-phone"></i> Call Now
     </a>
     @endif
@@ -615,7 +615,7 @@
     @endif
     @if(!$callNumber && !$waNumber)
     <a href="#contact"
-       class="flex-1 flex items-center justify-center gap-2 bg-teal-700 text-white py-3 rounded-2xl font-semibold text-base">
+       class="flex-1 flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-900 py-3 rounded-2xl font-semibold text-base transition">
         <i class="fas fa-envelope"></i> Contact
     </a>
     @endif

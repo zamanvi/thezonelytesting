@@ -100,7 +100,7 @@
             <span class="text-sm text-slate-600">All information above is correct and I'm ready to go live on Zonely</span>
         </label>
         <button type="submit" id="goLiveBtn" disabled
-            class="w-full py-3.5 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2 opacity-50">
+            class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2 opacity-50">
             <i class="fa-solid fa-rocket"></i> Confirm & Go Live
         </button>
     </form>

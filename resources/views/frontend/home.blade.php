@@ -57,7 +57,7 @@
                            placeholder="Who are you looking for?"
                            class="flex-1 text-sm text-slate-800 placeholder-slate-400 bg-transparent py-3 font-medium focus:outline-none">
                     <button type="submit"
-                            class="shrink-0 bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold px-6 py-2.5 rounded-full transition" style="min-height:unset;">
+                            class="shrink-0 bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-bold px-6 py-2.5 rounded-full transition" style="min-height:unset;">
                         Search
                     </button>
                 </div>
@@ -196,7 +196,7 @@
                     </div>
                     <div class="flex items-center gap-3 mt-4">
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
-                           class="bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold px-5 py-2 rounded-full transition shadow-sm shadow-teal-200" style="min-height:unset;">
+                           class="bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold px-5 py-2 rounded-full transition shadow-sm" style="min-height:unset;">
                             Hire Expert
                         </a>
                         <a href="{{ route('frontend.service.show', $user->slug ?? $user->id) }}"
@@ -234,7 +234,7 @@
                         Customers in your area are searching right now. Your verified profile shows up first. No subscription. No ads.
                     </p>
                     <a href="{{ route('user.register', 'seller') }}"
-                       class="inline-flex items-center gap-2 bg-white text-teal-800 hover:bg-yellow-300 font-bold px-7 py-3.5 rounded-xl text-sm transition shadow-lg" style="min-height:unset;">
+                       class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-7 py-3.5 rounded-xl text-sm transition shadow-lg" style="min-height:unset;">
                         Create free profile →
                     </a>
                 </div>
