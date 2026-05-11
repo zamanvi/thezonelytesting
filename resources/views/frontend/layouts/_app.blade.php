@@ -14,6 +14,9 @@
         $ogTitle       = trim($__env->yieldContent('og_title'))       ?: ($meta_title ?? config('app.name'));
         $ogDescription = trim($__env->yieldContent('og_description'))  ?: ($meta_description ?? '');
         $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/favicon.png');
+        if ($ogImage && !str_starts_with($ogImage, 'http')) {
+            $ogImage = asset($ogImage);
+        }
     @endphp
     <title>Zonely — @yield('title', 'Find & Hire Local Experts Near You')</title>
     <meta name="title"       content="{{ $ogTitle }}">

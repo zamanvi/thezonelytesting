@@ -6,7 +6,7 @@
 @section('title', $meta_title)
 @section('og_title',       $user->title)
 @section('og_description', Str::limit(strip_tags($user->bio ?? ''), 200))
-@section('og_image',       $user->profile_photo)
+@section('og_image',       $user->profile_photo ? asset($user->profile_photo) : asset('frontend/img/zonely_logo.jpeg'))
 
 @section('schema')
 <script type="application/ld+json">
@@ -16,7 +16,7 @@
   "name": "{{ $user->name }}",
   "description": "{{ Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 200) }}",
   "url": "{{ url()->current() }}",
-  "image": "{{ $user->profile_photo }}",
+  "image": "{{ $user->profile_photo ? asset($user->profile_photo) : '' }}",
   "@id": "{{ url()->current() }}",
   "priceRange": "Contact for pricing",
   "address": {
