@@ -8,7 +8,7 @@
 
             <div class="text-center mb-8">
                 <a href="{{ route('frontend.home') }}" class="inline-block mb-5">
-                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 rounded-xl mx-auto" alt="Zonely">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 mx-auto" style="mix-blend-mode:multiply" alt="Zonely">
                 </a>
                 <h1 class="text-2xl font-black text-slate-900">Set new password</h1>
                 <p class="text-sm text-slate-500 mt-1">Choose a strong password for your account.</p>

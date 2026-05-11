@@ -31,7 +31,7 @@
             {{-- Header --}}
             <div class="text-center mb-8">
                 <a href="{{ route('frontend.home') }}" class="inline-block mb-4">
-                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 rounded-xl mx-auto" alt="Zonely"
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-12 h-12 mx-auto" style="mix-blend-mode:multiply" alt="Zonely"
                          onerror="this.src='https://ui-avatars.com/api/?name=Z&background=2563eb&color=fff&size=48'">
                 </a>
                 @if($type === 'seller')

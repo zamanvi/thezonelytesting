@@ -71,7 +71,7 @@
                 {{-- <div class="w-9 h-9 bg-gradient-to-br from-teal-700 to-violet-600 rounded-lg"></div>
                 <span class="text-2xl font-extrabold tracking-tighter">ZONELY</span> --}}
                 <a href="{{ route('frontend.home') }}">
-                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-10 h-10" alt="Zonely">
+                    <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" class="w-10 h-10" style="mix-blend-mode:multiply" alt="Zonely">
                 </a>
             </div>
             <div class="">
