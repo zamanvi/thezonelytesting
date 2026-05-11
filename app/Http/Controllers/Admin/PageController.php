@@ -15,69 +15,84 @@ use App\Models\StaffProfile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
     function admin_dashboard()
     {
-        // Users
-        $sellers    = User::where('type', 'seller')->count();
-        $buyers     = User::where('type', 'user')->count();
-        $unverified = User::where('type', 'seller')->where('status', false)->count();
+        // User stats — 1 query instead of 3
+        $userStats = User::selectRaw("
+            SUM(CASE WHEN type='seller' THEN 1 ELSE 0 END) as sellers,
+            SUM(CASE WHEN type='user' THEN 1 ELSE 0 END) as buyers,
+            SUM(CASE WHEN type='seller' AND status=0 THEN 1 ELSE 0 END) as unverified
+        ")->first();
+        $sellers    = (int) ($userStats->sellers ?? 0);
+        $buyers     = (int) ($userStats->buyers ?? 0);
+        $unverified = (int) ($userStats->unverified ?? 0);
         $staffCount = StaffProfile::count();
 
-        // Leads
-        $totalLeads   = Lead::count();
-        $newLeads     = Lead::where('status', 'new')->count();
-        $wonLeads     = Lead::where('status', 'won')->count();
-        $revenue      = Lead::paid()->sum('fee');
-        $pendingRev   = Lead::unpaid()->sum('fee');
-
-        // Affiliate
-        $pendingComm  = AffiliateCommission::pending()->sum('amount');
-        $paidComm     = AffiliateCommission::paid()->sum('amount');
-
-        $blogCount    = Blog::count();
-        $catCount     = Category::count();
-        $cityCount    = City::count();
-
-        // Monthly lead counts for chart (last 6 months)
-        $leadMonths = [];
-        $leadCounts = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->subMonths($i);
-            $leadMonths[] = $month->format('M');
-            $leadCounts[] = Lead::whereYear('created_at', $month->year)
-                ->whereMonth('created_at', $month->month)
-                ->count();
-        }
-
-        // User registration last 6 months
-        $userMonths = [];
-        $userCounts = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $month = now()->subMonths($i);
-            $userMonths[] = $month->format('M');
-            $userCounts[] = User::whereIn('type', ['seller','user'])
-                ->whereYear('created_at', $month->year)
-                ->whereMonth('created_at', $month->month)
-                ->count();
-        }
-
-        $recentSellers    = User::where('type', 'seller')->latest()->take(5)->get();
-        $pendingVerify    = User::where('type', 'seller')->where('status', false)->latest()->take(5)->get();
-        $recentLeads      = Lead::with('seller:id,name')->latest()->take(5)->get();
-        $recentCommissions= AffiliateCommission::with('referrer:id,name')->latest()->take(5)->get();
-
-        // Lead status breakdown for doughnut
+        // Lead stats — 1 query instead of 5
+        $leadStats = Lead::selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count,
+            SUM(CASE WHEN status='won' THEN 1 ELSE 0 END) as won_count,
+            SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) as pending_count,
+            SUM(CASE WHEN status='lost' THEN 1 ELSE 0 END) as lost_count,
+            SUM(CASE WHEN paid_at IS NOT NULL THEN fee ELSE 0 END) as revenue,
+            SUM(CASE WHEN paid_at IS NULL THEN fee ELSE 0 END) as pending_rev
+        ")->first();
+        $totalLeads = (int) ($leadStats->total ?? 0);
+        $newLeads   = (int) ($leadStats->new_count ?? 0);
+        $wonLeads   = (int) ($leadStats->won_count ?? 0);
+        $revenue    = (float) ($leadStats->revenue ?? 0);
+        $pendingRev = (float) ($leadStats->pending_rev ?? 0);
         $leadStatusData = [
-            'new'     => Lead::where('status','new')->count(),
-            'pending' => Lead::where('status','pending')->count(),
-            'won'     => Lead::where('status','won')->count(),
-            'lost'    => Lead::where('status','lost')->count(),
+            'new'     => $newLeads,
+            'pending' => (int) ($leadStats->pending_count ?? 0),
+            'won'     => $wonLeads,
+            'lost'    => (int) ($leadStats->lost_count ?? 0),
         ];
 
-        // Per-role staff counts (single query, avoid N+1 in view)
+        // Affiliate — 1 query instead of 2
+        $commStats  = AffiliateCommission::selectRaw("
+            SUM(CASE WHEN status='pending' THEN amount ELSE 0 END) as pending_amount,
+            SUM(CASE WHEN status='paid' THEN amount ELSE 0 END) as paid_amount
+        ")->first();
+        $pendingComm = (float) ($commStats->pending_amount ?? 0);
+        $paidComm    = (float) ($commStats->paid_amount ?? 0);
+
+        $blogCount = Blog::count();
+        $catCount  = Category::count();
+        $cityCount = City::count();
+
+        // Monthly chart data — 2 GROUP BY queries instead of 12
+        $chartStart   = now()->subMonths(5)->startOfMonth();
+        $rawLeadMonths = Lead::where('created_at', '>=', $chartStart)
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym, COUNT(*) as cnt")
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->pluck('cnt', 'ym');
+        $rawUserMonths = User::whereIn('type', ['seller', 'user'])
+            ->where('created_at', '>=', $chartStart)
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym, COUNT(*) as cnt")
+            ->groupByRaw("DATE_FORMAT(created_at, '%Y-%m')")
+            ->pluck('cnt', 'ym');
+
+        $leadMonths = $leadCounts = $userMonths = $userCounts = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $key = $month->format('Y-m');
+            $leadMonths[] = $month->format('M');
+            $leadCounts[] = (int) ($rawLeadMonths[$key] ?? 0);
+            $userMonths[] = $month->format('M');
+            $userCounts[] = (int) ($rawUserMonths[$key] ?? 0);
+        }
+
+        $recentSellers     = User::where('type', 'seller')->latest()->take(5)->get();
+        $pendingVerify     = User::where('type', 'seller')->where('status', false)->latest()->take(5)->get();
+        $recentLeads       = Lead::with('seller:id,name')->latest()->take(5)->get();
+        $recentCommissions = AffiliateCommission::with('referrer:id,name')->latest()->take(5)->get();
+
         $staffRoleCounts = StaffProfile::selectRaw('role, count(*) as cnt')
             ->groupBy('role')->pluck('cnt', 'role');
 
@@ -159,15 +174,25 @@ class PageController extends Controller
     }
     public function leads()
     {
+        $s = Lead::selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) as new_count,
+            SUM(CASE WHEN status='won' THEN 1 ELSE 0 END) as won_count,
+            SUM(CASE WHEN status='lost' THEN 1 ELSE 0 END) as lost_count,
+            SUM(CASE WHEN paid_at IS NOT NULL THEN 1 ELSE 0 END) as paid_count,
+            SUM(CASE WHEN paid_at IS NULL THEN 1 ELSE 0 END) as unpaid_count,
+            SUM(CASE WHEN paid_at IS NOT NULL THEN fee ELSE 0 END) as revenue,
+            SUM(CASE WHEN paid_at IS NULL THEN fee ELSE 0 END) as pending_revenue
+        ")->first();
         $stats = [
-            'total'    => Lead::count(),
-            'new'      => Lead::where('status', 'new')->count(),
-            'won'      => Lead::where('status', 'won')->count(),
-            'lost'     => Lead::where('status', 'lost')->count(),
-            'paid'     => Lead::paid()->count(),
-            'unpaid'   => Lead::unpaid()->count(),
-            'revenue'  => Lead::paid()->sum('fee'),
-            'pending_revenue' => Lead::unpaid()->sum('fee'),
+            'total'           => (int) ($s->total ?? 0),
+            'new'             => (int) ($s->new_count ?? 0),
+            'won'             => (int) ($s->won_count ?? 0),
+            'lost'            => (int) ($s->lost_count ?? 0),
+            'paid'            => (int) ($s->paid_count ?? 0),
+            'unpaid'          => (int) ($s->unpaid_count ?? 0),
+            'revenue'         => (float) ($s->revenue ?? 0),
+            'pending_revenue' => (float) ($s->pending_revenue ?? 0),
         ];
         $status = request('status');
         $leads = Lead::with('seller:id,name,profile_photo,slug')

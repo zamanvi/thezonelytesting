@@ -3,6 +3,7 @@
 namespace App\Services\Sms;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class SmsService
 {
@@ -10,7 +11,7 @@ class SmsService
 
     public function __construct()
     {
-        $this->provider = match (Setting::get('sms_provider', 'twilio')) {
+        $this->provider = match (self::activeProvider()) {
             'telnyx' => new TelnyxAdapter(),
             default  => new TwilioAdapter(),
         };
@@ -23,16 +24,14 @@ class SmsService
 
     public function isConfigured(): bool
     {
-        $provider = Setting::get('sms_provider', 'twilio');
-
-        return match ($provider) {
-            'telnyx' => (bool) (Setting::get('telnyx_api_key') ?: config('services.telnyx.api_key')),
-            default  => (bool) (Setting::get('twilio_sid') ?: config('services.twilio.sid')),
+        return match (self::activeProvider()) {
+            'telnyx' => (bool) (Cache::remember('sms_telnyx_key', 3600, fn() => Setting::get('telnyx_api_key')) ?: config('services.telnyx.api_key')),
+            default  => (bool) (Cache::remember('sms_twilio_sid', 3600, fn() => Setting::get('twilio_sid')) ?: config('services.twilio.sid')),
         };
     }
 
     public static function activeProvider(): string
     {
-        return Setting::get('sms_provider', 'twilio');
+        return Cache::remember('sms_provider', 3600, fn() => Setting::get('sms_provider', 'twilio'));
     }
 }
