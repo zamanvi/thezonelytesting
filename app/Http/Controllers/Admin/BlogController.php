@@ -48,7 +48,7 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        $blog = Blog::find($id);
+        $blog = Blog::findOrFail($id);
         $blogs = Blog::paginate(20);
         return view('admin.blog2.show', compact('blogs', 'blog'));
     }
@@ -58,7 +58,7 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        $blog = Blog::find($id);
+        $blog = Blog::findOrFail($id);
         $blogs = Blog::paginate(20);
         return view('admin.blog2.edit', compact('blogs', 'blog'));
     }
@@ -68,13 +68,10 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $blog = Blog::find($id);
-        $blogs = Blog::updateStore($request, $id);
-        if ($blogs) {
-            return redirect(route('admin.blogs.show', $id))->with('success', 'blog "' . $blog->name . '" update successfull.!');
-        } else {
-            return back()->with('warning', 'Error check all data again and submit again...!');
-        }
+        $blog = Blog::findOrFail($id);
+        $name = $blog->name;
+        Blog::updateStore($request, $id);
+        return redirect(route('admin.blogs.show', $id))->with('success', 'Blog "' . $name . '" updated successfully.');
     }
 
     /**
@@ -82,11 +79,12 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        $blog = Blog::find($id);
-        if ($blog->image_path != null) {
+        $blog = Blog::findOrFail($id);
+        $name = $blog->name;
+        if ($blog->image_path) {
             delete_file($blog->image_path);
         }
         $blog->delete();
-        return redirect(route('admin.blogs.create'))->with('warning', 'blog "' . $blog->name . '" delete successfull.!');
+        return redirect(route('admin.blogs.create'))->with('warning', 'Blog "' . $name . '" deleted.');
     }
 }

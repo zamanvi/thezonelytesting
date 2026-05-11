@@ -45,7 +45,7 @@ class ViewServiceProvider extends ServiceProvider
                     return [
                         'blogCount'     => Blog::count(),
                         'categoryCount' => Category::count(),
-                        'userCount'     => User::where('type', 'profile')->count(),
+                        'userCount'     => User::where('type', 'seller')->count(),
                     ];
                 }));
             }
