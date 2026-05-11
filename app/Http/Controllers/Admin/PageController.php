@@ -243,13 +243,23 @@ class PageController extends Controller
             ->latest()
             ->paginate(25);
 
+        // 1 query: paid/pending totals per referrer
+        $commTotals = AffiliateCommission::selectRaw(
+            "referrer_id,
+             SUM(CASE WHEN status='paid'    THEN amount ELSE 0 END) as earned_total,
+             SUM(CASE WHEN status='pending' THEN amount ELSE 0 END) as pending_total"
+        )->groupBy('referrer_id')->get()->keyBy('referrer_id');
+
         $topReferrers = User::where('type', 'seller')
+            ->whereHas('referrals')
             ->withCount('referrals')
-            ->withSum(['commissionsEarned as earned_total' => function($q){ $q->where('status','paid'); }], 'amount')
-            ->withSum(['commissionsEarned as pending_total' => function($q){ $q->where('status','pending'); }], 'amount')
-            ->having('referrals_count', '>', 0)
             ->orderByDesc('referrals_count')
-            ->get();
+            ->get()
+            ->each(function ($seller) use ($commTotals) {
+                $t = $commTotals->get($seller->id);
+                $seller->earned_total  = $t?->earned_total  ?? 0;
+                $seller->pending_total = $t?->pending_total ?? 0;
+            });
 
         $allSellers = User::where('type', 'seller')
             ->withCount('referrals')
