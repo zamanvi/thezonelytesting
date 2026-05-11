@@ -58,11 +58,16 @@
         @if($featuredBlog)
         <article class="lg:col-span-8 group cursor-pointer">
             <a href="{{ route('frontend.blog') }}/{{ $featuredBlog->slug ?? '' }}" class="block" style="min-height:unset;">
-                <div class="rounded-3xl overflow-hidden aspect-video mb-6 bg-slate-100 relative">
+                <div class="rounded-3xl overflow-hidden aspect-video mb-6 bg-gradient-to-br from-teal-800 to-teal-600 relative">
+                    @if($featuredBlog->image_path)
                     <img src="{{ get_file($featuredBlog->image_path, 'blog') }}"
-                         onerror="this.style.display='none'"
+                         onerror="this.style.opacity='0'"
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
                          alt="{{ $featuredBlog->name }}" loading="eager">
+                    @endif
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                        <i class="fa-regular fa-newspaper text-white text-8xl"></i>
+                    </div>
                     <div class="absolute bottom-5 left-5 bg-white/90 backdrop-blur px-4 py-2 rounded-xl shadow-lg">
                         <p class="text-[10px] font-black text-teal-700 uppercase tracking-widest">Top Rated Guide</p>
                     </div>
@@ -85,11 +90,15 @@
             <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-3">More Articles</h4>
             @forelse($blogs as $blog)
             <article class="group flex gap-4 items-start">
-                <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-slate-100">
+                <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-gradient-to-br from-teal-700 to-teal-500 flex items-center justify-center">
+                    @if($blog->image_path)
                     <img src="{{ get_file($blog->image_path, 'blog') }}"
-                         onerror="this.style.display='none'"
+                         onerror="this.style.opacity='0'"
                          class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
                          alt="{{ $blog->name }}" loading="lazy">
+                    @else
+                    <i class="fa-regular fa-newspaper text-white/50 text-xl"></i>
+                    @endif
                 </div>
                 <div class="min-w-0">
                     <a href="{{ route('frontend.blog') }}/{{ $blog->slug ?? '' }}"
