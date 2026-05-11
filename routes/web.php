@@ -6,6 +6,7 @@ Route::get('/health', function () { return response('OK', 200); });
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ManagerController;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\TwilioController;
 use App\Http\Controllers\Admin\PhonePoolController;
 use App\Http\Controllers\TwilioWebhookController;
@@ -291,7 +292,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Services module
         Route::middleware('manager.module:services')->group(function () {
-            Route::resource('services', ServiceController::class);
+            Route::get('services',               [AdminServiceController::class, 'index'])->name('services.index');
+            Route::post('services/{id}/toggle',  [AdminServiceController::class, 'toggleActive'])->name('services.toggle');
+            Route::delete('services/{id}',       [AdminServiceController::class, 'destroy'])->name('services.destroy');
         });
 
         // Managers CRUD — admin only (no module middleware needed, managers can't manage other managers)
