@@ -34,6 +34,7 @@
         }
         .landing-preview::-webkit-scrollbar { width: 6px; }
         .landing-preview::-webkit-scrollbar-thumb { background-color: #64748b; border-radius: 20px; }
+        img[src*="zonely_logo"] { mix-blend-mode: multiply; }
     </style>
     @yield('css')
 </head>

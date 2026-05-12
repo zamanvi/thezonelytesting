@@ -135,6 +135,9 @@ tailwind.config = {
     /* ── Tap highlight ───────────────────────── */
     * { -webkit-tap-highlight-color:rgba(59,130,246,.08); }
 
+    /* ── Logo: remove white PNG background ──── */
+    img[src*="zonely_logo"] { mix-blend-mode: multiply; }
+
     /* ── Mobile type scale (320–375px phones) ── */
     @media (max-width:375px) {
         .text-3xl { font-size:1.5rem; }
