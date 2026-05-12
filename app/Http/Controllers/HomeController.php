@@ -170,8 +170,21 @@ class HomeController extends Controller
     function service_show($slug)
     {
         $user = User::activeSellers()->where('slug', $slug)
-            ->with(['contacts','languages','educations','certifications','experiences','memberships','services.category','reviews.reviewer','category','twilioNumber','faqs'])
+            ->with(['contacts','languages','educations','memberships','services.category','reviews.reviewer','category','twilioNumber','faqs'])
             ->firstOrFail();
+
+        // Load new relationships only if their tables exist (guards first deploy)
+        if (\Illuminate\Support\Facades\Schema::hasTable('experiences')) {
+            $user->load('experiences');
+        } else {
+            $user->setRelation('experiences', collect());
+        }
+        if (\Illuminate\Support\Facades\Schema::hasTable('certifications')) {
+            $user->load('certifications');
+        } else {
+            $user->setRelation('certifications', collect());
+        }
+
         $view = $user->seller_service_type === 'professional'
             ? 'frontend.service_details_professional'
             : 'frontend.service_details';

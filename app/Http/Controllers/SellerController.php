@@ -7,13 +7,18 @@ use App\Models\Review;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class SellerController extends Controller
 {
     public function onboarding()
     {
-        $user = Auth::user()->load(['services', 'educations', 'certifications', 'experiences', 'memberships', 'languages', 'faqs', 'category']);
+        $user = Auth::user()->load(['services', 'educations', 'memberships', 'languages', 'faqs', 'category']);
+        if (Schema::hasTable('experiences'))    $user->load('experiences');
+        else                                    $user->setRelation('experiences', collect());
+        if (Schema::hasTable('certifications')) $user->load('certifications');
+        else                                    $user->setRelation('certifications', collect());
         return view('frontend.seller.onboarding', compact('user'));
     }
 
