@@ -211,7 +211,7 @@ class HomeController extends Controller
 
         // Colors
         $cBg     = imagecolorallocate($img, 10,  17,  35);
-        $cTeal   = imagecolorallocate($img, 15,  118, 110); // teal-700 #0F766E
+        $cTeal   = imagecolorallocate($img, 42,  140, 135); // brand #2a8c87
         $cWhite  = imagecolorallocate($img, 255, 255, 255);
         $cSlate4 = imagecolorallocate($img, 148, 163, 184);
         $cSlate5 = imagecolorallocate($img, 100, 116, 139);
@@ -224,7 +224,7 @@ class HomeController extends Controller
         // Subtle top-right teal glow
         for ($r = 280; $r >= 0; $r -= 2) {
             $a = (int)(127 - ($r / 280) * 100);
-            $c = imagecolorallocatealpha($img, 15, 118, 110, $a);
+            $c = imagecolorallocatealpha($img, 42, 140, 135, $a);
             imagefilledellipse($img, $W, 0, $r * 2, $r * 2, $c);
         }
 
@@ -362,7 +362,7 @@ class HomeController extends Controller
 
         // Output
         header('Content-Type: image/png');
-        header('Cache-Control: public, max-age=86400');
+        header('Cache-Control: public, max-age=3600');
         imagepng($img, null, 6);
         imagedestroy($img);
         exit;
