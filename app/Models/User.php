@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Schema;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable // implements MustVerifyEmail
@@ -64,11 +65,17 @@ class User extends Authenticatable // implements MustVerifyEmail
 
     public function experiences()
     {
+        if (!Schema::hasTable('experiences')) {
+            return $this->hasMany(Experience::class)->whereRaw('1=0');
+        }
         return $this->hasMany(Experience::class)->orderByDesc('is_current')->orderByDesc('start_date');
     }
 
     public function certifications()
     {
+        if (!Schema::hasTable('certifications')) {
+            return $this->hasMany(Certification::class)->whereRaw('1=0');
+        }
         return $this->hasMany(Certification::class);
     }
 
