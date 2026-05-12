@@ -246,15 +246,7 @@ class HomeController extends Controller
                     default      => false,
                 };
             }
-            if (!$src) {
-                $ctx  = stream_context_create(['http' => ['timeout' => 5, 'ignore_errors' => true]]);
-                $urls = [asset($photo), url($photo), config('app.url').'/'.ltrim($photo,'/')];
-                foreach (array_unique($urls) as $tryUrl) {
-                    if ($src) break;
-                    $data = @file_get_contents($tryUrl, false, $ctx);
-                    if ($data) $src = @imagecreatefromstring($data);
-                }
-            }
+            // No HTTP fallback — self-fetching causes 15s+ delay on Railway
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
                 $targetRatio = $photoW / $H;
