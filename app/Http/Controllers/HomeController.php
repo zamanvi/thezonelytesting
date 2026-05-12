@@ -236,22 +236,36 @@ class HomeController extends Controller
         $photoLoaded = false;
 
         if ($user->profile_photo) {
-            // Try filesystem first, then URL fallback (handles Railway storage symlink issues)
-            $path = public_path($user->profile_photo);
-            $src  = false;
-            if (file_exists($path)) {
-                $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            $src   = false;
+            $photo = ltrim($user->profile_photo, '/');
+
+            // Try every likely filesystem location (Railway symlink may be missing)
+            $fsPaths = [
+                public_path($photo),
+                storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
+                base_path('public/' . $photo),
+            ];
+            foreach ($fsPaths as $tryPath) {
+                if ($src) break;
+                if (!file_exists($tryPath)) continue;
+                $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
                 $src = match($ext) {
-                    'jpg','jpeg' => @imagecreatefromjpeg($path),
-                    'png'        => @imagecreatefrompng($path),
-                    'webp'       => @imagecreatefromwebp($path),
+                    'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
+                    'png'        => @imagecreatefrompng($tryPath),
+                    'webp'       => @imagecreatefromwebp($tryPath),
                     default      => false,
                 };
             }
+
+            // URL fallback — try app URL and asset URL
             if (!$src) {
-                $photoUrl  = url($user->profile_photo);
-                $photoData = @file_get_contents($photoUrl);
-                if ($photoData) $src = @imagecreatefromstring($photoData);
+                $ctx  = stream_context_create(['http' => ['timeout' => 5, 'ignore_errors' => true]]);
+                $urls = [asset($photo), url($photo), config('app.url').'/'.ltrim($photo,'/')];
+                foreach (array_unique($urls) as $tryUrl) {
+                    if ($src) break;
+                    $data = @file_get_contents($tryUrl, false, $ctx);
+                    if ($data) $src = @imagecreatefromstring($data);
+                }
             }
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
