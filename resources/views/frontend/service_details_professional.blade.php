@@ -414,9 +414,10 @@
                 </div>
                 <h4 class="font-bold text-lg text-white">Experience & Membership</h4>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div class="grid grid-cols-1 {{ $hasExperiences && $hasMemberships ? 'md:grid-cols-2' : '' }} divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
                 {{-- Work Experience column --}}
+                @if($hasExperiences)
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-5 pb-3 border-b border-indigo-50">
                         <div class="w-7 h-7 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0">
@@ -424,7 +425,6 @@
                         </div>
                         <span class="text-xs font-bold uppercase tracking-widest text-indigo-600">Work Experience</span>
                     </div>
-                    @if($hasExperiences)
                     <div class="space-y-1">
                         @foreach($user->experiences as $exp)
                         <div class="flex gap-3 items-start">
@@ -442,17 +442,11 @@
                         </div>
                         @endforeach
                     </div>
-                    @else
-                    <div class="flex flex-col items-center justify-center py-8 text-center">
-                        <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fas fa-briefcase text-indigo-300 text-sm"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">No work experience listed</p>
-                    </div>
-                    @endif
                 </div>
+                @endif
 
                 {{-- Memberships column --}}
+                @if($hasMemberships)
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-5 pb-3 border-b border-teal-50">
                         <div class="w-7 h-7 bg-teal-100 rounded-lg flex items-center justify-center shrink-0">
@@ -460,7 +454,6 @@
                         </div>
                         <span class="text-xs font-bold uppercase tracking-widest text-teal-700">Memberships</span>
                     </div>
-                    @if($hasMemberships)
                     <div class="space-y-1">
                         @foreach($user->memberships as $m)
                         <div class="flex gap-3 items-start">
@@ -476,15 +469,8 @@
                         </div>
                         @endforeach
                     </div>
-                    @else
-                    <div class="flex flex-col items-center justify-center py-8 text-center">
-                        <div class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fas fa-id-badge text-teal-300 text-sm"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">No memberships listed</p>
-                    </div>
-                    @endif
                 </div>
+                @endif
 
             </div>
         </div>
@@ -499,9 +485,10 @@
                 </div>
                 <h4 class="font-bold text-lg text-white">Education & Certification</h4>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div class="grid grid-cols-1 {{ $hasEducation && $hasCertifications ? 'md:grid-cols-2' : '' }} divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
                 {{-- Education column --}}
+                @if($hasEducation)
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-5 pb-3 border-b border-emerald-50">
                         <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center shrink-0">
@@ -509,7 +496,6 @@
                         </div>
                         <span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Education</span>
                     </div>
-                    @if($hasEducation)
                     <div class="space-y-1">
                         @foreach($user->educations as $edu)
                         <div class="flex gap-3 items-start">
@@ -525,17 +511,11 @@
                         </div>
                         @endforeach
                     </div>
-                    @else
-                    <div class="flex flex-col items-center justify-center py-8 text-center">
-                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fas fa-graduation-cap text-emerald-300 text-sm"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">No education listed</p>
-                    </div>
-                    @endif
                 </div>
+                @endif
 
                 {{-- Certifications column --}}
+                @if($hasCertifications)
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-5 pb-3 border-b border-amber-50">
                         <div class="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
@@ -543,7 +523,6 @@
                         </div>
                         <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Certifications</span>
                     </div>
-                    @if($hasCertifications)
                     <div class="space-y-3">
                         @foreach($user->certifications as $cert)
                         <div class="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
@@ -559,15 +538,8 @@
                         </div>
                         @endforeach
                     </div>
-                    @else
-                    <div class="flex flex-col items-center justify-center py-8 text-center">
-                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3">
-                            <i class="fas fa-certificate text-amber-300 text-sm"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">No certifications listed</p>
-                    </div>
-                    @endif
                 </div>
+                @endif
 
             </div>
         </div>
