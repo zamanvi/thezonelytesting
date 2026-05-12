@@ -35,7 +35,7 @@
 @endphp
 @section('og_title',       $user->name . ' | ' . ($user->title ?? $user->category?->title ?? 'Professional') . ' — Zonely')
 @section('og_description', $ogDesc)
-@section('og_image',       route('og.image', $user->slug).'?v='.$user->updated_at->timestamp)
+@section('og_image',       route('frontend.og.image', $user->slug).'?v='.$user->updated_at->timestamp)
 @section('og_extra')
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
