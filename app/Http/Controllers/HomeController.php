@@ -208,38 +208,28 @@ class HomeController extends Controller
 
         $W = 1200; $H = 630;
         $img = imagecreatetruecolor($W, $H);
+        imagealphablending($img, true);
 
-        // Colors
-        $cBg     = imagecolorallocate($img, 10,  17,  35);
-        $cTeal   = imagecolorallocate($img, 42,  140, 135); // brand #2a8c87
-        $cWhite  = imagecolorallocate($img, 255, 255, 255);
-        $cSlate4 = imagecolorallocate($img, 148, 163, 184);
-        $cSlate5 = imagecolorallocate($img, 100, 116, 139);
-        $cEmerald= imagecolorallocate($img, 16,  185, 129);
-        $cAmber  = imagecolorallocate($img, 245, 158, 11);
+        // ── Palette ──────────────────────────────────────────────────────
+        $cWhite    = imagecolorallocate($img, 255, 255, 255);
+        $cTeal     = imagecolorallocate($img, 42,  140, 135);  // #2a8c87
+        $cTealDark = imagecolorallocate($img, 30,  110, 106);  // #1e6e6a
+        $cTealBg   = imagecolorallocate($img, 234, 250, 249);  // #eafaf9
+        $cSlate9   = imagecolorallocate($img, 15,  23,  42);   // near-black
+        $cSlate7   = imagecolorallocate($img, 51,  65,  85);
+        $cSlate5   = imagecolorallocate($img, 100, 116, 139);
+        $cSlate2   = imagecolorallocate($img, 226, 232, 240);
+        $cAmber    = imagecolorallocate($img, 245, 158, 11);
+        $cGreen    = imagecolorallocate($img, 34,  197, 94);
 
-        // Background
-        imagefilledrectangle($img, 0, 0, $W, $H, $cBg);
-
-        // Subtle top-right teal glow
-        for ($r = 280; $r >= 0; $r -= 2) {
-            $a = (int)(127 - ($r / 280) * 100);
-            $c = imagecolorallocatealpha($img, 42, 140, 135, $a);
-            imagefilledellipse($img, $W, 0, $r * 2, $r * 2, $c);
-        }
-
-        // Teal left accent bar
-        imagefilledrectangle($img, 0, 0, 6, $H, $cTeal);
-
-        // --- PHOTO (left 420px) ---
-        $photoW = 420;
+        // ── PHOTO PANEL (left 430px) ──────────────────────────────────────
+        $photoW    = 430;
         $photoLoaded = false;
 
         if ($user->profile_photo) {
             $src   = false;
             $photo = ltrim($user->profile_photo, '/');
 
-            // Try every likely filesystem location (Railway symlink may be missing)
             $fsPaths = [
                 public_path($photo),
                 storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
@@ -256,8 +246,6 @@ class HomeController extends Controller
                     default      => false,
                 };
             }
-
-            // URL fallback — try app URL and asset URL
             if (!$src) {
                 $ctx  = stream_context_create(['http' => ['timeout' => 5, 'ignore_errors' => true]]);
                 $urls = [asset($photo), url($photo), config('app.url').'/'.ltrim($photo,'/')];
@@ -285,20 +273,42 @@ class HomeController extends Controller
         }
 
         if (!$photoLoaded) {
-            imagefilledrectangle($img, 0, 0, $photoW, $H, $cTeal);
-            $ini = strtoupper(substr($user->name, 0, 2));
-            imagestring($img, 5, (int)($photoW/2 - 20), (int)($H/2 - 10), $ini, $cWhite);
+            // Gradient fallback placeholder
+            for ($y = 0; $y < $H; $y++) {
+                $ratio = $y / $H;
+                $r = (int)(42 + $ratio * (30 - 42));
+                $g = (int)(140 + $ratio * (110 - 140));
+                $b = (int)(135 + $ratio * (106 - 135));
+                $c = imagecolorallocate($img, $r, $g, $b);
+                imageline($img, 0, $y, $photoW, $y, $c);
+            }
+            // Initials
+            $fontPaths = [
+                '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+                '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+                '/usr/share/fonts/truetype/freefont/FreeSansBold.ttf',
+            ];
+            $fB = collect($fontPaths)->first(fn($p) => file_exists($p));
+            if ($fB) {
+                $ini = strtoupper(substr($user->name, 0, 1));
+                imagettftext($img, 72, 0, (int)($photoW/2 - 30), (int)($H/2 + 28), $cWhite, $fB, $ini);
+            }
         }
 
-        // Photo → dark fade (right edge of photo)
-        imagealphablending($img, true);
-        for ($i = 0; $i <= 180; $i++) {
-            $alpha = (int)(127 * ($i / 180));
-            $c = imagecolorallocatealpha($img, 10, 17, 35, 127 - $alpha);
-            imageline($img, $photoW - 180 + $i, 0, $photoW - 180 + $i, $H, $c);
+        // Gradient overlay bottom of photo (dark scrim for text readability)
+        for ($i = 0; $i < 200; $i++) {
+            $a = (int)(127 * (1 - ($i / 200)));
+            $c = imagecolorallocatealpha($img, 0, 0, 0, $a);
+            imageline($img, 0, $H - $i, $photoW, $H - $i, $c);
         }
 
-        // --- FONTS ---
+        // ── RIGHT PANEL (white) ───────────────────────────────────────────
+        imagefilledrectangle($img, $photoW, 0, $W, $H, $cWhite);
+
+        // Top teal stripe
+        imagefilledrectangle($img, $photoW, 0, $W, 8, $cTeal);
+
+        // ── FONTS ─────────────────────────────────────────────────────────
         $fontPaths = [
             '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
             '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
@@ -310,71 +320,120 @@ class HomeController extends Controller
             '/usr/share/fonts/truetype/freefont/FreeSans.ttf',
         ];
         $fontB = collect($fontPaths)->first(fn($p) => file_exists($p));
-        $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p));
-        $ttf   = $fontB && $fontR;
+        $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p)) ?? $fontB;
+        $ttf   = (bool)$fontB;
 
-        // --- RIGHT CONTENT ---
-        $cx = 460; $cy = 72;
+        $rx = $photoW + 48;  // right panel content x
+        $cy = 56;
 
-        // Brand
-        if ($ttf) imagettftext($img, 13, 0, $cx, $cy, $cTeal, $fontB, 'ZONELY.');
-        $cy += 58;
-
-        // Name
-        $name = $user->name;
+        // ZONELY. brand
         if ($ttf) {
-            $bbox = imagettfbbox(36, 0, $fontB, $name);
-            $fs   = abs($bbox[4] - $bbox[0]) > ($W - $cx - 40) ? 26 : 36;
-            imagettftext($img, $fs, 0, $cx, $cy, $cWhite, $fontB, $name);
+            imagettftext($img, 12, 0, $rx, $cy, $cTeal, $fontB, 'ZONELY.');
         }
-        $cy += 48;
+        $cy += 42;
 
-        // Verified badge
-        if ($user->status && $ttf) {
-            imagefilledrectangle($img, $cx, $cy - 18, $cx + 128, $cy + 7, $cEmerald);
-            imagettftext($img, 11, 0, $cx + 10, $cy, $cWhite, $fontB, 'VERIFIED');
-            $cy += 38;
+        // ── Name ──────────────────────────────────────────────────────────
+        $name = $user->name ?? 'Professional';
+        if ($ttf) {
+            $maxW = $W - $rx - 40;
+            $bbox = imagettfbbox(32, 0, $fontB, $name);
+            $fs   = abs($bbox[4] - $bbox[0]) > $maxW ? 24 : 32;
+            imagettftext($img, $fs, 0, $rx, $cy, $cSlate9, $fontB, $name);
         }
+        $cy += 44;
 
-        // Specialty
+        // ── Specialty / Title ──────────────────────────────────────────────
         $specialty = Str::before($user->title ?? $user->designation ?? $user->category?->title ?? '', '|');
-        $specialty = Str::limit(trim($specialty), 48);
+        $specialty = Str::limit(trim($specialty), 42);
         if ($ttf && $specialty) {
-            imagettftext($img, 15, 0, $cx, $cy, $cSlate4, $fontR, $specialty);
-            $cy += 34;
+            imagettftext($img, 15, 0, $rx, $cy, $cTeal, $fontR ?? $fontB, $specialty);
+            $cy += 32;
         }
 
-        // Services (first 3)
-        $cy += 6;
-        foreach ($user->services->take(3) as $svc) {
-            $t = Str::limit($svc->title ?? '', 40);
-            if ($ttf && $t) {
-                imagettftext($img, 12, 0, $cx, $cy, $cSlate5, $fontR, '– ' . $t);
-                $cy += 24;
-            }
-        }
-        $cy += 10;
-
-        // Location
-        if ($user->city && $ttf) {
-            $loc = $user->city . ($user->state ? ', ' . $user->state : '');
-            imagettftext($img, 13, 0, $cx, $cy, $cSlate4, $fontR, $loc);
-            $cy += 30;
-        }
-
-        // Stars
+        // ── Rating row ────────────────────────────────────────────────────
         $rCount = $user->reviews->count();
         $rAvg   = $rCount ? round($user->reviews->avg('rating'), 1) : null;
         if ($ttf && $rAvg) {
             $stars = str_repeat('★', (int)round($rAvg)) . str_repeat('☆', 5 - (int)round($rAvg));
-            imagettftext($img, 16, 0, $cx, $cy, $cAmber, $fontB, $stars . '  ' . $rAvg . ' (' . $rCount . ' reviews)');
+            imagettftext($img, 15, 0, $rx, $cy, $cAmber, $fontB, $stars);
+            $rText = ' ' . $rAvg . ' (' . $rCount . ')';
+            $starBbox = imagettfbbox(15, 0, $fontB, $stars);
+            $starW = abs($starBbox[4] - $starBbox[0]);
+            imagettftext($img, 13, 0, $rx + $starW + 6, $cy, $cSlate5, $fontR ?? $fontB, $rText);
+            $cy += 30;
         }
 
-        // Domain
-        $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
-        if ($ttf) imagettftext($img, 11, 0, $cx, $H - 32, $cSlate5, $fontR, $domain);
+        // ── Divider ───────────────────────────────────────────────────────
+        $cy += 10;
+        imagefilledrectangle($img, $rx, $cy, $W - 40, $cy + 1, $cSlate2);
+        $cy += 18;
 
-        // Output
+        // ── Services (up to 3) ─────────────────────────────────────────────
+        $serviceCount = 0;
+        foreach ($user->services->take(3) as $svc) {
+            $t = Str::limit($svc->title ?? '', 38);
+            if (!$ttf || !$t) continue;
+            // Teal dot bullet
+            imagefilledellipse($img, $rx + 6, $cy - 6, 10, 10, $cTeal);
+            imagettftext($img, 13, 0, $rx + 20, $cy, $cSlate7, $fontR ?? $fontB, $t);
+            $cy += 26;
+            $serviceCount++;
+        }
+        if ($serviceCount > 0) $cy += 6;
+
+        // ── Location ──────────────────────────────────────────────────────
+        if ($user->city && $ttf) {
+            $loc = ($user->city ?? '') . ($user->state ? ', ' . $user->state : '');
+            imagettftext($img, 13, 0, $rx, $cy, $cSlate5, $fontR ?? $fontB, $loc);
+            $cy += 28;
+        }
+
+        // ── CTA Button ────────────────────────────────────────────────────
+        $cy = max($cy + 10, $H - 110);
+        $btnX1 = $rx; $btnY1 = $cy;
+        $btnX2 = $rx + 260; $btnY2 = $cy + 46;
+        // Button fill
+        imagefilledrectangle($img, $btnX1, $btnY1, $btnX2, $btnY2, $cTeal);
+        // Rounded corners simulation (filled circles at corners)
+        imagefilledellipse($img, $btnX1 + 12, $btnY1 + 12, 24, 24, $cTeal);
+        imagefilledellipse($img, $btnX2 - 12, $btnY1 + 12, 24, 24, $cTeal);
+        imagefilledellipse($img, $btnX1 + 12, $btnY2 - 12, 24, 24, $cTeal);
+        imagefilledellipse($img, $btnX2 - 12, $btnY2 - 12, 24, 24, $cTeal);
+        if ($ttf) {
+            $btnText = 'Book Free Consultation';
+            $bbox = imagettfbbox(13, 0, $fontB, $btnText);
+            $textW = abs($bbox[4] - $bbox[0]);
+            $textX = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
+            $textY = $btnY1 + 30;
+            imagettftext($img, 13, 0, $textX, $textY, $cWhite, $fontB, $btnText);
+        }
+
+        // ── Photo bottom text overlay ─────────────────────────────────────
+        if ($ttf) {
+            $overlayName = Str::limit($user->name ?? '', 22);
+            imagettftext($img, 22, 0, 28, $H - 64, $cWhite, $fontB, $overlayName);
+            $cat = Str::limit($user->category?->title ?? ($user->designation ?? ''), 30);
+            if ($cat) imagettftext($img, 13, 0, 28, $H - 36, imagecolorallocatealpha($img, 255, 255, 255, 60), $fontR ?? $fontB, $cat);
+        }
+
+        // ── Verified badge (photo panel top-left) ─────────────────────────
+        if ($user->status) {
+            imagefilledrectangle($img, 20, 20, 132, 46, $cGreen);
+            if ($ttf) imagettftext($img, 11, 0, 32, 39, $cWhite, $fontB, '✓ VERIFIED');
+        }
+
+        // ── Bottom teal stripe ────────────────────────────────────────────
+        imagefilledrectangle($img, $photoW, $H - 8, $W, $H, $cTeal);
+
+        // ── Domain bottom-right ───────────────────────────────────────────
+        $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
+        if ($ttf) {
+            $dBbox = imagettfbbox(11, 0, $fontR ?? $fontB, $domain);
+            $dW    = abs($dBbox[4] - $dBbox[0]);
+            imagettftext($img, 11, 0, $W - $dW - 28, $H - 22, $cSlate5, $fontR ?? $fontB, $domain);
+        }
+
+        // ── Output ────────────────────────────────────────────────────────
         header('Content-Type: image/png');
         header('Cache-Control: public, max-age=3600');
         imagepng($img, null, 6);
