@@ -433,10 +433,10 @@
                                 @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
                             </div>
                             <div class="pb-4 min-w-0">
-                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $exp->title }}</p>
-                                @if($exp->company)<p class="text-xs text-indigo-600 font-medium mt-0.5">{{ $exp->company }}</p>@endif
+                                <p class="font-semibold text-base text-slate-800 leading-tight">{{ $exp->title }}</p>
+                                @if($exp->company)<p class="text-sm text-indigo-600 font-medium mt-0.5">{{ $exp->company }}</p>@endif
                                 @if($exp->start_date || $exp->is_current || $exp->end_date)
-                                <p class="text-xs text-slate-400 mt-0.5">{{ $exp->start_date ?? '' }}@if($exp->start_date) – @endif{{ $exp->is_current ? 'Present' : ($exp->end_date ?? '') }}</p>
+                                <p class="text-sm text-slate-400 mt-0.5">{{ $exp->start_date ?? '' }}@if($exp->start_date) – @endif{{ $exp->is_current ? 'Present' : ($exp->end_date ?? '') }}</p>
                                 @endif
                             </div>
                         </div>
@@ -462,9 +462,9 @@
                                 @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
                             </div>
                             <div class="pb-4 min-w-0">
-                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $m->name }}</p>
-                                @if($m->start || $m->end)<p class="text-xs text-slate-400 mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>@endif
-                                @if(!empty($m->address))<p class="text-xs text-slate-500 mt-0.5">{{ $m->address }}</p>@endif
+                                <p class="font-semibold text-base text-slate-800 leading-tight">{{ $m->name }}</p>
+                                @if($m->start || $m->end)<p class="text-sm text-slate-400 mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>@endif
+                                @if(!empty($m->address))<p class="text-sm text-slate-500 mt-0.5">{{ $m->address }}</p>@endif
                             </div>
                         </div>
                         @endforeach
@@ -504,9 +504,9 @@
                                 @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
                             </div>
                             <div class="pb-4 min-w-0">
-                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $edu->degree }}</p>
-                                @if($edu->institution)<p class="text-xs text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
-                                @if($edu->passing_year)<p class="text-xs text-slate-400 mt-0.5">{{ $edu->passing_year }}</p>@endif
+                                <p class="font-semibold text-base text-slate-800 leading-tight">{{ $edu->degree }}</p>
+                                @if($edu->institution)<p class="text-sm text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
+                                @if($edu->passing_year)<p class="text-sm text-slate-400 mt-0.5">{{ $edu->passing_year }}</p>@endif
                             </div>
                         </div>
                         @endforeach
@@ -530,10 +530,10 @@
                                 <i class="fas fa-award text-amber-500 text-xs"></i>
                             </div>
                             <div class="min-w-0">
-                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $cert->name }}</p>
-                                @if($cert->issuer)<p class="text-xs text-amber-600 mt-0.5">{{ $cert->issuer }}</p>@endif
-                                @if($cert->issued_year)<p class="text-xs text-slate-400 mt-0.5">{{ $cert->issued_year }}{{ $cert->expiry_year ? ' – '.$cert->expiry_year : '' }}</p>@endif
-                                @if($cert->credential_id)<p class="text-xs text-slate-400 mt-0.5">ID: {{ $cert->credential_id }}</p>@endif
+                                <p class="font-semibold text-base text-slate-800 leading-tight">{{ $cert->name }}</p>
+                                @if($cert->issuer)<p class="text-sm text-amber-600 mt-0.5">{{ $cert->issuer }}</p>@endif
+                                @if($cert->issued_year)<p class="text-sm text-slate-400 mt-0.5">{{ $cert->issued_year }}{{ $cert->expiry_year ? ' – '.$cert->expiry_year : '' }}</p>@endif
+                                @if($cert->credential_id)<p class="text-sm text-slate-400 mt-0.5">ID: {{ $cert->credential_id }}</p>@endif
                             </div>
                         </div>
                         @endforeach
@@ -561,7 +561,7 @@
                         </div>
                     </button>
                     <div class="faq-content border-t border-slate-100">
-                        <p class="px-6 py-4 text-sm text-slate-600 leading-relaxed">{{ $faq->answer }}</p>
+                        <p class="px-6 py-4 text-base text-slate-600 leading-relaxed">{{ $faq->answer }}</p>
                     </div>
                 </div>
                 @endforeach
