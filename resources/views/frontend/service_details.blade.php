@@ -6,7 +6,12 @@
 @section('title', $meta_title)
 @section('og_title',       $user->title)
 @section('og_description', Str::limit(strip_tags($user->bio ?? ''), 200))
-@section('og_image',       $user->profile_photo ? asset($user->profile_photo) : asset('frontend/img/zonely_logo.png'))
+@section('og_image',       route('og.image', $user->slug).'?v='.($user->updated_at?->timestamp ?? 1))
+@section('og_extra')
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type"   content="image/png">
+@endsection
 
 @section('schema')
 <script type="application/ld+json">
