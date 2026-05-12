@@ -46,7 +46,7 @@
     <meta name="format-detection"             content="telephone=yes">
 
     {{-- Favicon ─────────────────────────────────────── --}}
-    <link rel="icon" href="{{ asset('frontend/img/zonely_logo.svg') }}" type="image/png">
+    <link rel="icon" href="{{ asset('frontend/img/zonely_logo.png') }}" type="image/png">
     <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.svg') }}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{ asset('frontend/img/favicon.svg') }}">
 
