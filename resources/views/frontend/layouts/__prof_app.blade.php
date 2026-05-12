@@ -137,6 +137,7 @@
                 {{-- Nav links --}}
                 @php
                     $cr = Route::currentRouteName();
+                    $isProfileSubPage = str_starts_with($cr ?? '', 'user.');
                     $sideNavItems = [
                         ['route' => 'seller.dashboard',     'icon' => 'fa-gauge-high',          'label' => 'Lead Dashboard'],
                         ['route' => 'seller.onboarding',    'icon' => 'fa-user-pen',            'label' => 'My Profile'],
@@ -151,10 +152,11 @@
                 <nav class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                     @foreach($sideNavItems as $item)
                     <a href="{{ route($item['route']) }}"
+                       @php $active = $cr === $item['route'] || ($item['route'] === 'seller.onboarding' && $isProfileSubPage); @endphp
                        class="flex items-center gap-3 px-4 py-3 text-sm border-b border-slate-50 last:border-0 transition
-                              {{ $cr === $item['route'] ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
+                              {{ $active ? 'bg-teal-50 text-teal-800 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
                         <i class="fas {{ $item['icon'] }} w-4 text-center
-                                  {{ $cr === $item['route'] ? 'text-teal-700' : 'text-slate-400' }}"></i>
+                                  {{ $active ? 'text-teal-700' : 'text-slate-400' }}"></i>
                         {{ $item['label'] }}
                     </a>
                     @endforeach

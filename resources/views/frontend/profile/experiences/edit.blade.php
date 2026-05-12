@@ -67,18 +67,19 @@
                 class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-50 transition resize-none">{{ old('description', $experience->description) }}</textarea>
         </div>
 
-        <div class="flex justify-between">
-            <form action="{{ route('user.experiences.destroy', $experience->id) }}" method="POST"
-                  onsubmit="return confirm('Delete this experience?')">
-                @csrf @method('DELETE')
-                <button type="submit" class="px-5 py-3 text-red-600 hover:bg-red-50 font-semibold rounded-2xl text-sm transition">
-                    <i class="fa-solid fa-trash mr-1"></i> Delete
-                </button>
-            </form>
+        <div class="flex justify-end">
             <button type="submit" class="px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-sm transition">
                 <i class="fa-solid fa-floppy-disk mr-2"></i> Save
             </button>
         </div>
+    </form>
+
+    <form action="{{ route('user.experiences.destroy', $experience->id) }}" method="POST"
+          onsubmit="return confirm('Delete this experience?')" class="mt-2">
+        @csrf @method('DELETE')
+        <button type="submit" class="px-5 py-3 text-red-500 hover:bg-red-50 font-semibold rounded-2xl text-sm transition w-full text-center">
+            <i class="fa-solid fa-trash mr-1"></i> Delete this experience
+        </button>
     </form>
 </div>
 <script>
