@@ -187,46 +187,81 @@
                 </p>
             </section>
 
-            {{-- Education + Working Zone --}}
+            {{-- Experience + Memberships --}}
+            @if($user->experiences->count() || $user->memberships->count())
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
+                @if($user->experiences->count())
                 <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-700 mb-5">Education</h3>
-                    <div class="space-y-5">
-                        @forelse($user->educations as $edu)
-                        <div class="flex items-start gap-3">
-                            <div class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 text-xs font-bold shrink-0">
-                                {{ $edu->degree }}
-                            </div>
-                            <p class="text-sm font-semibold text-slate-800 leading-snug">
-                                {{ $edu->institution ? 'from '.$edu->institution : '—' }}
-                            </p>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-5">Work Experience</h3>
+                    <div class="space-y-4">
+                        @foreach($user->experiences as $exp)
+                        <div class="border-b border-slate-50 pb-4 last:border-0 last:pb-0">
+                            <p class="text-sm font-bold text-slate-800">{{ $exp->title }}</p>
+                            @if($exp->company)<p class="text-xs text-indigo-600 font-medium mt-0.5">{{ $exp->company }}</p>@endif
+                            @if($exp->start_date)
+                            <p class="text-xs text-slate-400 mt-0.5">{{ $exp->start_date }} – {{ $exp->is_current ? 'Present' : ($exp->end_date ?? '') }}</p>
+                            @endif
                         </div>
-                        @empty
-                        <p class="text-sm text-slate-400 italic">No education records.</p>
-                        @endforelse
+                        @endforeach
                     </div>
                 </div>
-
+                @endif
+                @if($user->memberships->count())
                 <div class="bg-slate-900 p-6 sm:p-8 rounded-3xl text-white">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-400 mb-5">Working Zone</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-400 mb-5">Memberships</h3>
                     <div class="space-y-3">
-                        @forelse($user->memberships as $m)
+                        @foreach($user->memberships as $m)
                         <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
                             <p class="text-sm font-semibold text-white">{{ $m->name }}</p>
                             @if($m->start || $m->end)
                             <p class="text-xs text-slate-400 mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
                             @endif
-                            @if(!empty($m->address))
-                            <p class="text-xs text-slate-400">{{ $m->address }}</p>
-                            @endif
                         </div>
-                        @empty
-                        <p class="text-sm text-slate-400 italic">No zone records.</p>
-                        @endforelse
+                        @endforeach
                     </div>
                 </div>
+                @endif
             </div>
+            @endif
+
+            {{-- Education + Certifications --}}
+            @if($user->educations->count() || $user->certifications->count())
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                @if($user->educations->count())
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-700 mb-5">Education</h3>
+                    <div class="space-y-4">
+                        @foreach($user->educations as $edu)
+                        <div class="flex items-start gap-3">
+                            <div class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 text-xs font-bold shrink-0">{{ $edu->degree }}</div>
+                            <div>
+                                @if($edu->institution)<p class="text-sm font-semibold text-slate-800 leading-snug">{{ $edu->institution }}</p>@endif
+                                @if($edu->passing_year)<p class="text-xs text-slate-400 mt-0.5">{{ $edu->passing_year }}</p>@endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+                @if($user->certifications->count())
+                <div class="bg-amber-50 p-6 sm:p-8 rounded-3xl border border-amber-100 shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-5">Certifications</h3>
+                    <div class="space-y-3">
+                        @foreach($user->certifications as $cert)
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-award text-amber-500 mt-0.5 text-sm shrink-0"></i>
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">{{ $cert->name }}</p>
+                                @if($cert->issuer)<p class="text-xs text-amber-600 mt-0.5">{{ $cert->issuer }}</p>@endif
+                                @if($cert->issued_year)<p class="text-xs text-slate-400">{{ $cert->issued_year }}{{ $cert->expiry_year ? ' – '.$cert->expiry_year : '' }}</p>@endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </div>
+            @endif
 
             {{-- Services list --}}
             @if($user->services->count())

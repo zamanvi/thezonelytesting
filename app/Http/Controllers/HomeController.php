@@ -170,7 +170,7 @@ class HomeController extends Controller
     function service_show($slug)
     {
         $user = User::activeSellers()->where('slug', $slug)
-            ->with(['contacts','languages','educations','memberships','services.category','reviews.reviewer','category','twilioNumber','faqs'])
+            ->with(['contacts','languages','educations','certifications','experiences','memberships','services.category','reviews.reviewer','category','twilioNumber','faqs'])
             ->firstOrFail();
         $view = $user->seller_service_type === 'professional'
             ? 'frontend.service_details_professional'

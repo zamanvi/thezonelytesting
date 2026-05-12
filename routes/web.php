@@ -14,7 +14,9 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EducationController;
@@ -162,6 +164,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
         Route::resource('services', ServiceController::class);
         Route::resource('educations', EducationController::class);
+        Route::resource('experiences', ExperienceController::class);
+        Route::resource('certifications', CertificationController::class);
         Route::resource('memberships', MembershipController::class);
         Route::resource('languages', LanguageController::class);
         Route::resource('contacts', ContactController::class);

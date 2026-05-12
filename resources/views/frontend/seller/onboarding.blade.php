@@ -9,7 +9,7 @@
         'contact'     => filled($user->whatsapp) || $user->contacts()->count() > 0,
         'faqs'        => $user->faqs->count() > 0,
         'loc_services'=> (filled($user->city) || filled($user->zip_code)) && $user->services->count() > 0,
-        'credentials' => $user->educations->count() > 0 || $user->memberships->count() > 0,
+        'credentials' => $user->educations->count() > 0 || $user->memberships->count() > 0 || $user->experiences->count() > 0 || $user->certifications->count() > 0,
     ];
 
     $total     = 6;
@@ -293,9 +293,11 @@
 
         {{-- 6. Credentials & Trust (MERGED — always shown) --}}
         @php
-            $eduDone = $user->educations->count() > 0;
-            $memDone = $user->memberships->count() > 0;
-            $isDone  = $done['credentials'];
+            $eduDone  = $user->educations->count() > 0;
+            $memDone  = $user->memberships->count() > 0;
+            $expDone  = $user->experiences->count() > 0;
+            $certDone = $user->certifications->count() > 0;
+            $isDone   = $done['credentials'];
         @endphp
         <div class="bg-white rounded-2xl border-2 {{ $isDone ? 'border-emerald-200' : 'border-dashed border-slate-200' }} shadow-sm p-5 transition-all hover:shadow-md">
             <div class="flex items-start justify-between gap-3 mb-3">
@@ -305,7 +307,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-slate-900 text-sm">Credentials & Trust</p>
-                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Degrees, licenses & associations</p>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">→ Experience, education, certifications & memberships</p>
                     </div>
                 </div>
                 <span class="shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg {{ $isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500' }}">
@@ -314,24 +316,66 @@
             </div>
 
             <div class="space-y-2 mb-3">
+                {{-- Work Experience sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-briefcase {{ $expDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Work Experience</p>
+                            @if($expDone)
+                                <p class="text-slate-500 truncate">{{ $user->experiences->count() }} position{{ $user->experiences->count() > 1 ? 's' : '' }}:
+                                    {{ $user->experiences->first()->title ?? '' }}{{ $user->experiences->first()->company ? ' at '.$user->experiences->first()->company : '' }}
+                                </p>
+                            @else
+                                <p class="text-slate-400">Past roles, companies, positions</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('user.experiences.index') }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $expDone ? 'Manage' : 'Add' }}
+                    </a>
+                </div>
+
                 {{-- Education sub-row --}}
                 <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
                     <div class="flex items-center gap-2 min-w-0">
                         <i class="fa-solid fa-graduation-cap {{ $eduDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
                         <div class="min-w-0">
-                            <p class="font-semibold text-slate-700">Education & Certifications</p>
+                            <p class="font-semibold text-slate-700">Education</p>
                             @if($eduDone)
-                                <p class="text-slate-500 truncate">{{ $user->educations->count() }} credential{{ $user->educations->count() > 1 ? 's' : '' }}:
-                                    {{ $user->educations->first()->degree ?? $user->educations->first()->institution ?? '' }}
+                                <p class="text-slate-500 truncate">{{ $user->educations->count() }} record{{ $user->educations->count() > 1 ? 's' : '' }}:
+                                    {{ $user->educations->first()->degree ?? '' }}{{ $user->educations->first()->institution ? ', '.$user->educations->first()->institution : '' }}
                                 </p>
                             @else
-                                <p class="text-slate-400">Degrees, licenses, certifications</p>
+                                <p class="text-slate-400">Degrees and academic qualifications</p>
                             @endif
                         </div>
                     </div>
                     <a href="{{ route('user.educations.index') }}"
                        class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
                         {{ $eduDone ? 'Manage' : 'Add' }}
+                    </a>
+                </div>
+
+                {{-- Certifications sub-row --}}
+                <div class="bg-slate-50 rounded-xl px-3 py-2.5 text-xs flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-certificate {{ $certDone ? 'text-emerald-500' : 'text-slate-300' }} shrink-0"></i>
+                        <div class="min-w-0">
+                            <p class="font-semibold text-slate-700">Certifications & Licenses</p>
+                            @if($certDone)
+                                <p class="text-slate-500 truncate">{{ $user->certifications->count() }} certification{{ $user->certifications->count() > 1 ? 's' : '' }}:
+                                    {{ $user->certifications->first()->name ?? '' }}
+                                </p>
+                            @else
+                                <p class="text-slate-400">CPA, CFA, licenses, professional credentials</p>
+                            @endif
+                        </div>
+                    </div>
+                    <a href="{{ route('user.certifications.index') }}"
+                       class="shrink-0 text-[10px] font-bold text-teal-700 hover:underline">
+                        {{ $certDone ? 'Manage' : 'Add' }}
                     </a>
                 </div>
 
@@ -343,7 +387,7 @@
                             <p class="font-semibold text-slate-700">Memberships & Associations</p>
                             @if($memDone)
                                 <p class="text-slate-500 truncate">{{ $user->memberships->count() }} membership{{ $user->memberships->count() > 1 ? 's' : '' }}:
-                                    {{ $user->memberships->first()->name ?? $user->memberships->first()->organization ?? '' }}
+                                    {{ $user->memberships->first()->name ?? '' }}
                                 </p>
                             @else
                                 <p class="text-slate-400">Bar associations, boards, professional orgs</p>
