@@ -254,7 +254,7 @@
                         <span class="text-xs font-bold text-teal-600 uppercase tracking-wider">About</span>
                     </div>
                     @php $bioText = $user->about ?? $user->bio; $bioLong = strlen($bioText) > 400; @endphp
-                    <p class="text-base text-slate-700 leading-relaxed" id="bioText">
+                    <p class="text-base text-slate-700 leading-relaxed text-justify" id="bioText">
                         @if($user->title)<strong class="font-bold text-slate-900">{{ $user->title }}</strong><br>@endif
                         <span id="bioShort">{{ $bioLong ? Str::limit($bioText, 400) : $bioText }}</span>
                         @if($bioLong)
