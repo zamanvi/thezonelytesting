@@ -194,10 +194,13 @@
                     <i class="fas fa-briefcase text-white"></i>
                     <h3 class="font-bold text-base text-white">Experience & Membership</h3>
                 </div>
-                <div class="p-6 grid grid-cols-1 {{ ($user->experiences->count() && $user->memberships->count()) ? 'sm:grid-cols-2' : '' }} gap-6">
-                    @if($user->experiences->count())
+                @if($user->experiences->count())
+                <div class="px-6 pt-5 pb-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1 h-4 bg-indigo-500 rounded-full"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-indigo-600">Work Experience</span>
+                    </div>
                     <div class="space-y-4">
-                        @if($user->memberships->count())<p class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Work Experience</p>@endif
                         @foreach($user->experiences as $exp)
                         <div class="border-b border-slate-50 pb-4 last:border-0 last:pb-0">
                             <p class="text-sm font-bold text-slate-800">{{ $exp->title }}</p>
@@ -208,10 +211,18 @@
                         </div>
                         @endforeach
                     </div>
-                    @endif
-                    @if($user->memberships->count())
+                </div>
+                @endif
+                @if($user->experiences->count() && $user->memberships->count())
+                <div class="mx-6 border-t-2 border-dashed border-slate-100"></div>
+                @endif
+                @if($user->memberships->count())
+                <div class="px-6 pt-5 pb-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1 h-4 bg-teal-600 rounded-full"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-teal-700">Memberships & Associations</span>
+                    </div>
                     <div class="space-y-3">
-                        @if($user->experiences->count())<p class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-3">Memberships</p>@endif
                         @foreach($user->memberships as $m)
                         <div class="border-b border-slate-100 pb-3 last:border-0 last:pb-0">
                             <p class="text-sm font-semibold text-slate-800">{{ $m->name }}</p>
@@ -221,8 +232,8 @@
                         </div>
                         @endforeach
                     </div>
-                    @endif
                 </div>
+                @endif
             </div>
             @endif
 
@@ -233,10 +244,13 @@
                     <i class="fas fa-graduation-cap text-white"></i>
                     <h3 class="font-bold text-base text-white">Education & Certification</h3>
                 </div>
-                <div class="p-6 grid grid-cols-1 {{ ($user->educations->count() && $user->certifications->count()) ? 'sm:grid-cols-2' : '' }} gap-6">
-                    @if($user->educations->count())
+                @if($user->educations->count())
+                <div class="px-6 pt-5 pb-4">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1 h-4 bg-emerald-500 rounded-full"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Education</span>
+                    </div>
                     <div class="space-y-4">
-                        @if($user->certifications->count())<p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-3">Education</p>@endif
                         @foreach($user->educations as $edu)
                         <div class="flex items-start gap-3">
                             <div class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 text-xs font-bold shrink-0">{{ $edu->degree }}</div>
@@ -247,10 +261,18 @@
                         </div>
                         @endforeach
                     </div>
-                    @endif
-                    @if($user->certifications->count())
+                </div>
+                @endif
+                @if($user->educations->count() && $user->certifications->count())
+                <div class="mx-6 border-t-2 border-dashed border-slate-100"></div>
+                @endif
+                @if($user->certifications->count())
+                <div class="px-6 pt-5 pb-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-1 h-4 bg-amber-500 rounded-full"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Certifications & Licenses</span>
+                    </div>
                     <div class="space-y-3">
-                        @if($user->educations->count())<p class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Certifications</p>@endif
                         @foreach($user->certifications as $cert)
                         <div class="flex items-start gap-3">
                             <i class="fas fa-award text-amber-500 mt-0.5 text-sm shrink-0"></i>
@@ -262,8 +284,8 @@
                         </div>
                         @endforeach
                     </div>
-                    @endif
                 </div>
+                @endif
             </div>
             @endif
 
