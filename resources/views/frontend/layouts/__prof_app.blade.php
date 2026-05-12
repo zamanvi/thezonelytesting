@@ -47,8 +47,8 @@
             {{-- Logo --}}
             <a href="{{ route('frontend.home') }}" class="flex items-center gap-2 shrink-0">
                 <img src="{{ asset('frontend/img/zonely_logo.svg') }}" class="w-8 h-8" alt="Zonely">
-                <span class="font-extrabold text-slate-900 tracking-tight text-base hidden sm:inline">
-                    ZONELY<span class="text-teal-700">.</span>
+                <span class="font-extrabold text-teal-700 tracking-tight text-base hidden sm:inline">
+                    ZONELY<span class="text-teal-900">.</span>
                 </span>
             </a>
 
