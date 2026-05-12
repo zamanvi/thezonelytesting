@@ -81,10 +81,10 @@
                 <div class="flex items-start justify-between gap-3 mb-3">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center font-bold text-teal-700 text-sm shrink-0">
-                            {{ strtoupper(substr($review->buyer->name ?? 'AN', 0, 2)) }}
+                            {{ strtoupper(substr($review->reviewer_name ?? $review->reviewer?->name ?? 'AN', 0, 2)) }}
                         </div>
                         <div>
-                            <p class="font-bold text-sm text-slate-900">{{ $review->buyer->name ?? 'Anonymous' }}</p>
+                            <p class="font-bold text-sm text-slate-900">{{ $review->reviewer_name ?? $review->reviewer?->name ?? 'Anonymous' }}</p>
                             <p class="text-xs text-slate-400">{{ $review->created_at?->format('M d, Y') }}</p>
                         </div>
                     </div>

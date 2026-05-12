@@ -603,7 +603,9 @@
     {{-- ── CONTACT NUMBERS ── --}}
     <form action="{{ route('seller.settings.update') }}" method="POST"
           class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm mb-6">
-        @csrf
+        @csrf @method('PUT')
+        <input type="hidden" name="name"  value="{{ $user->name }}">
+        <input type="hidden" name="email" value="{{ $user->email }}">
         <h3 class="font-bold text-base">My Contact Numbers</h3>
         <p class="text-xs text-slate-400 mt-0.5 mb-5">Twilio forwards all leads to these numbers</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
