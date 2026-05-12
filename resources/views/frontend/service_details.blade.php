@@ -187,13 +187,17 @@
                 </p>
             </section>
 
-            {{-- Experience + Memberships --}}
+            {{-- Experience & Membership --}}
             @if($user->experiences->count() || $user->memberships->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                @if($user->experiences->count())
-                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-5">Work Experience</h3>
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-600 to-teal-700 px-6 py-4 flex items-center gap-3">
+                    <i class="fas fa-briefcase text-white"></i>
+                    <h3 class="font-bold text-base text-white">Experience & Membership</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 {{ ($user->experiences->count() && $user->memberships->count()) ? 'sm:grid-cols-2' : '' }} gap-6">
+                    @if($user->experiences->count())
                     <div class="space-y-4">
+                        @if($user->memberships->count())<p class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-3">Work Experience</p>@endif
                         @foreach($user->experiences as $exp)
                         <div class="border-b border-slate-50 pb-4 last:border-0 last:pb-0">
                             <p class="text-sm font-bold text-slate-800">{{ $exp->title }}</p>
@@ -204,33 +208,35 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
-                @endif
-                @if($user->memberships->count())
-                <div class="bg-slate-900 p-6 sm:p-8 rounded-3xl text-white">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-400 mb-5">Memberships</h3>
+                    @endif
+                    @if($user->memberships->count())
                     <div class="space-y-3">
+                        @if($user->experiences->count())<p class="text-xs font-bold uppercase tracking-widest text-teal-600 mb-3">Memberships</p>@endif
                         @foreach($user->memberships as $m)
-                        <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-                            <p class="text-sm font-semibold text-white">{{ $m->name }}</p>
+                        <div class="border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+                            <p class="text-sm font-semibold text-slate-800">{{ $m->name }}</p>
                             @if($m->start || $m->end)
                             <p class="text-xs text-slate-400 mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
                             @endif
                         </div>
                         @endforeach
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
             @endif
 
-            {{-- Education + Certifications --}}
+            {{-- Education & Certification --}}
             @if($user->educations->count() || $user->certifications->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                @if($user->educations->count())
-                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-teal-700 mb-5">Education</h3>
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-600 to-amber-500 px-6 py-4 flex items-center gap-3">
+                    <i class="fas fa-graduation-cap text-white"></i>
+                    <h3 class="font-bold text-base text-white">Education & Certification</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 {{ ($user->educations->count() && $user->certifications->count()) ? 'sm:grid-cols-2' : '' }} gap-6">
+                    @if($user->educations->count())
                     <div class="space-y-4">
+                        @if($user->certifications->count())<p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-3">Education</p>@endif
                         @foreach($user->educations as $edu)
                         <div class="flex items-start gap-3">
                             <div class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 text-xs font-bold shrink-0">{{ $edu->degree }}</div>
@@ -241,12 +247,10 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
-                @endif
-                @if($user->certifications->count())
-                <div class="bg-amber-50 p-6 sm:p-8 rounded-3xl border border-amber-100 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-5">Certifications</h3>
+                    @endif
+                    @if($user->certifications->count())
                     <div class="space-y-3">
+                        @if($user->educations->count())<p class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">Certifications</p>@endif
                         @foreach($user->certifications as $cert)
                         <div class="flex items-start gap-3">
                             <i class="fas fa-award text-amber-500 mt-0.5 text-sm shrink-0"></i>
@@ -258,8 +262,8 @@
                         </div>
                         @endforeach
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
             @endif
 
