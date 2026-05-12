@@ -113,9 +113,9 @@
                     <div class="pro-glass rounded-3xl p-6 text-center">
                         <div class="relative inline-block">
                             <img src="{{ $user->profile_photo }}" alt="{{ $user->name }}"
-                                 class="w-48 h-60 object-cover rounded-2xl border-4 border-white/30 shadow-xl mx-auto"
+                                 class="w-36 h-48 sm:w-48 sm:h-60 object-cover rounded-2xl border-4 border-white/30 shadow-xl mx-auto"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="w-48 h-60 bg-teal-600/40 border-4 border-white/30 rounded-2xl mx-auto items-center justify-center text-white font-black text-4xl shadow-xl">
+                            <div style="display:none;" class="w-36 h-48 sm:w-48 sm:h-60 bg-teal-600/40 border-4 border-white/30 rounded-2xl mx-auto items-center justify-center text-white font-black text-4xl shadow-xl">
                                 {{ strtoupper(substr($user->name, 0, 2)) }}
                             </div>
                         </div>
@@ -165,7 +165,7 @@
 
                 {{-- Text + CTAs — RIGHT --}}
                 <div class="flex-1 text-center md:text-left">
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                    <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
                         Trusted {{ $user->category?->title ?? 'Professional' }}
                         @if($cityName) in {{ $cityName }}{{ $stateName ? ', '.$stateName : '' }}@endif
                     </h1>
@@ -254,7 +254,7 @@
                         <span class="text-xs font-bold text-teal-600 uppercase tracking-wider">About</span>
                     </div>
                     @php $bioText = $user->about ?? $user->bio; $bioLong = strlen($bioText) > 400; @endphp
-                    <p class="text-base text-slate-700 leading-relaxed text-justify" id="bioText">
+                    <p class="text-base text-slate-700 leading-relaxed" id="bioText">
                         @if($user->title)<strong class="font-bold text-slate-900">{{ $user->title }}</strong><br>@endif
                         <span id="bioShort">{{ $bioLong ? Str::limit($bioText, 400) : $bioText }}</span>
                         @if($bioLong)
@@ -294,7 +294,7 @@
                         <div class="h-1 bg-gradient-to-r from-teal-600 to-indigo-500"></div>
                         <button onclick="toggleAccordion(this)"
                             class="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-teal-50/30 transition-colors">
-                            <div class="flex items-center gap-6 min-w-0">
+                            <div class="flex items-center gap-3 sm:gap-6 min-w-0">
                                 <div class="w-11 h-11 bg-teal-50 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-teal-100 transition-colors">
                                     <i class="fas {{ $svcIcon }} text-teal-700 text-base"></i>
                                 </div>
@@ -581,7 +581,7 @@
                     <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-teal-100 text-sm font-semibold px-4 py-2 rounded-full mb-4">
                         <i class="fas fa-calendar-check text-yellow-300"></i> Free Initial Consultation
                     </div>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-snug">Book a Free Consultation with {{ $user->business_name ?? $user->name }}</h2>
+                    <h2 class="text-xl sm:text-2xl md:text-4xl font-bold leading-snug">Book a Free Consultation with {{ $user->business_name ?? $user->name }}</h2>
                     <p class="text-teal-200 mt-2 text-base">We will respond within 24 hours</p>
                 </div>
                 <div class="flex-shrink-0 flex flex-col items-center gap-4">

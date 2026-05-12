@@ -5,6 +5,7 @@
 @endphp
 @extends('frontend.layouts._app')
 @section('title', 'Discover & Hire Local Experts Near Me')
+@section('hideLayoutFooter', true)
 
 @section('schema')
 <script type="application/ld+json">
@@ -31,6 +32,8 @@
     .cat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px -8px rgba(15,118,110,0.18); border-color: #0F766E; }
     .review-card { transition: box-shadow .2s ease; }
     .review-card:hover { box-shadow: 0 12px 32px -8px rgba(0,0,0,0.10); }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
     @keyframes countup { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
     .stat-num { animation: countup .6s ease both; }
 </style>
@@ -46,7 +49,7 @@
             <i class="fa-solid fa-shield-halved text-teal-600 text-xs"></i> Verified local professionals near you
         </div>
 
-        <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-slate-900 leading-[1.05] tracking-tight mb-5">
+        <h1 class="font-serif text-3xl sm:text-5xl lg:text-7xl text-slate-900 leading-[1.05] tracking-tight mb-5">
             Discover &amp; Hire<br>
             <em class="text-teal-700" style="font-style:italic;">Local Experts</em> Near Me
         </h1>
@@ -80,7 +83,7 @@
         </div>
 
         {{-- Popular searches --}}
-        <div class="mt-6 flex flex-wrap justify-center gap-2">
+        <div class="mt-6 flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
             @foreach([
                 ['q'=>'Plumber','icon'=>'fa-wrench'],
                 ['q'=>'Electrician','icon'=>'fa-bolt'],
@@ -92,7 +95,7 @@
                 ['q'=>'Cleaning','icon'=>'fa-broom'],
             ] as $s)
             <a href="{{ route('frontend.service.search') }}?q={{ urlencode($s['q']) }}"
-               class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-800 px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition" style="min-height:unset;">
+               class="shrink-0 flex items-center gap-1.5 bg-slate-50 border border-slate-200 hover:border-teal-300 hover:bg-teal-50 hover:text-teal-800 px-4 py-2 rounded-full text-sm font-medium text-slate-600 transition" style="min-height:unset;">
                 <i class="fa-solid {{ $s['icon'] }} text-teal-600 text-xs"></i>
                 {{ $s['q'] }}
             </a>
@@ -109,7 +112,7 @@
 
 {{-- ═══ TRUST STRIP ═══ --}}
 <div class="bg-slate-900 py-3.5 px-4">
-    <div class="max-w-3xl mx-auto flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
+    <div class="max-w-3xl mx-auto flex items-center justify-center gap-3 sm:gap-8 flex-wrap">
         @foreach([
             ['icon'=>'fa-star','color'=>'text-amber-400','text'=>'4.9 avg rating'],
             ['icon'=>'fa-circle-check','color'=>'text-emerald-400','text'=>'All pros verified'],
@@ -128,27 +131,27 @@
     <div class="max-w-3xl mx-auto px-4 py-8 grid grid-cols-3 gap-4 text-center">
         <div>
             @if($stats['pros'] > 0)
-            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['pros'] }}" data-suffix="+">{{ $stats['pros'] }}+</div>
+            <div class="stat-num text-2xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['pros'] }}" data-suffix="+">{{ $stats['pros'] }}+</div>
             @else
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">Growing</div>
+            <div class="text-2xl sm:text-4xl font-black text-teal-700">Growing</div>
             @endif
-            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
+            <div class="text-[10px] sm:text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Verified Pros</div>
         </div>
         <div class="border-x border-slate-100">
             @if($stats['reviews'] > 0)
-            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['reviews'] }}" data-suffix="+">{{ $stats['reviews'] }}+</div>
+            <div class="stat-num text-2xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['reviews'] }}" data-suffix="+">{{ $stats['reviews'] }}+</div>
             @else
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">5★</div>
+            <div class="text-2xl sm:text-4xl font-black text-teal-700">5★</div>
             @endif
-            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Client Reviews</div>
+            <div class="text-[10px] sm:text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Client Reviews</div>
         </div>
         <div>
             @if($stats['cities'] > 0)
-            <div class="stat-num text-3xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['cities'] }}" data-suffix="+">{{ $stats['cities'] }}+</div>
+            <div class="stat-num text-2xl sm:text-4xl font-black text-teal-700" data-target="{{ $stats['cities'] }}" data-suffix="+">{{ $stats['cities'] }}+</div>
             @else
-            <div class="text-3xl sm:text-4xl font-black text-teal-700">USA</div>
+            <div class="text-2xl sm:text-4xl font-black text-teal-700">USA</div>
             @endif
-            <div class="text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
+            <div class="text-[10px] sm:text-xs text-slate-500 font-semibold mt-1 uppercase tracking-wide">Cities Covered</div>
         </div>
     </div>
 </div>
@@ -230,7 +233,7 @@
             <div class="pro-card bg-white border border-slate-100 rounded-2xl overflow-hidden flex shadow-sm">
 
                 {{-- Photo --}}
-                <div class="relative w-36 sm:w-40 shrink-0">
+                <div class="relative w-28 sm:w-36 shrink-0">
                     @if($user->profile_photo)
                     <img src="{{ asset($user->profile_photo) }}"
                          onerror="this.src='';this.classList.add('hidden');this.nextElementSibling.classList.remove('hidden');"
@@ -331,7 +334,7 @@
     <div class="max-w-4xl mx-auto">
         <div class="bg-gradient-to-r from-teal-800 to-indigo-700 rounded-3xl overflow-hidden relative shadow-2xl">
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.08),transparent_60%)] pointer-events-none"></div>
-            <div class="relative px-8 sm:px-14 py-12 flex flex-col sm:flex-row items-center gap-10">
+            <div class="relative px-6 sm:px-14 py-10 sm:py-12 flex flex-col sm:flex-row items-center gap-8 sm:gap-10">
                 <div class="flex-1">
                     <span class="inline-block text-[11px] font-black text-teal-200 uppercase tracking-widest mb-4">For Professionals</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 leading-snug">
