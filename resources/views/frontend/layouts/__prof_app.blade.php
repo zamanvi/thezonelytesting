@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Zonely Dashboard') — Zonely</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.svg') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
@@ -34,7 +34,6 @@
         }
         .landing-preview::-webkit-scrollbar { width: 6px; }
         .landing-preview::-webkit-scrollbar-thumb { background-color: #64748b; border-radius: 20px; }
-        img[src*="zonely_logo"] { mix-blend-mode: multiply; }
     </style>
     @yield('css')
 </head>
@@ -47,7 +46,7 @@
 
             {{-- Logo --}}
             <a href="{{ route('frontend.home') }}" class="flex items-center gap-2 shrink-0">
-                <img src="{{ asset('frontend/img/zonely_logo.png') }}" class="w-8 h-8" alt="Zonely">
+                <img src="{{ asset('frontend/img/zonely_logo.svg') }}" class="w-8 h-8" alt="Zonely">
                 <span class="font-extrabold text-slate-900 tracking-tight text-base hidden sm:inline">
                     ZONELY<span class="text-teal-700">.</span>
                 </span>
@@ -193,7 +192,7 @@
     <footer class="bg-white border-t border-slate-100 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2">
-                <img src="{{ asset('frontend/img/zonely_logo.png') }}" class="w-6 h-6" alt="Zonely">
+                <img src="{{ asset('frontend/img/zonely_logo.svg') }}" class="w-6 h-6" alt="Zonely">
                 <span class="text-xs font-bold text-slate-500">ZONELY<span class="text-teal-700">.</span></span>
             </div>
             <p class="text-xs text-slate-400">© {{ date('Y') }} Zonely. All rights reserved.</p>

@@ -13,7 +13,7 @@
         $canonicalUrl  = url()->current();
         $ogTitle       = trim($__env->yieldContent('og_title'))       ?: ($meta_title ?? config('app.name'));
         $ogDescription = trim($__env->yieldContent('og_description'))  ?: ($meta_description ?? '');
-        $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/favicon.png');
+        $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/favicon.svg');
         if ($ogImage && !str_starts_with($ogImage, 'http')) {
             $ogImage = asset($ogImage);
         }
@@ -46,9 +46,9 @@
     <meta name="format-detection"             content="telephone=yes">
 
     {{-- Favicon ─────────────────────────────────────── --}}
-    <link rel="icon" href="{{ asset('frontend/img/zonely_logo.png') }}" type="image/png">
-    <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{ asset('frontend/img/favicon.png') }}">
+    <link rel="icon" href="{{ asset('frontend/img/zonely_logo.svg') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.svg') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset('frontend/img/favicon.svg') }}">
 
     <meta name="google-site-verification" content="dwwJ-8RPBJ7ZKJVORVBjX84ehyNkdpSXMj3JsAqlZZQ">
 
