@@ -414,70 +414,65 @@
                 </div>
                 <h4 class="font-bold text-lg text-white">Experience & Membership</h4>
             </div>
+            <div class="grid grid-cols-1 {{ ($hasExperiences && $hasMemberships) ? 'md:grid-cols-2' : '' }} divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
-            {{-- Work Experience sub-section --}}
-            @if($hasExperiences)
-            <div class="px-6 pt-5 pb-4">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-4 bg-indigo-500 rounded-full"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-indigo-600">Work Experience</span>
-                </div>
-                <div class="space-y-1">
-                    @foreach($user->experiences as $exp)
-                    <div class="flex gap-4 items-start">
-                        <div class="flex flex-col items-center pt-2">
-                            <div class="w-3 h-3 {{ $loop->first ? 'bg-indigo-600 ring-4 ring-indigo-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
-                            @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[40px]"></div>@endif
+                {{-- Work Experience column --}}
+                @if($hasExperiences)
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-5 pb-3 border-b border-indigo-50">
+                        <div class="w-7 h-7 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-briefcase text-indigo-600 text-xs"></i>
                         </div>
-                        <div class="pb-5 min-w-0">
-                            <p class="font-semibold text-base text-slate-800 leading-tight">{{ $exp->title }}</p>
-                            @if($exp->company)<p class="text-sm text-indigo-600 font-medium mt-0.5">{{ $exp->company }}</p>@endif
-                            @if($exp->start_date || $exp->end_date || $exp->is_current)
-                            <p class="text-xs text-slate-400 mt-1">
-                                {{ $exp->start_date ?? '' }}
-                                @if($exp->start_date) – @endif
-                                {{ $exp->is_current ? 'Present' : ($exp->end_date ?? '') }}
-                            </p>
-                            @endif
-                            @if($exp->description)<p class="text-sm text-slate-500 mt-1.5 leading-relaxed">{{ $exp->description }}</p>@endif
-                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-indigo-600">Work Experience</span>
                     </div>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Divider between sub-sections --}}
-            @if($hasExperiences && $hasMemberships)
-            <div class="mx-6 border-t-2 border-dashed border-slate-100"></div>
-            @endif
-
-            {{-- Memberships sub-section --}}
-            @if($hasMemberships)
-            <div class="px-6 pt-5 pb-5">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-4 bg-teal-600 rounded-full"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-teal-700">Memberships & Associations</span>
-                </div>
-                <div class="space-y-1">
-                    @foreach($user->memberships as $m)
-                    <div class="flex gap-4 items-start">
-                        <div class="flex flex-col items-center pt-2">
-                            <div class="w-3 h-3 {{ $loop->first ? 'bg-teal-700 ring-4 ring-teal-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
-                            @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[40px]"></div>@endif
+                    <div class="space-y-1">
+                        @foreach($user->experiences as $exp)
+                        <div class="flex gap-3 items-start">
+                            <div class="flex flex-col items-center pt-1.5">
+                                <div class="w-2.5 h-2.5 {{ $loop->first ? 'bg-indigo-600 ring-4 ring-indigo-100' : 'bg-slate-200' }} rounded-full shrink-0"></div>
+                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
+                            </div>
+                            <div class="pb-4 min-w-0">
+                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $exp->title }}</p>
+                                @if($exp->company)<p class="text-xs text-indigo-600 font-medium mt-0.5">{{ $exp->company }}</p>@endif
+                                @if($exp->start_date || $exp->is_current || $exp->end_date)
+                                <p class="text-xs text-slate-400 mt-0.5">{{ $exp->start_date ?? '' }}@if($exp->start_date) – @endif{{ $exp->is_current ? 'Present' : ($exp->end_date ?? '') }}</p>
+                                @endif
+                            </div>
                         </div>
-                        <div class="pb-5 min-w-0">
-                            <p class="font-semibold text-base text-slate-800 leading-tight">{{ $m->name }}</p>
-                            @if($m->start || $m->end)
-                            <p class="text-xs text-slate-400 mt-1">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>
-                            @endif
-                            @if(!empty($m->address))<p class="text-sm text-slate-500 mt-1">{{ $m->address }}</p>@endif
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
+                @endif
+
+                {{-- Memberships column --}}
+                @if($hasMemberships)
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-5 pb-3 border-b border-teal-50">
+                        <div class="w-7 h-7 bg-teal-100 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-id-badge text-teal-700 text-xs"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-teal-700">Memberships</span>
+                    </div>
+                    <div class="space-y-1">
+                        @foreach($user->memberships as $m)
+                        <div class="flex gap-3 items-start">
+                            <div class="flex flex-col items-center pt-1.5">
+                                <div class="w-2.5 h-2.5 {{ $loop->first ? 'bg-teal-600 ring-4 ring-teal-100' : 'bg-slate-200' }} rounded-full shrink-0"></div>
+                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
+                            </div>
+                            <div class="pb-4 min-w-0">
+                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $m->name }}</p>
+                                @if($m->start || $m->end)<p class="text-xs text-slate-400 mt-0.5">{{ $m->start ?? '' }}{{ ($m->start && $m->end) ? ' – ' : '' }}{{ $m->end ?? 'Present' }}</p>@endif
+                                @if(!empty($m->address))<p class="text-xs text-slate-500 mt-0.5">{{ $m->address }}</p>@endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
             </div>
-            @endif
         </div>
         @endif
 
@@ -490,65 +485,63 @@
                 </div>
                 <h4 class="font-bold text-lg text-white">Education & Certification</h4>
             </div>
+            <div class="grid grid-cols-1 {{ ($hasEducation && $hasCertifications) ? 'md:grid-cols-2' : '' }} divide-y md:divide-y-0 md:divide-x divide-slate-100">
 
-            {{-- Education sub-section --}}
-            @if($hasEducation)
-            <div class="px-6 pt-5 pb-4">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-4 bg-emerald-500 rounded-full"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Education</span>
-                </div>
-                <div class="space-y-1">
-                    @foreach($user->educations as $edu)
-                    <div class="flex gap-4 items-start">
-                        <div class="flex flex-col items-center pt-2">
-                            <div class="w-3 h-3 {{ $loop->first ? 'bg-emerald-600 ring-4 ring-emerald-100' : 'bg-slate-300' }} rounded-full flex-shrink-0"></div>
-                            @if(!$loop->last)<div class="w-px flex-1 bg-slate-200 mt-2 min-h-[40px]"></div>@endif
+                {{-- Education column --}}
+                @if($hasEducation)
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-5 pb-3 border-b border-emerald-50">
+                        <div class="w-7 h-7 bg-emerald-100 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-graduation-cap text-emerald-600 text-xs"></i>
                         </div>
-                        <div class="pb-5 min-w-0">
-                            <p class="font-semibold text-base text-slate-800 leading-tight">{{ $edu->degree }}</p>
-                            @if($edu->institution)<p class="text-sm text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
-                            @if($edu->passing_year)<p class="text-xs text-slate-400 mt-1">{{ $edu->passing_year }}</p>@endif
-                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Education</span>
                     </div>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Divider between sub-sections --}}
-            @if($hasEducation && $hasCertifications)
-            <div class="mx-6 border-t-2 border-dashed border-slate-100"></div>
-            @endif
-
-            {{-- Certifications sub-section --}}
-            @if($hasCertifications)
-            <div class="px-6 pt-5 pb-5">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-1 h-4 bg-amber-500 rounded-full"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Certifications & Licenses</span>
-                </div>
-                <div class="space-y-3">
-                    @foreach($user->certifications as $cert)
-                    <div class="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
-                        <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i class="fas fa-award text-amber-500 text-sm"></i>
+                    <div class="space-y-1">
+                        @foreach($user->educations as $edu)
+                        <div class="flex gap-3 items-start">
+                            <div class="flex flex-col items-center pt-1.5">
+                                <div class="w-2.5 h-2.5 {{ $loop->first ? 'bg-emerald-600 ring-4 ring-emerald-100' : 'bg-slate-200' }} rounded-full shrink-0"></div>
+                                @if(!$loop->last)<div class="w-px flex-1 bg-slate-100 mt-1 min-h-[36px]"></div>@endif
+                            </div>
+                            <div class="pb-4 min-w-0">
+                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $edu->degree }}</p>
+                                @if($edu->institution)<p class="text-xs text-emerald-600 font-medium mt-0.5">{{ $edu->institution }}</p>@endif
+                                @if($edu->passing_year)<p class="text-xs text-slate-400 mt-0.5">{{ $edu->passing_year }}</p>@endif
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $cert->name }}</p>
-                            @if($cert->issuer)<p class="text-xs text-amber-600 font-medium mt-0.5">{{ $cert->issuer }}</p>@endif
-                            @if($cert->issued_year)
-                            <p class="text-xs text-slate-400 mt-0.5">
-                                {{ $cert->issued_year }}{{ $cert->expiry_year ? ' – ' . $cert->expiry_year : '' }}
-                            </p>
-                            @endif
-                            @if($cert->credential_id)<p class="text-xs text-slate-400 mt-0.5">ID: {{ $cert->credential_id }}</p>@endif
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
+                @endif
+
+                {{-- Certifications column --}}
+                @if($hasCertifications)
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-5 pb-3 border-b border-amber-50">
+                        <div class="w-7 h-7 bg-amber-100 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fas fa-certificate text-amber-600 text-xs"></i>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Certifications</span>
+                    </div>
+                    <div class="space-y-3">
+                        @foreach($user->certifications as $cert)
+                        <div class="flex items-start gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0">
+                            <div class="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fas fa-award text-amber-500 text-xs"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-semibold text-sm text-slate-800 leading-tight">{{ $cert->name }}</p>
+                                @if($cert->issuer)<p class="text-xs text-amber-600 mt-0.5">{{ $cert->issuer }}</p>@endif
+                                @if($cert->issued_year)<p class="text-xs text-slate-400 mt-0.5">{{ $cert->issued_year }}{{ $cert->expiry_year ? ' – '.$cert->expiry_year : '' }}</p>@endif
+                                @if($cert->credential_id)<p class="text-xs text-slate-400 mt-0.5">ID: {{ $cert->credential_id }}</p>@endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
             </div>
-            @endif
         </div>
         @endif
 
