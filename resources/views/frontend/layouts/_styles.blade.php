@@ -20,7 +20,22 @@ tailwind.config = {
             fontFamily: {
                 sans:  ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
                 serif: ['"DM Serif Display"', 'Georgia', 'serif'],
-            }
+            },
+            colors: {
+                teal: {
+                    50:  '#eafaf9',
+                    100: '#d5f3f1',
+                    200: '#b0e7e4',
+                    300: '#86d9d5',
+                    400: '#5dcbc6',
+                    500: '#3cbab4',
+                    600: '#32a29d',
+                    700: '#2a8c87',
+                    800: '#1e6e6a',
+                    900: '#135150',
+                    950: '#0d3836',
+                },
+            },
         }
     }
 }
@@ -77,7 +92,7 @@ tailwind.config = {
         50%      { background-position: 100% 50%; }
     }
     .animate-gradient {
-        background: linear-gradient(-45deg,#0F766E,#7c3aed,#db2777);
+        background: linear-gradient(-45deg,#2a8c87,#7c3aed,#db2777);
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
     }
@@ -94,28 +109,28 @@ tailwind.config = {
         -webkit-appearance:none; appearance:none;
         transition:border-color .15s,box-shadow .15s;
     }
-    .input:focus { border-color:#0D9488; box-shadow:0 0 0 3px rgba(59,130,246,.1); }
+    .input:focus { border-color:#32a29d; box-shadow:0 0 0 3px rgba(59,130,246,.1); }
 
     .btn-primary {
         display:inline-flex; align-items:center; justify-content:center;
         width:100%; padding:.875rem 1.5rem;
-        background:#0F766E; color:#fff;
+        background:#2a8c87; color:#fff;
         font-weight:700; font-size:.875rem;
         border-radius:1rem; border:none; cursor:pointer;
         transition:background .15s,transform .1s;
     }
-    .btn-primary:hover  { background:#115E59; }
+    .btn-primary:hover  { background:#1e6e6a; }
     .btn-primary:active { transform:scale(.98); }
 
     /* ── Bottom nav ──────────────────────────── */
     .bottom-nav-safe { padding-bottom: calc(.75rem + env(safe-area-inset-bottom)); }
     .has-bottom-nav  { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)); }
     .bnav-item { transition:color .15s,background .15s; }
-    .bnav-item.active { color:#0F766E; }
+    .bnav-item.active { color:#2a8c87; }
     .bnav-item.active .bnav-icon { background:#F0FDFA; }
 
     /* ── Focus ring ──────────────────────────── */
-    :focus-visible { outline:2px solid #0D9488; outline-offset:2px; }
+    :focus-visible { outline:2px solid #32a29d; outline-offset:2px; }
 
     /* ── Tap highlight ───────────────────────── */
     * { -webkit-tap-highlight-color:rgba(59,130,246,.08); }

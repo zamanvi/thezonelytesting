@@ -8,10 +8,26 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.png') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    teal: {
+                        50:  '#eafaf9', 100: '#d5f3f1', 200: '#b0e7e4',
+                        300: '#86d9d5', 400: '#5dcbc6', 500: '#3cbab4',
+                        600: '#32a29d', 700: '#2a8c87', 800: '#1e6e6a',
+                        900: '#135150', 950: '#0d3836',
+                    },
+                },
+            },
+        },
+    };
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         body { font-family: 'Inter', system-ui, sans-serif; }
-        .menu-active { background-color: #CCFBF1; color: #0F766E; font-weight: 600; }
+        .menu-active { background-color: #CCFBF1; color: #2a8c87; font-weight: 600; }
         .landing-preview {
             height: 620px; overflow-y: auto;
             scrollbar-width: thin; scrollbar-color: #64748b #f1f5f9; border-radius: 24px;

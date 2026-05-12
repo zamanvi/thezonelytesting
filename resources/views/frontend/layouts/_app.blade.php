@@ -40,7 +40,7 @@
     <meta name="twitter:image"       content="{{ $ogImage }}">
 
     {{-- PWA / Mobile ─────────────────────────────────── --}}
-    <meta name="theme-color"                  content="#0F766E">
+    <meta name="theme-color"                  content="#2a8c87">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="format-detection"             content="telephone=yes">
