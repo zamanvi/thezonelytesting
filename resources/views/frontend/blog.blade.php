@@ -13,7 +13,7 @@
   "@type": "Blog",
   "name": "Zonely Blog",
   "url": "{{ route('frontend.blog') }}",
-  "publisher": { "@type": "Organization", "name": "Zonely", "logo": { "@type": "ImageObject", "url": "{{ asset('frontend/img/zonely_logo.jpeg') }}" } }
+  "publisher": { "@type": "Organization", "name": "Zonely", "logo": { "@type": "ImageObject", "url": "{{ asset('frontend/img/zonely_logo.svg') }}" } }
 }
 </script>
 @endsection

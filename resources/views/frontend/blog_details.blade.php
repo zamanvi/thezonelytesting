@@ -21,7 +21,7 @@
   "publisher": {
     "@type": "Organization",
     "name": "Zonely",
-    "logo": { "@type": "ImageObject", "url": "{{ asset('frontend/img/zonely_logo.jpeg') }}" }
+    "logo": { "@type": "ImageObject", "url": "{{ asset('frontend/img/zonely_logo.svg') }}" }
   }
 }
 </script>

@@ -7,7 +7,7 @@
 <nav class="sidebar" id="sidebar">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-white d-flex align-items-center gap-2 logo-text">
-            <img src="{{ asset('frontend/img/zonely_logo.jpeg') }}" width="32" height="32" style="filter:brightness(0) invert(1)" alt="Zonely">
+            <img src="{{ asset('frontend/img/zonely_logo.svg') }}" width="32" height="32" style="filter:brightness(0) invert(1)" alt="Zonely">
             <span class="fw-black fs-5">Zonely</span>
         </a>
         <i class="fas fa-bars btn-toggle-sidebar text-white" id="toggleSidebar" style="cursor:pointer"></i>

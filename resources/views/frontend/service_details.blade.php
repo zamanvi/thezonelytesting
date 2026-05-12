@@ -6,7 +6,7 @@
 @section('title', $meta_title)
 @section('og_title',       $user->title)
 @section('og_description', Str::limit(strip_tags($user->bio ?? ''), 200))
-@section('og_image',       $user->profile_photo ? asset($user->profile_photo) : asset('frontend/img/zonely_logo.jpeg'))
+@section('og_image',       $user->profile_photo ? asset($user->profile_photo) : asset('frontend/img/zonely_logo.svg'))
 
 @section('schema')
 <script type="application/ld+json">
