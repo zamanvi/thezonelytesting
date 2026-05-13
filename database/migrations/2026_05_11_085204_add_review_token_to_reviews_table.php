@@ -9,17 +9,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reviews', function (Blueprint $table) {
-            // Link review to the originating lead
-            $table->foreignId('lead_id')->nullable()->after('seller_id')->constrained('leads')->nullOnDelete();
-            // Seller-sent review request token (public link, no login required)
-            $table->string('review_token')->nullable()->unique()->after('replied_at');
-            // Guest reviewer email (when reviewer_id is null)
-            $table->string('reviewer_email')->nullable()->after('reviewer_name');
-            // Make rating + review nullable until buyer fills the form
+            if (!Schema::hasColumn('reviews', 'lead_id')) {
+                $table->foreignId('lead_id')->nullable()->after('seller_id')->constrained('leads')->nullOnDelete();
+            }
+            if (!Schema::hasColumn('reviews', 'review_token')) {
+                $table->string('review_token')->nullable()->unique()->after('replied_at');
+            }
+            if (!Schema::hasColumn('reviews', 'reviewer_email')) {
+                $table->string('reviewer_email')->nullable()->after('reviewer_name');
+            }
+            if (!Schema::hasColumn('reviews', 'token_used_at')) {
+                $table->timestamp('token_used_at')->nullable()->after('review_token');
+            }
             $table->tinyInteger('rating')->nullable()->change();
             $table->text('review')->nullable()->change();
-            // Track when token was used (review submitted)
-            $table->timestamp('token_used_at')->nullable()->after('review_token');
         });
     }
 

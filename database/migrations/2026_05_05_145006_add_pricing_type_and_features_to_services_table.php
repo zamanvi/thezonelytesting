@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->string('pricing_type')->default('starting_at')->after('price');
-            $table->text('features')->nullable()->after('pricing_type');
+            if (!Schema::hasColumn('services', 'pricing_type')) {
+                $table->string('pricing_type')->default('starting_at')->after('price');
+            }
+            if (!Schema::hasColumn('services', 'features')) {
+                $table->text('features')->nullable()->after('pricing_type');
+            }
         });
     }
 
