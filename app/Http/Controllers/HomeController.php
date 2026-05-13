@@ -210,15 +210,13 @@ class HomeController extends Controller
         $img = imagecreatetruecolor($W, $H);
         imagealphablending($img, true);
 
-        // ── Palette — dark teal + gold luxury ────────────────────────────
+        // ── Palette ───────────────────────────────────────────────────────
         $cBg       = imagecolorallocate($img, 10,  61,  58);   // #0a3d3a
-        $cBgLight  = imagecolorallocate($img, 15,  75,  71);   // slightly lighter teal
         $cGold     = imagecolorallocate($img, 212, 175, 55);   // #d4af37
         $cGoldLight= imagecolorallocate($img, 240, 211, 138);  // #f0d38a
         $cGoldMid  = imagecolorallocate($img, 232, 198, 112);  // #e8c670
         $cWhite    = imagecolorallocate($img, 255, 255, 255);
-        $cWhiteDim = imagecolorallocate($img, 200, 220, 218);
-        $cGreen    = imagecolorallocate($img, 34,  197, 94);
+        $cWhiteDim = imagecolorallocate($img, 220, 235, 233);
 
         // ── FONTS ─────────────────────────────────────────────────────────
         $fontPaths = [
@@ -235,23 +233,17 @@ class HomeController extends Controller
         $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p)) ?? $fontB;
         $ttf   = (bool)$fontB;
 
-        // ── FULL BACKGROUND — dark teal gradient ─────────────────────────
-        for ($y = 0; $y < $H; $y++) {
-            $ratio = $y / $H;
-            $r = (int)(10  + $ratio * 8);
-            $g = (int)(61  + $ratio * 14);
-            $b = (int)(58  + $ratio * 12);
-            $c = imagecolorallocate($img, $r, $g, $b);
-            imageline($img, 0, $y, $W, $y, $c);
-        }
+        // ── FULL BACKGROUND — solid dark teal ────────────────────────────
+        imagefilledrectangle($img, 0, 0, $W, $H, $cBg);
 
-        // ── Gold border frame ─────────────────────────────────────────────
-        imagesetthickness($img, 3);
-        imagerectangle($img, 6, 6, $W - 6, $H - 6, $cGold);
+        // ── Gold border ───────────────────────────────────────────────────
+        $borderC = imagecolorallocatealpha($img, 212, 175, 55, 64); // 50% opacity
+        imagesetthickness($img, 2);
+        imagerectangle($img, 4, 4, $W - 4, $H - 4, $borderC);
         imagesetthickness($img, 1);
 
-        // ── PHOTO PANEL (left 420px) ──────────────────────────────────────
-        $photoW      = 420;
+        // ── PHOTO PANEL left 5/12 = 500px ────────────────────────────────
+        $photoW      = 500;
         $photoLoaded = false;
 
         if ($user->profile_photo) {
@@ -273,7 +265,6 @@ class HomeController extends Controller
                     default      => false,
                 };
             }
-            // No HTTP fallback — self-fetching causes 15s+ timeout on Railway
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
                 $targetRatio = $photoW / $H;
@@ -291,108 +282,91 @@ class HomeController extends Controller
             }
         }
 
-        if (!$photoLoaded) {
-            // Initials placeholder on dark teal
-            if ($ttf) {
-                $ini  = strtoupper(substr($user->name ?? 'Z', 0, 1));
-                $bbox = imagettfbbox(96, 0, $fontB, $ini);
-                $iw   = abs($bbox[4] - $bbox[0]);
-                imagettftext($img, 96, 0, (int)(($photoW - $iw) / 2), (int)($H / 2 + 36), $cGold, $fontB, $ini);
-            }
+        if (!$photoLoaded && $ttf) {
+            $ini  = strtoupper(substr($user->name ?? 'Z', 0, 1));
+            $bbox = @imagettfbbox(110, 0, $fontB, $ini);
+            $iw   = $bbox ? abs($bbox[4] - $bbox[0]) : 80;
+            imagettftext($img, 110, 0, (int)(($photoW - $iw) / 2), (int)($H / 2 + 44), $cGold, $fontB, $ini);
         }
 
-        // Dark scrim bottom of photo for text overlay
-        for ($i = 0; $i < 220; $i++) {
-            $alpha = (int)(110 * (1 - ($i / 220)));
-            $c = imagecolorallocatealpha($img, 0, 0, 0, $alpha);
-            imageline($img, 0, $H - $i, $photoW - 1, $H - $i, $c);
+        // Gradient scrim: bottom of photo → dark teal (matches HTML gradient-to-t)
+        for ($i = 0; $i < $H; $i++) {
+            $alpha = (int)(127 * ($i / $H) * 0.85);
+            $c = imagecolorallocatealpha($img, 10, 61, 58, $alpha);
+            imageline($img, 0, $i, $photoW - 1, $i, $c);
         }
 
-        // Gold vertical divider line
-        imagesetthickness($img, 2);
-        imageline($img, $photoW, 20, $photoW, $H - 20, $cGold);
-        imagesetthickness($img, 1);
+        // ── RIGHT PANEL content — 7/12 = 700px ───────────────────────────
+        $rx  = $photoW + 60;   // left edge of text
+        $rw  = $W - $rx - 48;  // available width
+        $cy  = 52;
 
-        // ── RIGHT PANEL content ───────────────────────────────────────────
-        $rx = $photoW + 52;
-        $cy = 52;
-
-        // ZONELY. brand (gold small)
-        if ($ttf) {
-            imagettftext($img, 11, 0, $rx, $cy, $cGoldMid, $fontB, 'ZONELY.');
-        }
-        $cy += 38;
-
-        // Name — large gold
+        // Name — large gold (split at comma if long)
         $name = $user->name ?? 'Professional';
-        $fs = 36;
+        $fs   = 44;
         if ($ttf) {
-            $maxW = $W - $rx - 36;
-            $bbox = @imagettfbbox(36, 0, $fontB, $name);
-            if ($bbox) $fs = abs($bbox[4] - $bbox[0]) > $maxW ? 26 : 36;
+            $bbox = @imagettfbbox($fs, 0, $fontB, $name);
+            if ($bbox && abs($bbox[4] - $bbox[0]) > $rw) $fs = 32;
             imagettftext($img, $fs, 0, $rx, $cy, $cGoldLight, $fontB, $name);
         }
-        $cy += $fs + 14;
+        $cy += $fs + 10;
 
-        // Specialty — lighter gold
-        $specialty = Str::before($user->title ?? $user->designation ?? $user->category?->title ?? '', '|');
-        $specialty = Str::limit(trim($specialty), 44);
+        // Designation — lighter gold, smaller
+        $desig = Str::limit($user->designation ?? $user->category?->title ?? '', 40);
+        if ($ttf && $desig) {
+            imagettftext($img, 18, 0, $rx, $cy, $cGoldMid, $fontB, $desig);
+            $cy += 28;
+        }
+
+        $cy += 16;
+
+        // Specialty/title — white, semibold feel
+        $specialty = Str::before($user->title ?? '', '|');
+        $specialty = Str::limit(trim($specialty), 48);
         if ($ttf && $specialty) {
-            imagettftext($img, 15, 0, $rx, $cy, $cGoldMid, $fontR ?? $fontB, $specialty);
-            $cy += 30;
-        }
-
-        // Location — dim white
-        if ($user->city && $ttf) {
-            $loc = ($user->city ?? '') . ($user->state ? ', ' . $user->state : '');
-            imagettftext($img, 13, 0, $rx, $cy, $cWhiteDim, $fontR ?? $fontB, $loc);
-            $cy += 28;
-        }
-
-        // Gold divider line
-        $cy += 8;
-        imagesetthickness($img, 1);
-        imageline($img, $rx, $cy, $W - 36, $cy, $cGold);
-        $cy += 18;
-
-        // Services — gold circle bullets + white text
-        foreach ($user->services->take(3) as $svc) {
-            $t = Str::limit($svc->title ?? '', 40);
-            if (!$ttf || !$t) continue;
-            // Gold circle bullet
-            imagefilledellipse($img, $rx + 7, $cy - 5, 12, 12, $cGold);
-            imagefilledellipse($img, $rx + 7, $cy - 5, 6, 6, $cBg);
-            imagettftext($img, 13, 0, $rx + 24, $cy, $cWhite, $fontR ?? $fontB, $t);
-            $cy += 28;
-        }
-
-        // Rating row
-        $rCount = $user->reviews->count();
-        $rAvg   = $rCount ? round($user->reviews->avg('rating'), 1) : null;
-        if ($ttf && $rAvg) {
-            $cy += 6;
-            $stars = str_repeat('*', (int)round($rAvg));
-            imagettftext($img, 13, 0, $rx, $cy, $cGold, $fontB, $rAvg . '/5  (' . $rCount . ' reviews)');
+            imagettftext($img, 16, 0, $rx, $cy, $cWhite, $fontB, $specialty);
             $cy += 26;
         }
 
-        // ── CTA Button — gold ─────────────────────────────────────────────
-        $cy = max($cy + 12, $H - 104);
-        $btnX1 = $rx; $btnY1 = $cy;
-        $btnX2 = $rx + 280; $btnY2 = $cy + 48;
-        $r = 12; // corner radius
-        imagefilledrectangle($img, $btnX1 + $r, $btnY1, $btnX2 - $r, $btnY2, $cGold);
-        imagefilledrectangle($img, $btnX1, $btnY1 + $r, $btnX2, $btnY2 - $r, $cGold);
-        imagefilledellipse($img, $btnX1 + $r, $btnY1 + $r, $r * 2, $r * 2, $cGold);
-        imagefilledellipse($img, $btnX2 - $r, $btnY1 + $r, $r * 2, $r * 2, $cGold);
-        imagefilledellipse($img, $btnX1 + $r, $btnY2 - $r, $r * 2, $r * 2, $cGold);
-        imagefilledellipse($img, $btnX2 - $r, $btnY2 - $r, $r * 2, $r * 2, $cGold);
+        // Location — gold
+        if ($user->city && $ttf) {
+            $loc = ($user->city ?? '') . ($user->state ? ', ' . $user->state : '');
+            imagettftext($img, 15, 0, $rx, $cy, $cGoldMid, $fontR ?? $fontB, $loc);
+            $cy += 30;
+        }
+
+        $cy += 10;
+
+        // Services — ring bullet (outer circle + inner dot) + white text
+        foreach ($user->services->take(3) as $svc) {
+            $t = Str::limit($svc->title ?? '', 42);
+            if (!$ttf || !$t) continue;
+            $bx = $rx + 10; $by = $cy - 6;
+            // Outer ring
+            imageellipse($img, $bx, $by, 16, 16, $cGoldLight);
+            // Inner dot
+            imagefilledellipse($img, $bx, $by, 8, 8, $cGoldLight);
+            imagettftext($img, 14, 0, $rx + 26, $cy, $cWhite, $fontR ?? $fontB, $t);
+            $cy += 30;
+        }
+
+        // ── CTA Button — full width, very rounded (pill), gold ────────────
+        $btnY1  = $H - 90;
+        $btnY2  = $H - 38;
+        $btnX1  = $rx;
+        $btnX2  = $W - 48;
+        $btnH   = $btnY2 - $btnY1;
+        $br     = (int)($btnH / 2); // pill radius
+        imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY2, $cGold);
+        imagefilledrectangle($img, $btnX1, $btnY1 + $br, $btnX2, $btnY2 - $br, $cGold);
+        imagefilledellipse($img, $btnX1 + $br, $btnY1 + $br, $br * 2, $br * 2, $cGold);
+        imagefilledellipse($img, $btnX2 - $br, $btnY1 + $br, $br * 2, $br * 2, $cGold);
         if ($ttf) {
-            $btnText = 'VISIT PROFILE';
-            $bbox    = @imagettfbbox(14, 0, $fontB, $btnText);
-            $textW   = $bbox ? abs($bbox[4] - $bbox[0]) : 120;
+            $btnText = 'VISIT WEBSITE';
+            $bbox    = @imagettfbbox(15, 0, $fontB, $btnText);
+            $textW   = $bbox ? abs($bbox[4] - $bbox[0]) : 130;
             $textX   = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
-            imagettftext($img, 14, 0, $textX, $btnY1 + 32, $cBg, $fontB, $btnText);
+            imagettftext($img, 15, 0, $textX, $btnY1 + (int)($btnH / 2) + 6, $cBg, $fontB, $btnText);
         }
 
         // ── Domain bottom-right ───────────────────────────────────────────
@@ -400,21 +374,17 @@ class HomeController extends Controller
         if ($ttf) {
             $dBbox = @imagettfbbox(10, 0, $fontR ?? $fontB, $domain);
             $dW    = $dBbox ? abs($dBbox[4] - $dBbox[0]) : 80;
-            imagettftext($img, 10, 0, $W - $dW - 24, $H - 18, $cGoldMid, $fontR ?? $fontB, $domain);
+            imagettftext($img, 10, 0, $W - $dW - 16, $H - 12, $cGoldMid, $fontR ?? $fontB, $domain);
         }
 
-        // ── Photo overlay — name bottom-left ──────────────────────────────
-        if ($ttf) {
-            $overlayName = Str::limit($user->name ?? '', 20);
-            imagettftext($img, 20, 0, 24, $H - 58, $cGoldLight, $fontB, $overlayName);
-            $cat = Str::limit($user->category?->title ?? ($user->designation ?? ''), 32);
-            if ($cat) imagettftext($img, 12, 0, 24, $H - 32, $cGoldMid, $fontR ?? $fontB, $cat);
-        }
-
-        // ── Verified badge ────────────────────────────────────────────────
+        // ── Verified badge (photo top-left) ───────────────────────────────
         if ($user->status) {
-            imagefilledrectangle($img, 18, 18, 18 + 120, 18 + 28, $cGold);
-            if ($ttf) imagettftext($img, 11, 0, 28, 38, $cBg, $fontB, 'VERIFIED');
+            $bw = 110; $bh = 28; $bx = 18; $by = 18; $rb = 14;
+            imagefilledrectangle($img, $bx + $rb, $by, $bx + $bw - $rb, $by + $bh, $cGold);
+            imagefilledrectangle($img, $bx, $by + $rb, $bx + $bw, $by + $bh - $rb, $cGold);
+            imagefilledellipse($img, $bx + $rb, $by + $rb, $rb * 2, $rb * 2, $cGold);
+            imagefilledellipse($img, $bx + $bw - $rb, $by + $rb, $rb * 2, $rb * 2, $cGold);
+            if ($ttf) imagettftext($img, 11, 0, $bx + 14, $by + 19, $cBg, $fontB, 'VERIFIED');
         }
 
         // ── Output ────────────────────────────────────────────────────────
