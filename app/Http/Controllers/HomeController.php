@@ -201,7 +201,6 @@ class HomeController extends Controller
 
     function ogImage($slug)
     {
-        try {
         $user = User::activeSellers()
             ->where('slug', $slug)
             ->with(['services', 'category', 'reviews'])
@@ -424,12 +423,6 @@ class HomeController extends Controller
         imagepng($img, null, 6);
         imagedestroy($img);
         exit;
-        } catch (\Throwable $e) {
-            // Temporary debug — remove after fix
-            header('Content-Type: text/plain');
-            echo $e->getMessage() . "\n" . $e->getFile() . ':' . $e->getLine();
-            exit;
-        }
     }
 
     function serviceInquiry(Request $request, $slug)
