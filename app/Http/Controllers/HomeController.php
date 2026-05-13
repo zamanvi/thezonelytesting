@@ -210,26 +210,53 @@ class HomeController extends Controller
         $img = imagecreatetruecolor($W, $H);
         imagealphablending($img, true);
 
-        // ── Palette ──────────────────────────────────────────────────────
+        // ── Palette — dark teal + gold luxury ────────────────────────────
+        $cBg       = imagecolorallocate($img, 10,  61,  58);   // #0a3d3a
+        $cBgLight  = imagecolorallocate($img, 15,  75,  71);   // slightly lighter teal
+        $cGold     = imagecolorallocate($img, 212, 175, 55);   // #d4af37
+        $cGoldLight= imagecolorallocate($img, 240, 211, 138);  // #f0d38a
+        $cGoldMid  = imagecolorallocate($img, 232, 198, 112);  // #e8c670
         $cWhite    = imagecolorallocate($img, 255, 255, 255);
-        $cTeal     = imagecolorallocate($img, 42,  140, 135);  // #2a8c87
-        $cTealDark = imagecolorallocate($img, 30,  110, 106);  // #1e6e6a
-        $cTealBg   = imagecolorallocate($img, 234, 250, 249);  // #eafaf9
-        $cSlate9   = imagecolorallocate($img, 15,  23,  42);   // near-black
-        $cSlate7   = imagecolorallocate($img, 51,  65,  85);
-        $cSlate5   = imagecolorallocate($img, 100, 116, 139);
-        $cSlate2   = imagecolorallocate($img, 226, 232, 240);
-        $cAmber    = imagecolorallocate($img, 245, 158, 11);
+        $cWhiteDim = imagecolorallocate($img, 200, 220, 218);
         $cGreen    = imagecolorallocate($img, 34,  197, 94);
 
-        // ── PHOTO PANEL (left 430px) ──────────────────────────────────────
-        $photoW    = 430;
+        // ── FONTS ─────────────────────────────────────────────────────────
+        $fontPaths = [
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
+            '/usr/share/fonts/truetype/freefont/FreeSansBold.ttf',
+        ];
+        $fontRegPaths = [
+            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+            '/usr/share/fonts/truetype/freefont/FreeSans.ttf',
+        ];
+        $fontB = collect($fontPaths)->first(fn($p) => file_exists($p));
+        $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p)) ?? $fontB;
+        $ttf   = (bool)$fontB;
+
+        // ── FULL BACKGROUND — dark teal gradient ─────────────────────────
+        for ($y = 0; $y < $H; $y++) {
+            $ratio = $y / $H;
+            $r = (int)(10  + $ratio * 8);
+            $g = (int)(61  + $ratio * 14);
+            $b = (int)(58  + $ratio * 12);
+            $c = imagecolorallocate($img, $r, $g, $b);
+            imageline($img, 0, $y, $W, $y, $c);
+        }
+
+        // ── Gold border frame ─────────────────────────────────────────────
+        imagesetthickness($img, 3);
+        imagerectangle($img, 6, 6, $W - 6, $H - 6, $cGold);
+        imagesetthickness($img, 1);
+
+        // ── PHOTO PANEL (left 420px) ──────────────────────────────────────
+        $photoW      = 420;
         $photoLoaded = false;
 
         if ($user->profile_photo) {
             $src   = false;
             $photo = ltrim($user->profile_photo, '/');
-
             $fsPaths = [
                 public_path($photo),
                 storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
@@ -246,7 +273,7 @@ class HomeController extends Controller
                     default      => false,
                 };
             }
-            // No HTTP fallback — self-fetching causes 15s+ delay on Railway
+            // No HTTP fallback — self-fetching causes 15s+ timeout on Railway
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
                 $targetRatio = $photoW / $H;
@@ -265,164 +292,128 @@ class HomeController extends Controller
         }
 
         if (!$photoLoaded) {
-            // Gradient fallback placeholder
-            for ($y = 0; $y < $H; $y++) {
-                $ratio = $y / $H;
-                $r = (int)(42 + $ratio * (30 - 42));
-                $g = (int)(140 + $ratio * (110 - 140));
-                $b = (int)(135 + $ratio * (106 - 135));
-                $c = imagecolorallocate($img, $r, $g, $b);
-                imageline($img, 0, $y, $photoW, $y, $c);
-            }
-            // Initials
-            $fontPaths = [
-                '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-                '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
-                '/usr/share/fonts/truetype/freefont/FreeSansBold.ttf',
-            ];
-            $fB = collect($fontPaths)->first(fn($p) => file_exists($p));
-            if ($fB) {
-                $ini = strtoupper(substr($user->name, 0, 1));
-                imagettftext($img, 72, 0, (int)($photoW/2 - 30), (int)($H/2 + 28), $cWhite, $fB, $ini);
+            // Initials placeholder on dark teal
+            if ($ttf) {
+                $ini  = strtoupper(substr($user->name ?? 'Z', 0, 1));
+                $bbox = imagettfbbox(96, 0, $fontB, $ini);
+                $iw   = abs($bbox[4] - $bbox[0]);
+                imagettftext($img, 96, 0, (int)(($photoW - $iw) / 2), (int)($H / 2 + 36), $cGold, $fontB, $ini);
             }
         }
 
-        // Gradient overlay bottom of photo (dark scrim for text readability)
-        for ($i = 0; $i < 200; $i++) {
-            $a = (int)(127 * (1 - ($i / 200)));
-            $c = imagecolorallocatealpha($img, 0, 0, 0, $a);
-            imageline($img, 0, $H - $i, $photoW, $H - $i, $c);
+        // Dark scrim bottom of photo for text overlay
+        for ($i = 0; $i < 220; $i++) {
+            $alpha = (int)(110 * (1 - ($i / 220)));
+            $c = imagecolorallocatealpha($img, 0, 0, 0, $alpha);
+            imageline($img, 0, $H - $i, $photoW - 1, $H - $i, $c);
         }
 
-        // ── RIGHT PANEL (white) ───────────────────────────────────────────
-        imagefilledrectangle($img, $photoW, 0, $W, $H, $cWhite);
+        // Gold vertical divider line
+        imagesetthickness($img, 2);
+        imageline($img, $photoW, 20, $photoW, $H - 20, $cGold);
+        imagesetthickness($img, 1);
 
-        // Top teal stripe
-        imagefilledrectangle($img, $photoW, 0, $W, 8, $cTeal);
+        // ── RIGHT PANEL content ───────────────────────────────────────────
+        $rx = $photoW + 52;
+        $cy = 52;
 
-        // ── FONTS ─────────────────────────────────────────────────────────
-        $fontPaths = [
-            '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
-            '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
-            '/usr/share/fonts/truetype/freefont/FreeSansBold.ttf',
-        ];
-        $fontRegPaths = [
-            '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
-            '/usr/share/fonts/truetype/freefont/FreeSans.ttf',
-        ];
-        $fontB = collect($fontPaths)->first(fn($p) => file_exists($p));
-        $fontR = collect($fontRegPaths)->first(fn($p) => file_exists($p)) ?? $fontB;
-        $ttf   = (bool)$fontB;
-
-        $rx = $photoW + 48;  // right panel content x
-        $cy = 56;
-
-        // ZONELY. brand
+        // ZONELY. brand (gold small)
         if ($ttf) {
-            imagettftext($img, 12, 0, $rx, $cy, $cTeal, $fontB, 'ZONELY.');
+            imagettftext($img, 11, 0, $rx, $cy, $cGoldMid, $fontB, 'ZONELY.');
         }
-        $cy += 42;
+        $cy += 38;
 
-        // ── Name ──────────────────────────────────────────────────────────
+        // Name — large gold
         $name = $user->name ?? 'Professional';
         if ($ttf) {
-            $maxW = $W - $rx - 40;
-            $bbox = imagettfbbox(32, 0, $fontB, $name);
-            $fs   = abs($bbox[4] - $bbox[0]) > $maxW ? 24 : 32;
-            imagettftext($img, $fs, 0, $rx, $cy, $cSlate9, $fontB, $name);
+            $maxW = $W - $rx - 36;
+            $bbox = imagettfbbox(36, 0, $fontB, $name);
+            $fs   = abs($bbox[4] - $bbox[0]) > $maxW ? 26 : 36;
+            imagettftext($img, $fs, 0, $rx, $cy, $cGoldLight, $fontB, $name);
         }
-        $cy += 44;
+        $cy += ($fs ?? 36) + 14;
 
-        // ── Specialty / Title ──────────────────────────────────────────────
+        // Specialty — lighter gold
         $specialty = Str::before($user->title ?? $user->designation ?? $user->category?->title ?? '', '|');
-        $specialty = Str::limit(trim($specialty), 42);
+        $specialty = Str::limit(trim($specialty), 44);
         if ($ttf && $specialty) {
-            imagettftext($img, 15, 0, $rx, $cy, $cTeal, $fontR ?? $fontB, $specialty);
-            $cy += 32;
-        }
-
-        // ── Rating row ────────────────────────────────────────────────────
-        $rCount = $user->reviews->count();
-        $rAvg   = $rCount ? round($user->reviews->avg('rating'), 1) : null;
-        if ($ttf && $rAvg) {
-            $stars = str_repeat('★', (int)round($rAvg)) . str_repeat('☆', 5 - (int)round($rAvg));
-            imagettftext($img, 15, 0, $rx, $cy, $cAmber, $fontB, $stars);
-            $rText = ' ' . $rAvg . ' (' . $rCount . ')';
-            $starBbox = imagettfbbox(15, 0, $fontB, $stars);
-            $starW = abs($starBbox[4] - $starBbox[0]);
-            imagettftext($img, 13, 0, $rx + $starW + 6, $cy, $cSlate5, $fontR ?? $fontB, $rText);
+            imagettftext($img, 15, 0, $rx, $cy, $cGoldMid, $fontR ?? $fontB, $specialty);
             $cy += 30;
         }
 
-        // ── Divider ───────────────────────────────────────────────────────
-        $cy += 10;
-        imagefilledrectangle($img, $rx, $cy, $W - 40, $cy + 1, $cSlate2);
-        $cy += 18;
-
-        // ── Services (up to 3) ─────────────────────────────────────────────
-        $serviceCount = 0;
-        foreach ($user->services->take(3) as $svc) {
-            $t = Str::limit($svc->title ?? '', 38);
-            if (!$ttf || !$t) continue;
-            // Teal dot bullet
-            imagefilledellipse($img, $rx + 6, $cy - 6, 10, 10, $cTeal);
-            imagettftext($img, 13, 0, $rx + 20, $cy, $cSlate7, $fontR ?? $fontB, $t);
-            $cy += 26;
-            $serviceCount++;
-        }
-        if ($serviceCount > 0) $cy += 6;
-
-        // ── Location ──────────────────────────────────────────────────────
+        // Location — dim white
         if ($user->city && $ttf) {
             $loc = ($user->city ?? '') . ($user->state ? ', ' . $user->state : '');
-            imagettftext($img, 13, 0, $rx, $cy, $cSlate5, $fontR ?? $fontB, $loc);
+            imagettftext($img, 13, 0, $rx, $cy, $cWhiteDim, $fontR ?? $fontB, $loc);
             $cy += 28;
         }
 
-        // ── CTA Button ────────────────────────────────────────────────────
-        $cy = max($cy + 10, $H - 110);
+        // Gold divider line
+        $cy += 8;
+        imagesetthickness($img, 1);
+        imageline($img, $rx, $cy, $W - 36, $cy, $cGold);
+        $cy += 18;
+
+        // Services — gold circle bullets + white text
+        foreach ($user->services->take(3) as $svc) {
+            $t = Str::limit($svc->title ?? '', 40);
+            if (!$ttf || !$t) continue;
+            // Gold circle bullet
+            imagefilledellipse($img, $rx + 7, $cy - 5, 12, 12, $cGold);
+            imagefilledellipse($img, $rx + 7, $cy - 5, 6, 6, $cBg);
+            imagettftext($img, 13, 0, $rx + 24, $cy, $cWhite, $fontR ?? $fontB, $t);
+            $cy += 28;
+        }
+
+        // Rating row
+        $rCount = $user->reviews->count();
+        $rAvg   = $rCount ? round($user->reviews->avg('rating'), 1) : null;
+        if ($ttf && $rAvg) {
+            $cy += 6;
+            $stars = str_repeat('*', (int)round($rAvg));
+            imagettftext($img, 13, 0, $rx, $cy, $cGold, $fontB, $rAvg . '/5  (' . $rCount . ' reviews)');
+            $cy += 26;
+        }
+
+        // ── CTA Button — gold ─────────────────────────────────────────────
+        $cy = max($cy + 12, $H - 104);
         $btnX1 = $rx; $btnY1 = $cy;
-        $btnX2 = $rx + 260; $btnY2 = $cy + 46;
-        // Button fill
-        imagefilledrectangle($img, $btnX1, $btnY1, $btnX2, $btnY2, $cTeal);
-        // Rounded corners simulation (filled circles at corners)
-        imagefilledellipse($img, $btnX1 + 12, $btnY1 + 12, 24, 24, $cTeal);
-        imagefilledellipse($img, $btnX2 - 12, $btnY1 + 12, 24, 24, $cTeal);
-        imagefilledellipse($img, $btnX1 + 12, $btnY2 - 12, 24, 24, $cTeal);
-        imagefilledellipse($img, $btnX2 - 12, $btnY2 - 12, 24, 24, $cTeal);
+        $btnX2 = $rx + 280; $btnY2 = $cy + 48;
+        $r = 12; // corner radius
+        imagefilledrectangle($img, $btnX1 + $r, $btnY1, $btnX2 - $r, $btnY2, $cGold);
+        imagefilledrectangle($img, $btnX1, $btnY1 + $r, $btnX2, $btnY2 - $r, $cGold);
+        imagefilledellipse($img, $btnX1 + $r, $btnY1 + $r, $r * 2, $r * 2, $cGold);
+        imagefilledellipse($img, $btnX2 - $r, $btnY1 + $r, $r * 2, $r * 2, $cGold);
+        imagefilledellipse($img, $btnX1 + $r, $btnY2 - $r, $r * 2, $r * 2, $cGold);
+        imagefilledellipse($img, $btnX2 - $r, $btnY2 - $r, $r * 2, $r * 2, $cGold);
         if ($ttf) {
-            $btnText = 'Book Free Consultation';
-            $bbox = imagettfbbox(13, 0, $fontB, $btnText);
-            $textW = abs($bbox[4] - $bbox[0]);
-            $textX = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
-            $textY = $btnY1 + 30;
-            imagettftext($img, 13, 0, $textX, $textY, $cWhite, $fontB, $btnText);
+            $btnText = 'VISIT PROFILE';
+            $bbox    = imagettfbbox(14, 0, $fontB, $btnText);
+            $textW   = abs($bbox[4] - $bbox[0]);
+            $textX   = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
+            imagettftext($img, 14, 0, $textX, $btnY1 + 32, $cBg, $fontB, $btnText);
         }
-
-        // ── Photo bottom text overlay ─────────────────────────────────────
-        if ($ttf) {
-            $overlayName = Str::limit($user->name ?? '', 22);
-            imagettftext($img, 22, 0, 28, $H - 64, $cWhite, $fontB, $overlayName);
-            $cat = Str::limit($user->category?->title ?? ($user->designation ?? ''), 30);
-            if ($cat) imagettftext($img, 13, 0, 28, $H - 36, imagecolorallocatealpha($img, 255, 255, 255, 60), $fontR ?? $fontB, $cat);
-        }
-
-        // ── Verified badge (photo panel top-left) ─────────────────────────
-        if ($user->status) {
-            imagefilledrectangle($img, 20, 20, 132, 46, $cGreen);
-            if ($ttf) imagettftext($img, 11, 0, 32, 39, $cWhite, $fontB, '✓ VERIFIED');
-        }
-
-        // ── Bottom teal stripe ────────────────────────────────────────────
-        imagefilledrectangle($img, $photoW, $H - 8, $W, $H, $cTeal);
 
         // ── Domain bottom-right ───────────────────────────────────────────
         $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
         if ($ttf) {
-            $dBbox = imagettfbbox(11, 0, $fontR ?? $fontB, $domain);
+            $dBbox = imagettfbbox(10, 0, $fontR ?? $fontB, $domain);
             $dW    = abs($dBbox[4] - $dBbox[0]);
-            imagettftext($img, 11, 0, $W - $dW - 28, $H - 22, $cSlate5, $fontR ?? $fontB, $domain);
+            imagettftext($img, 10, 0, $W - $dW - 24, $H - 18, $cGoldMid, $fontR ?? $fontB, $domain);
+        }
+
+        // ── Photo overlay — name bottom-left ──────────────────────────────
+        if ($ttf) {
+            $overlayName = Str::limit($user->name ?? '', 20);
+            imagettftext($img, 20, 0, 24, $H - 58, $cGoldLight, $fontB, $overlayName);
+            $cat = Str::limit($user->category?->title ?? ($user->designation ?? ''), 32);
+            if ($cat) imagettftext($img, 12, 0, 24, $H - 32, $cGoldMid, $fontR ?? $fontB, $cat);
+        }
+
+        // ── Verified badge ────────────────────────────────────────────────
+        if ($user->status) {
+            imagefilledrectangle($img, 18, 18, 18 + 120, 18 + 28, $cGold);
+            if ($ttf) imagettftext($img, 11, 0, 28, 38, $cBg, $fontB, '✓ VERIFIED');
         }
 
         // ── Output ────────────────────────────────────────────────────────
