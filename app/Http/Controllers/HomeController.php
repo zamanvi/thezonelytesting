@@ -325,13 +325,14 @@ class HomeController extends Controller
 
         // Name — large gold
         $name = $user->name ?? 'Professional';
+        $fs = 36;
         if ($ttf) {
             $maxW = $W - $rx - 36;
-            $bbox = imagettfbbox(36, 0, $fontB, $name);
-            $fs   = abs($bbox[4] - $bbox[0]) > $maxW ? 26 : 36;
+            $bbox = @imagettfbbox(36, 0, $fontB, $name);
+            if ($bbox) $fs = abs($bbox[4] - $bbox[0]) > $maxW ? 26 : 36;
             imagettftext($img, $fs, 0, $rx, $cy, $cGoldLight, $fontB, $name);
         }
-        $cy += ($fs ?? 36) + 14;
+        $cy += $fs + 14;
 
         // Specialty — lighter gold
         $specialty = Str::before($user->title ?? $user->designation ?? $user->category?->title ?? '', '|');
@@ -388,8 +389,8 @@ class HomeController extends Controller
         imagefilledellipse($img, $btnX2 - $r, $btnY2 - $r, $r * 2, $r * 2, $cGold);
         if ($ttf) {
             $btnText = 'VISIT PROFILE';
-            $bbox    = imagettfbbox(14, 0, $fontB, $btnText);
-            $textW   = abs($bbox[4] - $bbox[0]);
+            $bbox    = @imagettfbbox(14, 0, $fontB, $btnText);
+            $textW   = $bbox ? abs($bbox[4] - $bbox[0]) : 120;
             $textX   = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
             imagettftext($img, 14, 0, $textX, $btnY1 + 32, $cBg, $fontB, $btnText);
         }
@@ -397,8 +398,8 @@ class HomeController extends Controller
         // ── Domain bottom-right ───────────────────────────────────────────
         $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
         if ($ttf) {
-            $dBbox = imagettfbbox(10, 0, $fontR ?? $fontB, $domain);
-            $dW    = abs($dBbox[4] - $dBbox[0]);
+            $dBbox = @imagettfbbox(10, 0, $fontR ?? $fontB, $domain);
+            $dW    = $dBbox ? abs($dBbox[4] - $dBbox[0]) : 80;
             imagettftext($img, 10, 0, $W - $dW - 24, $H - 18, $cGoldMid, $fontR ?? $fontB, $domain);
         }
 
@@ -413,7 +414,7 @@ class HomeController extends Controller
         // ── Verified badge ────────────────────────────────────────────────
         if ($user->status) {
             imagefilledrectangle($img, 18, 18, 18 + 120, 18 + 28, $cGold);
-            if ($ttf) imagettftext($img, 11, 0, 28, 38, $cBg, $fontB, '✓ VERIFIED');
+            if ($ttf) imagettftext($img, 11, 0, 28, 38, $cBg, $fontB, 'VERIFIED');
         }
 
         // ── Output ────────────────────────────────────────────────────────
