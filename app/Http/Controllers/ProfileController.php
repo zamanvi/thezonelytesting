@@ -122,18 +122,23 @@ class ProfileController extends Controller
                 'profile_photo' => 'nullable|image|max:10240',
             ]);
 
-            $photoError = null;
+            $photoMsg = null;
             if ($request->hasFile('profile_photo')) {
                 try {
                     $user->profile_photo = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
+                    $photoMsg = 'Photo uploaded successfully.';
                 } catch (\Throwable $e) {
                     try {
                         $path = $request->file('profile_photo')->store('profiles', 'public');
                         $user->profile_photo = 'storage/' . $path;
+                        $photoMsg = 'Photo saved (fallback).';
                     } catch (\Throwable $e2) {
-                        $photoError = 'Photo upload failed: ' . $e2->getMessage();
+                        $photoMsg = 'PHOTO ERROR: ' . $e2->getMessage();
                     }
                 }
+            } else {
+                $maxBytes  = (int) ini_get('upload_max_filesize');
+                $photoMsg  = 'No photo received by server. upload_max_filesize=' . ini_get('upload_max_filesize') . ' post_max_size=' . ini_get('post_max_size');
             }
 
             $user->bio        = $request->bio;
@@ -142,8 +147,7 @@ class ProfileController extends Controller
             $user->experience = $request->experience;
             $user->save();
 
-            $msg = $photoError ?? 'Profile saved.';
-            return redirect()->route('seller.onboarding')->with($photoError ? 'error' : 'success', $msg);
+            return redirect()->route('seller.onboarding')->with('success', 'Profile saved. [' . $photoMsg . ']');
 
         } elseif ($setup === 'review') {
             return redirect()->route('seller.dashboard')->with('success', 'Profile completed!');
