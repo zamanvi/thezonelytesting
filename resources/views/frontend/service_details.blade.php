@@ -4,8 +4,8 @@
 @endphp
 @extends('frontend.layouts._app')
 @section('title', $meta_title)
-@section('og_title',       $user->title)
-@section('og_description', Str::limit(strip_tags($user->bio ?? ''), 200))
+@section('og_title',       $user->name)
+@section('og_description', ($user->city ? $user->city.', '.$user->state : '') )
 @section('og_image',       route('frontend.og.image', $user->slug).'?v='.($user->updated_at?->timestamp ?? 1))
 @section('og_extra')
 <meta property="og:image:width"  content="1200">
