@@ -147,7 +147,7 @@ class ProfileController extends Controller
             $user->experience = $request->experience;
             $user->save();
 
-            return redirect()->route('seller.onboarding')->with('success', 'Profile saved. [' . $photoMsg . ']');
+            return redirect()->route('type.profile', ['type' => $type, 'setup' => 'profile'])->with('success', 'Profile saved. [' . $photoMsg . ']');
 
         } elseif ($setup === 'review') {
             return redirect()->route('seller.dashboard')->with('success', 'Profile completed!');
