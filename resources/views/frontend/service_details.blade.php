@@ -21,7 +21,7 @@
   "name": "{{ $user->name }}",
   "description": "{{ Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 200) }}",
   "url": "{{ url()->current() }}",
-  "image": "{{ $user->profile_photo ? asset($user->profile_photo) : '' }}",
+  "image": "{{ $user->profile_photo ? (str_starts_with($user->profile_photo, 'http') ? $user->profile_photo : asset($user->profile_photo)) : '' }}",
   "@id": "{{ url()->current() }}",
   "priceRange": "Contact for pricing",
   "address": {
@@ -51,7 +51,9 @@
             <div class="relative group shrink-0 mx-auto sm:mx-0">
                 <div class="absolute -inset-1 bg-gradient-to-r from-teal-700 to-violet-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                 <div class="relative w-56 h-72 sm:w-64 sm:h-80 md:w-72 md:h-[380px] rounded-[2.2rem] overflow-hidden border-4 border-white shadow-2xl">
-                    <img src="{{ $user->profile_photo }}" class="w-full h-full object-cover" alt="{{ $user->name }}">
+                    <img src="{{ str_starts_with($user->profile_photo ?? '', 'http') ? $user->profile_photo : asset($user->profile_photo ?? '') }}"
+                         class="w-full h-full object-cover" alt="{{ $user->name }}"
+                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0F766E&color=fff&size=400'">
                 </div>
             </div>
 

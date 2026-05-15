@@ -216,7 +216,7 @@
             $sellerComm    = round($sellerPaid->sum('fee') * ($staff->commission_rate / 100), 2);
         @endphp
         <div class="flex items-center gap-3 py-3 border-b border-slate-50 last:border-0">
-            <img src="{{ $seller->profile_photo ?? '' }}" alt="{{ $seller->name }}"
+            <img src="{{ asset($seller->profile_photo ?? '') }}" alt="{{ $seller->name }}"
                  class="w-10 h-10 rounded-xl object-cover border border-slate-100 shrink-0"
                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($seller->name) }}&background=2563eb&color=fff&size=80'">
             <div class="flex-1 min-w-0">

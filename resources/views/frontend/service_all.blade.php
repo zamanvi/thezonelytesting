@@ -80,7 +80,7 @@
             {{-- Photo --}}
             <div class="relative h-44 sm:h-52 bg-slate-100 overflow-hidden">
                 @if($user->profile_photo)
-                <img src="{{ $user->profile_photo }}"
+                <img src="{{ asset($user->profile_photo) }}"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
                      class="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition duration-500"
                      alt="{{ $user->name }}" loading="lazy">

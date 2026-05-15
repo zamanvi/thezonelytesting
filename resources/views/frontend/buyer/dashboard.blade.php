@@ -61,7 +61,7 @@
             };
         @endphp
         <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50 last:border-0">
-            <img src="{{ $lead->seller?->profile_photo ?? '' }}" alt="{{ $lead->seller?->name }}"
+            <img src="{{ asset($lead->seller?->profile_photo ?? '') }}" alt="{{ $lead->seller?->name }}"
                  class="w-11 h-11 rounded-xl object-cover border border-slate-100 shrink-0"
                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($lead->seller?->name ?? 'S') }}&background=2563eb&color=fff&size=80'">
             <div class="flex-1 min-w-0">
@@ -111,7 +111,7 @@
             };
         @endphp
         <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50 last:border-0">
-            <img src="{{ $lead->seller?->profile_photo ?? '' }}" alt="{{ $lead->seller?->name }}"
+            <img src="{{ asset($lead->seller?->profile_photo ?? '') }}" alt="{{ $lead->seller?->name }}"
                  class="w-11 h-11 rounded-xl object-cover border border-slate-100 shrink-0"
                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($lead->seller?->name ?? 'S') }}&background=64748b&color=fff&size=80'">
             <div class="flex-1 min-w-0">

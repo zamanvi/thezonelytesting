@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -10,30 +11,26 @@ use Intervention\Image\Drivers\Gd\Driver;
 class ImageOptimizer
 {
     /**
-     * Resize, convert to WebP, compress, and store a profile photo.
-     * Returns the path to store in the DB (e.g. "storage/profiles/uuid.webp").
+     * Resize, convert to WebP, compress, and store a profile photo to R2.
+     * Returns full public URL (https://...) to store in DB.
      */
     public static function saveProfilePhoto(UploadedFile $file, string $folder = 'profiles'): string
     {
+        $filename = $folder . '/' . Str::uuid() . '.webp';
+
         try {
-            $filename = Str::uuid() . '.webp';
-            $dir      = storage_path('app/public/' . $folder);
-            $fullPath = $dir . '/' . $filename;
-
-            if (!is_dir($dir)) {
-                mkdir($dir, 0755, true);
-            }
-
             $manager = new ImageManager(new Driver());
-            $manager->read($file->getPathname())
+            $encoded = $manager->read($file->getPathname())
                 ->scaleDown(width: 800)
-                ->toWebp(quality: 82)
-                ->save($fullPath);
+                ->toWebp(quality: 82);
 
-            return 'storage/' . $folder . '/' . $filename;
+            Storage::disk('r2')->put($filename, (string) $encoded, 'public');
+
+            return Storage::disk('r2')->url($filename);
         } catch (\Throwable $e) {
+            // R2 failed — fall back to local public disk
             $path = $file->store($folder, 'public');
-            return 'storage/' . $path;
+            return asset('storage/' . $path);
         }
     }
 }

@@ -50,7 +50,7 @@
   "name": "{{ addslashes($user->name) }}",
   "description": "{{ addslashes(Str::limit(strip_tags($user->about ?? $user->bio ?? ''), 200)) }}",
   "url": "{{ url()->current() }}",
-  "image": "{{ $user->profile_photo ? asset($user->profile_photo) : '' }}",
+  "image": "{{ $user->profile_photo ? (str_starts_with($user->profile_photo, 'http') ? $user->profile_photo : asset($user->profile_photo)) : '' }}",
   "@id": "{{ url()->current() }}",
   "address": {
     "@type": "PostalAddress",
@@ -102,8 +102,13 @@
 
     {{-- ── HERO ─────────────────────────────────────────────────────── --}}
     <section class="hero-bg text-white relative">
-        <div class="absolute top-4 right-4 badge-verified text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1.5">
-            <i class="fas fa-circle-check text-xs"></i> VERIFIED
+        <div class="absolute top-4 right-4 flex items-center gap-2">
+            <button onclick="openShareModal()" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1.5 transition">
+                <i class="fas fa-share-nodes text-xs"></i> Share
+            </button>
+            <div class="badge-verified text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1.5">
+                <i class="fas fa-circle-check text-xs"></i> VERIFIED
+            </div>
         </div>
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-14">
             <div class="flex flex-col md:flex-row items-center gap-10 md:gap-14">
@@ -112,7 +117,8 @@
                 <div class="flex-shrink-0 w-full max-w-xs mx-auto md:mx-0 md:max-w-sm">
                     <div class="pro-glass rounded-3xl p-6 text-center">
                         <div class="relative inline-block">
-                            <img src="{{ $user->profile_photo }}" alt="{{ $user->name }}"
+                            <img src="{{ str_starts_with($user->profile_photo ?? '', 'http') ? $user->profile_photo : asset($user->profile_photo ?? '') }}"
+                                 alt="{{ $user->name }}"
                                  class="w-36 h-48 sm:w-48 sm:h-60 object-cover rounded-2xl border-4 border-white/30 shadow-xl mx-auto"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                             <div style="display:none;" class="w-36 h-48 sm:w-48 sm:h-60 bg-teal-600/40 border-4 border-white/30 rounded-2xl mx-auto items-center justify-center text-white font-black text-4xl shadow-xl">
@@ -679,6 +685,66 @@
         </div>
     </footer>
 
+{{-- ── SHARE MODAL ──────────────────────────────────────────────── --}}
+<div id="shareModal" class="fixed inset-0 z-[999] flex items-end sm:items-center justify-center p-4" style="display:none!important;">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeShareModal()"></div>
+    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 z-10">
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="text-lg font-bold text-slate-800">Share this profile</h3>
+            <button onclick="closeShareModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 transition">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+        {{-- Profile mini-card --}}
+        <div class="flex items-center gap-3 bg-slate-50 rounded-2xl p-3 mb-5">
+            <img src="{{ str_starts_with($user->profile_photo ?? '', 'http') ? $user->profile_photo : asset($user->profile_photo ?? '') }}"
+                 alt="{{ $user->name }}"
+                 class="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0F766E&color=fff&size=48'">
+            <div class="min-w-0">
+                <div class="font-bold text-slate-800 text-sm truncate">{{ $user->name }}</div>
+                <div class="text-xs text-slate-500 truncate">{{ $user->category?->title ?? $user->title ?? 'Professional' }}{{ $cityName ? ' · '.$cityName : '' }}</div>
+            </div>
+        </div>
+        {{-- Copy link --}}
+        <div class="flex gap-2 mb-5">
+            <input id="shareLinkInput" type="text" readonly value="{{ url()->current() }}"
+                   class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-600 focus:outline-none truncate">
+            <button onclick="copyShareLink()" id="copyBtn"
+                    class="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition whitespace-nowrap">
+                <i class="fas fa-copy text-xs"></i> <span id="copyBtnText">Copy</span>
+            </button>
+        </div>
+        {{-- Share options --}}
+        <div class="grid grid-cols-4 gap-3">
+            <button onclick="shareViaWhatsApp()" class="flex flex-col items-center gap-1.5 p-3 bg-green-50 hover:bg-green-100 rounded-2xl transition group">
+                <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fab fa-whatsapp text-white text-lg"></i>
+                </div>
+                <span class="text-xs text-slate-600 font-medium">WhatsApp</span>
+            </button>
+            <button onclick="shareViaFacebook()" class="flex flex-col items-center gap-1.5 p-3 bg-blue-50 hover:bg-blue-100 rounded-2xl transition group">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fab fa-facebook-f text-white text-lg"></i>
+                </div>
+                <span class="text-xs text-slate-600 font-medium">Facebook</span>
+            </button>
+            <button onclick="shareViaX()" class="flex flex-col items-center gap-1.5 p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl transition group">
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fab fa-x-twitter text-white text-lg"></i>
+                </div>
+                <span class="text-xs text-slate-600 font-medium">X</span>
+            </button>
+            <button onclick="shareViaNative()" class="flex flex-col items-center gap-1.5 p-3 bg-teal-50 hover:bg-teal-100 rounded-2xl transition group">
+                <div class="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fas fa-ellipsis text-white text-lg"></i>
+                </div>
+                <span class="text-xs text-slate-600 font-medium">More</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 {{-- ── MOBILE STICKY CTA ────────────────────────────────────────── --}}
 <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-2xl px-4 py-3 flex gap-3">
     @if($callNumber)
@@ -745,5 +811,61 @@
         .then(data => window.open(data.url, '_blank'))
         .catch(() => window.open('https://wa.me/{{ preg_replace('/[^0-9]/', '', $waNumber ?? '') }}', '_blank'));
     }
+
+    const _shareUrl  = '{{ url()->current() }}';
+    const _shareName = '{{ addslashes($user->name) }}';
+    const _shareText = _shareName + ' — {{ addslashes($user->category?->title ?? $user->title ?? 'Professional') }}{{ $cityName ? ' in '.$cityName : '' }} | Zonely';
+
+    function openShareModal() {
+        const m = document.getElementById('shareModal');
+        m.style.removeProperty('display');
+        m.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeShareModal() {
+        document.getElementById('shareModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function copyShareLink() {
+        navigator.clipboard.writeText(_shareUrl).then(() => {
+            const btn  = document.getElementById('copyBtn');
+            const text = document.getElementById('copyBtnText');
+            text.textContent = 'Copied!';
+            btn.classList.replace('bg-teal-600', 'bg-green-600');
+            btn.classList.replace('hover:bg-teal-700', 'hover:bg-green-700');
+            setTimeout(() => {
+                text.textContent = 'Copy';
+                btn.classList.replace('bg-green-600', 'bg-teal-600');
+                btn.classList.replace('hover:bg-green-700', 'hover:bg-teal-700');
+            }, 2000);
+        }).catch(() => {
+            document.getElementById('shareLinkInput').select();
+            document.execCommand('copy');
+        });
+    }
+
+    function shareViaWhatsApp() {
+        window.open('https://wa.me/?text=' + encodeURIComponent(_shareText + '\n' + _shareUrl), '_blank');
+    }
+
+    function shareViaFacebook() {
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_shareUrl), '_blank');
+    }
+
+    function shareViaX() {
+        window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(_shareText) + '&url=' + encodeURIComponent(_shareUrl), '_blank');
+    }
+
+    function shareViaNative() {
+        if (navigator.share) {
+            navigator.share({ title: _shareName, text: _shareText, url: _shareUrl }).catch(() => {});
+        } else {
+            copyShareLink();
+        }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeShareModal(); });
 </script>
 @endsection

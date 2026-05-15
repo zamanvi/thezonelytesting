@@ -358,7 +358,7 @@ class HomeController extends Controller
         }
 
         // Measure total content height for vertical centering
-        $btnY1 = $H - 100;
+        $btnY1 = $H - 80;
         $cH    = $fs + 16;
         if ($desig)     $cH += 38;
         $cH += 14;
@@ -420,7 +420,7 @@ class HomeController extends Controller
         }
 
         // CTA Button — gold pill, full content-panel width
-        $btnY2 = $H - 36;
+        $btnY2 = $H - 16;
         $btnX1 = $rx;
         $btnX2 = $W - 52;
         $btnH  = $btnY2 - $btnY1;
