@@ -344,6 +344,7 @@ class HomeController extends Controller
         $desig     = Str::limit($user->designation ?? $user->category?->title ?? '', 44);
         $specialty = Str::limit(trim(Str::before($user->title ?? '', '|')), 46);
         $loc       = $user->city ? ($user->city . ($user->state ? ', ' . $user->state : '')) : '';
+        $exp       = (int)($user->experience ?? 0);
         $svcs      = $user->services->take(6)->filter(function($s) {
             $t = preg_replace('/[^\x20-\x7E]/u', '', $s->title ?? '');
             return trim($t) !== '';
@@ -363,14 +364,15 @@ class HomeController extends Controller
         // Measure total content height for vertical centering
         $btnY1 = $H - 68;
         $cH    = $fs + 16;
-        if ($desig)     $cH += 38;
+        if ($desig)              $cH += 38;
         $cH += 14;
-        if ($specialty) $cH += 34;
-        if ($loc)       $cH += 34;
+        if ($specialty)          $cH += 34;
+        if ($loc)                $cH += 34;
+        if ($exp)                $cH += 32;
         $cH += 18;
         $cH += $svcs->count() * 36;
-        if ($rating)    $cH += 36;
-        $cy = max(38, (int)(($btnY1 - $cH) / 2.6));
+        if ($rating && $revCount > 0) $cH += 34;
+        $cy = max(32, (int)(($btnY1 - $cH) / 2));
 
         // Gold accent line above name
         imagefilledrectangle($img, $rx, $cy - 16, $rx + 52, $cy - 12, $cGold);
@@ -399,6 +401,12 @@ class HomeController extends Controller
             $cy += 34;
         }
 
+        // Experience
+        if ($ttf && $exp) {
+            imagettftext($img, 17, 0, $rx, $cy, $cGoldLight, $fontB, $exp . '+ Yrs Experience');
+            $cy += 32;
+        }
+
         $cy += 10;
 
         // Gold divider
@@ -421,12 +429,13 @@ class HomeController extends Controller
         if ($rating && $revCount > 0 && $ttf) {
             $ratingTx = number_format($rating, 1) . '/5  (' . $revCount . ' reviews)';
             imagettftext($img, 17, 0, $rx, $cy + 8, $cGold, $fontB, $ratingTx);
+            $cy += 34;
         }
 
         // CTA Button — gold pill, full content-panel width
         $btnY2 = $H - 4;
         $btnX1 = $rx;
-        $btnX2 = $W - 20;
+        $btnX2 = $W - 12;
         $btnH  = $btnY2 - $btnY1;
         $br    = (int)($btnH / 2);
         imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY2, $cGold);
