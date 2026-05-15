@@ -246,32 +246,24 @@ class HomeController extends Controller
         $photoW      = 500;
         $photoLoaded = false;
 
-        if ($user->profile_photo) {
+        if ($user->profile_photo && !str_starts_with($user->profile_photo, 'http')) {
             $src   = false;
-            $photo = $user->profile_photo;
-
-            if (str_starts_with($photo, 'http')) {
-                $ctx  = stream_context_create(['http' => ['timeout' => 3, 'ignore_errors' => true]]);
-                $data = @file_get_contents($photo, false, $ctx);
-                if ($data) $src = @imagecreatefromstring($data);
-            } else {
-                $photo   = ltrim($photo, '/');
-                $fsPaths = [
-                    public_path($photo),
-                    storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
-                    base_path('public/' . $photo),
-                ];
-                foreach ($fsPaths as $tryPath) {
-                    if ($src) break;
-                    if (!file_exists($tryPath)) continue;
-                    $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
-                    $src = match($ext) {
-                        'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
-                        'png'        => @imagecreatefrompng($tryPath),
-                        'webp'       => @imagecreatefromwebp($tryPath),
-                        default      => false,
-                    };
-                }
+            $photo = ltrim($user->profile_photo, '/');
+            $fsPaths = [
+                storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
+                public_path($photo),
+                base_path('public/' . $photo),
+            ];
+            foreach ($fsPaths as $tryPath) {
+                if ($src) break;
+                if (!file_exists($tryPath)) continue;
+                $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
+                $src = match($ext) {
+                    'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
+                    'png'        => @imagecreatefrompng($tryPath),
+                    'webp'       => @imagecreatefromwebp($tryPath),
+                    default      => false,
+                };
             }
 
             if ($src) {
@@ -291,11 +283,26 @@ class HomeController extends Controller
             }
         }
 
-        if (!$photoLoaded && $ttf) {
-            $ini  = strtoupper(substr($user->name ?? 'Z', 0, 1));
-            $bbox = @imagettfbbox(110, 0, $fontB, $ini);
-            $iw   = $bbox ? abs($bbox[4] - $bbox[0]) : 80;
-            imagettftext($img, 110, 0, (int)(($photoW - $iw) / 2), (int)($H / 2 + 44), $cGold, $fontB, $ini);
+        if (!$photoLoaded) {
+            // Fill photo panel with slightly lighter teal so logo has a background
+            $cPanelBg = imagecolorallocate($img, 15, 75, 70);
+            imagefilledrectangle($img, 0, 0, $photoW - 1, $H, $cPanelBg);
+
+            // Draw Zonely platform logo centered in panel
+            $logoPath = public_path('frontend/img/zonely_logo.png');
+            $logo     = file_exists($logoPath) ? @imagecreatefrompng($logoPath) : false;
+            if ($logo) {
+                $lw = imagesx($logo); $lh = imagesy($logo);
+                $maxW = 260; $maxH = 160;
+                $scale = min($maxW / $lw, $maxH / $lh, 1);
+                $dw = (int)($lw * $scale); $dh = (int)($lh * $scale);
+                $dx = (int)(($photoW - $dw) / 2);
+                $dy = (int)(($H - $dh) / 2);
+                imagealphablending($img, true);
+                imagesavealpha($logo, true);
+                imagecopyresampled($img, $logo, $dx, $dy, 0, 0, $dw, $dh, $lw, $lh);
+                imagedestroy($logo);
+            }
         }
 
         // Gradient scrim: bottom of photo → dark teal (matches HTML gradient-to-t)
