@@ -348,7 +348,7 @@ class HomeController extends Controller
         $svcs      = $user->services->take(6)->filter(function($s) {
             $t = preg_replace('/[^\x20-\x7E]/u', '', $s->title ?? '');
             return trim($t) !== '';
-        })->take(3)->values();
+        })->take(4)->values();
         $rating    = $user->reviews->whereNotNull('rating')->avg('rating');
         $revCount  = $user->reviews->whereNotNull('rating')->count();
 
