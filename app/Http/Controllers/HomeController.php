@@ -305,17 +305,35 @@ class HomeController extends Controller
             }
         }
 
-        // Gradient scrim: bottom of photo → dark teal (matches HTML gradient-to-t)
-        for ($i = 0; $i < $H; $i++) {
-            $alpha = (int)(127 * ($i / $H) * 0.85);
+        // Horizontal scrim: right edge of photo fades to teal (keeps face bright)
+        $scrimW = 140;
+        for ($sx = 0; $sx < $scrimW; $sx++) {
+            $alpha = (int)(127 * $sx / $scrimW);
             $c = imagecolorallocatealpha($img, 10, 61, 58, $alpha);
-            imageline($img, 0, $i, $photoW - 1, $i, $c);
+            imageline($img, $photoW - $scrimW + $sx, 0, $photoW - $scrimW + $sx, $H, $c);
         }
 
         // ── RIGHT PANEL content — 7/12 = 700px ───────────────────────────
         $rx  = $photoW + 60;   // left edge of text
         $rw  = $W - $rx - 48;  // available width
-        $cy  = 52;
+
+        // Pre-calculate content block height to vertically center it
+        $btnY1      = $H - 90;
+        $contentH   = 0;
+        $name       = $user->name ?? 'Professional';
+        $fs         = 44;
+        if ($ttf) { $bbox = @imagettfbbox($fs, 0, $fontB, $name); if ($bbox && abs($bbox[4]-$bbox[0]) > $rw) $fs = 32; }
+        $contentH  += $fs + 10;
+        $desig      = Str::limit($user->designation ?? $user->category?->title ?? '', 40);
+        if ($desig) $contentH += 28 + 16;
+        $specialty  = Str::limit(trim(Str::before($user->title ?? '', '|')), 48);
+        if ($specialty) $contentH += 26;
+        if ($user->city) $contentH += 30;
+        $contentH  += 10;
+        $svcCount   = $user->services->take(3)->filter(fn($s) => trim($s->title ?? ''))->count();
+        $contentH  += $svcCount * 30;
+        $available  = $btnY1 - 20;
+        $cy         = max(40, (int)(($available - $contentH) / 2));
 
         // Name — large gold (split at comma if long)
         $name = $user->name ?? 'Professional';
@@ -367,7 +385,6 @@ class HomeController extends Controller
         }
 
         // ── CTA Button — full width, very rounded (pill), gold ────────────
-        $btnY1  = $H - 90;
         $btnY2  = $H - 38;
         $btnX1  = $rx;
         $btnX2  = $W - 48;
@@ -383,14 +400,6 @@ class HomeController extends Controller
             $textW   = $bbox ? abs($bbox[4] - $bbox[0]) : 130;
             $textX   = $btnX1 + (int)(($btnX2 - $btnX1 - $textW) / 2);
             imagettftext($img, 15, 0, $textX, $btnY1 + (int)($btnH / 2) + 6, $cBg, $fontB, $btnText);
-        }
-
-        // ── Domain bottom-right ───────────────────────────────────────────
-        $domain = parse_url(config('app.url'), PHP_URL_HOST) ?: 'zonely.app';
-        if ($ttf) {
-            $dBbox = @imagettfbbox(10, 0, $fontR ?? $fontB, $domain);
-            $dW    = $dBbox ? abs($dBbox[4] - $dBbox[0]) : 80;
-            imagettftext($img, 10, 0, $W - $dW - 16, $H - 12, $cGoldMid, $fontR ?? $fontB, $domain);
         }
 
         // ── Verified badge (photo top-left) ───────────────────────────────
