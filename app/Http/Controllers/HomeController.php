@@ -248,23 +248,32 @@ class HomeController extends Controller
 
         if ($user->profile_photo) {
             $src   = false;
-            $photo = ltrim($user->profile_photo, '/');
-            $fsPaths = [
-                public_path($photo),
-                storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
-                base_path('public/' . $photo),
-            ];
-            foreach ($fsPaths as $tryPath) {
-                if ($src) break;
-                if (!file_exists($tryPath)) continue;
-                $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
-                $src = match($ext) {
-                    'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
-                    'png'        => @imagecreatefrompng($tryPath),
-                    'webp'       => @imagecreatefromwebp($tryPath),
-                    default      => false,
-                };
+            $photo = $user->profile_photo;
+
+            if (str_starts_with($photo, 'http')) {
+                $ctx  = stream_context_create(['http' => ['timeout' => 3, 'ignore_errors' => true]]);
+                $data = @file_get_contents($photo, false, $ctx);
+                if ($data) $src = @imagecreatefromstring($data);
+            } else {
+                $photo   = ltrim($photo, '/');
+                $fsPaths = [
+                    public_path($photo),
+                    storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
+                    base_path('public/' . $photo),
+                ];
+                foreach ($fsPaths as $tryPath) {
+                    if ($src) break;
+                    if (!file_exists($tryPath)) continue;
+                    $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
+                    $src = match($ext) {
+                        'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
+                        'png'        => @imagecreatefrompng($tryPath),
+                        'webp'       => @imagecreatefromwebp($tryPath),
+                        default      => false,
+                    };
+                }
             }
+
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
                 $targetRatio = $photoW / $H;
