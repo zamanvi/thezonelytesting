@@ -340,89 +340,87 @@ class HomeController extends Controller
         $rx = $photoW + 58;
         $rw = $W - $rx - 52;
 
-        // Measure content height for vertical centering
-        $name  = $user->name ?? 'Professional';
-        $fs    = 48;
-        if ($ttf) {
-            $b = @imagettfbbox($fs, 0, $fontB, $name);
-            if ($b && abs($b[4] - $b[0]) > $rw) $fs = 38;
-            if ($b && abs($b[4] - $b[0]) > $rw) $fs = 30;
-        }
+        $name      = $user->name ?? 'Professional';
         $desig     = Str::limit($user->designation ?? $user->category?->title ?? '', 44);
-        $specialty = Str::limit(trim(Str::before($user->title ?? '', '|')), 50);
-        $loc       = $user->city ? (($user->city) . ($user->state ? ', ' . $user->state : '')) : '';
+        $specialty = Str::limit(trim(Str::before($user->title ?? '', '|')), 46);
+        $loc       = $user->city ? ($user->city . ($user->state ? ', ' . $user->state : '')) : '';
         $svcs      = $user->services->take(3)->filter(fn($s) => trim($s->title ?? ''))->values();
         $rating    = $user->reviews->whereNotNull('rating')->avg('rating');
         $revCount  = $user->reviews->whereNotNull('rating')->count();
 
-        $cH  = $fs + 14;
-        if ($desig)    $cH += 32;
-        $cH += 18; // gap
-        if ($specialty) $cH += 30;
-        if ($loc)       $cH += 30;
-        $cH += 14; // gap before divider
-        $cH += 16; // divider line + gap
-        $cH += $svcs->count() * 32;
-        if ($rating)    $cH += 34;
-
-        $btnY1 = $H - 95;
-        $cy    = max(36, (int)(($btnY1 - $cH) / 3));
-
-        // Gold accent bar (decorative)
-        imagefilledrectangle($img, $rx, $cy - 18, $rx + 48, $cy - 15, $cGold);
-
-        // Name
+        // Adaptive name size — must fit panel width
+        $fs = 56;
         if ($ttf) {
-            imagettftext($img, $fs, 0, $rx, $cy, $cGoldLight, $fontB, $name);
+            foreach ([56, 46, 36, 28] as $try) {
+                $b = @imagettfbbox($try, 0, $fontB, $name);
+                if (!$b || abs($b[4] - $b[0]) <= $rw) { $fs = $try; break; }
+            }
         }
-        $cy += $fs + 14;
 
-        // Category/designation
+        // Measure total content height for vertical centering
+        $btnY1 = $H - 100;
+        $cH    = $fs + 16;
+        if ($desig)     $cH += 38;
+        $cH += 14;
+        if ($specialty) $cH += 34;
+        if ($loc)       $cH += 34;
+        $cH += 18;
+        $cH += $svcs->count() * 36;
+        if ($rating)    $cH += 36;
+        $cy = max(38, (int)(($btnY1 - $cH) / 2.6));
+
+        // Gold accent line above name
+        imagefilledrectangle($img, $rx, $cy - 16, $rx + 52, $cy - 12, $cGold);
+
+        // Name — largest element, gold
+        if ($ttf) imagettftext($img, $fs, 0, $rx, $cy, $cGoldLight, $fontB, $name);
+        $cy += $fs + 16;
+
+        // Category
         if ($ttf && $desig) {
-            imagettftext($img, 20, 0, $rx, $cy, $cGoldMid, $fontB, $desig);
-            $cy += 32;
-        }
-
-        $cy += 18;
-
-        // Specialty/title
-        if ($ttf && $specialty) {
-            imagettftext($img, 18, 0, $rx, $cy, $cWhite, $fontB, $specialty);
-            $cy += 30;
-        }
-
-        // Location
-        if ($ttf && $loc) {
-            imagettftext($img, 17, 0, $rx, $cy, $cGoldMid, $fontR ?? $fontB, $loc);
-            $cy += 30;
+            imagettftext($img, 22, 0, $rx, $cy, $cGoldMid, $fontB, $desig);
+            $cy += 38;
         }
 
         $cy += 14;
 
-        // Thin gold divider line
-        $divC = imagecolorallocatealpha($img, 212, 175, 55, 95);
-        imageline($img, $rx, $cy, $rx + $rw, $cy, $divC);
-        $cy += 16;
+        // Specialty
+        if ($ttf && $specialty) {
+            imagettftext($img, 20, 0, $rx, $cy, $cWhite, $fontB, $specialty);
+            $cy += 34;
+        }
 
-        // Services
+        // Location
+        if ($ttf && $loc) {
+            imagettftext($img, 19, 0, $rx, $cy, $cGoldMid, $fontR ?? $fontB, $loc);
+            $cy += 34;
+        }
+
+        $cy += 10;
+
+        // Gold divider
+        $divC = imagecolorallocatealpha($img, 212, 175, 55, 100);
+        imageline($img, $rx, $cy, $rx + $rw, $cy, $divC);
+        $cy += 18;
+
+        // Services — larger bullets + text
         foreach ($svcs as $svc) {
-            $t  = Str::limit($svc->title ?? '', 44);
-            $bx = $rx + 12; $by = $cy - 7;
-            imageellipse($img, $bx, $by, 18, 18, $cGoldLight);
-            imagefilledellipse($img, $bx, $by, 8, 8, $cGoldLight);
-            if ($ttf) imagettftext($img, 16, 0, $rx + 30, $cy, $cWhiteDim, $fontR ?? $fontB, $t);
-            $cy += 32;
+            $t  = Str::limit($svc->title ?? '', 40);
+            $bx = $rx + 13; $by = $cy - 8;
+            imageellipse($img, $bx, $by, 20, 20, $cGoldLight);
+            imagefilledellipse($img, $bx, $by, 9, 9, $cGoldLight);
+            if ($ttf) imagettftext($img, 18, 0, $rx + 34, $cy, $cWhiteDim, $fontR ?? $fontB, $t);
+            $cy += 36;
         }
 
         // Rating
         if ($rating && $revCount > 0 && $ttf) {
-            $stars    = str_repeat('* ', (int)round($rating));
-            $ratingTx = trim($stars) . '  ' . number_format($rating, 1) . ' (' . $revCount . ' reviews)';
-            imagettftext($img, 15, 0, $rx, $cy + 10, $cGold, $fontB, $ratingTx);
+            $ratingTx = number_format($rating, 1) . '/5  (' . $revCount . ' reviews)';
+            imagettftext($img, 17, 0, $rx, $cy + 8, $cGold, $fontB, $ratingTx);
         }
 
         // CTA Button — gold pill, full content-panel width
-        $btnY2 = $H - 40;
+        $btnY2 = $H - 36;
         $btnX1 = $rx;
         $btnX2 = $W - 52;
         $btnH  = $btnY2 - $btnY1;
@@ -433,10 +431,10 @@ class HomeController extends Controller
         imagefilledellipse($img, $btnX2 - $br, $btnY1 + $br, $br * 2, $br * 2, $cGold);
         if ($ttf) {
             $btnTx = 'VIEW PROFILE';
-            $bbox  = @imagettfbbox(17, 0, $fontB, $btnTx);
-            $txW   = $bbox ? abs($bbox[4] - $bbox[0]) : 140;
+            $bbox  = @imagettfbbox(20, 0, $fontB, $btnTx);
+            $txW   = $bbox ? abs($bbox[4] - $bbox[0]) : 160;
             $txX   = $btnX1 + (int)(($btnX2 - $btnX1 - $txW) / 2);
-            imagettftext($img, 17, 0, $txX, $btnY1 + (int)($btnH / 2) + 7, $cBg, $fontB, $btnTx);
+            imagettftext($img, 20, 0, $txX, $btnY1 + (int)($btnH / 2) + 8, $cBg, $fontB, $btnTx);
         }
 
         header('Content-Type: image/png');
