@@ -438,16 +438,30 @@ class HomeController extends Controller
         $btnX2 = $W - 12;
         $btnH  = $btnY2 - $btnY1;
         $br    = (int)($btnH / 2);
-        imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY2, $cGold);
-        imagefilledrectangle($img, $btnX1, $btnY1 + $br, $btnX2, $btnY2 - $br, $cGold);
-        imagefilledellipse($img, $btnX1 + $br, $btnY1 + $br, $br * 2, $br * 2, $cGold);
-        imagefilledellipse($img, $btnX2 - $br, $btnY1 + $br, $br * 2, $br * 2, $cGold);
+
+        // Glow shadow behind button
+        $glowC = imagecolorallocatealpha($img, 212, 175, 55, 80);
+        imagefilledrectangle($img, $btnX1 + $br, $btnY1 + 5, $btnX2 - $br, $btnY2 + 5, $glowC);
+        imagefilledellipse($img, $btnX1 + $br, $btnY1 + $br + 5, $br * 2, $br * 2, $glowC);
+        imagefilledellipse($img, $btnX2 - $br, $btnY1 + $br + 5, $br * 2, $br * 2, $glowC);
+
+        // Button fill — brighter gold
+        $cBtnGold = imagecolorallocate($img, 230, 195, 60);
+        imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY2, $cBtnGold);
+        imagefilledrectangle($img, $btnX1, $btnY1 + $br, $btnX2, $btnY2 - $br, $cBtnGold);
+        imagefilledellipse($img, $btnX1 + $br, $btnY1 + $br, $br * 2, $br * 2, $cBtnGold);
+        imagefilledellipse($img, $btnX2 - $br, $btnY1 + $br, $br * 2, $br * 2, $cBtnGold);
+
+        // White highlight top edge — 3D effect
+        $hiC = imagecolorallocatealpha($img, 255, 255, 255, 90);
+        imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY1 + 6, $hiC);
+
         if ($ttf) {
-            $btnTx = 'VIEW PROFILE';
-            $bbox  = @imagettfbbox(20, 0, $fontB, $btnTx);
-            $txW   = $bbox ? abs($bbox[4] - $bbox[0]) : 160;
+            $btnTx = 'VISIT MY WEBSITE  >>';
+            $bbox  = @imagettfbbox(21, 0, $fontB, $btnTx);
+            $txW   = $bbox ? abs($bbox[4] - $bbox[0]) : 180;
             $txX   = $btnX1 + (int)(($btnX2 - $btnX1 - $txW) / 2);
-            imagettftext($img, 20, 0, $txX, $btnY1 + (int)($btnH / 2) + 8, $cBg, $fontB, $btnTx);
+            imagettftext($img, 21, 0, $txX, $btnY1 + (int)($btnH / 2) + 8, $cBg, $fontB, $btnTx);
         }
 
         header('Content-Type: image/png');
