@@ -26,6 +26,12 @@
         <p class="text-sm text-emerald-700 font-semibold">{{ session('success') }}</p>
     </div>
     @endif
+    @if(session('error'))
+    <div class="bg-red-50 border border-red-200 rounded-2xl px-5 py-3 mb-5 flex items-center gap-3">
+        <i class="fa-solid fa-circle-exclamation text-red-500"></i>
+        <p class="text-sm text-red-700 font-semibold">{{ session('error') }}</p>
+    </div>
+    @endif
 
     {{-- Page URL Banner --}}
     <div class="bg-slate-900 rounded-2xl px-5 py-3.5 mb-6 flex items-center justify-between gap-4">

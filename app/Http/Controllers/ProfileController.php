@@ -122,8 +122,18 @@ class ProfileController extends Controller
                 'profile_photo' => 'nullable|image|max:10240',
             ]);
 
+            $photoError = null;
             if ($request->hasFile('profile_photo')) {
-                $user->profile_photo = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
+                try {
+                    $user->profile_photo = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
+                } catch (\Throwable $e) {
+                    try {
+                        $path = $request->file('profile_photo')->store('profiles', 'public');
+                        $user->profile_photo = 'storage/' . $path;
+                    } catch (\Throwable $e2) {
+                        $photoError = 'Photo upload failed: ' . $e2->getMessage();
+                    }
+                }
             }
 
             $user->bio        = $request->bio;
@@ -131,7 +141,9 @@ class ProfileController extends Controller
             $user->title      = $request->title;
             $user->experience = $request->experience;
             $user->save();
-            return redirect()->route('seller.onboarding')->with('success', 'Profile saved.');
+
+            $msg = $photoError ?? 'Profile saved.';
+            return redirect()->route('seller.onboarding')->with($photoError ? 'error' : 'success', $msg);
 
         } elseif ($setup === 'review') {
             return redirect()->route('seller.dashboard')->with('success', 'Profile completed!');
