@@ -306,8 +306,14 @@ class HomeController extends Controller
             }
         }
 
-        // Right-edge scrim: photo fades cleanly into content panel
-        $scrimW = 160;
+        // Subtle teal tint over entire photo (blends grey/white backgrounds into palette)
+        if ($photoLoaded) {
+            $tintC = imagecolorallocatealpha($img, 8, 42, 40, 100); // ~21% opaque teal tint
+            imagefilledrectangle($img, 0, 0, $photoW - 1, $H, $tintC);
+        }
+
+        // Right-edge scrim: photo fades into content panel
+        $scrimW = 180;
         for ($sx = 0; $sx < $scrimW; $sx++) {
             $alpha = (int)(127 * (1 - $sx / $scrimW));
             $c = imagecolorallocatealpha($img, 8, 42, 40, $alpha);
@@ -360,7 +366,7 @@ class HomeController extends Controller
         if ($rating)    $cH += 34;
 
         $btnY1 = $H - 95;
-        $cy    = max(36, (int)(($btnY1 - $cH) / 2));
+        $cy    = max(36, (int)(($btnY1 - $cH) / 3));
 
         // Gold accent bar (decorative)
         imagefilledrectangle($img, $rx, $cy - 18, $rx + 48, $cy - 15, $cGold);
