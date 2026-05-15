@@ -338,13 +338,16 @@ class HomeController extends Controller
 
         // ── Content panel ─────────────────────────────────────────────────
         $rx = $photoW + 58;
-        $rw = $W - $rx - 52;
+        $rw = $W - $rx - 20;
 
         $name      = $user->name ?? 'Professional';
         $desig     = Str::limit($user->designation ?? $user->category?->title ?? '', 44);
         $specialty = Str::limit(trim(Str::before($user->title ?? '', '|')), 46);
         $loc       = $user->city ? ($user->city . ($user->state ? ', ' . $user->state : '')) : '';
-        $svcs      = $user->services->take(3)->filter(fn($s) => trim($s->title ?? ''))->values();
+        $svcs      = $user->services->take(6)->filter(function($s) {
+            $t = preg_replace('/[^\x20-\x7E]/u', '', $s->title ?? '');
+            return trim($t) !== '';
+        })->take(3)->values();
         $rating    = $user->reviews->whereNotNull('rating')->avg('rating');
         $revCount  = $user->reviews->whereNotNull('rating')->count();
 
@@ -405,7 +408,8 @@ class HomeController extends Controller
 
         // Services — larger bullets + text
         foreach ($svcs as $svc) {
-            $t  = Str::limit($svc->title ?? '', 40);
+            $t  = Str::limit(preg_replace('/[^\x20-\x7E]/u', '', $svc->title ?? ''), 40);
+            if (!trim($t)) continue;
             $bx = $rx + 13; $by = $cy - 8;
             imageellipse($img, $bx, $by, 20, 20, $cGoldLight);
             imagefilledellipse($img, $bx, $by, 9, 9, $cGoldLight);
@@ -422,7 +426,7 @@ class HomeController extends Controller
         // CTA Button — gold pill, full content-panel width
         $btnY2 = $H - 4;
         $btnX1 = $rx;
-        $btnX2 = $W - 52;
+        $btnX2 = $W - 20;
         $btnH  = $btnY2 - $btnY1;
         $br    = (int)($btnH / 2);
         imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY2, $cGold);
