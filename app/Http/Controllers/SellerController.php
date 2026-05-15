@@ -75,7 +75,16 @@ class SellerController extends Controller
             $data['profile_photo'] = ImageOptimizer::saveProfilePhoto($request->file('profile_photo'));
         }
 
+        $emailChanged = $user->email !== $request->email;
         $user->update($data);
+
+        if ($emailChanged) {
+            $user->email_verified_at = null;
+            $user->save();
+            if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail) {
+                $user->sendEmailVerificationNotification();
+            }
+        }
 
         if ($request->filled('password')) {
             $request->validate([
