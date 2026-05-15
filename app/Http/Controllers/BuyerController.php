@@ -176,7 +176,7 @@ class BuyerController extends Controller
             'phone'         => 'nullable|string|max:50',
             'city'          => 'nullable|string|max:100',
             'state'         => 'nullable|string|max:100',
-            'profile_photo' => 'nullable|image|max:2048',
+            'profile_photo' => 'nullable|image|max:10240',
         ]);
 
         if ($request->hasFile('profile_photo')) {

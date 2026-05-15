@@ -119,7 +119,7 @@ class ProfileController extends Controller
                 'about'         => 'nullable|string|max:3000',
                 'title'         => 'nullable|string|max:255',
                 'experience'    => 'nullable|integer|min:0|max:99',
-                'profile_photo' => 'nullable|image|max:2048',
+                'profile_photo' => 'nullable|image|max:10240',
             ]);
 
             if ($request->hasFile('profile_photo')) {

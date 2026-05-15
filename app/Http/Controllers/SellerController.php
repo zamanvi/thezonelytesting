@@ -68,7 +68,7 @@ class SellerController extends Controller
             'phone'         => 'nullable|string|max:50',
             'whatsapp'      => 'nullable|string|max:50',
             'title'         => 'nullable|string|max:255',
-            'profile_photo' => 'nullable|image|max:2048',
+            'profile_photo' => 'nullable|image|max:10240',
         ]);
 
         if ($request->hasFile('profile_photo')) {
