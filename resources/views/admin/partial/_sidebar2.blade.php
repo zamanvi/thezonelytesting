@@ -1,7 +1,9 @@
 @php
-    $isAdmin   = auth()->user()?->type === 'admin';
+    $userType  = auth()->user()?->type;
+    $isAdmin   = $userType === 'admin';
+    $isCoo     = $userType === 'coo';
     $mgProfile = auth()->user()?->managerProfile;
-    $canSee    = fn(string $module) => $isAdmin || ($mgProfile && $mgProfile->hasModule($module));
+    $canSee    = fn(string $module) => $isAdmin || $isCoo || ($mgProfile && $mgProfile->hasModule($module));
 @endphp
 
 <nav class="sidebar" id="sidebar">
@@ -111,8 +113,8 @@
         </li>
         @endif
 
-        {{-- Managers section — admin only --}}
-        @if($isAdmin)
+        {{-- Managers section — admin and COO --}}
+        @if($isAdmin || $isCoo)
         <li class="nav-item">
             <a href="{{ route('admin.managers.index') }}"
                class="{{ Route::is('admin.managers.*') ? 'active' : '' }}">
@@ -137,6 +139,7 @@
             </a>
         </li>
 
+        @if($isAdmin)
         <li class="nav-item mt-4 border-top pt-3">
             <a href="{{ route('admin.clear.cache') }}"
                onclick="return confirm('Clear all cache?')">
@@ -152,8 +155,9 @@
             </a>
         </li>
         @endif
+        @endif
 
-        <li class="nav-item {{ $isAdmin ? '' : 'mt-4 border-top pt-3' }}">
+        <li class="nav-item {{ ($isAdmin || $isCoo) ? '' : 'mt-4 border-top pt-3' }}">
             <a href="{{ route('frontend.home') }}" target="_blank">
                 <i class="fas fa-arrow-up-right-from-square"></i>
                 <span class="nav-text ms-2">View Site</span>
