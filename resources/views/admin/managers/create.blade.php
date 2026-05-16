@@ -10,7 +10,7 @@
         </a>
         <div>
             <h4 class="mb-0 fw-bold">Add Panel Manager</h4>
-            <p class="text-muted small mb-0">Create account + assign module access.</p>
+            <p class="text-muted small mb-0">Create account + assign role and module access.</p>
         </div>
     </div>
 
@@ -22,6 +22,40 @@
 
     <form method="POST" action="{{ route('admin.managers.store') }}">
         @csrf
+
+        {{-- Role Type --}}
+        <div class="section-card mb-4">
+            <div class="card-header bg-dark text-white p-4">
+                <h6 class="mb-0"><i class="fas fa-user-tie me-2"></i>Role Type</h6>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="d-flex align-items-start gap-3 p-3 rounded-3 border cursor-pointer role-option"
+                               for="role_manager" style="cursor:pointer">
+                            <input type="radio" name="role" id="role_manager" value="manager"
+                                   class="form-check-input mt-1" checked onchange="toggleRole()">
+                            <div>
+                                <div class="fw-bold"><i class="fas fa-user-shield text-primary me-1"></i> Manager</div>
+                                <div class="text-muted small mt-1">Restricted access — you select which sections this manager can view and manage.</div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="d-flex align-items-start gap-3 p-3 rounded-3 border cursor-pointer role-option"
+                               for="role_general" style="cursor:pointer">
+                            <input type="radio" name="role" id="role_general" value="general_manager"
+                                   class="form-check-input mt-1" onchange="toggleRole()">
+                            <div>
+                                <div class="fw-bold"><i class="fas fa-crown text-warning me-1"></i> General Manager</div>
+                                <div class="text-muted small mt-1">Full panel access automatically — no module selection needed. Cannot manage admin accounts.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
 
             {{-- Account Info --}}
@@ -44,6 +78,24 @@
                             <input type="password" name="password" class="form-control" required minlength="6">
                             <div class="form-text">Min 6 characters.</div>
                         </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">City</label>
+                                <input type="text" name="city" class="form-control" value="{{ old('city') }}" placeholder="New York">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">State</label>
+                                <input type="text" name="state" class="form-control" value="{{ old('state') }}" placeholder="NY">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Country</label>
+                                <input type="text" name="country" class="form-control" value="{{ old('country') }}" placeholder="USA">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Zip Code</label>
+                                <input type="text" name="zip_code" class="form-control" value="{{ old('zip_code') }}" placeholder="10001">
+                            </div>
+                        </div>
                         <div class="mb-0">
                             <label class="form-label fw-semibold">Notes (internal)</label>
                             <textarea name="notes" class="form-control" rows="2" placeholder="e.g. Hired for blog management...">{{ old('notes') }}</textarea>
@@ -53,7 +105,7 @@
             </div>
 
             {{-- Module Access --}}
-            <div class="col-md-6">
+            <div class="col-md-6" id="moduleSection">
                 <div class="section-card h-100">
                     <div class="card-header bg-dark text-white p-4">
                         <h6 class="mb-0"><i class="fas fa-lock-open me-2"></i>Module Access</h6>
@@ -83,15 +135,39 @@
                 </div>
             </div>
 
+            {{-- General Manager notice (hidden by default) --}}
+            <div class="col-md-6" id="generalNotice" style="display:none">
+                <div class="section-card h-100">
+                    <div class="card-header bg-warning text-dark p-4">
+                        <h6 class="mb-0"><i class="fas fa-crown me-2"></i>General Manager — Full Access</h6>
+                    </div>
+                    <div class="card-body p-4 d-flex align-items-center justify-content-center text-center">
+                        <div>
+                            <i class="fas fa-unlock-alt fa-3x text-warning mb-3 opacity-75"></i>
+                            <p class="fw-bold mb-1">All admin sections unlocked automatically</p>
+                            <p class="text-muted small mb-0">No module selection needed. Admin and COO accounts remain protected.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="mt-4 d-flex gap-2">
             <button type="submit" class="btn btn-primary px-5">
-                <i class="fas fa-save me-1"></i> Create Manager
+                <i class="fas fa-save me-1"></i> Create
             </button>
             <a href="{{ route('admin.managers.index') }}" class="btn btn-outline-secondary">Cancel</a>
         </div>
     </form>
 
 </div>
+
+<script>
+function toggleRole() {
+    const isGeneral = document.getElementById('role_general').checked;
+    document.getElementById('moduleSection').style.display  = isGeneral ? 'none' : '';
+    document.getElementById('generalNotice').style.display  = isGeneral ? '' : 'none';
+}
+</script>
 @endsection

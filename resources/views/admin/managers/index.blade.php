@@ -43,12 +43,24 @@
                             <td class="text-muted small">{{ ($managers->currentPage()-1)*$managers->perPage()+$i+1 }}</td>
 
                             <td>
-                                <div class="fw-bold small">{{ $manager->name }}</div>
+                                <div class="fw-bold small d-flex align-items-center gap-2">
+                                    {{ $manager->name }}
+                                    @if($manager->type === 'coo')
+                                    <span class="badge bg-warning text-dark" style="font-size:10px"><i class="fas fa-crown me-1"></i>General Manager</span>
+                                    @else
+                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25" style="font-size:10px"><i class="fas fa-user-shield me-1"></i>Manager</span>
+                                    @endif
+                                </div>
                                 <div class="text-muted" style="font-size:11px">{{ $manager->email }}</div>
+                                @if($manager->city || $manager->country)
+                                <div class="text-muted" style="font-size:11px"><i class="fas fa-map-marker-alt me-1"></i>{{ collect([$manager->city, $manager->state, $manager->country])->filter()->implode(', ') }}</div>
+                                @endif
                             </td>
 
                             <td>
-                                @if($profile && count($profile->modules ?? []))
+                                @if($manager->type === 'coo')
+                                <span class="badge bg-warning text-dark" style="font-size:10px"><i class="fas fa-unlock-alt me-1"></i>Full Access</span>
+                                @elseif($profile && count($profile->modules ?? []))
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach($profile->modules as $mod)
                                     @php $info = \App\Models\ManagerProfile::MODULES[$mod] ?? null; @endphp

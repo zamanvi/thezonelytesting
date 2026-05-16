@@ -12,7 +12,7 @@ class ManagerController extends Controller
 {
     public function index()
     {
-        $managers = User::where('type', 'manager')
+        $managers = User::whereIn('type', ['manager', 'coo'])
             ->with('managerProfile')
             ->latest()
             ->paginate(20);
@@ -28,32 +28,57 @@ class ManagerController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $isGeneral = $request->role === 'general_manager';
+
+        $rules = [
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'modules'  => 'required|array|min:1',
-            'modules.*'=> 'in:' . implode(',', array_keys(ManagerProfile::MODULES)),
-        ]);
+            'city'     => 'nullable|string|max:100',
+            'state'    => 'nullable|string|max:100',
+            'country'  => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+        ];
+
+        if (!$isGeneral) {
+            $rules['modules']   = 'required|array|min:1';
+            $rules['modules.*'] = 'in:' . implode(',', array_keys(ManagerProfile::MODULES));
+        }
+
+        $request->validate($rules);
 
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'type'     => 'manager',
+            'type'     => $isGeneral ? 'coo' : 'manager',
             'status'   => true,
+            'city'     => $request->city,
+            'state'    => $request->state,
+            'country'  => $request->country,
+            'zip_code' => $request->zip_code,
             'slug'     => generateUniqueSlug(User::class, $request->name),
         ]);
 
-        ManagerProfile::create([
-            'user_id' => $user->id,
-            'modules' => $request->modules,
-            'status'  => 'active',
-            'notes'   => $request->notes,
-        ]);
+        if (!$isGeneral) {
+            ManagerProfile::create([
+                'user_id' => $user->id,
+                'modules' => $request->modules,
+                'status'  => 'active',
+                'notes'   => $request->notes,
+            ]);
+        } else {
+            ManagerProfile::create([
+                'user_id' => $user->id,
+                'modules' => [],
+                'status'  => 'active',
+                'notes'   => $request->notes,
+            ]);
+        }
 
+        $role = $isGeneral ? 'General Manager' : 'Manager';
         return redirect()->route('admin.managers.index')
-            ->with('success', $user->name . ' created with access to: ' . implode(', ', $request->modules));
+            ->with('success', $user->name . ' created as ' . $role . '.');
     }
 
     public function edit($id)
