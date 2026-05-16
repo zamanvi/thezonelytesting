@@ -30,6 +30,10 @@ class ManagerController extends Controller
     {
         $isGeneral = $request->role === 'general_manager';
 
+        if ($isGeneral && auth()->user()?->type === 'coo') {
+            abort(403, 'General Manager cannot create another General Manager.');
+        }
+
         $rules = [
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',

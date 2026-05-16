@@ -41,6 +41,7 @@
                             </div>
                         </label>
                     </div>
+                    @if(auth()->user()->type !== 'coo')
                     <div class="col-md-6">
                         <label class="d-flex align-items-start gap-3 p-3 rounded-3 border cursor-pointer role-option"
                                for="role_general" style="cursor:pointer">
@@ -52,6 +53,7 @@
                             </div>
                         </label>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
