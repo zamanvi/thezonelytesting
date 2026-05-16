@@ -120,7 +120,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     */
     Route::get('/dashboard', function () {
         $user = Auth::user();
-        if ($user->type === 'admin') {
+        if (in_array($user->type, ['admin', 'coo'])) {
             return redirect()->route('admin.dashboard');
         }
         if ($user->type === 'seller') {

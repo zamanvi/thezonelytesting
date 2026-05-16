@@ -27,6 +27,11 @@ class AdminMiddleware
             return $next($request);
         }
 
+        // COO — full panel access, restrictions handled per-controller
+        if ($user->type === 'coo') {
+            return $next($request);
+        }
+
         // Managers pass through here; ManagerModule middleware handles per-route checks
         if ($user->type === 'manager' && $user->managerProfile?->status === 'active') {
             return $next($request);

@@ -13,8 +13,8 @@ class ManagerModuleMiddleware
     {
         $user = Auth::user();
 
-        // Admins always pass
-        if ($user?->type === 'admin') {
+        // Admins and COO always pass — full access
+        if (in_array($user?->type, ['admin', 'coo'])) {
             return $next($request);
         }
 

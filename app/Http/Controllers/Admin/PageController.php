@@ -113,9 +113,9 @@ class PageController extends Controller
 
         $query = User::latest();
 
-        // Managers never see admin/manager accounts
-        if ($isManager) {
-            $query->whereNotIn('type', ['admin', 'manager']);
+        // Managers and COO never see admin/coo/manager accounts
+        if ($isManager || auth()->user()?->type === 'coo') {
+            $query->whereNotIn('type', ['admin', 'coo', 'manager']);
         }
 
         if ($status === 'verified') {
@@ -135,7 +135,8 @@ class PageController extends Controller
     function profiles_edit($id)
     {
         $target = User::findOrFail($id);
-        if (auth()->user()?->type === 'manager' && in_array($target->type, ['admin', 'manager'])) {
+        $actorType = auth()->user()?->type;
+        if (in_array($actorType, ['manager', 'coo']) && in_array($target->type, ['admin', 'coo', 'manager'])) {
             abort(403, 'Access denied.');
         }
         $user = $target;
@@ -144,13 +145,15 @@ class PageController extends Controller
     public function profiles_update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        if (auth()->user()?->type === 'manager' && in_array($user->type, ['admin', 'manager'])) {
+        $actorType = auth()->user()?->type;
+        if (in_array($actorType, ['manager', 'coo']) && in_array($user->type, ['admin', 'coo', 'manager'])) {
             abort(403, 'Access denied.');
         }
 
-        $allowedTypes = auth()->user()?->type === 'manager'
+        $actor = auth()->user()?->type;
+        $allowedTypes = in_array($actor, ['manager', 'coo'])
             ? 'required|in:staff,seller,user'
-            : 'required|in:admin,staff,manager,seller,user';
+            : 'required|in:admin,coo,staff,manager,seller,user';
 
         $validated = $request->validate([
             'name'                => 'required|string|max:255',
@@ -187,7 +190,8 @@ class PageController extends Controller
     function profiles_destroy($id)
     {
         $target = User::findOrFail($id);
-        if (auth()->user()?->type === 'manager' && in_array($target->type, ['admin', 'manager'])) {
+        $actorType = auth()->user()?->type;
+        if (in_array($actorType, ['manager', 'coo']) && in_array($target->type, ['admin', 'coo', 'manager'])) {
             abort(403, 'Access denied.');
         }
         $target->delete();
