@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    @if(session('success') && !session('new_credentials'))
+    @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -104,47 +104,30 @@
                                 </div>
                             </td>
                         </tr>
-                        @if(session('new_credentials') && session('new_credentials')['user_id'] == $manager->id)
-                        @php $cred = session('new_credentials'); @endphp
-                        <tr class="table-warning">
-                            <td colspan="6" class="px-4 py-3">
-                                <div class="d-flex align-items-center gap-2 mb-2">
-                                    <i class="fas fa-key text-warning"></i>
-                                    <span class="fw-bold small">New Account Credentials — Share with {{ $cred['name'] }}</span>
-                                    <span class="badge bg-dark ms-1" style="font-size:10px">{{ $cred['role'] }}</span>
-                                </div>
-                                <div class="d-flex flex-wrap gap-4">
-                                    <div>
-                                        <div class="text-muted" style="font-size:11px;font-weight:600">USER ID</div>
-                                        <div class="d-flex align-items-center gap-1 mt-1">
-                                            <code class="bg-white px-2 py-1 rounded border" id="cred_id">{{ $cred['user_id'] }}</code>
-                                            <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('cred_id')" title="Copy"><i class="fas fa-copy"></i></button>
-                                        </div>
+                        @if($profile && $profile->plain_password)
+                        <tr style="background:#fffbea">
+                            <td colspan="6" class="px-4 py-2">
+                                <div class="d-flex flex-wrap align-items-center gap-4">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="text-muted" style="font-size:11px;font-weight:600;min-width:52px">USER ID</span>
+                                        <code class="bg-white px-2 py-1 rounded border small" id="uid_{{ $manager->id }}">{{ $manager->id }}</code>
+                                        <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('uid_{{ $manager->id }}')" title="Copy"><i class="fas fa-copy" style="font-size:11px"></i></button>
                                     </div>
-                                    <div>
-                                        <div class="text-muted" style="font-size:11px;font-weight:600">EMAIL (LOGIN)</div>
-                                        <div class="d-flex align-items-center gap-1 mt-1">
-                                            <code class="bg-white px-2 py-1 rounded border" id="cred_email">{{ $cred['email'] }}</code>
-                                            <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('cred_email')" title="Copy"><i class="fas fa-copy"></i></button>
-                                        </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="text-muted" style="font-size:11px;font-weight:600;min-width:44px">EMAIL</span>
+                                        <code class="bg-white px-2 py-1 rounded border small" id="eml_{{ $manager->id }}">{{ $manager->email }}</code>
+                                        <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('eml_{{ $manager->id }}')" title="Copy"><i class="fas fa-copy" style="font-size:11px"></i></button>
                                     </div>
-                                    <div>
-                                        <div class="text-muted" style="font-size:11px;font-weight:600">PASSWORD</div>
-                                        <div class="d-flex align-items-center gap-1 mt-1">
-                                            <code class="bg-white px-2 py-1 rounded border" id="cred_pass">{{ $cred['password'] }}</code>
-                                            <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('cred_pass')" title="Copy"><i class="fas fa-copy"></i></button>
-                                        </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="text-muted" style="font-size:11px;font-weight:600;min-width:64px">PASSWORD</span>
+                                        <code class="bg-white px-2 py-1 rounded border small" id="pwd_{{ $manager->id }}">{{ $profile->plain_password }}</code>
+                                        <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('pwd_{{ $manager->id }}')" title="Copy"><i class="fas fa-copy" style="font-size:11px"></i></button>
                                     </div>
-                                    <div>
-                                        <div class="text-muted" style="font-size:11px;font-weight:600">LOGIN LINK</div>
-                                        <div class="d-flex align-items-center gap-1 mt-1">
-                                            <code class="bg-white px-2 py-1 rounded border text-truncate" style="max-width:180px" id="cred_url">{{ $cred['login_url'] }}</code>
-                                            <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('cred_url')" title="Copy"><i class="fas fa-copy"></i></button>
-                                        </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="text-muted" style="font-size:11px;font-weight:600;min-width:72px">LOGIN LINK</span>
+                                        <code class="bg-white px-2 py-1 rounded border small text-truncate" style="max-width:160px" id="lnk_{{ $manager->id }}">{{ $profile->login_url ?? route('user.login') }}</code>
+                                        <button class="btn btn-sm btn-outline-secondary py-0 px-1" onclick="copyText('lnk_{{ $manager->id }}')" title="Copy"><i class="fas fa-copy" style="font-size:11px"></i></button>
                                     </div>
-                                </div>
-                                <div class="mt-2 text-warning-emphasis small">
-                                    <i class="fas fa-exclamation-triangle me-1"></i>Save these credentials now — password cannot be retrieved after leaving this page.
                                 </div>
                             </td>
                         </tr>

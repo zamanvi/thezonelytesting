@@ -64,33 +64,20 @@ class ManagerController extends Controller
             'slug'     => generateUniqueSlug(User::class, $request->name),
         ]);
 
-        if (!$isGeneral) {
-            ManagerProfile::create([
-                'user_id' => $user->id,
-                'modules' => $request->modules,
-                'status'  => 'active',
-                'notes'   => $request->notes,
-            ]);
-        } else {
-            ManagerProfile::create([
-                'user_id' => $user->id,
-                'modules' => [],
-                'status'  => 'active',
-                'notes'   => $request->notes,
-            ]);
-        }
+        $loginUrl = route('user.login');
+
+        ManagerProfile::create([
+            'user_id'        => $user->id,
+            'modules'        => $isGeneral ? [] : $request->modules,
+            'status'         => 'active',
+            'notes'          => $request->notes,
+            'plain_password' => $request->password,
+            'login_url'      => $loginUrl,
+        ]);
 
         $role = $isGeneral ? 'General Manager' : 'Manager';
         return redirect()->route('admin.managers.index')
-            ->with('success', $user->name . ' created as ' . $role . '.')
-            ->with('new_credentials', [
-                'name'       => $user->name,
-                'email'      => $user->email,
-                'password'   => $request->password,
-                'role'       => $role,
-                'login_url'  => route('user.login'),
-                'user_id'    => $user->id,
-            ]);
+            ->with('success', $user->name . ' created as ' . $role . '.');
     }
 
     public function edit($id)
@@ -118,17 +105,20 @@ class ManagerController extends Controller
             'email' => $request->email,
         ]);
 
+        $profileData = [
+            'modules' => $request->modules,
+            'status'  => $request->status ?? 'active',
+            'notes'   => $request->notes,
+        ];
+
         if ($request->filled('password')) {
             $manager->update(['password' => Hash::make($request->password)]);
+            $profileData['plain_password'] = $request->password;
         }
 
         $manager->managerProfile()->updateOrCreate(
             ['user_id' => $manager->id],
-            [
-                'modules' => $request->modules,
-                'status'  => $request->status ?? 'active',
-                'notes'   => $request->notes,
-            ]
+            $profileData
         );
 
         return redirect()->route('admin.managers.index')

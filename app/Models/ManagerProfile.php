@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ManagerProfile extends Model
 {
-    protected $fillable = ['user_id', 'modules', 'status', 'notes'];
+    protected $fillable = ['user_id', 'modules', 'status', 'notes', 'plain_password', 'login_url'];
 
     protected $casts = ['modules' => 'array'];
 
