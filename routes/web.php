@@ -235,7 +235,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
+        Route::middleware('manager.module:dashboard')->get('dashboard', [PageController::class, 'admin_dashboard'])->name('dashboard');
         Route::get('clear-cache', [PageController::class, 'clear_cache'])->name('clear.cache');
         Route::get('storage-link', [PageController::class, 'storage_link'])->name('storage.link');
 
@@ -304,8 +304,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Managers CRUD — admin only (no module middleware needed, managers can't manage other managers)
         Route::resource('managers', ManagerController::class)->only(['index','create','store','edit','update','destroy']);
 
-        // Twilio SMS settings — admin only
-        Route::prefix('twilio')->name('twilio.')->group(function () {
+        // Twilio SMS settings
+        Route::middleware('manager.module:twilio')->prefix('twilio')->name('twilio.')->group(function () {
             Route::get('settings',             [TwilioController::class, 'settings'])->name('settings');
             Route::post('settings',            [TwilioController::class, 'settingsUpdate'])->name('settings.update');
             Route::get('sellers',              [TwilioController::class, 'sellers'])->name('sellers');
@@ -313,8 +313,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('sellers/{id}/test',   [TwilioController::class, 'testSms'])->name('test');
         });
 
-        // Phone number pool — admin only
-        Route::prefix('phone-pool')->name('phone-pool.')->group(function () {
+        // Phone number pool
+        Route::middleware('manager.module:phone_pool')->prefix('phone-pool')->name('phone-pool.')->group(function () {
             Route::get('/',              [PhonePoolController::class, 'index'])->name('index');
             Route::post('/',             [PhonePoolController::class, 'store'])->name('store');
             Route::post('{id}/assign',   [PhonePoolController::class, 'assign'])->name('assign');

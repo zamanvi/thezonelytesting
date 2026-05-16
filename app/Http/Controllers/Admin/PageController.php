@@ -107,10 +107,16 @@ class PageController extends Controller
     }
     public function profiles_index(Request $request)
     {
-        $status = $request->query('status'); // 'verified', 'unverified', or null
-        $type = $request->query('type');     // 'admin', 'profile', 'staff', or null
+        $status = $request->query('status');
+        $type   = $request->query('type');
+        $isManager = auth()->user()?->type === 'manager';
 
         $query = User::latest();
+
+        // Managers never see admin/manager accounts
+        if ($isManager) {
+            $query->whereNotIn('type', ['admin', 'manager']);
+        }
 
         if ($status === 'verified') {
             $query->where('status', true);
@@ -128,12 +134,23 @@ class PageController extends Controller
     }
     function profiles_edit($id)
     {
-        $user = User::findOrFail($id);
+        $target = User::findOrFail($id);
+        if (auth()->user()?->type === 'manager' && in_array($target->type, ['admin', 'manager'])) {
+            abort(403, 'Access denied.');
+        }
+        $user = $target;
         return view('admin.profiles2.edit', compact('user'));
     }
     public function profiles_update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        if (auth()->user()?->type === 'manager' && in_array($user->type, ['admin', 'manager'])) {
+            abort(403, 'Access denied.');
+        }
+
+        $allowedTypes = auth()->user()?->type === 'manager'
+            ? 'required|in:staff,seller,user'
+            : 'required|in:admin,staff,manager,seller,user';
 
         $validated = $request->validate([
             'name'                => 'required|string|max:255',
@@ -142,7 +159,7 @@ class PageController extends Controller
             'whatsapp'            => 'nullable|string|max:50',
             'designation'         => 'nullable|string|max:255',
             'title'               => 'nullable|string|max:255',
-            'type'                => 'required|in:admin,staff,manager,seller,user',
+            'type'                => $allowedTypes,
             'status'              => 'required|boolean',
             'remark'              => 'nullable|string',
             'bio'                 => 'nullable|string',
@@ -169,7 +186,11 @@ class PageController extends Controller
     }
     function profiles_destroy($id)
     {
-        User::findOrFail($id)->delete();
+        $target = User::findOrFail($id);
+        if (auth()->user()?->type === 'manager' && in_array($target->type, ['admin', 'manager'])) {
+            abort(403, 'Access denied.');
+        }
+        $target->delete();
         return redirect()->route('admin.profiles.index')->with('success', 'User deleted.');
     }
     public function leads()
