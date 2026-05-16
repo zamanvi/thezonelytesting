@@ -96,7 +96,7 @@ class ManagerController extends Controller
     public function edit($id)
     {
         if (auth()->user()?->type === 'coo') abort(403, 'COO cannot edit managers.');
-        $manager = User::where('type', 'manager')->with('managerProfile')->findOrFail($id);
+        $manager = User::whereIn('type', ['manager', 'coo'])->with('managerProfile')->findOrFail($id);
         $modules = ManagerProfile::MODULES;
         return view('admin.managers.edit', compact('manager', 'modules'));
     }
@@ -104,7 +104,7 @@ class ManagerController extends Controller
     public function update(Request $request, $id)
     {
         if (auth()->user()?->type === 'coo') abort(403, 'COO cannot edit managers.');
-        $manager = User::where('type', 'manager')->findOrFail($id);
+        $manager = User::whereIn('type', ['manager', 'coo'])->findOrFail($id);
 
         $request->validate([
             'name'     => 'required|string|max:255',
@@ -138,7 +138,7 @@ class ManagerController extends Controller
     public function destroy($id)
     {
         if (auth()->user()?->type === 'coo') abort(403, 'COO cannot remove managers.');
-        $manager = User::where('type', 'manager')->findOrFail($id);
+        $manager = User::whereIn('type', ['manager', 'coo'])->findOrFail($id);
         $manager->delete();
         return redirect()->route('admin.managers.index')
             ->with('success', 'Manager removed.');
