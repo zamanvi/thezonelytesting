@@ -93,12 +93,17 @@ class ManagerController extends Controller
         if (auth()->user()?->type === 'coo') abort(403, 'COO cannot edit managers.');
         $manager = User::whereIn('type', ['manager', 'coo'])->findOrFail($id);
 
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $manager->id,
-            'modules'  => 'required|array|min:1',
-            'modules.*'=> 'in:' . implode(',', array_keys(ManagerProfile::MODULES)),
-        ]);
+        $rules = [
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $manager->id,
+        ];
+
+        if ($manager->type !== 'coo') {
+            $rules['modules']    = 'required|array|min:1';
+            $rules['modules.*']  = 'in:' . implode(',', array_keys(ManagerProfile::MODULES));
+        }
+
+        $request->validate($rules);
 
         $manager->update([
             'name'  => $request->name,
@@ -106,7 +111,7 @@ class ManagerController extends Controller
         ]);
 
         $profileData = [
-            'modules' => $request->modules,
+            'modules' => $manager->type === 'coo' ? [] : $request->modules,
             'status'  => $request->status ?? 'active',
             'notes'   => $request->notes,
         ];

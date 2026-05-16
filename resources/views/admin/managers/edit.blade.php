@@ -67,8 +67,22 @@
                 </div>
             </div>
 
-            {{-- Module Access --}}
+            {{-- Module Access (regular managers only) --}}
             <div class="col-md-6">
+                @if($manager->type === 'coo')
+                <div class="section-card h-100">
+                    <div class="card-header bg-warning text-dark p-4">
+                        <h6 class="mb-0"><i class="fas fa-crown me-2"></i>General Manager — Full Access</h6>
+                    </div>
+                    <div class="card-body p-4 d-flex align-items-center justify-content-center text-center">
+                        <div>
+                            <i class="fas fa-unlock-alt fa-3x text-warning mb-3 opacity-75"></i>
+                            <p class="fw-bold mb-1">All admin sections unlocked automatically</p>
+                            <p class="text-muted small mb-0">No module selection needed. Admin accounts remain protected.</p>
+                        </div>
+                    </div>
+                </div>
+                @else
                 <div class="section-card h-100">
                     <div class="card-header bg-dark text-white p-4">
                         <h6 class="mb-0"><i class="fas fa-lock-open me-2"></i>Module Access</h6>
@@ -99,6 +113,7 @@
                         @enderror
                     </div>
                 </div>
+                @endif
             </div>
 
         </div>
