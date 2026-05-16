@@ -82,7 +82,15 @@ class ManagerController extends Controller
 
         $role = $isGeneral ? 'General Manager' : 'Manager';
         return redirect()->route('admin.managers.index')
-            ->with('success', $user->name . ' created as ' . $role . '.');
+            ->with('success', $user->name . ' created as ' . $role . '.')
+            ->with('new_credentials', [
+                'name'       => $user->name,
+                'email'      => $user->email,
+                'password'   => $request->password,
+                'role'       => $role,
+                'login_url'  => route('user.login'),
+                'user_id'    => $user->id,
+            ]);
     }
 
     public function edit($id)
