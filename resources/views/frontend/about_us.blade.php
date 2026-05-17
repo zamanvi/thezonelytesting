@@ -7,8 +7,8 @@
     <h1 class="font-serif text-4xl md:text-6xl mb-6 leading-tight">
         About <span class="italic text-teal-700">Zonely</span>
     </h1>
+    <p class="text-teal-700 font-black text-sm uppercase tracking-widest mb-3">Build Your Brand. Grow Your Sales.</p>
     <p class="text-slate-500 text-lg max-w-3xl mx-auto">
-        <span class="font-bold text-slate-700">Build Your Brand. Grow Your Sales.</span><br>
         Helping service-based businesses become visible, trusted, and profitable online.
     </p>
 </section>
