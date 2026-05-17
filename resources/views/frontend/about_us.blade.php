@@ -158,8 +158,8 @@
                     <p>
                         Hi, I'm <span class="text-white font-bold">Md. Norozzaman</span>,
                         Founder &amp; CEO of <span class="text-white font-semibold">Zonely</span>.
-                        I built Zonely to make it effortless for skilled professionals anywhere in the world to be discovered and hired by clients who need them.
-                        Zonely operates globally — because great talent has no borders, and every client deserves the best professional available.
+                        Born in Bangladesh, I built Zonely with a simple belief — skilled professionals everywhere deserve to be found.
+                        Zonely is registered in the USA and operates globally, making it effortless for experts worldwide to connect with clients who need them most.
                     </p>
                 </div>
                 <div class="mt-8">
