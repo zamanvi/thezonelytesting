@@ -105,7 +105,11 @@ if (!function_exists('get_file')) {
     function get_file(?string $path, string $for = 'default'): string
     {
         if (!$path) return empty_image($for);
+        if (str_starts_with($path, 'http')) return $path;
         $path = ltrim($path, '/');
+        if (config('filesystems.disks.r2.key')) {
+            return rtrim(config('filesystems.disks.r2.url'), '/') . '/' . $path;
+        }
         return Storage::disk('public')->exists($path)
             ? Storage::disk('public')->url($path)
             : empty_image($for);
