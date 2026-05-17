@@ -38,7 +38,7 @@
         <div class="flex items-center gap-2 min-w-0">
             <span class="w-2 h-2 bg-emerald-400 rounded-full shrink-0 animate-pulse"></span>
             <span class="text-xs text-slate-400 font-medium shrink-0">Your live page:</span>
-            <span class="text-sm text-white font-mono truncate">thezonely.com/{{ $user->slug }}</span>
+            <span class="text-sm text-white font-mono truncate">zonelyleads.com/{{ $user->slug }}</span>
         </div>
         <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
            class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-teal-400 hover:text-teal-300 transition">

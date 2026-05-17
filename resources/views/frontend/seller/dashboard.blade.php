@@ -137,7 +137,7 @@
             </div>
             <div class="flex-1 min-w-0">
                 <p class="font-bold leading-tight">{{ $user->title ?? $user->name }}</p>
-                <p class="text-teal-200 text-sm mt-0.5 truncate">thezonely.com/{{ $user->slug }}</p>
+                <p class="text-teal-200 text-sm mt-0.5 truncate">zonelyleads.com/{{ $user->slug }}</p>
             </div>
             <div class="flex flex-col items-end gap-1.5 shrink-0">
                 <span class="text-xs bg-white/20 px-3 py-1 rounded-lg font-bold">LIVE</span>

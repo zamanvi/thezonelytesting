@@ -8,7 +8,7 @@
         About <span class="italic text-teal-700">Zonely</span>
     </h1>
     <p class="text-slate-500 text-lg max-w-3xl mx-auto">
-        <strong>Build Your Brand. Grow Your Sales.</strong><br>
+        <span class="font-bold text-slate-700">Build Your Brand. Grow Your Sales.</span><br>
         Helping service-based businesses become visible, trusted, and profitable online.
     </p>
 </section>
@@ -115,19 +115,6 @@
     </p>
 </section>
 
-<!-- FOUNDER -->
-<section class="text-black py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <h2 class="font-serif text-3xl md:text-5xl mb-6">
-            Meet the <span class="italic">Founder</span>
-        </h2>
-        <p class="text-lg opacity-90">
-            <strong>Norozzaman</strong> — Founder of Zonely, passionate about solving the digital
-            divide for small businesses and helping them grow with simple, scalable tools.
-        </p>
-    </div>
-</section>
-
 <!-- CONTACT -->
 <section class="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
     <h2 class="font-serif text-3xl md:text-5xl mb-6">
@@ -165,51 +152,24 @@
                         Message from the Founder
                     </h2>
 
-                    <h3 class="font-serif text-3xl md:text-5xl mb-6 leading-tight">
-                        “Building brands through strategy, creativity, and digital excellence.”
+                    <h3 class=”font-serif text-3xl md:text-5xl mb-6 leading-tight”>
+                        “Connecting skilled local experts with the people who need them most — that’s the mission behind everything we do at Zonely.”
                     </h3>
 
-                    {{-- <div class="space-y-6 text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                        <p>
-                            Hi, I'm <span class="text-white font-bold">Md. Norozzaman</span>,
-                            Founder and CEO of
-                            <span class="text-white font-semibold">
-                                Tansai Consultancy & Language Center
-                            </span>.
-                            A graduate of <span class="text-white font-semibold">HEZHOU University, China</span>,
-                            I'm professional businessman with 3 (three) years of e-commerce business experience.
-                        </p>
-                    </div>
+                    <div class=”max-w-3xl mx-auto lg:mx-0 space-y-8”>
 
-                    <!-- SIGNATURE -->
-                    <div class="mt-5">
-                        <p class="font-serif text-2xl text-white">Md. Norozzaman</p>
-                        <p class="text-teal-400 text-sm font-bold uppercase tracking-widest">
-                            Founder & CEO
-                        </p>
-                    </div> --}}
-
-                    <div class="max-w-3xl mx-auto lg:mx-0 space-y-8">
-
-                        <!-- ABOUT TEXT -->
-                        <div class="space-y-6 text-gray-300 leading-relaxed text-lg lg:text-xl tracking-wide">
-                            <p class="text-white font-serif text-lg lg:text-2xl">
-                                Hello, I’m <span class="font-bold">Md. Norozzaman</span>,
-                                the Founder and CEO of
-                                <span class="font-semibold">Tansai Consultancy &amp; Language Center</span>.
-                                A graduate of <span class="font-semibold">Hezhou University, China</span>,
-                                I am a dedicated entrepreneur with over
-                                <span class="font-semibold">three years of hands-on experience</span>
-                                in e-commerce, combining global insight with practical business leadership.
+                        <div class=”space-y-6 text-slate-400 text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0”>
+                            <p>
+                                Hi, I’m <span class=”text-white font-bold”>Md. Norozzaman</span>,
+                                Founder &amp; CEO of <span class=”text-white font-semibold”>Zonely</span>.
+                                I built Zonely to make it effortless for people across the USA to discover and hire trusted local professionals in their area.
+                                Our mission is simple — every skilled expert deserves to be found, and every client deserves the best local help available.
                             </p>
                         </div>
 
-                        <!-- SIGNATURE -->
-                        <div class="mt-12">
-                            <p class="font-serif text-3xl lg:text-4xl text-white tracking-wide">Md. Norozzaman</p>
-                            <p class="text-teal-400 text-sm lg:text-base font-bold uppercase tracking-widest mt-1">
-                                Founder &amp; CEO
-                            </p>
+                        <div class=”mt-5”>
+                            <p class=”font-serif text-2xl text-white”>Md. Norozzaman</p>
+                            <p class=”text-teal-400 text-sm font-bold uppercase tracking-widest”>Founder &amp; CEO — Zonely</p>
                         </div>
                     </div>
 

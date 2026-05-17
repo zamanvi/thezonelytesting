@@ -83,7 +83,7 @@
     <div class="bg-teal-50 border border-teal-100 rounded-2xl p-4 mb-5 flex items-center justify-between gap-3">
         <div class="min-w-0">
             <p class="text-xs font-bold text-teal-600 mb-0.5">Your live public page</p>
-            <p class="text-sm font-mono text-slate-700 truncate">thezonely.com/{{ $user->slug }}</p>
+            <p class="text-sm font-mono text-slate-700 truncate">zonelyleads.com/{{ $user->slug }}</p>
         </div>
         <a href="{{ route('frontend.service.show', $user->slug) }}" target="_blank"
            class="shrink-0 flex items-center gap-1.5 text-xs font-bold text-teal-700 hover:text-teal-800 border border-teal-200 px-3 py-1.5 rounded-lg transition">

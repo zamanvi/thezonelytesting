@@ -21,10 +21,6 @@
                    class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-teal-700 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
                     <i class="fab fa-linkedin text-sm"></i>
                 </a>
-                <a href="https://www.youtube.com/@thezonely" target="_blank" rel="noopener"
-                   class="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 hover:bg-red-600 text-slate-400 hover:text-white transition" style="min-height:unset;min-width:unset;">
-                    <i class="fab fa-youtube text-sm"></i>
-                </a>
             </div>
         </div>
 

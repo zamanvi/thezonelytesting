@@ -6,8 +6,8 @@
     <div class="w-full max-w-md">
         <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10 text-center">
 
-            <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                <i class="fa-solid fa-envelope-circle-check text-blue-600 text-2xl"></i>
+            <div class="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                <i class="fa-solid fa-envelope-circle-check text-teal-700 text-2xl"></i>
             </div>
 
             <h1 class="text-2xl font-black text-slate-900 mb-2">Verify your email</h1>
@@ -24,7 +24,7 @@
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl text-sm transition">
+                    class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3.5 rounded-2xl text-sm transition">
                     Resend Verification Email
                 </button>
             </form>
