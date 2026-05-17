@@ -5,6 +5,9 @@
 @endphp
 @extends('frontend.layouts._app')
 @section('title', 'Blog')
+@section('og_title', $meta_title)
+@section('og_description', $meta_description)
+@section('og_image', asset('frontend/img/zonely_logo.png'))
 
 @section('schema')
 <script type="application/ld+json">

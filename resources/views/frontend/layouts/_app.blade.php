@@ -13,7 +13,7 @@
         $canonicalUrl  = url()->current();
         $ogTitle       = trim($__env->yieldContent('og_title'))       ?: ($meta_title ?? config('app.name'));
         $ogDescription = trim($__env->yieldContent('og_description'))  ?: ($meta_description ?? '');
-        $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/favicon.svg');
+        $ogImage       = trim($__env->yieldContent('og_image'))        ?: asset('frontend/img/zonely_logo.png');
         if ($ogImage && !str_starts_with($ogImage, 'http')) {
             $ogImage = asset($ogImage);
         }
