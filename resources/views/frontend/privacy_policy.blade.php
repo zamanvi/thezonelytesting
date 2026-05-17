@@ -80,7 +80,7 @@
                 <li><strong>Withdraw Consent:</strong> Opt-out of lead tracking or marketing at any time.</li>
             </ul>
             <p class="text-slate-600 leading-relaxed">To exercise your rights, contact us at <a
-                    href="mailto:norozzaman996@gmail.com">norozzaman996@gmail.com</a>.
+                    href="mailto:contact@zonelyleads.com">contact@zonelyleads.com</a>.
             </p>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
@@ -111,7 +111,7 @@
             <h2 class="text-lg font-bold text-slate-900 mb-3">11. Contact Us</h2>
             For any privacy-related inquiries or to exercise your data rights, please contact our support team:
             <address class="text-slate-600 leading-relaxed mt-3 not-italic">
-                <p>Support Email: <a href="mailto:support@thezonely.com" class="text-teal-700 hover:underline">support@thezonely.com</a></p>
+                <p>Support Email: <a href="mailto:contact@zonelyleads.com" class="text-teal-700 hover:underline">contact@zonelyleads.com</a></p>
             </address>
         </section>
         <section class="mt-2 bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">

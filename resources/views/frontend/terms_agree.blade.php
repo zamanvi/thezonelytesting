@@ -159,7 +159,7 @@
             </div>
 
             <div class="pt-2">
-                <p class="text-xs text-slate-400">Questions? Contact us at <a href="mailto:support@zonely.com" class="text-teal-700 hover:underline">support@zonely.com</a></p>
+                <p class="text-xs text-slate-400">Questions? Contact us at <a href="mailto:contact@zonelyleads.com" class="text-teal-700 hover:underline">contact@zonelyleads.com</a></p>
             </div>
 
         </div>

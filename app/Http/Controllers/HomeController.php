@@ -255,24 +255,29 @@ class HomeController extends Controller
 
         // Photo loading
         $photoLoaded = false;
-        if ($user->profile_photo && !str_starts_with($user->profile_photo, 'http')) {
-            $src   = false;
-            $photo = ltrim($user->profile_photo, '/');
-            $fsPaths = [
-                storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
-                public_path($photo),
-                base_path('public/' . $photo),
-            ];
-            foreach ($fsPaths as $tryPath) {
-                if ($src) break;
-                if (!file_exists($tryPath)) continue;
-                $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
-                $src = match($ext) {
-                    'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
-                    'png'        => @imagecreatefrompng($tryPath),
-                    'webp'       => @imagecreatefromwebp($tryPath),
-                    default      => false,
-                };
+        $src = false;
+        if ($user->profile_photo) {
+            if (str_starts_with($user->profile_photo, 'http')) {
+                $imgData = @file_get_contents($user->profile_photo);
+                if ($imgData) $src = @imagecreatefromstring($imgData);
+            } else {
+                $photo = ltrim($user->profile_photo, '/');
+                $fsPaths = [
+                    storage_path('app/public/' . preg_replace('#^storage/#', '', $photo)),
+                    public_path($photo),
+                    base_path('public/' . $photo),
+                ];
+                foreach ($fsPaths as $tryPath) {
+                    if ($src) break;
+                    if (!file_exists($tryPath)) continue;
+                    $ext = strtolower(pathinfo($tryPath, PATHINFO_EXTENSION));
+                    $src = match($ext) {
+                        'jpg','jpeg' => @imagecreatefromjpeg($tryPath),
+                        'png'        => @imagecreatefrompng($tryPath),
+                        'webp'       => @imagecreatefromwebp($tryPath),
+                        default      => false,
+                    };
+                }
             }
             if ($src) {
                 $sw = imagesx($src); $sh = imagesy($src);
@@ -457,7 +462,7 @@ class HomeController extends Controller
         imagefilledrectangle($img, $btnX1 + $br, $btnY1, $btnX2 - $br, $btnY1 + 6, $hiC);
 
         if ($ttf) {
-            $btnTx = 'VISIT MY WEBSITE  >>';
+            $btnTx = 'VIEW PROFILE  >>';
             $bbox  = @imagettfbbox(21, 0, $fontB, $btnTx);
             $txW   = $bbox ? abs($bbox[4] - $bbox[0]) : 180;
             $txX   = $btnX1 + (int)(($btnX2 - $btnX1 - $txW) / 2);

@@ -150,7 +150,7 @@
             <p class="text-slate-600 leading-relaxed">For support or legal inquiries, please reach out via our official US-facing channels:</p>
             <address class="text-slate-600 leading-relaxed">
                 {{-- <p><strong>Zonely</strong><br />Dhaka, Bangladesh</p> --}}
-                <p>Support Email: <a href="mailto:support@thezonely.com">support@thezonely.com</a>
+                <p>Support Email: <a href="mailto:contact@zonelyleads.com">contact@zonelyleads.com</a>
             </address>
         </section>
 
